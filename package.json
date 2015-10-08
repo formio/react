@@ -1,0 +1,44 @@
+{
+  "name": "react-formio",
+  "version": "0.0.1",
+  "description": "React rendering library for form.io embedded forms.",
+  "main": "dist/react-formio.js",
+  "scripts": {
+    "test": "npm test/test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formio/react-formio.git"
+  },
+  "keywords": [
+    "React",
+    "component",
+    "Formio",
+    "Forms"
+  ],
+  "author": "Randall Knutson <randall@form.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/formio/react-formio/issues"
+  },
+  "homepage": "https://github.com/formio/react-formio#readme",
+  "dependencies": {
+    "formiojs": "git+https://github.com/formio/formio.js.git"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.9.8",
+    "browserify": "^11.2.0",
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-html-replace": "^1.5.4",
+    "gulp-load-plugins": "^1.0.0-rc.1",
+    "gulp-react": "^3.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-streamify": "^1.0.2",
+    "gulp-uglify": "^1.4.1",
+    "reactify": "^1.1.1",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.4.0"
+  }
+}

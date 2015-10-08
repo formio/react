@@ -1,0 +1,20 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>React Test</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"></head>
+<body>
+  <script src="//fb.me/react-with-addons-0.13.2.js"></script>
+  <script src="//fb.me/JSXTransformer-0.13.2.js"></script>
+  <script src="react-formio.js"></script>
+  <div class="container">
+    <div id="formio"></div>
+  </div>
+  <script type="text/jsx">
+    React.render(
+      <Formio src="https://randall.form.io/test/submission/5615d25959008c010014ea52" />
+      , document.getElementById('formio'));
+  </script>
+</body>
+</html>
