@@ -15,6 +15,7 @@ module.exports = React.createClass({
           attachToForm={this.props.attachToForm}
           detachFromForm={this.props.detachFromForm}
           isSubmitting={this.props.isSubmitting}
+          isFormValid={this.props.isFormValid}
           validate={this.props.validate}
           />
       </div>

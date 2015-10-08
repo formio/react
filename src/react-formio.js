@@ -167,15 +167,15 @@ module.exports = React.createClass({
             detachFromForm={this.detachFromForm}
             validate={this.validate}
             isSubmitting={this.state.isSubmitting}
+            isFormValid={this.state.isValid}
           />
         );
       }.bind(this));
     }
+    var loading = <i id="formio-loading" className="glyphicon glyphicon-refresh glyphicon-spin"></i>;
     return (
       <form role="form" name="formioForm" onSubmit={this.onSubmit}>
-        <i id="formio-loading" className="glyphicon glyphicon-refresh glyphicon-spin"></i>
         <div ng-repeat="alert in formioAlerts" className="alert" role="alert">
-
         </div>
         {this.componentNodes}
       </form>

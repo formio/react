@@ -5380,11 +5380,23 @@ module.exports = React.createClass({
 module.exports = React.createClass({
   displayName: 'Button',
   render: function() {
+    var classNames = "btn btn-" + this.props.component.theme + " btn-" + this.props.component.size;
+    classNames += (this.props.component.block ? ' btn-block' : '');
+    var leftIcon = (this.props.component.leftIcon ? React.createElement("span", {className: this.props.component.leftIcon, "aria-hidden": "true"}) : '');
+    var rightIcon = (this.props.component.rightIcon ? React.createElement("span", {className: this.props.component.rightIcon, "aria-hidden": "true"}) : '');
+    var disabled = this.props.isSubmitting || (this.props.component.disableOnInvalid && this.props.isFormValid);
+    var submitting = (this.props.isSubmitting && this.props.component.action == "submit" ? React.createElement("i", {className: "glyphicon glyphicon-refresh glyphicon-spin"}) : '')
     return(
       React.createElement("button", {
+        className: classNames, 
         type: this.props.component.action == 'submit' ? 'submit' : 'button', 
-        disabled: this.props.isSubmitting
-      }, this.props.component.label));
+        disabled: disabled
+      }, 
+        submitting, 
+        leftIcon, 
+        this.props.component.label, 
+        rightIcon
+      ));
   }
 });
 
@@ -5602,6 +5614,7 @@ module.exports = React.createClass({
           attachToForm: this.props.attachToForm, 
           detachFromForm: this.props.detachFromForm, 
           isSubmitting: this.props.isSubmitting, 
+          isFormValid: this.props.isFormValid, 
           validate: this.props.validate}
           )
       )
@@ -5778,16 +5791,16 @@ module.exports = React.createClass({
             attachToForm: this.attachToForm, 
             detachFromForm: this.detachFromForm, 
             validate: this.validate, 
-            isSubmitting: this.state.isSubmitting}
+            isSubmitting: this.state.isSubmitting, 
+            isFormValid: this.state.isValid}
           )
         );
       }.bind(this));
     }
+    var loading = React.createElement("i", {id: "formio-loading", className: "glyphicon glyphicon-refresh glyphicon-spin"});
     return (
       React.createElement("form", {role: "form", name: "formioForm", onSubmit: this.onSubmit}, 
-        React.createElement("i", {id: "formio-loading", className: "glyphicon glyphicon-refresh glyphicon-spin"}), 
         React.createElement("div", {"ng-repeat": "alert in formioAlerts", className: "alert", role: "alert"}
-
         ), 
         this.componentNodes
       )
