@@ -5443,7 +5443,7 @@ module.exports = {
     }.bind(this));
   },
   getComponent: function() {
-    var classNames = "form-group has-feedback form-field-type-" + this.props.component.type + (this.state.errorMesssage !== '' && !this.state.isPristine ? ' has-error': '');
+    var classNames = "form-group has-feedback form-field-type-" + this.props.component.type + (this.state.errorMessage !== '' && !this.state.isPristine ? ' has-error': '');
     var id = "form-group-" + this.props.component.key;
     var Elements = this.getElements();
     var Error = (this.state.errorMessage && !this.state.isPristine ? React.createElement("p", {className: "help-block"}, this.state.errorMessage) : '');
@@ -5696,7 +5696,6 @@ module.exports = React.createClass({
           isValid = component.state.value.match(re);
           if (!isValid) {
             errorMessage = (component.props.component.label || component.props.component.key) + ' must match the expression: ' + component.props.component.validate.pattern;
-            console.log(errorMessage);
           }
         }
         // Custom

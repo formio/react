@@ -71,7 +71,6 @@ module.exports = React.createClass({
           isValid = component.state.value.match(re);
           if (!isValid) {
             errorMessage = (component.props.component.label || component.props.component.key) + ' must match the expression: ' + component.props.component.validate.pattern;
-            console.log(errorMessage);
           }
         }
         // Custom
