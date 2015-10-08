@@ -6,7 +6,7 @@ var multiMixin = require('./mixins/multiMixin');
 module.exports = React.createClass({
   displayName: 'Textfield',
   mixins: [componentMixin, multiMixin],
-  getElement: function(data) {
+  getSingleElement: function(data) {
     return(
       <input
         type={this.props.component.inputType}
@@ -18,12 +18,8 @@ module.exports = React.createClass({
         placeholder={this.props.component.placeholder}
         formio-input-mask={this.props.component.inputMask}
         onChange={this.setValue}
-        onFocus={this.onFocus}
         >
       </input>
     );
-  },
-  render: function() {
-    return this.getComponent();
   }
 });

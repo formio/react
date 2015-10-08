@@ -25,9 +25,19 @@ module.exports = {
       }
     }.bind(this));
   },
-  onFocus: function() {
-    this.setState({
-      isPristine: false
-    });
+  getComponent: function() {
+    var classNames = "form-group has-feedback form-field-type-" + this.props.component.type + (this.state.errorMesssage !== '' && !this.state.isPristine ? ' has-error': '');
+    var id = "form-group-" + this.props.component.key;
+    var Elements = this.getElements();
+    var Error = (this.state.errorMessage && !this.state.isPristine ? <p className="help-block">{this.state.errorMessage}</p> : '');
+    return (
+      <div className={classNames} id={id}>
+        {Elements}
+        {Error}
+      </div>
+    );
+  },
+  render: function() {
+    return this.getComponent();
   }
 };

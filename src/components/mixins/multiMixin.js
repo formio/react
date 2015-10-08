@@ -15,9 +15,10 @@ module.exports = {
       value: values
     });
   },
-  getComponent: function() {
+  getElements: function() {
     var Component;
-    var inputLabel = (this.props.component.label && !this.props.component.hideLabel ? <label htmlFor={this.props.component.key} className="control-label" ng-class="{\'field-required\': component.validate.required}">{this.props.component.label}</label> : '');
+    var classLabel = "control-label" + ( this.props.component.validate.required ? ' field-required' : '');
+    var inputLabel = (this.props.component.label && !this.props.component.hideLabel ? <label htmlFor={this.props.component.key} className={classLabel}>{this.props.component.label}</label> : '');
     var requiredInline = (!this.props.component.label && this.props.component.validate.required ? <span className="glyphicon glyphicon-asterisk form-control-feedback field-required-inline" aria-hidden="true"></span> : '');
     var className = (this.props.component.prefix || this.props.component.suffix ? 'input-group' : '');
     var prefix = (this.props.component.prefix ? <div className="input-group-addon">{this.props.component.prefix}</div> : '');
@@ -29,7 +30,7 @@ module.exports = {
         data = [data];
       }
       var rows = data.map(function(value, id) {
-        var Element = this.getElement(value);
+        var Element = this.getSingleElement(value);
         return (
           <tr key={id}>
             <td>{requiredInline}
@@ -57,7 +58,7 @@ module.exports = {
       if (Array.isArray(data)) {
         data = data[0];
       }
-      var Element = this.getElement(data);
+      var Element = this.getSingleElement(data);
       Component =
         <div>
           {inputLabel} {requiredInline}

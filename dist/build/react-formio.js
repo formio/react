@@ -5367,7 +5367,8 @@ return Q;
 },{}],5:[function(require,module,exports){
 'use strict'
 
-module.exports = React.createClass({displayName: "exports",
+module.exports = React.createClass({
+  displayName: 'Address',
   render: function() {
     return(React.createElement("div", null, "I am an address"));
   }
@@ -5376,7 +5377,8 @@ module.exports = React.createClass({displayName: "exports",
 },{}],6:[function(require,module,exports){
 'use strict'
 
-module.exports = React.createClass({displayName: "exports",
+module.exports = React.createClass({
+  displayName: 'Button',
   render: function() {
     return(
       React.createElement("button", {
@@ -5407,8 +5409,9 @@ module.exports = {
   getInitialState: function () {
     return {
       value: this.props.value || '',
-      valid: true,
-      pristine: true
+      isValid: true,
+      errorMessage: '',
+      isPristine: true
     };
   },
   componentWillMount: function () {
@@ -5420,17 +5423,27 @@ module.exports = {
   setValue: function (event) {
     this.setState({
       value: event.currentTarget.value,
-      pristine: false
+      isPristine: false
     }, function() {
       if (typeof this.props.validate === 'function') {
         this.props.validate(this)
       }
     }.bind(this));
   },
-  onFocus: function() {
-    this.setState({
-      pristine: false
-    });
+  getComponent: function() {
+    var classNames = "form-group has-feedback form-field-type-" + this.props.component.type + (this.state.errorMesssage !== '' && !this.state.isPristine ? ' has-error': '');
+    var id = "form-group-" + this.props.component.key;
+    var Elements = this.getElements();
+    var Error = (this.state.errorMessage && !this.state.isPristine ? React.createElement("p", {className: "help-block"}, this.state.errorMessage) : '');
+    return (
+      React.createElement("div", {className: classNames, id: id}, 
+        Elements, 
+        Error
+      )
+    );
+  },
+  render: function() {
+    return this.getComponent();
   }
 };
 
@@ -5439,14 +5452,23 @@ module.exports = {
 
 module.exports = {
   addFieldValue: function() {
-
+    var values = this.state.value;
+    values.push(this.props.component.defaultValue);
+    this.setState({
+      value: values
+    });
   },
   removeFieldValue: function(id) {
-
+    var values = this.state.value;
+    values.splice(id, 1);
+    this.setState({
+      value: values
+    });
   },
-  getComponent: function() {
+  getElements: function() {
     var Component;
-    var inputLabel = (this.props.component.label && !this.props.component.hideLabel ? React.createElement("label", {htmlFor: this.props.component.key, className: "control-label", "ng-class": "{\\'field-required\\': component.validate.required}"}, this.props.component.label) : '');
+    var classLabel = "control-label" + ( this.props.component.validate.required ? ' field-required' : '');
+    var inputLabel = (this.props.component.label && !this.props.component.hideLabel ? React.createElement("label", {htmlFor: this.props.component.key, className: classLabel}, this.props.component.label) : '');
     var requiredInline = (!this.props.component.label && this.props.component.validate.required ? React.createElement("span", {className: "glyphicon glyphicon-asterisk form-control-feedback field-required-inline", "aria-hidden": "true"}) : '');
     var className = (this.props.component.prefix || this.props.component.suffix ? 'input-group' : '');
     var prefix = (this.props.component.prefix ? React.createElement("div", {className: "input-group-addon"}, this.props.component.prefix) : '');
@@ -5458,7 +5480,7 @@ module.exports = {
         data = [data];
       }
       var rows = data.map(function(value, id) {
-        var Element = this.getElement(value);
+        var Element = this.getSingleElement(value);
         return (
           React.createElement("tr", {key: id}, 
             React.createElement("td", null, requiredInline, 
@@ -5466,16 +5488,18 @@ module.exports = {
                 prefix, " ", Element, " ", suffix
               )
             ), 
-            React.createElement("td", null, React.createElement("a", {"ng-click": "removeFieldValue($index)", className: "btn btn-danger"}, React.createElement("span", {className: "glyphicon glyphicon-remove-circle"})))
+            React.createElement("td", null, React.createElement("a", {onClick: this.removeFieldValue.bind(null, id), className: "btn btn-danger"}, React.createElement("span", {className: "glyphicon glyphicon-remove-circle"})))
           )
         );
       }.bind(this));
       Component =
         React.createElement("table", {className: "table table-bordered"}, 
           inputLabel, 
-          rows, 
-          React.createElement("tr", null, 
-            React.createElement("td", {colSpan: "2"}, React.createElement("a", {"ng-click": "addFieldValue()", className: "btn btn-primary"}, React.createElement("span", {className: "glyphicon glyphicon-plus", "aria-hidden": "true"}), " Add another"))
+          React.createElement("tbody", null, 
+            rows, 
+            React.createElement("tr", null, 
+              React.createElement("td", {colSpan: "2"}, React.createElement("a", {onClick: this.addFieldValue, className: "btn btn-primary"}, React.createElement("span", {className: "glyphicon glyphicon-plus", "aria-hidden": "true"}), " Add another"))
+            )
           )
         );
     }
@@ -5484,7 +5508,7 @@ module.exports = {
       if (Array.isArray(data)) {
         data = data[0];
       }
-      var Element = this.getElement(data);
+      var Element = this.getSingleElement(data);
       Component =
         React.createElement("div", null, 
           inputLabel, " ", requiredInline, 
@@ -5500,7 +5524,8 @@ module.exports = {
 },{}],10:[function(require,module,exports){
 'use strict'
 
-module.exports = React.createClass({displayName: "exports",
+module.exports = React.createClass({
+  displayName: 'PhoneNumber',
   render: function() {
     return(React.createElement("div", null, "I am a phone number"));
   }
@@ -5509,7 +5534,8 @@ module.exports = React.createClass({displayName: "exports",
 },{}],11:[function(require,module,exports){
 'use strict'
 
-module.exports = React.createClass({displayName: "exports",
+module.exports = React.createClass({
+  displayName: 'Select',
   render: function() {
     return(React.createElement("div", null, "I am a select"));
   }
@@ -5518,7 +5544,8 @@ module.exports = React.createClass({displayName: "exports",
 },{}],12:[function(require,module,exports){
 'use strict'
 
-module.exports = React.createClass({displayName: "exports",
+module.exports = React.createClass({
+  displayName: 'Textarea',
   render: function() {
     return(
       React.createElement("textarea", {
@@ -5536,9 +5563,10 @@ module.exports = React.createClass({displayName: "exports",
 var componentMixin = require('./mixins/componentMixin');
 var multiMixin = require('./mixins/multiMixin');
 
-module.exports = React.createClass({displayName: "exports",
+module.exports = React.createClass({
+  displayName: 'Textfield',
   mixins: [componentMixin, multiMixin],
-  getElement: function(data) {
+  getSingleElement: function(data) {
     return(
       React.createElement("input", {
         type: this.props.component.inputType, 
@@ -5549,21 +5577,18 @@ module.exports = React.createClass({displayName: "exports",
         disabled: this.props.readOnly, 
         placeholder: this.props.component.placeholder, 
         "formio-input-mask": this.props.component.inputMask, 
-        onChange: this.setValue, 
-        onFocus: this.onFocus
+        onChange: this.setValue
         }
       )
     );
-  },
-  render: function() {
-    return this.getComponent();
   }
 });
 
 },{"./mixins/componentMixin":8,"./mixins/multiMixin":9}],14:[function(require,module,exports){
 'use strict'
 
-module.exports = React.createClass({displayName: "exports",
+module.exports = React.createClass({
+  displayName: 'FormioComponent',
   render: function() {
     // FormioComponents is a global variable so external scripts can define custom components.
     var FormioElement = FormioComponents[this.props.component.type];
@@ -5592,7 +5617,8 @@ var FormioComponent = require('./react-formio-component');
 
 require('./components');
 
-module.exports = React.createClass({displayName: "exports",
+module.exports = React.createClass({
+  displayName: 'Formio',
   getInitialState: function() {
     return {
       form: this.props.form || {},
