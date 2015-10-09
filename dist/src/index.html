@@ -9,11 +9,16 @@
   <script src="//fb.me/JSXTransformer-0.13.2.js"></script>
   <script src="react-formio.js"></script>
   <div class="container">
-    <div id="formio"></div>
+    <div class="col-md-6">
+      <div id="formio"></div>
+    </div>
   </div>
   <script type="text/jsx">
     React.render(
-      <Formio src="https://randall.form.io/test/submission/5615d25959008c010014ea52" />
+      <Formio
+        src="https://randall.form.io/test"
+        onFormSubmit=""
+      />
       , document.getElementById('formio'));
   </script>
 </body>

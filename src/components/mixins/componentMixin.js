@@ -2,8 +2,17 @@
 
 module.exports = {
   getInitialState: function () {
+    var value = this.props.value || '';
+    // If this was a single value but is now a multivalue.
+    if (this.props.component.multiple && !Array.isArray(value)) {
+      value = [value];
+    }
+    // If this was a multivalue but is now single value.
+    else if (!this.props.component.multiple && Array.isArray(value)) {
+      value = value[0];
+    }
     return {
-      value: this.props.value || '',
+      value: value,
       isValid: true,
       errorMessage: '',
       isPristine: true
@@ -16,8 +25,16 @@ module.exports = {
     this.props.detachFromForm(this);
   },
   setValue: function (event) {
+    var value = this.state.value;
+    if (this.props.component.multiple) {
+      var index = event.currentTarget.getAttribute('data-index');
+      value[index] = event.currentTarget.value
+    }
+    else {
+      value = event.currentTarget.value
+    }
     this.setState({
-      value: event.currentTarget.value,
+      value: value,
       isPristine: false
     }, function() {
       if (typeof this.props.validate === 'function') {

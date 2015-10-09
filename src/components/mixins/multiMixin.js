@@ -25,12 +25,8 @@ module.exports = {
     var suffix = (this.props.component.suffix ? <div className="input-group-addon">{this.props.component.suffix}</div> : '');
     var data = this.state.value;
     if (this.props.component.multiple) {
-      // If this was a single value but is now a multivalue.
-      if (!Array.isArray(data)) {
-        data = [data];
-      }
       var rows = data.map(function(value, id) {
-        var Element = this.getSingleElement(value);
+        var Element = this.getSingleElement(value, id);
         return (
           <tr key={id}>
             <td>{requiredInline}
@@ -54,10 +50,6 @@ module.exports = {
         </table>;
     }
     else {
-      // If this was a multivalue but is now single value.
-      if (Array.isArray(data)) {
-        data = data[0];
-      }
       var Element = this.getSingleElement(data);
       Component =
         <div>

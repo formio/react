@@ -5419,8 +5419,17 @@ module.exports = {};
 
 module.exports = {
   getInitialState: function () {
+    var value = this.props.value || '';
+    // If this was a single value but is now a multivalue.
+    if (this.props.component.multiple && !Array.isArray(value)) {
+      value = [value];
+    }
+    // If this was a multivalue but is now single value.
+    else if (!this.props.component.multiple && Array.isArray(value)) {
+      value = value[0];
+    }
     return {
-      value: this.props.value || '',
+      value: value,
       isValid: true,
       errorMessage: '',
       isPristine: true
@@ -5433,8 +5442,16 @@ module.exports = {
     this.props.detachFromForm(this);
   },
   setValue: function (event) {
+    var value = this.state.value;
+    if (this.props.component.multiple) {
+      var index = event.currentTarget.getAttribute('data-index');
+      value[index] = event.currentTarget.value
+    }
+    else {
+      value = event.currentTarget.value
+    }
     this.setState({
-      value: event.currentTarget.value,
+      value: value,
       isPristine: false
     }, function() {
       if (typeof this.props.validate === 'function') {
@@ -5487,12 +5504,8 @@ module.exports = {
     var suffix = (this.props.component.suffix ? React.createElement("div", {className: "input-group-addon"}, this.props.component.suffix) : '');
     var data = this.state.value;
     if (this.props.component.multiple) {
-      // If this was a single value but is now a multivalue.
-      if (!Array.isArray(data)) {
-        data = [data];
-      }
       var rows = data.map(function(value, id) {
-        var Element = this.getSingleElement(value);
+        var Element = this.getSingleElement(value, id);
         return (
           React.createElement("tr", {key: id}, 
             React.createElement("td", null, requiredInline, 
@@ -5516,10 +5529,6 @@ module.exports = {
         );
     }
     else {
-      // If this was a multivalue but is now single value.
-      if (Array.isArray(data)) {
-        data = data[0];
-      }
       var Element = this.getSingleElement(data);
       Component =
         React.createElement("div", null, 
@@ -5578,12 +5587,14 @@ var multiMixin = require('./mixins/multiMixin');
 module.exports = React.createClass({
   displayName: 'Textfield',
   mixins: [componentMixin, multiMixin],
-  getSingleElement: function(data) {
+  getSingleElement: function(data, index) {
+    index = index || 0;
     return(
       React.createElement("input", {
         type: this.props.component.inputType, 
         className: "form-control", 
         id: this.props.component.key, 
+        "data-index": index, 
         name: this.props.name, 
         value: data, 
         disabled: this.props.readOnly, 
@@ -5650,20 +5661,6 @@ module.exports = React.createClass({
   componentWillMount: function () {
     this.data = {};
     this.inputs = {};
-    this.registerInputs(this.componentNodes);
-  },
-  registerInputs: function (children) {
-    React.Children.forEach(children, function (child) {
-      if (child.props.name) {
-        child.props.attachToForm = this.attachToForm;
-        child.props.detachFromForm = this.detachFromForm;
-      }
-      // If the child has its own children, traverse through them also...
-      // in the search for inputs
-      if (child.props.children) {
-        this.registerInputs(child.props.children);
-      }
-    }.bind(this));
   },
   attachToForm: function (component) {
     this.inputs[component.props.component.key] = component;
@@ -5780,7 +5777,7 @@ module.exports = React.createClass({
   render: function() {
     if (this.state.form.components) {
       this.componentNodes = this.state.form.components.map(function(component) {
-        var value = (this.state.submission.data.hasOwnProperty(component.key) ? this.state.submission.data[component.key] : component.defaultValue || '');
+        var value = (this.state.submission.data && this.state.submission.data.hasOwnProperty(component.key) ? this.state.submission.data[component.key] : component.defaultValue || '');
         return (
           React.createElement(FormioComponent, {
             key: component.key, 

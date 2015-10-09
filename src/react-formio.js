@@ -25,20 +25,6 @@ module.exports = React.createClass({
   componentWillMount: function () {
     this.data = {};
     this.inputs = {};
-    this.registerInputs(this.componentNodes);
-  },
-  registerInputs: function (children) {
-    React.Children.forEach(children, function (child) {
-      if (child.props.name) {
-        child.props.attachToForm = this.attachToForm;
-        child.props.detachFromForm = this.detachFromForm;
-      }
-      // If the child has its own children, traverse through them also...
-      // in the search for inputs
-      if (child.props.children) {
-        this.registerInputs(child.props.children);
-      }
-    }.bind(this));
   },
   attachToForm: function (component) {
     this.inputs[component.props.component.key] = component;
@@ -155,7 +141,7 @@ module.exports = React.createClass({
   render: function() {
     if (this.state.form.components) {
       this.componentNodes = this.state.form.components.map(function(component) {
-        var value = (this.state.submission.data.hasOwnProperty(component.key) ? this.state.submission.data[component.key] : component.defaultValue || '');
+        var value = (this.state.submission.data && this.state.submission.data.hasOwnProperty(component.key) ? this.state.submission.data[component.key] : component.defaultValue || '');
         return (
           <FormioComponent
             key={component.key}
