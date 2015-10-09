@@ -5384,7 +5384,7 @@ module.exports = React.createClass({
     classNames += (this.props.component.block ? ' btn-block' : '');
     var leftIcon = (this.props.component.leftIcon ? React.createElement("span", {className: this.props.component.leftIcon, "aria-hidden": "true"}) : '');
     var rightIcon = (this.props.component.rightIcon ? React.createElement("span", {className: this.props.component.rightIcon, "aria-hidden": "true"}) : '');
-    var disabled = this.props.isSubmitting || (this.props.component.disableOnInvalid && this.props.isFormValid);
+    var disabled = this.props.isSubmitting || (this.props.component.disableOnInvalid && !this.props.isFormValid);
     var submitting = (this.props.isSubmitting && this.props.component.action == "submit" ? React.createElement("i", {className: "glyphicon glyphicon-refresh glyphicon-spin"}) : '')
     return(
       React.createElement("button", {
@@ -5712,7 +5712,7 @@ module.exports = React.createClass({
       }
       // Only gets here if required but no value.
       else {
-        isValid: false;
+        isValid = false;
         errorMessage = (component.props.component.label || component.props.component.key) + ' is required.';
       }
     }
@@ -5727,13 +5727,13 @@ module.exports = React.createClass({
       this.formio.loadForm().then(function(form) {
         this.setState({
           form: form
-        });
+        }, this.validateForm);
       }.bind(this));
       if (this.formio.submissionId) {
         this.formio.loadSubmission().then(function(submission) {
           this.setState({
             submission: submission
-          })
+          }, this.validateForm)
         }.bind(this));
       }
     }

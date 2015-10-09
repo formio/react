@@ -76,7 +76,7 @@ module.exports = React.createClass({
       }
       // Only gets here if required but no value.
       else {
-        isValid: false;
+        isValid = false;
         errorMessage = (component.props.component.label || component.props.component.key) + ' is required.';
       }
     }
@@ -91,13 +91,13 @@ module.exports = React.createClass({
       this.formio.loadForm().then(function(form) {
         this.setState({
           form: form
-        });
+        }, this.validateForm);
       }.bind(this));
       if (this.formio.submissionId) {
         this.formio.loadSubmission().then(function(submission) {
           this.setState({
             submission: submission
-          })
+          }, this.validateForm)
         }.bind(this));
       }
     }
