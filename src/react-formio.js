@@ -36,31 +36,50 @@ module.exports = React.createClass({
     delete this.data[component.props.name];
   },
   validate: function(component) {
-    var isValid = true;
-    var errorMessage = '';
-
-    if (component.state.value || component.props.component.validate.required) {
-      if (component.state.value && component.state.value.length) {
+    var state = {
+      isValid: true,
+      errorMessage: ''
+    };
+    // Validate each item if multiple.
+    if (component.props.component.multiple) {
+      component.state.value.forEach(function(item, index) {
+        if (state.isValid) {
+          state = this.validateItem(item, component);
+        }
+      }.bind(this));
+    }
+    else {
+      state = this.validateItem(component.state.value, component);
+    }
+    component.setState(state, this.validateForm);
+  },
+  validateItem: function(item, component) {
+    var state = {
+      isValid: true,
+      errorMessage: ''
+    };
+    if (item || component.props.component.validate.required) {
+      if (item && item.length) {
         // MaxLength
-        if (isValid && component.props.component.validate.maxLength && component.state.value.length > component.props.component.validate.maxLength) {
-          isValid = false;
-          errorMessage = (component.props.component.label || component.props.component.key) + ' must be shorter than ' + (component.props.component.validate.maxLength + 1) + ' characters';
+        if (state.isValid && component.props.component.validate.maxLength && item.length > component.props.component.validate.maxLength) {
+          state.isValid = false;
+          state.errorMessage = (component.props.component.label || component.props.component.key) + ' must be shorter than ' + (component.props.component.validate.maxLength + 1) + ' characters';
         }
         // MinLength
-        if (isValid && component.props.component.validate.minLength && component.state.value.length < component.props.component.validate.minLength) {
-          isValid =  false;
-          errorMessage = (component.props.component.label || component.props.component.key) + ' must be longer than ' + (component.props.component.validate.minLength - 1) + ' characters';
+        if (state.isValid && component.props.component.validate.minLength && item.length < component.props.component.validate.minLength) {
+          state.isValid =  false;
+          state.errorMessage = (component.props.component.label || component.props.component.key) + ' must be longer than ' + (component.props.component.validate.minLength - 1) + ' characters';
         }
         // Regex
-        if (isValid && component.props.component.validate.pattern) {
+        if (state.isValid && component.props.component.validate.pattern) {
           var re = new RegExp(component.props.component.validate.pattern, "g");
-          isValid = component.state.value.match(re);
-          if (!isValid) {
-            errorMessage = (component.props.component.label || component.props.component.key) + ' must match the expression: ' + component.props.component.validate.pattern;
+          state.isValid = item.match(re);
+          if (!state.isValid) {
+            state.errorMessage = (component.props.component.label || component.props.component.key) + ' must match the expression: ' + component.props.component.validate.pattern;
           }
         }
         // Custom
-        if (isValid && component.props.component.validate.custom) {
+        if (state.isValid && component.props.component.validate.custom) {
           var custom = component.props.component.validate.custom;
           custom = custom.replace(/({{\s+(.*)\s+}})/, function(match, $1, $2) {
             // TODO: need to ensure this.data has up to date values.
@@ -68,22 +87,19 @@ module.exports = React.createClass({
           });
           /* jshint evil: true */
           var valid = eval(custom);
-          isValid = (valid === true);
-          if (!isValid) {
-            errorMessage = valid || ((component.props.component.label || component.props.component.key) + "is not a valid value.");
+          state.isValid = (valid === true);
+          if (!state.isValid) {
+            state.errorMessage = valid || ((component.props.component.label || component.props.component.key) + "is not a valid value.");
           }
         }
       }
       // Only gets here if required but no value.
       else {
-        isValid = false;
-        errorMessage = (component.props.component.label || component.props.component.key) + ' is required.';
+        state.isValid = false;
+        state.errorMessage = (component.props.component.label || component.props.component.key) + ' is required.';
       }
     }
-    component.setState({
-      isValid: isValid,
-      errorMessage: errorMessage
-    }, this.validateForm);
+    return state;
   },
   componentDidMount: function() {
     if (this.props.src) {
@@ -131,6 +147,7 @@ module.exports = React.createClass({
     sub.data = this.data;
 
     // Do the submit here.
+    // TODO: Allow custom action handler.
     this.formio.saveSubmission(sub).then(function(submission) {
       this.setState({
         submission: submission,

@@ -49,7 +49,9 @@ module.exports = {
     var Error = (this.state.errorMessage && !this.state.isPristine ? <p className="help-block">{this.state.errorMessage}</p> : '');
     return (
       <div className={classNames} id={id}>
+        <div>
         {Elements}
+        </div>
         {Error}
       </div>
     );
