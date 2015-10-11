@@ -28,12 +28,16 @@ module.exports = {
   },
   setValue: function (event) {
     var value = this.state.value;
+    var attribute = 'value';
+    if (this.props.component.type === 'checkbox') {
+      attribute = 'checked';
+    }
     if (this.props.component.multiple) {
       var index = event.currentTarget.getAttribute('data-index');
-      value[index] = event.currentTarget.value
+      value[index] = event.currentTarget[attribute];
     }
     else {
-      value = event.currentTarget.value
+      value = event.currentTarget[attribute];
     }
     this.setState({
       value: value,

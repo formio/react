@@ -60,7 +60,7 @@ module.exports = React.createClass({
       errorMessage: ''
     };
     if (item || component.props.component.validate.required) {
-      if (item && item.length) {
+      if (item) {
         // MaxLength
         if (state.isValid && component.props.component.validate.maxLength && item.length > component.props.component.validate.maxLength) {
           state.isValid = false;
@@ -160,9 +160,10 @@ module.exports = React.createClass({
     if (this.state.form.components) {
       this.componentNodes = this.state.form.components.map(function(component) {
         var value = (this.state.submission.data && this.state.submission.data.hasOwnProperty(component.key) ? this.state.submission.data[component.key] : component.defaultValue || '');
+        var key = component.key || component.type;
         return (
           <FormioComponent
-            key={component.key}
+            key={key}
             component={component}
             value={value}
             readOnly={this.props.readOnly}
@@ -171,6 +172,7 @@ module.exports = React.createClass({
             validate={this.validate}
             isSubmitting={this.state.isSubmitting}
             isFormValid={this.state.isValid}
+            data={this.state.submission.data}
           />
         );
       }.bind(this));
