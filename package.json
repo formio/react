@@ -14,7 +14,8 @@
     "React",
     "component",
     "Formio",
-    "Forms"
+    "Forms",
+    "react-component"
   ],
   "author": "Randall Knutson <randall@form.io>",
   "license": "MIT",
@@ -23,7 +24,13 @@
   },
   "homepage": "https://github.com/formio/react-formio#readme",
   "dependencies": {
-    "formiojs": "git+https://github.com/formio/formio.js.git"
+    "babelify": "^6.3.0",
+    "formiojs": "git+https://github.com/formio/formio.js.git",
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0",
+    "react-input-mask": "^0.3.0",
+    "react-mask-mixin": "0.0.5",
+    "react-maskedinput": "^2.0.0"
   },
   "devDependencies": {
     "browser-sync": "^2.9.8",
@@ -33,10 +40,12 @@
     "gulp-concat": "^2.6.0",
     "gulp-html-replace": "^1.5.4",
     "gulp-load-plugins": "^1.0.0-rc.1",
+    "gulp-notify": "^2.2.0",
     "gulp-react": "^3.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-streamify": "^1.0.2",
     "gulp-uglify": "^1.4.1",
+    "react-transform-catch-errors": "^1.0.0",
     "reactify": "^1.1.1",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.4.0"

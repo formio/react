@@ -1,5 +1,7 @@
 'use strict'
 
+var React = require('react');
+
 module.exports = {
   addFieldValue: function() {
     var values = this.state.value;
@@ -39,15 +41,17 @@ module.exports = {
         );
       }.bind(this));
       Component =
-        <table className="table table-bordered">
+        <div>
           {inputLabel}
-          <tbody>
-            {rows}
-            <tr>
-              <td colSpan="2"><a onClick={this.addFieldValue} className="btn btn-primary"><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Add another</a></td>
-            </tr>
-          </tbody>
-        </table>;
+          <table className="table table-bordered">
+            <tbody>
+              {rows}
+              <tr>
+                <td colSpan="2"><a onClick={this.addFieldValue} className="btn btn-primary"><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Add another</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>;
     }
     else {
       var Element = this.getSingleElement(data);

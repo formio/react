@@ -5365,582 +5365,208 @@ return Q;
 })();
 
 },{}],5:[function(require,module,exports){
-"use strict";
+// react-mask-mixin
+// http://github.com/borbit/react-mask-mixin
+// Copyright (c) 2015 Serge Borbit
+// Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
+// Version: 0.0.5
+(function(root) {
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var MASK_REGEX = {
+  '9': /\d/,
+  'A': /[A-Za-z\u0410-\u044f\u0401\u0451\xc0-\xff\xb5]/,
+  '*': /[\dA-Za-z\u0410-\u044f\u0401\u0451\xc0-\xff\xb5]/
+}
 
-// https://github.com/sanniassin/react-input-mask
+var MASK_CHARS = Object.keys(MASK_REGEX)
+var PTRN_REGEX = new RegExp('[' + MASK_CHARS.join(',') + ']', 'g')
 
-var React = require("react");
-
-var InputElement = React.createClass({
-    displayName: "InputElement",
-
-    charsRules: {
-        "9": "[0-9]",
-        a: "[A-Za-z]",
-        "*": "[A-Za-z0-9]"
-    },
-    defaultMaskChar: "_",
-    lastCaretPos: null,
-    isDOMElement: function isDOMElement(element) {
-        return typeof HTMLElement === "object" ? element instanceof HTMLElement // DOM2
-        : element.nodeType === 1 && typeof element.nodeName === "string";
-    },
-    // getDOMNode is deprecated but we need it to stay compatible with React 0.12
-    getInputDOMNode: function getInputDOMNode() {
-        var input = this.refs.input;
-
-        // React 0.14
-        if (this.isDOMElement(input)) {
-            return input;
-        }
-
-        return input.getDOMNode();
-    },
-    getPrefix: function getPrefix(newState) {
-        var prefix = "";
-
-        var _ref = newState || this.state;
-
-        var mask = _ref.mask;
-
-        for (var i = 0; i < mask.length && this.isPermanentChar(i, newState); ++i) {
-            prefix += mask[i];
-        }
-        return prefix;
-    },
-    getFilledLength: function getFilledLength() {
-        var value = arguments[0] === undefined ? this.state.value : arguments[0];
-
-        var i;
-        var maskChar = this.state.maskChar;
-
-        if (!maskChar) {
-            return value.length;
-        }
-
-        for (i = value.length - 1; i >= 0; --i) {
-            var char = value[i];
-            if (!this.isPermanentChar(i) && this.isAllowedChar(char, i)) {
-                break;
-            }
-        }
-
-        return ++i || this.getPrefix().length;
-    },
-    getLeftEditablePos: function getLeftEditablePos(pos) {
-        for (var i = pos; i >= 0; --i) {
-            if (!this.isPermanentChar(i)) {
-                return i;
-            }
-        }
-        return null;
-    },
-    getRightEditablePos: function getRightEditablePos(pos) {
-        var mask = this.state.mask;
-        for (var i = pos; i < mask.length; ++i) {
-            if (!this.isPermanentChar(i)) {
-                return i;
-            }
-        }
-        return null;
-    },
-    isEmpty: function isEmpty() {
-        var _this = this;
-
-        var value = arguments[0] === undefined ? this.state.value : arguments[0];
-
-        return !value.split("").some(function (char, i) {
-            return !_this.isPermanentChar(i) && _this.isAllowedChar(char, i);
-        });
-    },
-    isFilled: function isFilled() {
-        var value = arguments[0] === undefined ? this.state.value : arguments[0];
-
-        return this.getFilledLength(value) === this.state.mask.length;
-    },
-    createFilledArray: function createFilledArray(length, val) {
-        var array = [];
-        for (var i = 0; i < length; i++) {
-            array[i] = val;
-        }
-        return array;
-    },
-    formatValue: function formatValue(value, newState) {
-        var _this2 = this;
-
-        var _ref2 = newState || this.state;
-
-        var maskChar = _ref2.maskChar;
-        var mask = _ref2.mask;
-
-        if (!maskChar) {
-            var prefixLen = this.getPrefix(newState).length;
-            value = this.insertRawSubstr("", value, 0, newState);
-            while (value.length > prefixLen && this.isPermanentChar(value.length - 1, newState)) {
-                value = value.slice(0, value.length - 1);
-            }
-            return value;
-        }
-        return value.split("").concat(this.createFilledArray(mask.length - value.length, null)).map(function (char, pos) {
-            if (_this2.isAllowedChar(char, pos, newState)) {
-                return char;
-            } else if (_this2.isPermanentChar(pos, newState)) {
-                return mask[pos];
-            }
-            return maskChar;
-        }).join("");
-    },
-    clearRange: function clearRange(value, start, len) {
-        var _this3 = this;
-
-        var end = start + len;
-        var maskChar = this.state.maskChar;
-        if (!maskChar) {
-            var prefixLen = this.getPrefix().length;
-            value = value.split("").filter(function (char, i) {
-                return i < prefixLen || i < start || i >= end;
-            }).join("");
-            return this.formatValue(value);
-        }
-        var mask = this.state.mask;
-        return value.split("").map(function (char, i) {
-            if (i < start || i >= end) {
-                return char;
-            }
-            if (_this3.isPermanentChar(i)) {
-                return mask[i];
-            }
-            return maskChar;
-        }).join("");
-    },
-    replaceSubstr: function replaceSubstr(value, newSubstr, pos) {
-        return value.slice(0, pos) + newSubstr + value.slice(pos + newSubstr.length);
-    },
-    insertRawSubstr: function insertRawSubstr(value, substr, pos, newState) {
-        var _ref3 = newState || this.state;
-
-        var mask = _ref3.mask;
-        var maskChar = _ref3.maskChar;
-
-        var isFilled = this.isFilled(value);
-        substr = substr.split("");
-        for (var i = pos; i < mask.length && substr.length;) {
-            if (!this.isPermanentChar(i, newState) || mask[i] === substr[0]) {
-                var char = substr.shift();
-                if (this.isAllowedChar(char, i, newState)) {
-                    if (i < value.length) {
-                        if (maskChar || isFilled) {
-                            value = this.replaceSubstr(value, char, i);
-                        } else {
-                            value = this.formatValue(value.substr(0, i) + char + value.substr(i), newState);
-                        }
-                    } else if (!maskChar) {
-                        value += char;
-                    }
-                    ++i;
-                }
-            } else {
-                if (!maskChar && i >= value.length) {
-                    value += mask[i];
-                }
-                ++i;
-            }
-        }
-        return value;
-    },
-    getRawSubstrLength: function getRawSubstrLength(value, substr, pos, newState) {
-        var _ref4 = newState || this.state;
-
-        var mask = _ref4.mask;
-        var maskChar = _ref4.maskChar;
-
-        substr = substr.split("");
-        for (var i = pos; i < mask.length && substr.length;) {
-            if (!this.isPermanentChar(i, newState) || mask[i] === substr[0]) {
-                var char = substr.shift();
-                if (this.isAllowedChar(char, i, newState)) {
-                    ++i;
-                }
-            } else {
-                ++i;
-            }
-        }
-        return i - pos;
-    },
-    isAllowedChar: function isAllowedChar(char, pos, newState) {
-        var mask = newState ? newState.mask : this.state.mask;
-        if (this.isPermanentChar(pos, newState)) {
-            return mask[pos] === char;
-        }
-        var ruleChar = mask[pos];
-        var charRule = this.charsRules[ruleChar];
-        return new RegExp(charRule).test(char || "");
-    },
-    isPermanentChar: function isPermanentChar(pos, newState) {
-        var permanents = newState ? newState.permanents : this.state.permanents;
-        return permanents.indexOf(pos) !== -1;
-    },
-    setCaretToEnd: function setCaretToEnd() {
-        var filledLen = this.getFilledLength();
-        var pos = this.getRightEditablePos(filledLen);
-        if (pos !== null) {
-            this.setCaretPos(pos);
-        }
-    },
-    getSelection: function getSelection() {
-        var input = this.getInputDOMNode();
-        var start = 0;
-        var end = 0;
-
-        if ("selectionStart" in input && "selectionEnd" in input) {
-            start = input.selectionStart;
-            end = input.selectionEnd;
-        } else {
-            var range = document.selection.createRange();
-            var len = input.value.length;
-
-            var inputRange = input.createTextRange();
-            inputRange.moveToBookmark(range.getBookmark());
-
-            start = -inputRange.moveStart("character", -len);
-            end = -inputRange.moveEnd("character", -len);
-        }
-
-        return {
-            start: start,
-            end: end,
-            length: end - start
-        };
-    },
-    getCaretPos: function getCaretPos() {
-        var input = this.getInputDOMNode();
-        var pos = 0;
-
-        if ("selectionStart" in input) {
-            pos = input.selectionStart;
-        } else {
-            var range = document.selection.createRange();
-            var len = range.text.length;
-            range.moveStart("character", -input.value.length);
-            pos = range.text.length - len;
-        }
-
-        return pos;
-    },
-    setCaretPos: function setCaretPos(pos) {
-        var input;
-        var setPos = function setPos() {
-            if ("selectionStart" in input && "selectionEnd" in input) {
-                input.selectionStart = input.selectionEnd = pos;
-            } else if ("setSelectionRange" in input) {
-                input.setSelectionRange(pos, pos);
-            } else {
-                var inputRange = input.createTextRange();
-                inputRange.collapse(true);
-                inputRange.moveStart("character", pos);
-                inputRange.moveEnd("character", 0);
-                inputRange.select();
-            }
-        };
-
-        if (this.isMounted()) {
-            input = this.getInputDOMNode();
-            setPos();
-            setTimeout(setPos, 0);
-        }
-
-        this.lastCaretPos = pos;
-    },
-    isFocused: function isFocused() {
-        return document.activeElement === this.getInputDOMNode();
-    },
-    parseMask: function parseMask(mask) {
-        var _this4 = this;
-
-        if (typeof mask !== "string") {
-            return {
-                mask: null,
-                permanents: []
-            };
-        }
-        var str = "";
-        var permanents = [];
-        var isPermanent = false;
-
-        mask.split("").forEach(function (char) {
-            if (!isPermanent && char === "\\") {
-                isPermanent = true;
-            } else {
-                if (isPermanent || !_this4.charsRules[char]) {
-                    permanents.push(str.length);
-                }
-                str += char;
-                isPermanent = false;
-            }
-        });
-
-        return {
-            mask: str,
-            permanents: permanents
-        };
-    },
-    getStringValue: function getStringValue(value) {
-        return !value && value !== 0 ? "" : value + "";
-    },
-    getInitialState: function getInitialState() {
-        var mask = this.parseMask(this.props.mask);
-        var defaultValue = this.props.defaultValue != null ? this.props.defaultValue : null;
-        var value = this.props.value != null ? this.props.value : defaultValue;
-
-        return {
-            mask: mask.mask,
-            permanents: mask.permanents,
-            value: this.getStringValue(value),
-            maskChar: "maskChar" in this.props ? this.props.maskChar : this.defaultMaskChar
-        };
-    },
-    componentWillMount: function componentWillMount() {
-        if (this.state.mask && this.state.value) {
-            this.setState({
-                value: this.formatValue(this.state.value)
-            });
-        }
-    },
-    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-        var mask = this.parseMask(nextProps.mask);
-        var maskChar = "maskChar" in nextProps ? nextProps.maskChar : this.defaultMaskChar;
-        var state = {
-            mask: mask.mask,
-            permanents: mask.permanents,
-            maskChar: maskChar
-        };
-
-        var newValue = nextProps.value !== undefined ? this.getStringValue(nextProps.value) : this.state.value;
-
-        var isMaskChanged = mask.mask && mask.mask !== this.state.mask;
-        if (isMaskChanged) {
-            var emptyValue = this.formatValue("", state);
-            newValue = this.insertRawSubstr(emptyValue, newValue, 0, state);
-        }
-        if (mask.mask && (newValue || this.isFocused())) {
-            newValue = this.formatValue(newValue, state);
-        }
-        if (this.state.value !== newValue) {
-            state.value = newValue;
-        }
-        this.setState(state);
-    },
-    componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
-        var mask = this.state.mask;
-        var isMaskChanged = mask && mask !== prevState.mask;
-        var pos = this.lastCaretPos;
-        var filledLen = this.getFilledLength();
-        if (isMaskChanged && filledLen < pos) {
-            this.setCaretPos(this.getRightEditablePos(filledLen));
-        }
-    },
-    onKeyDown: function onKeyDown(event) {
-        var hasHandler = typeof this.props.onKeyDown === "function";
-        if (event.ctrlKey || event.metaKey) {
-            if (hasHandler) {
-                this.props.onKeyDown(event);
-            }
-            return;
-        }
-
-        var caretPos = this.getCaretPos();
-        var value = this.state.value;
-        var key = event.key;
-        var preventDefault = false;
-        switch (key) {
-            case "Backspace":
-            case "Delete":
-                var prefixLen = this.getPrefix().length;
-                var deleteFromRight = key === "Delete";
-                var selectionRange = this.getSelection();
-                if (selectionRange.length) {
-                    value = this.clearRange(value, selectionRange.start, selectionRange.length);
-                } else if (caretPos < prefixLen || !deleteFromRight && caretPos === prefixLen) {
-                    caretPos = prefixLen;
-                } else {
-                    var editablePos = deleteFromRight ? this.getRightEditablePos(caretPos) : this.getLeftEditablePos(caretPos - 1);
-                    if (editablePos !== null) {
-                        value = this.clearRange(value, editablePos, 1);
-                        caretPos = editablePos;
-                    }
-                }
-                preventDefault = true;
-                break;
-            default:
-                break;
-        }
-
-        if (hasHandler) {
-            this.props.onKeyDown(event);
-        }
-
-        if (value !== this.state.value) {
-            event.target.value = value;
-            this.setState({
-                value: value
-            });
-            preventDefault = true;
-            if (typeof this.props.onChange === "function") {
-                this.props.onChange(event);
-            }
-        }
-        if (preventDefault) {
-            event.preventDefault();
-            this.setCaretPos(caretPos);
-        }
-    },
-    onKeyPress: function onKeyPress(event) {
-        var key = event.key;
-        var hasHandler = typeof this.props.onKeyPress === "function";
-        if (key === "Enter" || event.ctrlKey || event.metaKey) {
-            if (hasHandler) {
-                this.props.onKeyPress(event);
-            }
-            return;
-        }
-
-        var caretPos = this.getCaretPos();
-        var _state = this.state;
-        var value = _state.value;
-        var mask = _state.mask;
-        var maskChar = _state.maskChar;
-
-        var maskLen = mask.length;
-        var prefixLen = this.getPrefix().length;
-
-        if (this.isPermanentChar(caretPos) && mask[caretPos] === key) {
-            value = this.insertRawSubstr(value, key, caretPos);
-            ++caretPos;
-        } else {
-            var editablePos = this.getRightEditablePos(caretPos);
-            if (editablePos !== null && this.isAllowedChar(key, editablePos)) {
-                value = this.insertRawSubstr(value, key, caretPos);
-                caretPos = editablePos + 1;
-            }
-        }
-
-        if (value !== this.state.value) {
-            event.target.value = value;
-            this.setState({
-                value: value
-            });
-            if (typeof this.props.onChange === "function") {
-                this.props.onChange(event);
-            }
-        }
-        event.preventDefault();
-        while (caretPos > prefixLen && this.isPermanentChar(caretPos)) {
-            ++caretPos;
-        }
-        this.setCaretPos(caretPos);
-    },
-    onChange: function onChange(event) {
-        var maskLen = this.state.mask.length;
-        var target = event.target;
-        var value = target.value;
-        if (value.length > maskLen) {
-            value = value.substr(0, maskLen);
-        }
-        target.value = this.formatValue(value);
-        this.setState({
-            value: target.value
-        });
-
-        if (typeof this.props.onChange === "function") {
-            this.props.onChange(event);
-        }
-    },
-    onFocus: function onFocus(event) {
-        if (!this.state.value) {
-            var prefix = this.getPrefix();
-            var value = this.formatValue(prefix);
-            event.target.value = this.formatValue(value);
-            this.setState({
-                value: value
-            }, this.setCaretToEnd);
-
-            if (typeof this.props.onChange === "function") {
-                this.props.onChange(event);
-            }
-        } else if (this.getFilledLength() < this.state.mask.length) {
-            this.setCaretToEnd();
-        }
-
-        if (typeof this.props.onFocus === "function") {
-            this.props.onFocus(event);
-        }
-    },
-    onBlur: function onBlur(event) {
-        if (this.isEmpty(this.state.value)) {
-            event.target.value = "";
-            this.setState({
-                value: ""
-            });
-            if (typeof this.props.onChange === "function") {
-                this.props.onChange(event);
-            }
-        }
-
-        if (typeof this.props.onBlur === "function") {
-            this.props.onBlur(event);
-        }
-    },
-    onPaste: function onPaste(event) {
-        var text;
-        if (window.clipboardData && window.clipboardData.getData) {
-            // IE
-            text = window.clipboardData.getData("Text");
-        } else if (event.clipboardData && event.clipboardData.getData) {
-            text = event.clipboardData.getData("text/plain");
-        }
-        if (text) {
-            var value = this.state.value;
-            var selection = this.getSelection();
-            var caretPos = selection.start;
-            if (selection.length) {
-                value = this.clearRange(value, caretPos, selection.length);
-            }
-            var textLen = this.getRawSubstrLength(value, text, caretPos);
-            var value = this.insertRawSubstr(value, text, caretPos);
-            caretPos += textLen;
-            caretPos = this.getRightEditablePos(caretPos) || caretPos;
-            if (value !== this.state.value) {
-                event.target.value = value;
-                this.setState({
-                    value: value
-                });
-                if (typeof this.props.onChange === "function") {
-                    this.props.onChange(event);
-                }
-            }
-            this.setCaretPos(caretPos);
-        }
-        event.preventDefault();
-    },
-    render: function render() {
-        var _this5 = this;
-
-        var ourProps = {};
-        if (this.state.mask) {
-            var handlersKeys = ["onFocus", "onBlur", "onChange", "onKeyDown", "onKeyPress", "onPaste"];
-            handlersKeys.forEach(function (key) {
-                ourProps[key] = _this5[key];
-            });
-            ourProps.value = this.state.value;
-        }
-        return React.createElement("input", _extends({ ref: "input" }, this.props, ourProps));
+var ReactMaskMixin = {
+  componentWillMount: function() {
+    this.mask = {
+      props: {
+        value: this.props.value,
+        onClick: this._onClick,
+        onChange: this._onChange,
+        onKeyDown: this._onKeyDown,
+        onFocus: this._onFocus,
+        onBlur: this._onBlur
+      },
+      empty: true,
+      cursorPrev: 0,
+      cursor: 0
     }
-});
 
-module.exports = InputElement;
-},{"react":160}],6:[function(require,module,exports){
+    if (this.props.value && this.props.mask) {
+      this.processValue(this.props.value)
+    }
+  },
+
+  componentDidUpdate: function() {
+    var input = this.getDOMNode();
+    
+    if (input === document.activeElement) {
+      input.setSelectionRange(
+        this.mask.cursor,
+        this.mask.cursor
+      )
+    }
+  },
+
+  processValue: function(value) {
+    var mask = this.props.mask
+    var pattern = mask.replace(PTRN_REGEX, '_')
+    var rexps = {}
+
+    mask.split('').forEach(function(c, i) {
+      if (~MASK_CHARS.indexOf(c)) {
+        rexps[i+1] = MASK_REGEX[c]
+      }
+    })
+
+    var cursorMax = 0
+    var cursorMin = 0
+    var newValue = ''
+    var nextChar
+
+    for (i = 0; i < mask.length; i++) {
+      if (~MASK_CHARS.indexOf(mask[i])) {
+        cursorMin = i
+        break
+      }
+    }
+
+    for (var i = 0, j = 0; i < mask.length;) {
+      if (!~MASK_CHARS.indexOf(mask[i])) {
+        newValue += mask[i]
+        if (mask[i] == value[j]) {
+          j++
+        }
+        i++
+      } else {
+        if (nextChar = value.substr(j++, 1)) {
+          if (rexps[newValue.length+1].test(nextChar)) {
+            newValue += nextChar
+            cursorMax = newValue.length
+            i++
+          }
+        } else {
+          newValue = newValue.substr(0, cursorMax)
+          newValue += pattern.slice(cursorMax)
+          break
+        }
+      }
+    }
+
+    var cursorPrev = this.mask.cursor
+    var cursorCurr = this.isMounted() ? this.getDOMNode().selectionStart : 0
+    var removing = this.mask.cursor > cursorCurr
+    cursorMax = Math.max(cursorMax, cursorMin)
+
+    if (cursorCurr <= cursorMin) {
+      cursorCurr = cursorMin
+    } else if (cursorCurr >= cursorMax) {
+      cursorCurr = cursorMax
+    } else if (removing) {
+      for (var i = cursorCurr; i >= 0; i--) {
+        cursorCurr = i
+        if (rexps[i] && !rexps[i+1]) break
+        if (rexps[i] && rexps[i+1] && rexps[i+1].test(newValue[i])) {
+          break
+        }
+      }
+    } else {
+      for (var i = cursorCurr; i <= cursorMax; i++) {
+        cursorCurr = i
+        if (!rexps[i+1] && rexps[i]) break
+        if (rexps[i+1] && rexps[i+1].test(newValue[i])) {
+          if (!rexps[i]) {
+            cursorCurr++
+          }
+          break
+        }
+      }
+    }
+
+    this.mask.empty = cursorMax == cursorMin
+    this.mask.props.value = newValue
+    this.mask.cursor = cursorCurr
+  },
+
+  _onBlur: function(e) {
+    if (this.props.mask) {
+      var cursor = this.mask.cursor
+      var value = this.mask.props.value
+
+      if (!this.mask.empty) {
+        this.mask.props.value = value.substr(0, cursor)
+      } else {
+        this.mask.props.value = ''
+      }
+
+      this.forceUpdate()
+    }
+    if (this.props.onBlur) {
+      this.props.onBlur(e)
+    }
+  },
+
+  _onChange: function(e) {
+    if (this.props.mask) {
+      this.processValue(e.target.value)
+      e.target.value = this.mask.props.value
+      this.forceUpdate()
+    }
+    if (this.props.onChange) {
+      this.props.onChange(e)
+    }
+  },
+
+  _onKeyDown: function(e) {
+    if (this.props.mask) {
+      this.mask.cursor = this.getDOMNode().selectionStart
+    }
+    if (this.props.onKeyDown) {
+      this.props.onKeyDown(e)
+    }
+  },
+
+  _onFocus: function(e) {
+    this._onChange(e)
+    if (this.props.onFocus) {
+      this.props.onFocus(e)
+    }
+  },
+
+  _onClick: function(e) {
+    this._onChange(e)
+    if (this.props.onClick) {
+      this.props.onClick(e)
+    }
+  }
+}
+
+// Export ReactMaskMixin for CommonJS. If being loaded as an
+// AMD module, define it as such. Otherwise, just add
+// `ReactMaskMixin` to the global object
+if (typeof exports !== 'undefined') {
+  if (typeof module !== 'undefined' && module.exports) {
+    exports = module.exports = ReactMaskMixin;
+  }
+  exports.ReactMaskMixin = ReactMaskMixin;
+} else if (typeof define === 'function' && define.amd) {
+  // Return the ReactMaskMixin as an AMD module:
+  define([], function() {
+    return ReactMaskMixin;
+  });
+} else {
+  // Declare `ReactMaskMixin` on the root (global/window) object:
+  root['ReactMaskMixin'] = ReactMaskMixin;
+}
+
+})(this)
+
+},{}],6:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -24826,377 +24452,9 @@ module.exports = require('./lib/React');
 },{"./lib/React":29}],161:[function(require,module,exports){
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var React = require('react');
-var InputElement = require('react-input-mask');
-
-module.exports = React.createClass({
-  displayName: 'Address',
-  render: function render() {
-    return React.createElement('input', _extends({}, this.props, { mask: '(999)', maskChar: '_' }));
-  }
-});
-
-
-},{"react":160,"react-input-mask":5}],162:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-
-module.exports = React.createClass({
-  displayName: 'Button',
-  render: function render() {
-    var classNames = "btn btn-" + this.props.component.theme + " btn-" + this.props.component.size;
-    classNames += this.props.component.block ? ' btn-block' : '';
-    var leftIcon = this.props.component.leftIcon ? React.createElement('span', { className: this.props.component.leftIcon, 'aria-hidden': 'true' }) : '';
-    var rightIcon = this.props.component.rightIcon ? React.createElement('span', { className: this.props.component.rightIcon, 'aria-hidden': 'true' }) : '';
-    var disabled = this.props.isSubmitting || this.props.component.disableOnInvalid && !this.props.isFormValid;
-    var submitting = this.props.isSubmitting && this.props.component.action == "submit" ? React.createElement('i', { className: 'glyphicon glyphicon-refresh glyphicon-spin' }) : '';
-    return React.createElement(
-      'button',
-      {
-        className: classNames,
-        type: this.props.component.action == 'submit' ? 'submit' : 'button',
-        disabled: disabled
-      },
-      submitting,
-      leftIcon,
-      this.props.component.label,
-      rightIcon
-    );
-  }
-});
-
-
-},{"react":160}],163:[function(require,module,exports){
-'use strict';
-
-// Is this the best way to create a registry? We don't have providers like Angular.
-window.FormioComponents = {};
-FormioComponents.address = require('./address');
-FormioComponents.button = require('./button');
-FormioComponents.phoneNumber = require('./phoneNumber');
-FormioComponents.select = require('./select');
-FormioComponents.textarea = require('./textarea');
-FormioComponents.textfield = require('./textfield');
-
-module.exports = {};
-
-
-},{"./address":161,"./button":162,"./phoneNumber":166,"./select":167,"./textarea":168,"./textfield":169}],164:[function(require,module,exports){
-'use strict';
-
-module.exports = {
-  getInitialState: function getInitialState() {
-    var value = this.props.value || '';
-    // If this was a single value but is now a multivalue.
-    if (this.props.component.multiple && !Array.isArray(value)) {
-      value = [value];
-    }
-    // If this was a multivalue but is now single value.
-    else if (!this.props.component.multiple && Array.isArray(value)) {
-        value = value[0];
-      }
-    return {
-      value: value,
-      isValid: true,
-      errorMessage: '',
-      isPristine: true
-    };
-  },
-  componentWillMount: function componentWillMount() {
-    this.props.attachToForm(this);
-  },
-  componentWillUnmount: function componentWillUnmount() {
-    this.props.detachFromForm(this);
-  },
-  //componentDidUpdate: function() {
-  //  this.node = this.getDOMNode();
-  //if (this.props.component.inputMask) {
-  //  jQuery(".form-control", this.node).mask("(999)").on('keyup', function(e) {console.log(this);this.setValue(e);}.bind(this));
-  //jQuery(".form-control", this.node).mask(this.props.component.inputMask);
-  //}
-  //this.renderContent();
-  //},
-  //componentWillReceiveProps: function(newProps) {
-  //  // its important to pass the new props in
-  //  this.renderContent(newProps);
-  //},
-  //renderContent: function(props) {
-  //  props = props || this.props;
-  //  React.renderComponent(<div>{props.children}</div>, this.node);
-  //},
-  setValue: function setValue(event) {
-    var value = this.state.value;
-    if (this.props.component.multiple) {
-      var index = event.currentTarget.getAttribute('data-index');
-      value[index] = event.currentTarget.value;
-    } else {
-      value = event.currentTarget.value;
-    }
-    this.setState({
-      value: value,
-      isPristine: false
-    }, (function () {
-      if (typeof this.props.validate === 'function') {
-        this.props.validate(this);
-      }
-    }).bind(this));
-  },
-  getComponent: function getComponent() {
-    var classNames = "form-group has-feedback form-field-type-" + this.props.component.type + (this.state.errorMessage !== '' && !this.state.isPristine ? ' has-error' : '');
-    var id = "form-group-" + this.props.component.key;
-    var Elements = this.getElements();
-    var Error = this.state.errorMessage && !this.state.isPristine ? React.createElement(
-      'p',
-      { className: 'help-block' },
-      this.state.errorMessage
-    ) : '';
-    return React.createElement(
-      'div',
-      { className: classNames, id: id },
-      React.createElement(
-        'div',
-        { className: 'form-fields' },
-        Elements
-      ),
-      Error
-    );
-  },
-  render: function render() {
-    return this.getComponent();
-  }
-};
-
-
-},{}],165:[function(require,module,exports){
-'use strict';
-
-module.exports = {
-  addFieldValue: function addFieldValue() {
-    var values = this.state.value;
-    values.push(this.props.component.defaultValue);
-    this.setState({
-      value: values
-    });
-  },
-  removeFieldValue: function removeFieldValue(id) {
-    var values = this.state.value;
-    values.splice(id, 1);
-    this.setState({
-      value: values
-    });
-  },
-  getElements: function getElements() {
-    var Component;
-    var classLabel = "control-label" + (this.props.component.validate.required ? ' field-required' : '');
-    var inputLabel = this.props.component.label && !this.props.component.hideLabel ? React.createElement(
-      'label',
-      { htmlFor: this.props.component.key, className: classLabel },
-      this.props.component.label
-    ) : '';
-    var requiredInline = !this.props.component.label && this.props.component.validate.required ? React.createElement('span', { className: 'glyphicon glyphicon-asterisk form-control-feedback field-required-inline', 'aria-hidden': 'true' }) : '';
-    var className = this.props.component.prefix || this.props.component.suffix ? 'input-group' : '';
-    var prefix = this.props.component.prefix ? React.createElement(
-      'div',
-      { className: 'input-group-addon' },
-      this.props.component.prefix
-    ) : '';
-    var suffix = this.props.component.suffix ? React.createElement(
-      'div',
-      { className: 'input-group-addon' },
-      this.props.component.suffix
-    ) : '';
-    var data = this.state.value;
-    if (this.props.component.multiple) {
-      var rows = data.map((function (value, id) {
-        var Element = this.getSingleElement(value, id);
-        return React.createElement(
-          'tr',
-          { key: id },
-          React.createElement(
-            'td',
-            null,
-            requiredInline,
-            React.createElement(
-              'div',
-              { className: className },
-              prefix,
-              ' ',
-              Element,
-              ' ',
-              suffix
-            )
-          ),
-          React.createElement(
-            'td',
-            null,
-            React.createElement(
-              'a',
-              { onClick: this.removeFieldValue.bind(null, id), className: 'btn btn-danger' },
-              React.createElement('span', { className: 'glyphicon glyphicon-remove-circle' })
-            )
-          )
-        );
-      }).bind(this));
-      Component = React.createElement(
-        'table',
-        { className: 'table table-bordered' },
-        inputLabel,
-        React.createElement(
-          'tbody',
-          null,
-          rows,
-          React.createElement(
-            'tr',
-            null,
-            React.createElement(
-              'td',
-              { colSpan: '2' },
-              React.createElement(
-                'a',
-                { onClick: this.addFieldValue, className: 'btn btn-primary' },
-                React.createElement('span', { className: 'glyphicon glyphicon-plus', 'aria-hidden': 'true' }),
-                ' Add another'
-              )
-            )
-          )
-        )
-      );
-    } else {
-      var Element = this.getSingleElement(data);
-      Component = React.createElement(
-        'div',
-        null,
-        inputLabel,
-        ' ',
-        requiredInline,
-        React.createElement(
-          'div',
-          { className: className },
-          prefix,
-          ' ',
-          Element,
-          ' ',
-          suffix
-        )
-      );
-    }
-    return Component;
-  }
-};
-
-
-},{}],166:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-
-module.exports = React.createClass({
-  displayName: 'PhoneNumber',
-  render: function render() {
-    return React.createElement(
-      'div',
-      null,
-      'I am a phone number'
-    );
-  }
-});
-
-
-},{"react":160}],167:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-
-module.exports = React.createClass({
-  displayName: 'Select',
-  render: function render() {
-    return React.createElement(
-      'div',
-      null,
-      'I am a select'
-    );
-  }
-});
-
-
-},{"react":160}],168:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-
-module.exports = React.createClass({
-  displayName: 'Textarea',
-  render: function render() {
-    return React.createElement('textarea', {
-      className: 'form-control',
-      placeholder: this.props.component.placeholder
-    });
-  }
-});
-
-
-},{"react":160}],169:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-var componentMixin = require('./mixins/componentMixin');
-var multiMixin = require('./mixins/multiMixin');
-//var InputElement = require('react-input-mask');
-
-module.exports = React.createClass({
-  displayName: 'Textfield',
-  mixins: [componentMixin, multiMixin],
-  getSingleElement: function getSingleElement(data, index) {
-    index = index || 0;
-    console.log('getSingleElement');
-    return React.createElement('input', {
-      type: this.props.component.inputType,
-      className: 'form-control',
-      id: this.props.component.key,
-      'data-index': index,
-      name: this.props.name,
-      value: data,
-      disabled: this.props.readOnly,
-      placeholder: this.props.component.placeholder,
-      mask: this.props.component.inputMask,
-      onChange: this.setValue
-    });
-  }
-});
-
-
-},{"./mixins/componentMixin":164,"./mixins/multiMixin":165,"react":160}],170:[function(require,module,exports){
-'use strict';
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var React = require('react');
-
-module.exports = React.createClass({
-  displayName: 'FormioComponent',
-  render: function render() {
-    // FormioComponents is a global variable so external scripts can define custom components.
-    var FormioElement = FormioComponents[this.props.component.type];
-    return React.createElement(
-      'div',
-      { className: 'form-group has-feedback form-field-type-{{ component.type }}', 'ng-class': '{\\\'has-error\\\': formioFieldForm[component.key].$invalid && !formioFieldForm[component.key].$pristine }' },
-      React.createElement(FormioElement, _extends({
-        name: this.props.component.key
-      }, this.props))
-    );
-  }
-});
-
-
-},{"react":160}],171:[function(require,module,exports){
-'use strict';
-
 var React = require('react');
 var formiojs = require('formiojs')();
-var FormioComponent = require('./react-formio-component');
+var FormioComponent = require('./FormioComponent');
 
 require('./components');
 
@@ -25378,4 +24636,386 @@ module.exports = React.createClass({
 });
 
 
-},{"./components":163,"./react-formio-component":170,"formiojs":2,"react":160}]},{},[171]);
+},{"./FormioComponent":162,"./components":166,"formiojs":2,"react":160}],162:[function(require,module,exports){
+'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var React = require('react');
+
+module.exports = React.createClass({
+  displayName: 'FormioComponent',
+  render: function render() {
+    // FormioComponents is a global variable so external scripts can define custom components.
+    var FormioElement = FormioComponents[this.props.component.type];
+    return React.createElement(
+      'div',
+      { className: 'form-group has-feedback form-field-type-{{ component.type }}', 'ng-class': '{\\\'has-error\\\': formioFieldForm[component.key].$invalid && !formioFieldForm[component.key].$pristine }' },
+      React.createElement(FormioElement, _extends({
+        name: this.props.component.key
+      }, this.props))
+    );
+  }
+});
+
+
+},{"react":160}],163:[function(require,module,exports){
+'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var React = require('react');
+var ReactMaskMixin = require('react-mask-mixin');
+
+module.exports = React.createClass({
+  displayName: 'Input',
+  mixins: [ReactMaskMixin],
+  render: function render() {
+    return React.createElement('input', _extends({}, this.props, this.mask.props));
+  }
+});
+
+
+},{"react":160,"react-mask-mixin":5}],164:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+  displayName: 'Address',
+  render: function render() {
+    return React.createElement(
+      'div',
+      null,
+      'Test'
+    );
+  }
+});
+
+
+},{"react":160}],165:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+  displayName: 'Button',
+  render: function render() {
+    var classNames = "btn btn-" + this.props.component.theme + " btn-" + this.props.component.size;
+    classNames += this.props.component.block ? ' btn-block' : '';
+    var leftIcon = this.props.component.leftIcon ? React.createElement('span', { className: this.props.component.leftIcon, 'aria-hidden': 'true' }) : '';
+    var rightIcon = this.props.component.rightIcon ? React.createElement('span', { className: this.props.component.rightIcon, 'aria-hidden': 'true' }) : '';
+    var disabled = this.props.isSubmitting || this.props.component.disableOnInvalid && !this.props.isFormValid;
+    var submitting = this.props.isSubmitting && this.props.component.action == "submit" ? React.createElement('i', { className: 'glyphicon glyphicon-refresh glyphicon-spin' }) : '';
+    return React.createElement(
+      'button',
+      {
+        className: classNames,
+        type: this.props.component.action == 'submit' ? 'submit' : 'button',
+        disabled: disabled
+      },
+      submitting,
+      leftIcon,
+      this.props.component.label,
+      rightIcon
+    );
+  }
+});
+
+
+},{"react":160}],166:[function(require,module,exports){
+'use strict';
+
+// Is this the best way to create a registry? We don't have providers like Angular.
+window.FormioComponents = {};
+FormioComponents.address = require('./address');
+FormioComponents.button = require('./button');
+FormioComponents.phoneNumber = require('./phoneNumber');
+FormioComponents.select = require('./select');
+FormioComponents.textarea = require('./textarea');
+FormioComponents.textfield = require('./textfield');
+
+module.exports = {};
+
+
+},{"./address":164,"./button":165,"./phoneNumber":169,"./select":170,"./textarea":171,"./textfield":172}],167:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = {
+  getInitialState: function getInitialState() {
+    var value = this.props.value || '';
+    // If this was a single value but is now a multivalue.
+    if (this.props.component.multiple && !Array.isArray(value)) {
+      value = [value];
+    }
+    // If this was a multivalue but is now single value.
+    else if (!this.props.component.multiple && Array.isArray(value)) {
+        value = value[0];
+      }
+    return {
+      value: value,
+      isValid: true,
+      errorMessage: '',
+      isPristine: true
+    };
+  },
+  componentWillMount: function componentWillMount() {
+    this.props.attachToForm(this);
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    this.props.detachFromForm(this);
+  },
+  setValue: function setValue(event) {
+    var value = this.state.value;
+    if (this.props.component.multiple) {
+      var index = event.currentTarget.getAttribute('data-index');
+      value[index] = event.currentTarget.value;
+    } else {
+      value = event.currentTarget.value;
+    }
+    this.setState({
+      value: value,
+      isPristine: false
+    }, (function () {
+      if (typeof this.props.validate === 'function') {
+        this.props.validate(this);
+      }
+    }).bind(this));
+  },
+  getComponent: function getComponent() {
+    var classNames = "form-group has-feedback form-field-type-" + this.props.component.type + (this.state.errorMessage !== '' && !this.state.isPristine ? ' has-error' : '');
+    var id = "form-group-" + this.props.component.key;
+    var Elements = this.getElements();
+    var Error = this.state.errorMessage && !this.state.isPristine ? React.createElement(
+      'p',
+      { className: 'help-block' },
+      this.state.errorMessage
+    ) : '';
+    return React.createElement(
+      'div',
+      { className: classNames, id: id },
+      React.createElement(
+        'div',
+        { className: 'form-fields' },
+        Elements
+      ),
+      Error
+    );
+  },
+  render: function render() {
+    return this.getComponent();
+  }
+};
+
+
+},{"react":160}],168:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = {
+  addFieldValue: function addFieldValue() {
+    console.log('add');
+    var values = this.state.value;
+    values.push(this.props.component.defaultValue);
+    this.setState({
+      value: values
+    });
+  },
+  removeFieldValue: function removeFieldValue(id) {
+    console.log('remove');
+    var values = this.state.value;
+    values.splice(id, 1);
+    this.setState({
+      value: values
+    });
+  },
+  getElements: function getElements() {
+    var Component;
+    var classLabel = "control-label" + (this.props.component.validate.required ? ' field-required' : '');
+    var inputLabel = this.props.component.label && !this.props.component.hideLabel ? React.createElement(
+      'label',
+      { htmlFor: this.props.component.key, className: classLabel },
+      this.props.component.label
+    ) : '';
+    var requiredInline = !this.props.component.label && this.props.component.validate.required ? React.createElement('span', { className: 'glyphicon glyphicon-asterisk form-control-feedback field-required-inline', 'aria-hidden': 'true' }) : '';
+    var className = this.props.component.prefix || this.props.component.suffix ? 'input-group' : '';
+    var prefix = this.props.component.prefix ? React.createElement(
+      'div',
+      { className: 'input-group-addon' },
+      this.props.component.prefix
+    ) : '';
+    var suffix = this.props.component.suffix ? React.createElement(
+      'div',
+      { className: 'input-group-addon' },
+      this.props.component.suffix
+    ) : '';
+    var data = this.state.value;
+    if (this.props.component.multiple) {
+      var rows = data.map((function (value, id) {
+        var Element = this.getSingleElement(value, id);
+        return React.createElement(
+          'tr',
+          { key: id },
+          React.createElement(
+            'td',
+            null,
+            requiredInline,
+            React.createElement(
+              'div',
+              { className: className },
+              prefix,
+              ' ',
+              Element,
+              ' ',
+              suffix
+            )
+          ),
+          React.createElement(
+            'td',
+            null,
+            React.createElement(
+              'a',
+              { onClick: this.removeFieldValue.bind(null, id), className: 'btn btn-danger' },
+              React.createElement('span', { className: 'glyphicon glyphicon-remove-circle' })
+            )
+          )
+        );
+      }).bind(this));
+      Component = React.createElement(
+        'div',
+        null,
+        inputLabel,
+        React.createElement(
+          'table',
+          { className: 'table table-bordered' },
+          React.createElement(
+            'tbody',
+            null,
+            rows,
+            React.createElement(
+              'tr',
+              null,
+              React.createElement(
+                'td',
+                { colSpan: '2' },
+                React.createElement(
+                  'a',
+                  { onClick: this.addFieldValue, className: 'btn btn-primary' },
+                  React.createElement('span', { className: 'glyphicon glyphicon-plus', 'aria-hidden': 'true' }),
+                  ' Add another'
+                )
+              )
+            )
+          )
+        )
+      );
+    } else {
+      var Element = this.getSingleElement(data);
+      Component = React.createElement(
+        'div',
+        null,
+        inputLabel,
+        ' ',
+        requiredInline,
+        React.createElement(
+          'div',
+          { className: className },
+          prefix,
+          ' ',
+          Element,
+          ' ',
+          suffix
+        )
+      );
+    }
+    return Component;
+  }
+};
+
+
+},{"react":160}],169:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+  displayName: 'PhoneNumber',
+  render: function render() {
+    return React.createElement(
+      'div',
+      null,
+      'I am a phone number'
+    );
+  }
+});
+
+
+},{"react":160}],170:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+  displayName: 'Select',
+  render: function render() {
+    return React.createElement(
+      'div',
+      null,
+      'I am a select'
+    );
+  }
+});
+
+
+},{"react":160}],171:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = React.createClass({
+  displayName: 'Textarea',
+  render: function render() {
+    return React.createElement('textarea', {
+      className: 'form-control',
+      placeholder: this.props.component.placeholder
+    });
+  }
+});
+
+
+},{"react":160}],172:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var componentMixin = require('./mixins/componentMixin');
+var multiMixin = require('./mixins/multiMixin');
+var Input = require('../Input');
+
+module.exports = React.createClass({
+  displayName: 'Textfield',
+  mixins: [componentMixin, multiMixin],
+  getSingleElement: function getSingleElement(data, index) {
+    index = index || 0;
+    var type = this.props.component.inputType || 'text';
+    console.log(type);
+
+    return React.createElement(Input, {
+      type: type,
+      className: 'form-control',
+      id: this.props.component.key,
+      'data-index': index,
+      name: this.props.name,
+      value: data,
+      disabled: this.props.readOnly,
+      placeholder: this.props.component.placeholder,
+      mask: this.props.component.inputMask,
+      onChange: this.setValue
+    });
+  }
+});
+
+
+},{"../Input":163,"./mixins/componentMixin":167,"./mixins/multiMixin":168,"react":160}]},{},[161]);

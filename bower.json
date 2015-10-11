@@ -1,0 +1,34 @@
+{
+  "name": "react-formio",
+  "version": "0.0.0",
+  "homepage": "https://github.com/formio/react-formio",
+  "authors": [
+    "Randall Knutson <randall@form.io>"
+  ],
+  "description": "React library for form.io",
+  "main": "dist/build/react-formio.js",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "Form.io",
+    "React",
+    "Components"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery.maskedinput": "~1.4.1",
+    "jquery": "~2.1.4",
+    "react": "~0.13.0"
+  }
+}

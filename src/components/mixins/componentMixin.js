@@ -1,5 +1,7 @@
 'use strict'
 
+var React = require('react');
+
 module.exports = {
   getInitialState: function () {
     var value = this.props.value || '';
@@ -50,7 +52,7 @@ module.exports = {
     return (
       <div className={classNames} id={id}>
         <div>
-        {Elements}
+          {Elements}
         </div>
         {Error}
       </div>

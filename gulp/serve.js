@@ -6,7 +6,10 @@ module.exports = function(gulp, plugins) {
       notify: false,
       port: 9002,
       server: {
-        baseDir: ['dist/src']
+        baseDir: ['dist/src'],
+        routes: {
+          "/bower_components": "bower_components"
+        }
       },
       ghostMode: {
         forms: {

@@ -1,7 +1,8 @@
 'use strict'
 
+var React = require('react');
 var formiojs = require('formiojs')();
-var FormioComponent = require('./react-formio-component');
+var FormioComponent = require('./FormioComponent');
 
 require('./components');
 
@@ -175,10 +176,10 @@ module.exports = React.createClass({
       }.bind(this));
     }
     var loading = <i id="formio-loading" className="glyphicon glyphicon-refresh glyphicon-spin"></i>;
+    var alerts = <div ng-repeat="alert in formioAlerts" className="alert" role="alert"></div>;
+
     return (
       <form role="form" name="formioForm" onSubmit={this.onSubmit}>
-        <div ng-repeat="alert in formioAlerts" className="alert" role="alert">
-        </div>
         {this.componentNodes}
       </form>
     );

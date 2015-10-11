@@ -5,6 +5,7 @@ var plugins = require('gulp-load-plugins')();
 plugins.source = require('vinyl-source-stream');
 plugins.browserify = require('browserify');
 plugins.watchify = require('watchify');
+plugins.babelify = require('babelify');
 plugins.reactify = require('reactify');
 plugins.browserSync = require('browser-sync');
 

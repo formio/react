@@ -1,5 +1,6 @@
 'use strict'
 
+var React = require('react');
 var componentMixin = require('./mixins/componentMixin');
 var multiMixin = require('./mixins/multiMixin');
 
@@ -18,7 +19,7 @@ module.exports = React.createClass({
         value={data}
         disabled={this.props.readOnly}
         placeholder={this.props.component.placeholder}
-        formio-input-mask={this.props.component.inputMask}
+        mask={this.props.component.inputMask}
         onChange={this.setValue}
         >
       </input>

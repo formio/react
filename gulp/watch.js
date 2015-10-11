@@ -3,8 +3,8 @@ module.exports = function(gulp, plugins) {
     gulp.watch('./src/**/*.html', ['copy']);
 
     var watcher = plugins.watchify(plugins.browserify({
-      entries: ['./src/react-formio.js'],
-      transform: [plugins.reactify],
+      entries: ['./src/Formio.js'],
+      transform: [plugins.babelify, plugins.reactify],
       debug: true,
       standalone: 'Formio',
       cache: {}, packageCache: {}, fullPaths: true
@@ -12,12 +12,12 @@ module.exports = function(gulp, plugins) {
 
     return watcher.on('update', function () {
       watcher.bundle()
-        .pipe(plugins.source('react-formio.js'))
+        .pipe(plugins.source('Formio.js'))
         .pipe(gulp.dest('dist/src'));
       console.log('Updated');
     })
       .bundle()
-      .pipe(plugins.source('react-formio.js'))
+      .pipe(plugins.source('Formio.js'))
       .pipe(gulp.dest('dist/src'));
   };
 };
