@@ -5,6 +5,10 @@ var React = require('react');
 module.exports = {
   getInitialState: function () {
     var value = this.props.value || '';
+    // Numbers need null as empty value or it won't submit.
+    if (value === '' && this.props.component.type === 'number' || this.props.component.type === 'datetime') {
+      value = null;
+    }
     // If this was a single value but is now a multivalue.
     if (this.props.component.multiple && !Array.isArray(value)) {
       value = [value];
@@ -38,6 +42,10 @@ module.exports = {
     }
     else {
       value = event.currentTarget[attribute];
+    }
+    // Numbers need null as empty value or it won't submit.
+    if (value === '' && this.props.component.type === 'number') {
+      value = null;
     }
     this.setState({
       value: value,

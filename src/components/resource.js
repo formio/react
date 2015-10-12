@@ -5,6 +5,6 @@ var React = require('react');
 module.exports = React.createClass({
   displayName: 'Resource',
   render: function() {
-    return(<div>I am a resource</div>);
+    return(<div>Resource component coming soon</div>);
   }
 });

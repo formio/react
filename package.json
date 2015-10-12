@@ -28,9 +28,7 @@
     "formiojs": "git+https://github.com/formio/formio.js.git",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
-    "react-input-mask": "^0.3.0",
-    "react-mask-mixin": "0.0.5",
-    "react-maskedinput": "^2.0.0"
+    "react-widgets": "^3.0.0-beta.1"
   },
   "devDependencies": {
     "browser-sync": "^2.9.8",

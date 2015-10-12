@@ -11,6 +11,7 @@ FormioComponents.datetime = require('./datetime');
 FormioComponents.email = require('./email');
 FormioComponents.fieldset = require('./fieldset');
 FormioComponents.hidden = require('./hidden');
+FormioComponents.number = require('./number');
 FormioComponents.panel = require('./panel');
 FormioComponents.password = require('./password');
 FormioComponents.phoneNumber = require('./phoneNumber');
