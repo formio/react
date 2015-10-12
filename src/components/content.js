@@ -5,6 +5,6 @@ var React = require('react');
 module.exports = React.createClass({
   displayName: 'Content',
   render: function() {
-    return(<div>I am a content</div>);
+    return(<div dangerouslySetInnerHTML={{__html: this.props.component.html}}></div>);
   }
 });

@@ -24308,20 +24308,24 @@ module.exports = React.createClass({
       isValid: true,
       errorMessage: ''
     };
-    if (item || component.props.component.validate.required) {
+    if (item || component.props.component.validate && component.props.component.validate.required) {
       if (item) {
+        if (state.isValid && component.props.component.type === 'email' && !item.match(/\S+@\S+/)) {
+          state.isValid = false;
+          state.errorMessage = (component.props.component.label || component.props.component.key) + ' must be a valid email.';
+        }
         // MaxLength
-        if (state.isValid && component.props.component.validate.maxLength && item.length > component.props.component.validate.maxLength) {
+        if (state.isValid && component.props.component.validate && component.props.component.validate.maxLength && item.length > component.props.component.validate.maxLength) {
           state.isValid = false;
           state.errorMessage = (component.props.component.label || component.props.component.key) + ' must be shorter than ' + (component.props.component.validate.maxLength + 1) + ' characters';
         }
         // MinLength
-        if (state.isValid && component.props.component.validate.minLength && item.length < component.props.component.validate.minLength) {
+        if (state.isValid && component.props.component.validate && component.props.component.validate.minLength && item.length < component.props.component.validate.minLength) {
           state.isValid = false;
           state.errorMessage = (component.props.component.label || component.props.component.key) + ' must be longer than ' + (component.props.component.validate.minLength - 1) + ' characters';
         }
         // Regex
-        if (state.isValid && component.props.component.validate.pattern) {
+        if (state.isValid && component.props.component.validate && component.props.component.validate.pattern) {
           var re = new RegExp(component.props.component.validate.pattern, "g");
           state.isValid = item.match(re);
           if (!state.isValid) {
@@ -24329,7 +24333,7 @@ module.exports = React.createClass({
           }
         }
         // Custom
-        if (state.isValid && component.props.component.validate.custom) {
+        if (state.isValid && component.props.component.validate && component.props.component.validate.custom) {
           var custom = component.props.component.validate.custom;
           custom = custom.replace(/({{\s+(.*)\s+}})/, function (match, $1, $2) {
             // TODO: need to ensure this.data has up to date values.
@@ -24448,6 +24452,7 @@ module.exports = React.createClass({
   render: function render() {
     // FormioComponents is a global variable so external scripts can define custom components.
     var FormioElement = FormioComponents[this.props.component.type];
+    //console.log(this.props.component.type);
     return React.createElement(
       'div',
       { className: 'form-group has-feedback form-field-type-{{ component.type }}', 'ng-class': '{\\\'has-error\\\': formioFieldForm[component.key].$invalid && !formioFieldForm[component.key].$pristine }' },
@@ -24583,11 +24588,7 @@ var React = require('react');
 module.exports = React.createClass({
   displayName: 'Content',
   render: function render() {
-    return React.createElement(
-      'div',
-      null,
-      'I am a content'
-    );
+    return React.createElement('div', { dangerouslySetInnerHTML: { __html: this.props.component.html } });
   }
 });
 
@@ -24613,20 +24614,31 @@ module.exports = React.createClass({
 'use strict';
 
 var React = require('react');
+var componentMixin = require('./mixins/componentMixin');
+var multiMixin = require('./mixins/multiMixin');
 
 module.exports = React.createClass({
   displayName: 'Email',
-  render: function render() {
-    return React.createElement(
-      'div',
-      null,
-      'I am an Email'
-    );
+  mixins: [componentMixin, multiMixin],
+  getSingleElement: function getSingleElement(data, index) {
+    index = index || 0;
+    return React.createElement('input', {
+      type: this.props.component.inputType,
+      className: 'form-control',
+      id: this.props.component.key,
+      'data-index': index,
+      name: this.props.name,
+      value: data,
+      disabled: this.props.readOnly,
+      placeholder: this.props.component.placeholder,
+      mask: this.props.component.inputMask,
+      onChange: this.setValue
+    });
   }
 });
 
 
-},{"react":159}],169:[function(require,module,exports){
+},{"./mixins/componentMixin":172,"./mixins/multiMixin":173,"react":159}],169:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -24786,13 +24798,13 @@ module.exports = {
   },
   getElements: function getElements() {
     var Component;
-    var classLabel = "control-label" + (this.props.component.validate.required ? ' field-required' : '');
+    var classLabel = "control-label" + (this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
     var inputLabel = this.props.component.label && !this.props.component.hideLabel ? React.createElement(
       'label',
       { htmlFor: this.props.component.key, className: classLabel },
       this.props.component.label
     ) : '';
-    var requiredInline = !this.props.component.label && this.props.component.validate.required ? React.createElement('span', { className: 'glyphicon glyphicon-asterisk form-control-feedback field-required-inline', 'aria-hidden': 'true' }) : '';
+    var requiredInline = !this.props.component.label && this.props.component.validate && this.props.component.validate.required ? React.createElement('span', { className: 'glyphicon glyphicon-asterisk form-control-feedback field-required-inline', 'aria-hidden': 'true' }) : '';
     var className = this.props.component.prefix || this.props.component.suffix ? 'input-group' : '';
     var prefix = this.props.component.prefix ? React.createElement(
       'div',

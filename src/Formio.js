@@ -59,20 +59,24 @@ module.exports = React.createClass({
       isValid: true,
       errorMessage: ''
     };
-    if (item || component.props.component.validate.required) {
+    if (item || (component.props.component.validate && component.props.component.validate.required)) {
       if (item) {
+        if (state.isValid && component.props.component.type === 'email' && !item.match(/\S+@\S+/)) {
+          state.isValid = false;
+          state.errorMessage = (component.props.component.label || component.props.component.key) + ' must be a valid email.';
+        }
         // MaxLength
-        if (state.isValid && component.props.component.validate.maxLength && item.length > component.props.component.validate.maxLength) {
+        if (state.isValid && component.props.component.validate && component.props.component.validate.maxLength && item.length > component.props.component.validate.maxLength) {
           state.isValid = false;
           state.errorMessage = (component.props.component.label || component.props.component.key) + ' must be shorter than ' + (component.props.component.validate.maxLength + 1) + ' characters';
         }
         // MinLength
-        if (state.isValid && component.props.component.validate.minLength && item.length < component.props.component.validate.minLength) {
+        if (state.isValid && component.props.component.validate && component.props.component.validate.minLength && item.length < component.props.component.validate.minLength) {
           state.isValid =  false;
           state.errorMessage = (component.props.component.label || component.props.component.key) + ' must be longer than ' + (component.props.component.validate.minLength - 1) + ' characters';
         }
         // Regex
-        if (state.isValid && component.props.component.validate.pattern) {
+        if (state.isValid && component.props.component.validate && component.props.component.validate.pattern) {
           var re = new RegExp(component.props.component.validate.pattern, "g");
           state.isValid = item.match(re);
           if (!state.isValid) {
@@ -80,7 +84,7 @@ module.exports = React.createClass({
           }
         }
         // Custom
-        if (state.isValid && component.props.component.validate.custom) {
+        if (state.isValid && component.props.component.validate && component.props.component.validate.custom) {
           var custom = component.props.component.validate.custom;
           custom = custom.replace(/({{\s+(.*)\s+}})/, function(match, $1, $2) {
             // TODO: need to ensure this.data has up to date values.

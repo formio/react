@@ -19,9 +19,9 @@ module.exports = {
   },
   getElements: function() {
     var Component;
-    var classLabel = "control-label" + ( this.props.component.validate.required ? ' field-required' : '');
+    var classLabel = "control-label" + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
     var inputLabel = (this.props.component.label && !this.props.component.hideLabel ? <label htmlFor={this.props.component.key} className={classLabel}>{this.props.component.label}</label> : '');
-    var requiredInline = (!this.props.component.label && this.props.component.validate.required ? <span className="glyphicon glyphicon-asterisk form-control-feedback field-required-inline" aria-hidden="true"></span> : '');
+    var requiredInline = (!this.props.component.label && this.props.component.validate && this.props.component.validate.required ? <span className="glyphicon glyphicon-asterisk form-control-feedback field-required-inline" aria-hidden="true"></span> : '');
     var className = (this.props.component.prefix || this.props.component.suffix ? 'input-group' : '');
     var prefix = (this.props.component.prefix ? <div className="input-group-addon">{this.props.component.prefix}</div> : '');
     var suffix = (this.props.component.suffix ? <div className="input-group-addon">{this.props.component.suffix}</div> : '');
