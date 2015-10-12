@@ -86,10 +86,11 @@ module.exports = React.createClass({
         // Custom
         if (state.isValid && component.props.component.validate && component.props.component.validate.custom) {
           var custom = component.props.component.validate.custom;
+          this.updateData();
           custom = custom.replace(/({{\s+(.*)\s+}})/, function(match, $1, $2) {
-            // TODO: need to ensure this.data has up to date values.
             return this.data[$2];
-          });
+          }.bind(this));
+          var input = item;
           /* jshint evil: true */
           var valid = eval(custom);
           state.isValid = (valid === true);
@@ -158,6 +159,21 @@ module.exports = React.createClass({
         submission: submission,
         isSubmitting: false
       });
+    }.bind(this))
+    .catch(function(response) {
+      this.setState({
+        isSubmitting: false
+      });
+      if (response.name === "ValidationError") {
+        response.details.forEach(function(detail) {
+          if (this.inputs[detail.path]) {
+            this.inputs[detail.path].setState({
+              isValid: false,
+              errorMessage: detail.message
+            })
+          }
+        }.bind(this));
+      }
     }.bind(this));
   },
   render: function() {

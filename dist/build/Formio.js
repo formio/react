@@ -32912,10 +32912,11 @@ module.exports = React.createClass({
         // Custom
         if (state.isValid && component.props.component.validate && component.props.component.validate.custom) {
           var custom = component.props.component.validate.custom;
-          custom = custom.replace(/({{\s+(.*)\s+}})/, function (match, $1, $2) {
-            // TODO: need to ensure this.data has up to date values.
+          this.updateData();
+          custom = custom.replace(/({{\s+(.*)\s+}})/, (function (match, $1, $2) {
             return this.data[$2];
-          });
+          }).bind(this));
+          var input = item;
           /* jshint evil: true */
           var valid = eval(custom);
           state.isValid = valid === true;
@@ -32984,6 +32985,20 @@ module.exports = React.createClass({
         submission: submission,
         isSubmitting: false
       });
+    }).bind(this))['catch']((function (response) {
+      this.setState({
+        isSubmitting: false
+      });
+      if (response.name === "ValidationError") {
+        response.details.forEach((function (detail) {
+          if (this.inputs[detail.path]) {
+            this.inputs[detail.path].setState({
+              isValid: false,
+              errorMessage: detail.message
+            });
+          }
+        }).bind(this));
+      }
     }).bind(this));
   },
   render: function render() {
@@ -33124,7 +33139,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":241,"./mixins/multiMixin":242,"react":228}],234:[function(require,module,exports){
+},{"./mixins/componentMixin":241,"./mixins/multiMixin":243,"react":228}],234:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -33186,55 +33201,34 @@ module.exports = React.createClass({
   displayName: 'Datetime',
   mixins: [componentMixin, multiMixin],
   getSingleElement: function getSingleElement(value, index) {
-    //  id={this.props.component.key}
-    //data-index={index}
-    //name={this.props.name}
-    //disabled={this.props.readOnly}
-    //placeholder={this.props.component.placeholder}
-    //mask={this.props.component.inputMask}
-    //    value={value}
-    //    onChange={this.setValue}
-    return;
-    React.createElement(
-      'div',
-      null,
-      React.createElement(DateTimePicker, {
-        defaultValue: null
-      })
-    );
-  }
-});
-
-
-},{"./mixins/componentMixin":241,"./mixins/multiMixin":242,"moment":5,"react":228,"react-widgets/lib/DateTimePicker":10,"react-widgets/lib/localizers/moment":24}],237:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-var componentMixin = require('./mixins/componentMixin');
-var multiMixin = require('./mixins/multiMixin');
-
-module.exports = React.createClass({
-  displayName: 'Email',
-  mixins: [componentMixin, multiMixin],
-  getSingleElement: function getSingleElement(data, index) {
-    index = index || 0;
-    return React.createElement('input', {
-      type: this.props.component.inputType,
-      className: 'form-control',
+    return React.createElement(DateTimePicker, {
       id: this.props.component.key,
       'data-index': index,
       name: this.props.name,
-      value: data,
       disabled: this.props.readOnly,
       placeholder: this.props.component.placeholder,
-      mask: this.props.component.inputMask,
+      value: value,
       onChange: this.setValue
     });
   }
 });
 
 
-},{"./mixins/componentMixin":241,"./mixins/multiMixin":242,"react":228}],238:[function(require,module,exports){
+},{"./mixins/componentMixin":241,"./mixins/multiMixin":243,"moment":5,"react":228,"react-widgets/lib/DateTimePicker":10,"react-widgets/lib/localizers/moment":24}],237:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var componentMixin = require('./mixins/componentMixin');
+var multiMixin = require('./mixins/multiMixin');
+var inputMixin = require('./mixins/inputMixin');
+
+module.exports = React.createClass({
+  displayName: 'Email',
+  mixins: [componentMixin, multiMixin, inputMixin]
+});
+
+
+},{"./mixins/componentMixin":241,"./mixins/inputMixin":242,"./mixins/multiMixin":243,"react":228}],238:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -33311,7 +33305,7 @@ FormioComponents.well = require('./well');
 module.exports = {};
 
 
-},{"./address":231,"./button":232,"./checkbox":233,"./columns":234,"./content":235,"./datetime":236,"./email":237,"./fieldset":238,"./hidden":239,"./number":243,"./panel":244,"./password":245,"./phoneNumber":246,"./radio":247,"./resource":248,"./select":249,"./signature":250,"./textarea":251,"./textfield":252,"./well":253}],241:[function(require,module,exports){
+},{"./address":231,"./button":232,"./checkbox":233,"./columns":234,"./content":235,"./datetime":236,"./email":237,"./fieldset":238,"./hidden":239,"./number":244,"./panel":245,"./password":246,"./phoneNumber":247,"./radio":248,"./resource":249,"./select":250,"./signature":251,"./textarea":252,"./textfield":253,"./well":254}],241:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33396,6 +33390,30 @@ module.exports = {
 
 
 },{"react":228}],242:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+module.exports = {
+  getSingleElement: function getSingleElement(value, index) {
+    index = index || 0;
+    return React.createElement('input', {
+      type: this.props.component.inputType,
+      className: 'form-control',
+      id: this.props.component.key,
+      'data-index': index,
+      name: this.props.name,
+      value: value,
+      disabled: this.props.readOnly,
+      placeholder: this.props.component.placeholder,
+      mask: this.props.component.inputMask,
+      onChange: this.setValue
+    });
+  }
+};
+
+
+},{"react":228}],243:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33519,7 +33537,7 @@ module.exports = {
 };
 
 
-},{"react":228}],243:[function(require,module,exports){
+},{"react":228}],244:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33550,7 +33568,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":241,"./mixins/multiMixin":242,"react":228}],244:[function(require,module,exports){
+},{"./mixins/componentMixin":241,"./mixins/multiMixin":243,"react":228}],245:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -33593,35 +33611,21 @@ module.exports = React.createClass({
 });
 
 
-},{"../FormioComponent":230,"react":228}],245:[function(require,module,exports){
+},{"../FormioComponent":230,"react":228}],246:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 var componentMixin = require('./mixins/componentMixin');
 var multiMixin = require('./mixins/multiMixin');
+var inputMixin = require('./mixins/inputMixin');
 
 module.exports = React.createClass({
   displayName: 'Password',
-  mixins: [componentMixin, multiMixin],
-  getSingleElement: function getSingleElement(data, index) {
-    index = index || 0;
-    return React.createElement('input', {
-      type: this.props.component.inputType,
-      className: 'form-control',
-      id: this.props.component.key,
-      'data-index': index,
-      name: this.props.name,
-      value: data,
-      disabled: this.props.readOnly,
-      placeholder: this.props.component.placeholder,
-      mask: this.props.component.inputMask,
-      onChange: this.setValue
-    });
-  }
+  mixins: [componentMixin, multiMixin, inputMixin]
 });
 
 
-},{"./mixins/componentMixin":241,"./mixins/multiMixin":242,"react":228}],246:[function(require,module,exports){
+},{"./mixins/componentMixin":241,"./mixins/inputMixin":242,"./mixins/multiMixin":243,"react":228}],247:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33638,7 +33642,7 @@ module.exports = React.createClass({
 });
 
 
-},{"react":228}],247:[function(require,module,exports){
+},{"react":228}],248:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33678,7 +33682,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":241,"./mixins/multiMixin":242,"react":228}],248:[function(require,module,exports){
+},{"./mixins/componentMixin":241,"./mixins/multiMixin":243,"react":228}],249:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33695,7 +33699,7 @@ module.exports = React.createClass({
 });
 
 
-},{"react":228}],249:[function(require,module,exports){
+},{"react":228}],250:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33712,7 +33716,7 @@ module.exports = React.createClass({
 });
 
 
-},{"react":228}],250:[function(require,module,exports){
+},{"react":228}],251:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33729,7 +33733,7 @@ module.exports = React.createClass({
 });
 
 
-},{"react":228}],251:[function(require,module,exports){
+},{"react":228}],252:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33755,35 +33759,21 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":241,"./mixins/multiMixin":242,"react":228}],252:[function(require,module,exports){
+},{"./mixins/componentMixin":241,"./mixins/multiMixin":243,"react":228}],253:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 var componentMixin = require('./mixins/componentMixin');
 var multiMixin = require('./mixins/multiMixin');
+var inputMixin = require('./mixins/inputMixin');
 
 module.exports = React.createClass({
   displayName: 'Textfield',
-  mixins: [componentMixin, multiMixin],
-  getSingleElement: function getSingleElement(value, index) {
-    index = index || 0;
-    return React.createElement('input', {
-      type: this.props.component.inputType,
-      className: 'form-control',
-      id: this.props.component.key,
-      'data-index': index,
-      name: this.props.name,
-      value: value,
-      disabled: this.props.readOnly,
-      placeholder: this.props.component.placeholder,
-      mask: this.props.component.inputMask,
-      onChange: this.setValue
-    });
-  }
+  mixins: [componentMixin, multiMixin, inputMixin]
 });
 
 
-},{"./mixins/componentMixin":241,"./mixins/multiMixin":242,"react":228}],253:[function(require,module,exports){
+},{"./mixins/componentMixin":241,"./mixins/inputMixin":242,"./mixins/multiMixin":243,"react":228}],254:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
