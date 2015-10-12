@@ -7,7 +7,7 @@ var multiMixin = require('./mixins/multiMixin');
 module.exports = React.createClass({
   displayName: 'Textfield',
   mixins: [componentMixin, multiMixin],
-  getSingleElement: function(data, index) {
+  getSingleElement: function(value, index) {
     index = index || 0;
     return(
       <input
@@ -16,7 +16,7 @@ module.exports = React.createClass({
         id={this.props.component.key}
         data-index={index}
         name={this.props.name}
-        value={data}
+        value={value}
         disabled={this.props.readOnly}
         placeholder={this.props.component.placeholder}
         mask={this.props.component.inputMask}

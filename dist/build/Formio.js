@@ -24453,9 +24453,10 @@ module.exports = React.createClass({
     // FormioComponents is a global variable so external scripts can define custom components.
     var FormioElement = FormioComponents[this.props.component.type];
     //console.log(this.props.component.type);
+    var className = "form-group has-feedback form-field-type-" + this.props.component.type;
     return React.createElement(
       'div',
-      { className: 'form-group has-feedback form-field-type-{{ component.type }}', 'ng-class': '{\\\'has-error\\\': formioFieldForm[component.key].$invalid && !formioFieldForm[component.key].$pristine }' },
+      { className: className },
       React.createElement(FormioElement, _extends({
         name: this.props.component.key
       }, this.props))
@@ -24641,21 +24642,38 @@ module.exports = React.createClass({
 },{"./mixins/componentMixin":172,"./mixins/multiMixin":173,"react":159}],169:[function(require,module,exports){
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var React = require('react');
+var FormioComponent = require('../FormioComponent');
 
 module.exports = React.createClass({
   displayName: 'Fieldset',
   render: function render() {
-    return React.createElement(
-      'div',
+    var legend = this.props.component.legend ? React.createElement(
+      'legend',
       null,
-      'I am a fieldset'
+      this.props.component.legend
+    ) : '';
+    return React.createElement(
+      'fieldset',
+      null,
+      legend,
+      this.props.component.components.map((function (component) {
+        var value = this.props.data && this.props.data.hasOwnProperty(component.key) ? this.props.data[component.key] : component.defaultValue || '';
+        return React.createElement(FormioComponent, _extends({}, this.props, {
+          key: component.key,
+          name: component.key,
+          component: component,
+          value: value
+        }));
+      }).bind(this))
     );
   }
 });
 
 
-},{"react":159}],170:[function(require,module,exports){
+},{"../FormioComponent":161,"react":159}],170:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -24663,11 +24681,8 @@ var React = require('react');
 module.exports = React.createClass({
   displayName: 'Hidden',
   render: function render() {
-    return React.createElement(
-      'div',
-      null,
-      'I am a hidden'
-    );
+    var value = this.props.data && this.props.data.hasOwnProperty(this.props.component.key) ? this.props.data[this.props.component.key] : '';
+    return React.createElement('input', { type: 'hidden', id: this.props.component.key, name: this.props.component.key, value: value });
   }
 });
 
@@ -24903,38 +24918,75 @@ module.exports = {
 },{"react":159}],174:[function(require,module,exports){
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var React = require('react');
+var FormioComponent = require('../FormioComponent');
 
 module.exports = React.createClass({
   displayName: 'Panel',
   render: function render() {
+    var title = this.props.component.title ? React.createElement(
+      'div',
+      { className: 'panel-heading' },
+      React.createElement(
+        'h3',
+        { className: 'panel-title' },
+        this.props.component.title
+      )
+    ) : '';
+    var className = "panel panel-" + this.props.component.theme;
     return React.createElement(
       'div',
-      null,
-      'I am a panel'
+      { className: className },
+      title,
+      React.createElement(
+        'div',
+        { className: 'panel-body' },
+        this.props.component.components.map((function (component) {
+          var value = this.props.data && this.props.data.hasOwnProperty(component.key) ? this.props.data[component.key] : component.defaultValue || '';
+          return React.createElement(FormioComponent, _extends({}, this.props, {
+            key: component.key,
+            name: component.key,
+            component: component,
+            value: value
+          }));
+        }).bind(this))
+      )
     );
   }
 });
 
 
-},{"react":159}],175:[function(require,module,exports){
+},{"../FormioComponent":161,"react":159}],175:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
+var componentMixin = require('./mixins/componentMixin');
+var multiMixin = require('./mixins/multiMixin');
 
 module.exports = React.createClass({
   displayName: 'Password',
-  render: function render() {
-    return React.createElement(
-      'div',
-      null,
-      'I am a password'
-    );
+  mixins: [componentMixin, multiMixin],
+  getSingleElement: function getSingleElement(data, index) {
+    index = index || 0;
+    return React.createElement('input', {
+      type: this.props.component.inputType,
+      className: 'form-control',
+      id: this.props.component.key,
+      'data-index': index,
+      name: this.props.name,
+      value: data,
+      disabled: this.props.readOnly,
+      placeholder: this.props.component.placeholder,
+      mask: this.props.component.inputMask,
+      onChange: this.setValue
+    });
   }
 });
 
 
-},{"react":159}],176:[function(require,module,exports){
+},{"./mixins/componentMixin":172,"./mixins/multiMixin":173,"react":159}],176:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -25023,19 +25075,29 @@ module.exports = React.createClass({
 'use strict';
 
 var React = require('react');
+var componentMixin = require('./mixins/componentMixin');
+var multiMixin = require('./mixins/multiMixin');
 
 module.exports = React.createClass({
   displayName: 'Textarea',
-  render: function render() {
+  mixins: [componentMixin, multiMixin],
+  getSingleElement: function getSingleElement(value, index) {
     return React.createElement('textarea', {
       className: 'form-control',
-      placeholder: this.props.component.placeholder
+      id: this.props.component.key,
+      'data-index': index,
+      name: this.props.name,
+      value: value,
+      disabled: this.props.readOnly,
+      placeholder: this.props.component.placeholder,
+      rows: this.props.component.rows,
+      onChange: this.setValue
     });
   }
 });
 
 
-},{"react":159}],182:[function(require,module,exports){
+},{"./mixins/componentMixin":172,"./mixins/multiMixin":173,"react":159}],182:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -25045,7 +25107,7 @@ var multiMixin = require('./mixins/multiMixin');
 module.exports = React.createClass({
   displayName: 'Textfield',
   mixins: [componentMixin, multiMixin],
-  getSingleElement: function getSingleElement(data, index) {
+  getSingleElement: function getSingleElement(value, index) {
     index = index || 0;
     return React.createElement('input', {
       type: this.props.component.inputType,
@@ -25053,7 +25115,7 @@ module.exports = React.createClass({
       id: this.props.component.key,
       'data-index': index,
       name: this.props.name,
-      value: data,
+      value: value,
       disabled: this.props.readOnly,
       placeholder: this.props.component.placeholder,
       mask: this.props.component.inputMask,
@@ -25066,18 +25128,29 @@ module.exports = React.createClass({
 },{"./mixins/componentMixin":172,"./mixins/multiMixin":173,"react":159}],183:[function(require,module,exports){
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var React = require('react');
+var FormioComponent = require('../FormioComponent');
 
 module.exports = React.createClass({
   displayName: 'Well',
   render: function render() {
     return React.createElement(
       'div',
-      null,
-      'I am a well'
+      { className: 'well' },
+      this.props.component.components.map((function (component) {
+        var value = this.props.data && this.props.data.hasOwnProperty(component.key) ? this.props.data[component.key] : component.defaultValue || '';
+        return React.createElement(FormioComponent, _extends({}, this.props, {
+          key: component.key,
+          name: component.key,
+          component: component,
+          value: value
+        }));
+      }).bind(this))
     );
   }
 });
 
 
-},{"react":159}]},{},[160]);
+},{"../FormioComponent":161,"react":159}]},{},[160]);

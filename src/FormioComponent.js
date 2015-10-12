@@ -8,8 +8,9 @@ module.exports = React.createClass({
     // FormioComponents is a global variable so external scripts can define custom components.
     var FormioElement = FormioComponents[this.props.component.type];
     //console.log(this.props.component.type);
+    var className = "form-group has-feedback form-field-type-" + this.props.component.type;
     return (
-      <div className="form-group has-feedback form-field-type-{{ component.type }}" ng-class="{\'has-error\': formioFieldForm[component.key].$invalid && !formioFieldForm[component.key].$pristine }">
+      <div className={className}>
         <FormioElement
           name={this.props.component.key}
           {...this.props}
