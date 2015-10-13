@@ -111,12 +111,18 @@ module.exports = React.createClass({
     if (this.props.src) {
       this.formio = new formiojs(this.props.src);
       this.formio.loadForm().then(function(form) {
+        if (typeof this.props.onFormLoad === 'function') {
+          this.props.onFormLoad(form);
+        }
         this.setState({
           form: form
         }, this.validateForm);
       }.bind(this));
       if (this.formio.submissionId) {
         this.formio.loadSubmission().then(function(submission) {
+          if (typeof this.props.onSubmissionLoad === 'function') {
+            this.props.onSubmissionLoad(submission);
+          }
           this.setState({
             submission: submission
           }, this.validateForm)
@@ -156,23 +162,29 @@ module.exports = React.createClass({
     // Do the submit here.
     if (this.state.form.action) {
       var method = this.state.submission._id ? 'put' : 'post';
-      request = formiojs.request(this.state.form.action, method, `sub);
+      request = formiojs.request(this.state.form.action, method, sub);
     }
     else {
       request = this.formio.saveSubmission(sub);
     }
     request.then(function(submission) {
+      if (typeof this.props.onFormSubmit === 'function') {
+        this.props.onFormSubmit(submission);
+      }
       this.setState({
         submission: submission,
         isSubmitting: false
       });
     }.bind(this))
     .catch(function(response) {
+      if (typeof this.props.onFormError === 'function') {
+        this.props.onFormError(response);
+      }
       this.setState({
         isSubmitting: false
       });
-      if (response.name === "ValidationError") {
-        response.details.forEach(function(detail) {
+      if (response.hasOwnProperty('name') && response.name === "ValidationError") {
+        response.details.forEach(function (detail) {
           if (this.inputs[detail.path]) {
             this.inputs[detail.path].setState({
               isValid: false,
@@ -200,6 +212,7 @@ module.exports = React.createClass({
             isSubmitting={this.state.isSubmitting}
             isFormValid={this.state.isValid}
             data={this.state.submission.data}
+            onElementRender={this.props.onElementRender}
           />
         );
       }.bind(this));
