@@ -152,9 +152,16 @@ module.exports = React.createClass({
     var sub = this.state.submission;
     sub.data = this.data;
 
+    var request;
     // Do the submit here.
-    // TODO: Allow custom action handler.
-    this.formio.saveSubmission(sub).then(function(submission) {
+    if (this.state.form.action) {
+      var method = this.state.submission._id ? 'put' : 'post';
+      request = formiojs.request(this.state.form.action, method, `sub);
+    }
+    else {
+      request = this.formio.saveSubmission(sub);
+    }
+    request.then(function(submission) {
       this.setState({
         submission: submission,
         isSubmitting: false
