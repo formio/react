@@ -3,10 +3,7 @@
 var React = require('react');
 var componentMixin = require('./mixins/componentMixin');
 var multiMixin = require('./mixins/multiMixin');
-var moment = require('moment');
 var DateTimePicker = require('react-widgets/lib/DateTimePicker');
-var momentLocalizer = require('react-widgets/lib/localizers/moment');
-momentLocalizer(moment);
 
 module.exports = React.createClass({
   displayName: 'Datetime',

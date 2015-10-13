@@ -1,8 +1,8 @@
 
 var React = require('react');
-var ReactDOM = require('react-dom');
+var Formio = require('./Formio');
 
-ReactDOM.render(
+React.render(
   <Formio
     src="https://randall.form.io/test"
 /*    form=""
