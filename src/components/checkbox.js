@@ -7,6 +7,11 @@ var multiMixin = require('./mixins/multiMixin');
 module.exports = React.createClass({
   displayName: 'Checkbox',
   mixins: [componentMixin, multiMixin],
+  onChangeCheckbox: function(event) {
+    var value = event.currentTarget.checked;
+    var index = (this.props.component.multiple ? event.currentTarget.getAttribute('data-index') : null);
+    this.setValue(value, index);
+  },
   getSingleElement: function(value, index) {
     index = index || 0;
     var required = (this.props.component.validate.required ? 'field-required' : '');
@@ -20,7 +25,7 @@ module.exports = React.createClass({
             name={this.props.name}
             value={value}
             disabled={this.props.readOnly}
-            onChange={this.setValue}
+            onChange={this.onChangeCheckbox}
           />{this.props.component.label}
         </label>
       </div>

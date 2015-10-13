@@ -8,6 +8,9 @@ var DateTimePicker = require('react-widgets/lib/DateTimePicker');
 module.exports = React.createClass({
   displayName: 'Datetime',
   mixins: [componentMixin, multiMixin],
+  onChangeDatetime: function(index, value, str) {
+    this.setValue(value, index);
+  },
   getSingleElement: function(value, index) {
     return(
       <DateTimePicker
@@ -17,7 +20,7 @@ module.exports = React.createClass({
         disabled={this.props.readOnly}
         placeholder={this.props.component.placeholder}
         value={value}
-        onChange={this.setValue}
+        onChange={this.onChangeDatetime.bind(null, index)}
         />
     );
   }

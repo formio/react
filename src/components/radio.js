@@ -22,7 +22,7 @@ module.exports = React.createClass({
                   name={this.props.component.key}
                   value={v.value}
                   disabled={this.props.readOnly}
-                  onChange={this.setValue}
+                  onChange={this.onChange}
                   ></input>
                 {v.label}
               </label>

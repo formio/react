@@ -30,26 +30,21 @@ module.exports = {
   componentWillUnmount: function () {
     this.props.detachFromForm(this);
   },
-  setValue: function (event) {
-    var value = this.state.value;
-    var attribute = 'value';
-    if (this.props.component.type === 'checkbox') {
-      attribute = 'checked';
-    }
-    if (this.props.component.multiple) {
-      var index = event.currentTarget.getAttribute('data-index');
-      value[index] = event.currentTarget[attribute];
-    }
-    else {
-      value = event.currentTarget[attribute];
-    }
-    // Numbers need null as empty value or it won't submit.
-    if (value === '' && this.props.component.type === 'number') {
-      value = null;
-    }
-    this.setState({
-      value: value,
-      isPristine: false
+  onChange: function(event) {
+    var value = event.currentTarget.value;
+    var index = (this.props.component.multiple ? event.currentTarget.getAttribute('data-index') : null);
+    this.setValue(value, index);
+  },
+  setValue: function (value, index) {
+    this.setState(function(previousState, currentProps) {
+      if (index) {
+        previousState.value[index] = value;
+      }
+      else {
+        previousState.value = value;
+      }
+      previousState.isPristine = false;
+      return previousState;
     }, function() {
       if (typeof this.props.validate === 'function') {
         this.props.validate(this)

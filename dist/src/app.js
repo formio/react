@@ -31974,17 +31974,7 @@ module.exports = React.createClass({
 
 var React = require('react');
 var Formio = require('./Formio');
-//var ReactDOM = require('react-dom');
-//var SignaturePad = require('react-signature-pad');
-//var DateTimePicker = require('react-widgets/lib/DateTimePicker');
-//var momentLocalizer = require('react-widgets/lib/localizers/moment');
-//momentLocalizer(moment);
-//
-//React.render(
-//  <SignaturePad
-//    />
-//  , document.getElementById('formio')
-//);
+
 React.render(React.createElement(Formio, {
   src: 'https://randall.form.io/test'
   /*    form=""
@@ -32054,6 +32044,11 @@ var multiMixin = require('./mixins/multiMixin');
 module.exports = React.createClass({
   displayName: 'Checkbox',
   mixins: [componentMixin, multiMixin],
+  onChangeCheckbox: function onChangeCheckbox(event) {
+    var value = event.currentTarget.checked;
+    var index = this.props.component.multiple ? event.currentTarget.getAttribute('data-index') : null;
+    this.setValue(value, index);
+  },
   getSingleElement: function getSingleElement(value, index) {
     index = index || 0;
     var required = this.props.component.validate.required ? 'field-required' : '';
@@ -32070,7 +32065,7 @@ module.exports = React.createClass({
           name: this.props.name,
           value: value,
           disabled: this.props.readOnly,
-          onChange: this.setValue
+          onChange: this.onChangeCheckbox
         }),
         this.props.component.label
       )
@@ -32137,6 +32132,9 @@ var DateTimePicker = require('react-widgets/lib/DateTimePicker');
 module.exports = React.createClass({
   displayName: 'Datetime',
   mixins: [componentMixin, multiMixin],
+  onChangeDatetime: function onChangeDatetime(index, value, str) {
+    this.setValue(value, index);
+  },
   getSingleElement: function getSingleElement(value, index) {
     return React.createElement(DateTimePicker, {
       id: this.props.component.key,
@@ -32145,7 +32143,7 @@ module.exports = React.createClass({
       disabled: this.props.readOnly,
       placeholder: this.props.component.placeholder,
       value: value,
-      onChange: this.setValue
+      onChange: this.onChangeDatetime.bind(null, index)
     });
   }
 });
@@ -32275,25 +32273,20 @@ module.exports = {
   componentWillUnmount: function componentWillUnmount() {
     this.props.detachFromForm(this);
   },
-  setValue: function setValue(event) {
-    var value = this.state.value;
-    var attribute = 'value';
-    if (this.props.component.type === 'checkbox') {
-      attribute = 'checked';
-    }
-    if (this.props.component.multiple) {
-      var index = event.currentTarget.getAttribute('data-index');
-      value[index] = event.currentTarget[attribute];
-    } else {
-      value = event.currentTarget[attribute];
-    }
-    // Numbers need null as empty value or it won't submit.
-    if (value === '' && this.props.component.type === 'number') {
-      value = null;
-    }
-    this.setState({
-      value: value,
-      isPristine: false
+  onChange: function onChange(event) {
+    var value = event.currentTarget.value;
+    var index = this.props.component.multiple ? event.currentTarget.getAttribute('data-index') : null;
+    this.setValue(value, index);
+  },
+  setValue: function setValue(value, index) {
+    this.setState(function (previousState, currentProps) {
+      if (index) {
+        previousState.value[index] = value;
+      } else {
+        previousState.value = value;
+      }
+      previousState.isPristine = false;
+      return previousState;
     }, (function () {
       if (typeof this.props.validate === 'function') {
         this.props.validate(this);
@@ -32344,7 +32337,7 @@ module.exports = {
       disabled: this.props.readOnly,
       placeholder: this.props.component.placeholder,
       mask: this.props.component.inputMask,
-      onChange: this.setValue
+      onChange: this.onChange
     });
   }
 };
@@ -32499,7 +32492,7 @@ module.exports = React.createClass({
       min: this.props.component.validate.min,
       max: this.props.component.validate.max,
       step: this.props.component.validate.step,
-      onChange: this.setValue
+      onChange: this.onChangeNumber
     });
   }
 });
@@ -32608,7 +32601,7 @@ module.exports = React.createClass({
               name: this.props.component.key,
               value: v.value,
               disabled: this.props.readOnly,
-              onChange: this.setValue
+              onChange: this.onChange
             }),
             v.label
           )
@@ -32695,7 +32688,7 @@ module.exports = React.createClass({
       disabled: this.props.readOnly,
       placeholder: this.props.component.placeholder,
       rows: this.props.component.rows,
-      onChange: this.setValue
+      onChange: this.onChange
     });
   }
 });

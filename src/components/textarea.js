@@ -18,7 +18,7 @@ module.exports = React.createClass({
         disabled={this.props.readOnly}
         placeholder={this.props.component.placeholder}
         rows={this.props.component.rows}
-        onChange={this.setValue}
+        onChange={this.onChange}
       >
       </textarea>
     );

@@ -16,7 +16,7 @@ module.exports = {
         disabled={this.props.readOnly}
         placeholder={this.props.component.placeholder}
         mask={this.props.component.inputMask}
-        onChange={this.setValue}
+        onChange={this.onChange}
         >
       </input>
     );

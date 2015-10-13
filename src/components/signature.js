@@ -8,7 +8,7 @@ module.exports = React.createClass({
   render: function() {
     return(
       <div>
-        <SignaturePad style={{position:relative}}
+        <SignaturePad
           clearButton="true"
           {...this.props.component}
           />
