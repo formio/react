@@ -1,10 +1,11 @@
 'use strict'
 
 var React = require('react');
+var componentMixin = require('./mixins/componentMixin');
+var multiMixin = require('./mixins/multiMixin');
+var inputMixin = require('./mixins/inputMixin');
 
 module.exports = React.createClass({
   displayName: 'PhoneNumber',
-  render: function() {
-    return(<div>Phone number component coming soon</div>);
-  }
+  mixins: [componentMixin, multiMixin, inputMixin]
 });

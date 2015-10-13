@@ -1,12 +1,13 @@
 'use strict'
 
 var React = require('react');
+var Input = require('react-input-mask');
 
 module.exports = {
   getSingleElement: function(value, index) {
     index = index || 0;
     return(
-      <input
+      <Input
         type={this.props.component.inputType}
         className="form-control"
         id={this.props.component.key}
@@ -18,7 +19,7 @@ module.exports = {
         mask={this.props.component.inputMask}
         onChange={this.onChange}
         >
-      </input>
+      </Input>
     );
   }
 };

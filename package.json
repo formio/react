@@ -28,6 +28,7 @@
     "formiojs": "git+https://github.com/formio/formio.js.git",
     "moment": "^2.10.6",
     "react": "^0.13.3",
+    "react-input-mask": "^0.3.0",
     "react-signature-pad": "0.0.3",
     "react-widgets": "^2.8.2"
   },
