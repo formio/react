@@ -1,11 +1,13 @@
 'use strict'
 
 var React = require('react');
+var componentMixin = require('./mixins/componentMixin');
 var SignaturePad = require('react-signature-pad');
 
 module.exports = React.createClass({
   displayName: 'Signature',
-  render: function() {
+  mixins: [componentMixin],
+  getElements: function() {
     return(
       <div>
         <SignaturePad

@@ -9,6 +9,7 @@ require('./components');
 module.exports = React.createClass({
   displayName: 'Formio',
   getInitialState: function() {
+    console.log(this.props);
     return {
       form: this.props.form || {},
       submission: this.props.submission || {},

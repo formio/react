@@ -14,6 +14,7 @@ module.exports = function(gulp, plugins) {
       entries: ['./src/Formio.js'],
       transform: [plugins.babelify, plugins.reactify]
     })
+      .external('react')
       .bundle()
       .on('error', handleErrors)
       .pipe(plugins.source('Formio.js'))

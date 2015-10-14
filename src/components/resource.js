@@ -1,10 +1,14 @@
 'use strict'
 
 var React = require('react');
+var componentMixin = require('./mixins/componentMixin');
+var selectMixin = require('./mixins/selectMixin');
+var formiojs = require('formiojs');
 
 module.exports = React.createClass({
   displayName: 'Resource',
-  render: function() {
-    return(<div>Resource component coming soon</div>);
+  mixins: [componentMixin, selectMixin],
+  componentWillMount: function() {
+
   }
 });
