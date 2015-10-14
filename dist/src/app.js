@@ -34460,7 +34460,6 @@ var Demo = React.createClass({
     });
   },
   setSrc: function setSrc() {
-    console.log(this.state.inputSrc);
     this.setState({
       src: this.state.inputSrc
     });
@@ -34472,6 +34471,11 @@ var Demo = React.createClass({
   },
   render: function render() {
     var formioForm = this.state.src ? React.createElement(Formio, { src: this.state.src }) : '';
+    var showButton = this.state.src ? '' : React.createElement(
+      'a',
+      { className: 'btn btn-primary', onClick: this.setSrc },
+      'Show Form!'
+    );
     return React.createElement(
       'div',
       { className: 'panel panel-default' },
@@ -34502,11 +34506,7 @@ var Demo = React.createClass({
         React.createElement(
           'div',
           { className: 'form-group' },
-          React.createElement(
-            'a',
-            { className: 'btn btn-primary', onClick: this.setSrc },
-            'Show Form!'
-          )
+          showButton
         ),
         formioForm
       ),

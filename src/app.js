@@ -16,7 +16,6 @@ var Demo = React.createClass({
     });
   },
   setSrc: function() {
-    console.log(this.state.inputSrc);
     this.setState({
       src: this.state.inputSrc
     });
@@ -28,6 +27,7 @@ var Demo = React.createClass({
   },
   render: function() {
     var formioForm = (this.state.src ? <Formio src={this.state.src}></Formio> : '');
+    var showButton = (this.state.src ? '' : <a className="btn btn-primary" onClick={this.setSrc}>Show Form!</a>);
     return (
       <div className="panel panel-default">
         <div className="panel-heading">
@@ -39,7 +39,7 @@ var Demo = React.createClass({
             <input type="textfield" name="form" className="form-control" value={this.state.inputSrc} onChange={this.setInputSrc}/>
           </div>
           <div className="form-group">
-            <a className="btn btn-primary" onClick={this.setSrc}>Show Form!</a>
+            {showButton}
           </div>
           {formioForm}
         </div>
