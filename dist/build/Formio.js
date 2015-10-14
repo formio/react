@@ -15394,9 +15394,26 @@ module.exports = {
       selectItems: []
     };
   },
+  getValueField: function getValueField() {
+    return this.props.component.valueProperty || 'value';
+  },
+  onChangeSelect: function onChangeSelect(value) {
+    if (Array.isArray(value)) {
+      value.forEach((function (val, index) {
+        value[index] = val[this.getValueField()];
+      }).bind(this));
+    } else if (typeof value === "object") {
+      value = value[this.getValueField()];
+    }
+    this.setValue(value);
+  },
+  onBlur: function onBlur(event) {
+    // TODO: Need to stop custom values from saving by clearing on blur.
+  },
   getElements: function getElements() {
+    // TODO: Need to support custom item rendering in item template.
     var Element = this.props.component.multiple ? Multiselect : Combobox;
-    var valueField = 'value';
+    var valueField = this.getValueField();
     var textField = 'label';
     var classLabel = "control-label" + (this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
     var inputLabel = this.props.component.label && !this.props.component.hideLabel ? React.createElement(
@@ -15422,7 +15439,8 @@ module.exports = {
           suggest: true,
           filter: 'contains',
           value: this.state.value,
-          onChange: this.setValue
+          onChange: this.onChangeSelect,
+          onBlur: this.onBlur
         })
       )
     );
