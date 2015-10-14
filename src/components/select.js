@@ -9,7 +9,6 @@ module.exports = React.createClass({
   displayName: 'Select',
   mixins: [componentMixin, selectMixin],
   componentWillMount: function() {
-    console.log(this.props.component);
     switch (this.props.component.dataSrc) {
       case 'values':
         this.setState({

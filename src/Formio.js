@@ -9,11 +9,12 @@ require('./components');
 module.exports = React.createClass({
   displayName: 'Formio',
   getInitialState: function() {
-    console.log(this.props);
     return {
       form: this.props.form || {},
       submission: this.props.submission || {},
       submissions: this.props.submissions || [],
+      alerts: [],
+      isLoading: (this.props.form ? false : true),
       isSubmitting: false,
       isValid: true
     };
@@ -116,7 +117,8 @@ module.exports = React.createClass({
           this.props.onFormLoad(form);
         }
         this.setState({
-          form: form
+          form: form,
+          isLoading: false
         }, this.validateForm);
       }.bind(this));
       if (this.formio.submissionId) {
@@ -150,9 +152,15 @@ module.exports = React.createClass({
       isValid: allIsValid
     });
   },
+  showAlert: function(type, message) {
+    this.setState(function(previousState) {
+      return previousState.alerts.concat({type: type, message: message});
+    })
+  },
   onSubmit: function (event) {
     event.preventDefault();
     this.setState({
+      alerts: [],
       isSubmitting: true
     });
     this.updateData();
@@ -160,9 +168,10 @@ module.exports = React.createClass({
     sub.data = this.data;
 
     var request;
+    var method;
     // Do the submit here.
     if (this.state.form.action) {
-      var method = this.state.submission._id ? 'put' : 'post';
+      method = this.state.submission._id ? 'put' : 'post';
       request = formiojs.request(this.state.form.action, method, sub);
     }
     else {
@@ -174,7 +183,11 @@ module.exports = React.createClass({
       }
       this.setState({
         submission: submission,
-        isSubmitting: false
+        isSubmitting: false,
+        alerts: [{
+          type: 'success',
+          message: 'Submission was ' + ((method === 'put') ? 'updated' : 'created')
+        }]
       });
     }.bind(this))
     .catch(function(response) {
@@ -189,10 +202,14 @@ module.exports = React.createClass({
           if (this.inputs[detail.path]) {
             this.inputs[detail.path].setState({
               isValid: false,
+              isPristine: false,
               errorMessage: detail.message
             })
           }
         }.bind(this));
+      }
+      else {
+        this.showAlert('error', response);
       }
     }.bind(this));
   },
@@ -214,15 +231,22 @@ module.exports = React.createClass({
             isFormValid={this.state.isValid}
             data={this.state.submission.data}
             onElementRender={this.props.onElementRender}
+            showAlert={this.showAlert}
           />
         );
       }.bind(this));
     }
-    var loading = <i id="formio-loading" className="glyphicon glyphicon-refresh glyphicon-spin"></i>;
-    var alerts = <div ng-repeat="alert in formioAlerts" className="alert" role="alert"></div>;
+    var loading = (this.state.isLoading ? <i id="formio-loading" className="glyphicon glyphicon-refresh glyphicon-spin"></i> : '');
+    var alerts = this.state.alerts.map(function(alert) {
+        var className = "alert alert-" + alert.type;
+        return (<div className={className} role="alert">{alert.message}</div>);
+      });
+
 
     return (
       <form role="form" name="formioForm" onSubmit={this.onSubmit}>
+        {loading}
+        {alerts}
         {this.componentNodes}
       </form>
     );

@@ -6,7 +6,7 @@ var Demo = React.createClass({
   displayName: 'Demo',
   getInitialState: function() {
     return {
-      src: '',
+      src: 'https://randall.form.io/test',
       inputSrc: ''
     }
   },
