@@ -6432,7 +6432,7 @@ UncontrolledCalendar.BaseCalendar = Calendar;
 
 exports['default'] = UncontrolledCalendar;
 module.exports = exports['default'];
-},{"./Century":8,"./Decade":13,"./Footer":14,"./Header":15,"./Month":19,"./SlideTransition":25,"./Year":28,"./mixins/AriaDescendantMixin":30,"./mixins/PureRenderMixin":34,"./mixins/RtlParentContextMixin":36,"./mixins/TimeoutMixin":37,"./util/_":38,"./util/babelHelpers.js":39,"./util/compat":41,"./util/configuration":42,"./util/constants":43,"./util/dates":45,"./util/interaction":49,"./util/propTypes":51,"./util/widgetHelpers":53,"classnames":54,"react":"react","uncontrollable":77}],8:[function(require,module,exports){
+},{"./Century":8,"./Decade":11,"./Footer":13,"./Header":14,"./Month":18,"./SlideTransition":24,"./Year":27,"./mixins/AriaDescendantMixin":29,"./mixins/PureRenderMixin":33,"./mixins/RtlParentContextMixin":35,"./mixins/TimeoutMixin":36,"./util/_":37,"./util/babelHelpers.js":38,"./util/compat":39,"./util/configuration":40,"./util/constants":41,"./util/dates":43,"./util/interaction":47,"./util/propTypes":49,"./util/widgetHelpers":51,"classnames":52,"react":"react","uncontrollable":75}],8:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -6606,609 +6606,7 @@ function getCenturyDecades(_date) {
   });
 }
 module.exports = exports['default'];
-},{"./mixins/AriaDescendantMixin":30,"./mixins/PureRenderMixin":34,"./mixins/RtlChildContextMixin":35,"./util/_":38,"./util/babelHelpers.js":39,"./util/configuration":42,"./util/dates":45,"./util/propTypes":51,"./util/widgetHelpers":53,"classnames":54,"react":"react"}],9:[function(require,module,exports){
-'use strict';
-
-var babelHelpers = require('./util/babelHelpers.js');
-
-exports.__esModule = true;
-
-var _react = require('react');
-
-var _react2 = babelHelpers.interopRequireDefault(_react);
-
-var _classnames = require('classnames');
-
-var _classnames2 = babelHelpers.interopRequireDefault(_classnames);
-
-var _util_ = require('./util/_');
-
-var _util_2 = babelHelpers.interopRequireDefault(_util_);
-
-var _utilFilter = require('./util/filter');
-
-var _utilFilter2 = babelHelpers.interopRequireDefault(_utilFilter);
-
-var _Popup = require('./Popup');
-
-var _Popup2 = babelHelpers.interopRequireDefault(_Popup);
-
-var _WidgetButton = require('./WidgetButton');
-
-var _WidgetButton2 = babelHelpers.interopRequireDefault(_WidgetButton);
-
-var _ComboboxInput = require('./ComboboxInput');
-
-var _ComboboxInput2 = babelHelpers.interopRequireDefault(_ComboboxInput);
-
-var _utilCompat = require('./util/compat');
-
-var _utilCompat2 = babelHelpers.interopRequireDefault(_utilCompat);
-
-var _utilPropTypes = require('./util/propTypes');
-
-var _utilPropTypes2 = babelHelpers.interopRequireDefault(_utilPropTypes);
-
-var _List = require('./List');
-
-var _List2 = babelHelpers.interopRequireDefault(_List);
-
-var _ListGroupable = require('./ListGroupable');
-
-var _ListGroupable2 = babelHelpers.interopRequireDefault(_ListGroupable);
-
-var _utilValidateListInterface = require('./util/validateListInterface');
-
-var _utilValidateListInterface2 = babelHelpers.interopRequireDefault(_utilValidateListInterface);
-
-var _uncontrollable = require('uncontrollable');
-
-var _uncontrollable2 = babelHelpers.interopRequireDefault(_uncontrollable);
-
-var _utilDataHelpers = require('./util/dataHelpers');
-
-var _utilInteraction = require('./util/interaction');
-
-var _utilWidgetHelpers = require('./util/widgetHelpers');
-
-var defaultSuggest = function defaultSuggest(f) {
-  return f === true ? 'startsWith' : f ? f : 'eq';
-};
-
-var omit = _util_2['default'].omit;
-var pick = _util_2['default'].pick;
-
-var propTypes = {
-  //-- controlled props -----------
-  value: _react2['default'].PropTypes.any,
-  onChange: _react2['default'].PropTypes.func,
-  open: _react2['default'].PropTypes.bool,
-  onToggle: _react2['default'].PropTypes.func,
-  //------------------------------------
-
-  itemComponent: _utilPropTypes2['default'].elementType,
-  listComponent: _utilPropTypes2['default'].elementType,
-
-  groupComponent: _utilPropTypes2['default'].elementType,
-  groupBy: _utilPropTypes2['default'].accessor,
-
-  data: _react2['default'].PropTypes.array,
-  valueField: _react2['default'].PropTypes.string,
-  textField: _utilPropTypes2['default'].accessor,
-  name: _react2['default'].PropTypes.string,
-
-  onSelect: _react2['default'].PropTypes.func,
-
-  disabled: _utilPropTypes2['default'].disabled,
-  readOnly: _utilPropTypes2['default'].readOnly,
-  autoFocus: _react2['default'].PropTypes.bool,
-
-  suggest: _utilPropTypes2['default'].filter,
-  filter: _utilPropTypes2['default'].filter,
-
-  busy: _react2['default'].PropTypes.bool,
-
-  dropUp: _react2['default'].PropTypes.bool,
-  duration: _react2['default'].PropTypes.number, //popup
-
-  placeholder: _react2['default'].PropTypes.string,
-
-  messages: _react2['default'].PropTypes.shape({
-    open: _utilPropTypes2['default'].message,
-    emptyList: _utilPropTypes2['default'].message,
-    emptyFilter: _utilPropTypes2['default'].message
-  })
-};
-
-var ComboBox = _react2['default'].createClass(babelHelpers.createDecoratedObject([{
-  key: 'displayName',
-  initializer: function initializer() {
-    return 'ComboBox';
-  }
-}, {
-  key: 'mixins',
-  initializer: function initializer() {
-    return [require('./mixins/TimeoutMixin'), require('./mixins/DataFilterMixin'), require('./mixins/PopupScrollToMixin'), require('./mixins/RtlParentContextMixin'), require('./mixins/AriaDescendantMixin')('input')];
-  }
-}, {
-  key: 'propTypes',
-  initializer: function initializer() {
-    return propTypes;
-  }
-}, {
-  key: 'getInitialState',
-  value: function getInitialState() {
-    var _props = this.props;
-    var value = _props.value;
-    var data = _props.data;
-    var valueField = _props.valueField;
-    var items = this.process(data, value);
-    var idx = _utilDataHelpers.dataIndexOf(items, value, valueField);
-
-    return {
-      selectedItem: items[idx],
-      focusedItem: items[! ~idx ? 0 : idx],
-      processedData: items,
-      open: false
-    };
-  }
-}, {
-  key: 'getDefaultProps',
-  value: function getDefaultProps() {
-    return {
-      data: [],
-      value: '',
-      open: false,
-      suggest: false,
-      filter: false,
-      delay: 500,
-
-      messages: msgs(),
-      ariaActiveDescendantKey: 'combobox'
-    };
-  }
-}, {
-  key: 'componentDidUpdate',
-  value: function componentDidUpdate() {
-    this.refs.list && _utilValidateListInterface2['default'](this.refs.list);
-  }
-}, {
-  key: 'shouldComponentUpdate',
-  value: function shouldComponentUpdate(nextProps, nextState) {
-    var isSuggesting = this.refs.input && this.refs.input.isSuggesting(),
-        stateChanged = !_util_2['default'].isShallowEqual(nextState, this.state),
-        valueChanged = !_util_2['default'].isShallowEqual(nextProps, this.props);
-
-    return isSuggesting || stateChanged || valueChanged;
-  }
-}, {
-  key: 'componentWillReceiveProps',
-  value: function componentWillReceiveProps(nextProps) {
-    var value = nextProps.value;
-    var data = nextProps.data;
-    var valueField = nextProps.valueField;
-    var textField = nextProps.textField;
-
-    var rawIdx = _utilDataHelpers.dataIndexOf(data, value, valueField),
-        valueItem = rawIdx === -1 ? nextProps.value : nextProps.data[rawIdx],
-        isSuggesting = this.refs.input.isSuggesting(),
-        items = this.process(nextProps.data, nextProps.value, (rawIdx === -1 || isSuggesting) && _utilDataHelpers.dataText(valueItem, textField)),
-        idx = _utilDataHelpers.dataIndexOf(items, value, valueField),
-        focused = this.filterIndexOf(items, _utilDataHelpers.dataText(valueItem, textField));
-
-    this._searchTerm = '';
-
-    this.setState({
-      processedData: items,
-      selectedItem: items[idx],
-      focusedItem: items[idx === -1 ? focused !== -1 ? focused : 0 // focus the closest match
-      : idx]
-    });
-  }
-}, {
-  key: 'render',
-  value: function render() {
-    var _cx,
-        _this = this;
-
-    var _props2 = this.props;
-    var className = _props2.className;
-    var tabIndex = _props2.tabIndex;
-    var filter = _props2.filter;
-    var suggest = _props2.suggest;
-    var valueField = _props2.valueField;
-    var textField = _props2.textField;
-    var groupBy = _props2.groupBy;
-    var messages = _props2.messages;
-    var data = _props2.data;
-    var busy = _props2.busy;
-    var dropUp = _props2.dropUp;
-    var name = _props2.name;
-    var autoFocus = _props2.autoFocus;
-    var placeholder = _props2.placeholder;
-    var value = _props2.value;
-    var open = _props2.open;
-    var disabled = _props2.disabled;
-    var readOnly = _props2.readOnly;
-    var List = _props2.listComponent;
-
-    List = List || groupBy && _ListGroupable2['default'] || _List2['default'];
-
-    var elementProps = omit(this.props, Object.keys(propTypes));
-    var listProps = pick(this.props, Object.keys(_utilCompat2['default'].type(List).propTypes));
-    var popupProps = pick(this.props, Object.keys(_utilCompat2['default'].type(_Popup2['default']).propTypes));
-
-    var _state = this.state;
-    var focusedItem = _state.focusedItem;
-    var selectedItem = _state.selectedItem;
-    var focused = _state.focused;
-
-    var items = this._data(),
-        valueItem = _utilDataHelpers.dataItem(data, value, valueField),
-        // take value from the raw data
-    inputID = _utilWidgetHelpers.instanceId(this, '_input'),
-        listID = _utilWidgetHelpers.instanceId(this, '_listbox'),
-        completeType = suggest ? filter ? 'both' : 'inline' : filter ? 'list' : '';
-
-    var shouldRenderList = _utilWidgetHelpers.isFirstFocusedRender(this) || open;
-
-    messages = msgs(messages);
-
-    return _react2['default'].createElement(
-      'div',
-      babelHelpers._extends({}, elementProps, {
-        ref: 'element',
-        onKeyDown: this._keyDown,
-        onFocus: this._focus.bind(null, true),
-        onBlur: this._focus.bind(null, false),
-        tabIndex: '-1',
-        className: _classnames2['default'](className, 'rw-combobox', 'rw-widget', (_cx = {
-          'rw-state-focus': focused,
-          'rw-state-disabled': disabled,
-          'rw-state-readonly': readOnly,
-          'rw-rtl': this.isRtl()
-
-        }, _cx['rw-open' + (dropUp ? '-up' : '')] = open, _cx))
-      }),
-      _react2['default'].createElement(
-        _WidgetButton2['default'],
-        {
-          tabIndex: '-1',
-          className: 'rw-select',
-          onClick: this.toggle,
-          disabled: !!(disabled || readOnly)
-        },
-        _react2['default'].createElement(
-          'i',
-          { className: _classnames2['default']('rw-i rw-i-caret-down', { 'rw-loading': busy }) },
-          _react2['default'].createElement(
-            'span',
-            { className: 'rw-sr' },
-            _util_2['default'].result(messages.open, this.props)
-          )
-        )
-      ),
-      _react2['default'].createElement(_ComboboxInput2['default'], {
-        ref: 'input',
-        id: inputID,
-        autoFocus: autoFocus,
-        tabIndex: tabIndex,
-        suggest: suggest,
-        name: name,
-        role: 'combobox',
-        'aria-owns': listID,
-        'aria-busy': !!busy,
-        'aria-autocomplete': completeType,
-        'aria-expanded': open,
-        'aria-haspopup': true,
-        placeholder: placeholder,
-        disabled: disabled,
-        readOnly: readOnly,
-        className: 'rw-input',
-        value: _utilDataHelpers.dataText(valueItem, textField),
-        onChange: this._inputTyping,
-        onKeyDown: this._inputKeyDown
-      }),
-      _react2['default'].createElement(
-        _Popup2['default'],
-        babelHelpers._extends({}, popupProps, {
-          onOpening: function () {
-            return _this.refs.list.forceUpdate();
-          },
-          onRequestClose: this.close
-        }),
-        _react2['default'].createElement(
-          'div',
-          null,
-          shouldRenderList && _react2['default'].createElement(List, babelHelpers._extends({ ref: 'list'
-          }, listProps, {
-            id: listID,
-            data: items,
-            selected: selectedItem,
-            focused: focusedItem,
-            'aria-hidden': !open,
-            'aria-labelledby': inputID,
-            'aria-live': open && 'polite',
-            onSelect: this._onSelect,
-            onMove: this._scrollTo,
-            messages: {
-              emptyList: data.length ? messages.emptyFilter : messages.emptyList
-            } }))
-        )
-      )
-    );
-  }
-}, {
-  key: '_onSelect',
-  decorators: [_utilInteraction.widgetEditable],
-  value: function _onSelect(data) {
-    this.close();
-    _utilWidgetHelpers.notify(this.props.onSelect, data);
-    this.change(data);
-    this.focus();
-  }
-}, {
-  key: '_inputKeyDown',
-  value: function _inputKeyDown(e) {
-    this._deleting = e.key === 'Backspace' || e.key === 'Delete';
-    this._isTyping = true;
-  }
-}, {
-  key: '_inputTyping',
-  value: function _inputTyping(e) {
-    var _props3 = this.props;
-    var data = _props3.data;
-    var textField = _props3.textField;
-
-    var shouldSuggest = !!this.props.suggest,
-        strVal = e.target.value,
-        suggestion;
-
-    suggestion = this._deleting || !shouldSuggest ? strVal : this.suggest(this._data(), strVal);
-
-    suggestion = suggestion || strVal;
-
-    data = _util_2['default'].find(data, function (item) {
-      return _utilDataHelpers.dataText(item, textField).toLowerCase() === suggestion.toLowerCase();
-    });
-
-    this.change(!this._deleting && data ? data : strVal, true);
-
-    this.open();
-  }
-}, {
-  key: 'focus',
-  value: function focus() {
-    this.refs.input.focus();
-  }
-}, {
-  key: '_focus',
-  decorators: [_utilInteraction.widgetEnabled],
-  value: function _focus(focused, e) {
-    var _this2 = this;
-
-    !focused && this.refs.input.accept(); //not suggesting anymore
-
-    this.setTimeout('focus', function () {
-
-      if (!focused) _this2.close();
-
-      if (focused !== _this2.state.focused) {
-        _utilWidgetHelpers.notify(_this2.props[focused ? 'onFocus' : 'onBlur'], e);
-        _this2.setState({ focused: focused });
-      }
-    });
-  }
-}, {
-  key: '_keyDown',
-  decorators: [_utilInteraction.widgetEditable],
-  value: function _keyDown(e) {
-    var self = this,
-        key = e.key,
-        alt = e.altKey,
-        list = this.refs.list,
-        focusedItem = this.state.focusedItem,
-        selectedItem = this.state.selectedItem,
-        isOpen = this.props.open;
-
-    if (key === 'End') if (isOpen) this.setState({ focusedItem: list.last() });else select(list.last(), true);else if (key === 'Home') if (isOpen) this.setState({ focusedItem: list.first() });else select(list.first(), true);else if (key === 'Escape' && isOpen) this.close();else if (key === 'Enter' && isOpen) {
-      select(this.state.focusedItem, true);
-    } else if (key === 'ArrowDown') {
-      if (alt) this.open();else {
-        if (isOpen) this.setState({ focusedItem: list.next(focusedItem) });else select(list.next(selectedItem), true);
-      }
-    } else if (key === 'ArrowUp') {
-      if (alt) this.close();else {
-        if (isOpen) this.setState({ focusedItem: list.prev(focusedItem) });else select(list.prev(selectedItem), true);
-      }
-    }
-
-    _utilWidgetHelpers.notify(this.props.onKeyDown, [e]);
-
-    function select(item, fromList) {
-      if (!item) return self.change(_utilCompat2['default'].findDOMNode(self.refs.input).value, false);
-
-      self.refs.input.accept(true); //removes caret
-
-      if (fromList) return self._onSelect(item);
-
-      self.change(item, false);
-    }
-  }
-}, {
-  key: 'change',
-  value: function change(data, typing) {
-    this._typedChange = !!typing;
-    _utilWidgetHelpers.notify(this.props.onChange, data);
-  }
-}, {
-  key: 'open',
-  value: function open() {
-    if (!this.props.open) _utilWidgetHelpers.notify(this.props.onToggle, true);
-  }
-}, {
-  key: 'close',
-  value: function close() {
-    if (this.props.open) _utilWidgetHelpers.notify(this.props.onToggle, false);
-  }
-}, {
-  key: 'toggle',
-  decorators: [_utilInteraction.widgetEditable],
-  value: function toggle() {
-    this.focus();
-
-    this.props.open ? this.close() : this.open();
-  }
-}, {
-  key: 'suggest',
-  value: function suggest(data, value) {
-    var _props4 = this.props;
-    var textField = _props4.textField;
-    var suggest = _props4.suggest;
-    var minLength = _props4.minLength;
-
-    var word = _utilDataHelpers.dataText(value, textField),
-        suggestion;
-
-    suggest = defaultSuggest(suggest);
-
-    if (!(word || '').trim() || word.length < (minLength || 1)) return '';
-
-    suggestion = typeof value === 'string' ? _util_2['default'].find(data, getFilter(suggest, word, textField)) : value;
-
-    if (suggestion && (!this.state || !this.state.deleting)) return _utilDataHelpers.dataText(suggestion, textField);
-
-    return '';
-  }
-}, {
-  key: '_data',
-  value: function _data() {
-    return this.state.processedData;
-  }
-}, {
-  key: 'process',
-  value: function process(data, values, searchTerm) {
-    if (this.props.filter && searchTerm) data = this.filter(data, searchTerm);
-
-    return data;
-  }
-}]));
-
-function msgs(msgs) {
-  return babelHelpers._extends({
-    open: 'open combobox',
-    emptyList: 'There are no items in this list',
-    emptyFilter: 'The filter returned no results'
-  }, msgs);
-}
-
-function getFilter(suggest, word, textField) {
-  return typeof suggest === 'string' ? function (item) {
-    return _utilFilter2['default'][suggest](_utilDataHelpers.dataText(item, textField).toLowerCase(), word.toLowerCase());
-  } : function (item) {
-    return suggest(item, word);
-  };
-}
-
-var UncontrolledComboBox = _uncontrollable2['default'](ComboBox, { open: 'onToggle', value: 'onChange' });
-
-UncontrolledComboBox.BaseComboBox = ComboBox;
-
-exports['default'] = UncontrolledComboBox;
-module.exports = exports['default'];
-},{"./ComboboxInput":10,"./List":16,"./ListGroupable":17,"./Popup":23,"./WidgetButton":27,"./mixins/AriaDescendantMixin":30,"./mixins/DataFilterMixin":31,"./mixins/PopupScrollToMixin":33,"./mixins/RtlParentContextMixin":36,"./mixins/TimeoutMixin":37,"./util/_":38,"./util/babelHelpers.js":39,"./util/compat":41,"./util/dataHelpers":44,"./util/filter":48,"./util/interaction":49,"./util/propTypes":51,"./util/validateListInterface":52,"./util/widgetHelpers":53,"classnames":54,"react":"react","uncontrollable":77}],10:[function(require,module,exports){
-'use strict';
-
-var babelHelpers = require('./util/babelHelpers.js');
-
-exports.__esModule = true;
-
-var _react = require('react');
-
-var _react2 = babelHelpers.interopRequireDefault(_react);
-
-var _utilCaret = require('./util/caret');
-
-var _utilCaret2 = babelHelpers.interopRequireDefault(_utilCaret);
-
-var _utilCompat = require('./util/compat');
-
-var _utilCompat2 = babelHelpers.interopRequireDefault(_utilCompat);
-
-exports['default'] = _react2['default'].createClass({
-
-  displayName: 'ComboboxInput',
-
-  propTypes: {
-    value: _react2['default'].PropTypes.string,
-    onChange: _react2['default'].PropTypes.func.isRequired
-  },
-
-  componentDidUpdate: function componentDidUpdate() {
-    var input = _utilCompat2['default'].findDOMNode(this),
-        val = this.props.value;
-
-    if (this.isSuggesting()) {
-      var start = val.toLowerCase().indexOf(this._last.toLowerCase()) + this._last.length,
-          end = val.length - start;
-
-      if (start >= 0) {
-        _utilCaret2['default'](input, start, start + end);
-      }
-    }
-  },
-
-  getDefaultProps: function getDefaultProps() {
-    return {
-      value: ''
-    };
-  },
-
-  render: function render() {
-    return _react2['default'].createElement('input', babelHelpers._extends({}, this.props, {
-      type: 'text',
-      'aria-disabled': this.props.disabled,
-      'aria-readonly': this.props.readOnly,
-      className: this.props.className + ' rw-input',
-      onKeyDown: this.props.onKeyDown,
-      onChange: this._change,
-      value: this.props.value == null ? '' : this.props.value
-    }));
-  },
-
-  isSuggesting: function isSuggesting() {
-    var val = this.props.value,
-        isSuggestion = this._last != null && val.toLowerCase().indexOf(this._last.toLowerCase()) !== -1;
-
-    return this.props.suggest && isSuggestion;
-  },
-
-  accept: function accept(removeCaret) {
-    var val = _utilCompat2['default'].findDOMNode(this).value || '',
-        end = val.length;
-
-    this._last = null;
-    removeCaret && _utilCaret2['default'](_utilCompat2['default'].findDOMNode(this), end, end);
-  },
-
-  _change: function _change(e) {
-    var val = e.target.value,
-        pl = !!this.props.placeholder;
-
-    // IE fires input events when setting/unsetting placeholders.
-    // issue #112
-    if (pl && !val && val === (this.props.value || '')) return;
-
-    this._last = val;
-    this.props.onChange(e, val);
-  },
-
-  focus: function focus() {
-    _utilCompat2['default'].findDOMNode(this).focus();
-  }
-});
-module.exports = exports['default'];
-},{"./util/babelHelpers.js":39,"./util/caret":40,"./util/compat":41,"react":"react"}],11:[function(require,module,exports){
+},{"./mixins/AriaDescendantMixin":29,"./mixins/PureRenderMixin":33,"./mixins/RtlChildContextMixin":34,"./util/_":37,"./util/babelHelpers.js":38,"./util/configuration":40,"./util/dates":43,"./util/propTypes":49,"./util/widgetHelpers":51,"classnames":52,"react":"react"}],9:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -7315,7 +6713,7 @@ function chain(a, b, thisArg) {
     b && b.apply(thisArg, arguments);
   };
 }
-},{"./util/babelHelpers.js":39,"./util/compat":41,"./util/configuration":42,"./util/propTypes":51,"classnames":54,"react":"react"}],12:[function(require,module,exports){
+},{"./util/babelHelpers.js":38,"./util/compat":39,"./util/configuration":40,"./util/propTypes":49,"classnames":52,"react":"react"}],10:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -7861,7 +7259,7 @@ function dateOrNull(dt) {
   return null;
 }
 module.exports = exports['default'];
-},{"./Calendar":7,"./DateInput":11,"./Popup":23,"./TimeList":26,"./WidgetButton":27,"./mixins/AriaDescendantMixin":30,"./mixins/PopupScrollToMixin":33,"./mixins/PureRenderMixin":34,"./mixins/RtlParentContextMixin":36,"./mixins/TimeoutMixin":37,"./util/_":38,"./util/babelHelpers.js":39,"./util/compat":41,"./util/configuration":42,"./util/constants":43,"./util/dates":45,"./util/interaction":49,"./util/propTypes":51,"./util/widgetHelpers":53,"classnames":54,"react":"react","react/lib/getActiveElement":80,"react/lib/invariant":81,"uncontrollable":77}],13:[function(require,module,exports){
+},{"./Calendar":7,"./DateInput":9,"./Popup":22,"./TimeList":25,"./WidgetButton":26,"./mixins/AriaDescendantMixin":29,"./mixins/PopupScrollToMixin":32,"./mixins/PureRenderMixin":33,"./mixins/RtlParentContextMixin":35,"./mixins/TimeoutMixin":36,"./util/_":37,"./util/babelHelpers.js":38,"./util/compat":39,"./util/configuration":40,"./util/constants":41,"./util/dates":43,"./util/interaction":47,"./util/propTypes":49,"./util/widgetHelpers":51,"classnames":52,"react":"react","react/lib/getActiveElement":78,"react/lib/invariant":79,"uncontrollable":75}],11:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -8029,7 +7427,481 @@ function getDecadeYears(_date) {
   });
 }
 module.exports = exports['default'];
-},{"./mixins/AriaDescendantMixin":30,"./mixins/PureRenderMixin":34,"./mixins/RtlChildContextMixin":35,"./util/_":38,"./util/babelHelpers.js":39,"./util/configuration":42,"./util/dates":45,"./util/propTypes":51,"./util/widgetHelpers":53,"classnames":54,"react":"react"}],14:[function(require,module,exports){
+},{"./mixins/AriaDescendantMixin":29,"./mixins/PureRenderMixin":33,"./mixins/RtlChildContextMixin":34,"./util/_":37,"./util/babelHelpers.js":38,"./util/configuration":40,"./util/dates":43,"./util/propTypes":49,"./util/widgetHelpers":51,"classnames":52,"react":"react"}],12:[function(require,module,exports){
+'use strict';
+
+var babelHelpers = require('./util/babelHelpers.js');
+
+var _react = require('react');
+
+var _react2 = babelHelpers.interopRequireDefault(_react);
+
+var _reactLibGetActiveElement = require('react/lib/getActiveElement');
+
+var _reactLibGetActiveElement2 = babelHelpers.interopRequireDefault(_reactLibGetActiveElement);
+
+var _domHelpersQueryContains = require('dom-helpers/query/contains');
+
+var _domHelpersQueryContains2 = babelHelpers.interopRequireDefault(_domHelpersQueryContains);
+
+var _classnames = require('classnames');
+
+var _classnames2 = babelHelpers.interopRequireDefault(_classnames);
+
+var _util_ = require('./util/_');
+
+var _util_2 = babelHelpers.interopRequireDefault(_util_);
+
+var _Popup = require('./Popup');
+
+var _Popup2 = babelHelpers.interopRequireDefault(_Popup);
+
+var _utilCompat = require('./util/compat');
+
+var _utilCompat2 = babelHelpers.interopRequireDefault(_utilCompat);
+
+var _utilPropTypes = require('./util/propTypes');
+
+var _utilPropTypes2 = babelHelpers.interopRequireDefault(_utilPropTypes);
+
+var _List = require('./List');
+
+var _List2 = babelHelpers.interopRequireDefault(_List);
+
+var _ListGroupable = require('./ListGroupable');
+
+var _ListGroupable2 = babelHelpers.interopRequireDefault(_ListGroupable);
+
+var _utilValidateListInterface = require('./util/validateListInterface');
+
+var _utilValidateListInterface2 = babelHelpers.interopRequireDefault(_utilValidateListInterface);
+
+var _uncontrollable = require('uncontrollable');
+
+var _uncontrollable2 = babelHelpers.interopRequireDefault(_uncontrollable);
+
+var _utilDataHelpers = require('./util/dataHelpers');
+
+var _utilInteraction = require('./util/interaction');
+
+var _utilWidgetHelpers = require('./util/widgetHelpers');
+
+var omit = _util_2['default'].omit;
+var pick = _util_2['default'].pick;
+var result = _util_2['default'].result;
+
+var propTypes = {
+  //-- controlled props -----------
+  value: _react2['default'].PropTypes.any,
+  onChange: _react2['default'].PropTypes.func,
+  open: _react2['default'].PropTypes.bool,
+  onToggle: _react2['default'].PropTypes.func,
+  //------------------------------------
+
+  data: _react2['default'].PropTypes.array,
+  valueField: _react2['default'].PropTypes.string,
+  textField: _utilPropTypes2['default'].accessor,
+
+  valueComponent: _utilPropTypes2['default'].elementType,
+  itemComponent: _utilPropTypes2['default'].elementType,
+  listComponent: _utilPropTypes2['default'].elementType,
+
+  groupComponent: _utilPropTypes2['default'].elementType,
+  groupBy: _utilPropTypes2['default'].accessor,
+
+  onSelect: _react2['default'].PropTypes.func,
+
+  searchTerm: _react2['default'].PropTypes.string,
+  onSearch: _react2['default'].PropTypes.func,
+
+  busy: _react2['default'].PropTypes.bool,
+
+  delay: _react2['default'].PropTypes.number,
+
+  dropUp: _react2['default'].PropTypes.bool,
+  duration: _react2['default'].PropTypes.number, //popup
+
+  disabled: _utilPropTypes2['default'].disabled,
+
+  readOnly: _utilPropTypes2['default'].readOnly,
+
+  messages: _react2['default'].PropTypes.shape({
+    open: _utilPropTypes2['default'].message,
+    emptyList: _utilPropTypes2['default'].message,
+    emptyFilter: _utilPropTypes2['default'].message,
+    filterPlaceholder: _utilPropTypes2['default'].message
+  })
+};
+
+var DropdownList = _react2['default'].createClass(babelHelpers.createDecoratedObject([{
+  key: 'displayName',
+  initializer: function initializer() {
+    return 'DropdownList';
+  }
+}, {
+  key: 'mixins',
+  initializer: function initializer() {
+    return [require('./mixins/TimeoutMixin'), require('./mixins/PureRenderMixin'), require('./mixins/DataFilterMixin'), require('./mixins/PopupScrollToMixin'), require('./mixins/RtlParentContextMixin'), require('./mixins/AriaDescendantMixin')()];
+  }
+}, {
+  key: 'propTypes',
+  initializer: function initializer() {
+    return propTypes;
+  }
+}, {
+  key: 'getDefaultProps',
+  value: function getDefaultProps() {
+    return {
+      delay: 500,
+      value: '',
+      open: false,
+      data: [],
+      searchTerm: '',
+      messages: msgs(),
+      ariaActiveDescendantKey: 'dropdownlist'
+    };
+  }
+}, {
+  key: 'getInitialState',
+  value: function getInitialState() {
+    var _props = this.props;
+    var open = _props.open;
+    var filter = _props.filter;
+    var value = _props.value;
+    var data = _props.data;
+    var searchTerm = _props.searchTerm;
+    var valueField = _props.valueField;
+
+    var processed = filter ? this.filter(data, searchTerm) : data,
+        initialIdx = _utilDataHelpers.dataIndexOf(data, value, valueField);
+
+    return {
+      filteredData: open && filter ? processed : null,
+      selectedItem: processed[initialIdx],
+      focusedItem: processed[initialIdx] || data[0]
+    };
+  }
+}, {
+  key: 'componentDidUpdate',
+  value: function componentDidUpdate() {
+    this.refs.list && _utilValidateListInterface2['default'](this.refs.list);
+  }
+}, {
+  key: 'componentWillReceiveProps',
+  value: function componentWillReceiveProps(props) {
+    var open = props.open;
+    var filter = props.filter;
+    var value = props.value;
+    var data = props.data;
+    var searchTerm = props.searchTerm;
+    var valueField = props.valueField;
+
+    var processed = filter ? this.filter(data, searchTerm) : data,
+        idx = _utilDataHelpers.dataIndexOf(data, value, valueField);
+
+    this.setState({
+      filteredData: open && filter ? processed : null,
+      selectedItem: processed[idx],
+      focusedItem: processed[! ~idx ? 0 : idx]
+    });
+  }
+}, {
+  key: 'render',
+  value: function render() {
+    var _cx,
+        _this = this;
+
+    var _props2 = this.props;
+    var className = _props2.className;
+    var tabIndex = _props2.tabIndex;
+    var filter = _props2.filter;
+    var valueField = _props2.valueField;
+    var textField = _props2.textField;
+    var groupBy = _props2.groupBy;
+    var messages = _props2.messages;
+    var data = _props2.data;
+    var busy = _props2.busy;
+    var dropUp = _props2.dropUp;
+    var placeholder = _props2.placeholder;
+    var value = _props2.value;
+    var open = _props2.open;
+    var disabled = _props2.disabled;
+    var readOnly = _props2.readOnly;
+    var ValueComponent = _props2.valueComponent;
+    var List = _props2.listComponent;
+
+    List = List || groupBy && _ListGroupable2['default'] || _List2['default'];
+
+    var elementProps = omit(this.props, Object.keys(propTypes));
+    var listProps = pick(this.props, Object.keys(_utilCompat2['default'].type(List).propTypes));
+    var popupProps = pick(this.props, Object.keys(_utilCompat2['default'].type(_Popup2['default']).propTypes));
+
+    var _state = this.state;
+    var focusedItem = _state.focusedItem;
+    var selectedItem = _state.selectedItem;
+    var focused = _state.focused;
+
+    var items = this._data(),
+        valueItem = _utilDataHelpers.dataItem(data, value, valueField),
+        // take value from the raw data
+    listID = _utilWidgetHelpers.instanceId(this, '__listbox');
+
+    var shouldRenderList = _utilWidgetHelpers.isFirstFocusedRender(this) || open;
+
+    messages = msgs(messages);
+
+    return _react2['default'].createElement(
+      'div',
+      babelHelpers._extends({}, elementProps, {
+        ref: 'input',
+        role: 'combobox',
+        tabIndex: tabIndex || '0',
+        'aria-expanded': open,
+        'aria-haspopup': true,
+        'aria-owns': listID,
+        'aria-busy': !!busy,
+        'aria-live': !open && 'polite',
+        //aria-activedescendant={activeID}
+        'aria-autocomplete': 'list',
+        'aria-disabled': disabled,
+        'aria-readonly': readOnly,
+        onKeyDown: this._keyDown,
+        onClick: this._click,
+        onFocus: this._focus.bind(null, true),
+        onBlur: this._focus.bind(null, false),
+        className: _classnames2['default'](className, 'rw-dropdownlist', 'rw-widget', (_cx = {
+          'rw-state-disabled': disabled,
+          'rw-state-readonly': readOnly,
+          'rw-state-focus': focused,
+          'rw-rtl': this.isRtl()
+
+        }, _cx['rw-open' + (dropUp ? '-up' : '')] = open, _cx)) }),
+      _react2['default'].createElement(
+        'span',
+        { className: 'rw-dropdownlist-picker rw-select rw-btn' },
+        _react2['default'].createElement(
+          'i',
+          { className: 'rw-i rw-i-caret-down' + (busy ? ' rw-loading' : '') },
+          _react2['default'].createElement(
+            'span',
+            { className: 'rw-sr' },
+            result(messages.open, this.props)
+          )
+        )
+      ),
+      _react2['default'].createElement(
+        'div',
+        {
+          className: 'rw-input'
+        },
+        !valueItem && placeholder ? _react2['default'].createElement(
+          'span',
+          { className: 'rw-placeholder' },
+          placeholder
+        ) : this.props.valueComponent ? _react2['default'].createElement(ValueComponent, { item: valueItem }) : _utilDataHelpers.dataText(valueItem, textField)
+      ),
+      _react2['default'].createElement(
+        _Popup2['default'],
+        babelHelpers._extends({}, popupProps, {
+          onOpen: function () {
+            return _this.focus();
+          },
+          onOpening: function () {
+            return _this.refs.list.forceUpdate();
+          },
+          onRequestClose: this.close
+        }),
+        _react2['default'].createElement(
+          'div',
+          null,
+          filter && this._renderFilter(messages),
+          shouldRenderList && _react2['default'].createElement(List, babelHelpers._extends({ ref: 'list'
+          }, listProps, {
+            data: items,
+            id: listID,
+            'aria-live': open && 'polite',
+            'aria-labelledby': _utilWidgetHelpers.instanceId(this),
+            'aria-hidden': !this.props.open,
+            selected: selectedItem,
+            focused: open ? focusedItem : null,
+            onSelect: this._onSelect,
+            onMove: this._scrollTo,
+            messages: {
+              emptyList: data.length ? messages.emptyFilter : messages.emptyList
+            } }))
+        )
+      )
+    );
+  }
+}, {
+  key: '_renderFilter',
+  value: function _renderFilter(messages) {
+    var _this2 = this;
+
+    return _react2['default'].createElement(
+      'div',
+      { ref: 'filterWrapper', className: 'rw-filter-input' },
+      _react2['default'].createElement(
+        'span',
+        { className: 'rw-select rw-btn' },
+        _react2['default'].createElement('i', { className: 'rw-i rw-i-search' })
+      ),
+      _react2['default'].createElement('input', { ref: 'filter', className: 'rw-input',
+        placeholder: _util_2['default'].result(messages.filterPlaceholder, this.props),
+        value: this.props.searchTerm,
+        onChange: function (e) {
+          return _utilWidgetHelpers.notify(_this2.props.onSearch, e.target.value);
+        } })
+    );
+  }
+}, {
+  key: '_focus',
+  decorators: [_utilInteraction.widgetEnabled],
+  value: function _focus(focused, e) {
+    var _this3 = this;
+
+    this.setTimeout('focus', function () {
+      if (!focused) _this3.close();
+
+      if (focused !== _this3.state.focused) {
+        _utilWidgetHelpers.notify(_this3.props[focused ? 'onFocus' : 'onBlur'], e);
+        _this3.setState({ focused: focused });
+      }
+    });
+  }
+}, {
+  key: '_onSelect',
+  decorators: [_utilInteraction.widgetEditable],
+  value: function _onSelect(data) {
+    this.close();
+    _utilWidgetHelpers.notify(this.props.onSelect, data);
+    this.change(data);
+    this.focus(this);
+  }
+}, {
+  key: '_click',
+  decorators: [_utilInteraction.widgetEditable],
+  value: function _click(e) {
+    var wrapper = this.refs.filterWrapper;
+
+    if (!this.props.filter || !this.props.open) this.toggle();else if (!_domHelpersQueryContains2['default'](_utilCompat2['default'].findDOMNode(wrapper), e.target)) this.close();
+
+    _utilWidgetHelpers.notify(this.props.onClick, e);
+  }
+}, {
+  key: '_keyDown',
+  decorators: [_utilInteraction.widgetEditable],
+  value: function _keyDown(e) {
+    var _this4 = this;
+
+    var self = this,
+        key = e.key,
+        alt = e.altKey,
+        list = this.refs.list,
+        filtering = this.props.filter,
+        focusedItem = this.state.focusedItem,
+        selectedItem = this.state.selectedItem,
+        isOpen = this.props.open,
+        closeWithFocus = function closeWithFocus() {
+      _this4.close(), _utilCompat2['default'].findDOMNode(_this4).focus();
+    };
+
+    if (key === 'End') {
+      if (isOpen) this.setState({ focusedItem: list.last() });else change(list.last());
+      e.preventDefault();
+    } else if (key === 'Home') {
+      if (isOpen) this.setState({ focusedItem: list.first() });else change(list.first());
+      e.preventDefault();
+    } else if (key === 'Escape' && isOpen) {
+      closeWithFocus();
+    } else if ((key === 'Enter' || key === ' ' && !filtering) && isOpen) {
+      change(this.state.focusedItem, true);
+    } else if (key === 'ArrowDown') {
+      if (alt) this.open();else if (isOpen) this.setState({ focusedItem: list.next(focusedItem) });else change(list.next(selectedItem));
+      e.preventDefault();
+    } else if (key === 'ArrowUp') {
+      if (alt) closeWithFocus();else if (isOpen) this.setState({ focusedItem: list.prev(focusedItem) });else change(list.prev(selectedItem));
+      e.preventDefault();
+    } else if (!(this.props.filter && isOpen)) this.search(String.fromCharCode(e.keyCode), function (item) {
+      isOpen ? _this4.setState({ focusedItem: item }) : change(item);
+    });
+
+    _utilWidgetHelpers.notify(this.props.onKeyDown, [e]);
+
+    function change(item, fromList) {
+      if (!item) return;
+      fromList ? self._onSelect(item) : self.change(item);
+    }
+  }
+}, {
+  key: 'change',
+  value: function change(data) {
+    if (!_util_2['default'].isShallowEqual(data, this.props.value)) {
+      _utilWidgetHelpers.notify(this.props.onChange, data);
+      _utilWidgetHelpers.notify(this.props.onSearch, '');
+      this.close();
+    }
+  }
+}, {
+  key: 'focus',
+  value: function focus(target) {
+    var inst = target || (this.props.filter && this.props.open ? this.refs.filter : this.refs.input);
+
+    if (_reactLibGetActiveElement2['default']() !== _utilCompat2['default'].findDOMNode(inst)) _utilCompat2['default'].findDOMNode(inst).focus();
+  }
+}, {
+  key: '_data',
+  value: function _data() {
+    return this.state.filteredData || this.props.data.concat();
+  }
+}, {
+  key: 'search',
+  value: function search(character, cb) {
+    var _this5 = this;
+
+    var word = ((this._searchTerm || '') + character).toLowerCase();
+
+    this._searchTerm = word;
+
+    this.setTimeout('search', function () {
+      var list = _this5.refs.list,
+          key = _this5.props.open ? 'focusedItem' : 'selectedItem',
+          item = list.next(_this5.state[key], word);
+
+      _this5._searchTerm = '';
+      if (item) cb(item);
+    }, this.props.delay);
+  }
+}, {
+  key: 'open',
+  value: function open() {
+    _utilWidgetHelpers.notify(this.props.onToggle, true);
+  }
+}, {
+  key: 'close',
+  value: function close() {
+    _utilWidgetHelpers.notify(this.props.onToggle, false);
+  }
+}, {
+  key: 'toggle',
+  value: function toggle() {
+    this.props.open ? this.close() : this.open();
+  }
+}]));
+
+function msgs(msgs) {
+  return babelHelpers._extends({
+    open: 'open dropdown',
+    filterPlaceholder: '',
+    emptyList: 'There are no items in this list',
+    emptyFilter: 'The filter returned no results'
+  }, msgs);
+}
+
+module.exports = _uncontrollable2['default'](DropdownList, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
+
+module.exports.BaseDropdownList = DropdownList;
+},{"./List":15,"./ListGroupable":16,"./Popup":22,"./mixins/AriaDescendantMixin":29,"./mixins/DataFilterMixin":30,"./mixins/PopupScrollToMixin":32,"./mixins/PureRenderMixin":33,"./mixins/RtlParentContextMixin":35,"./mixins/TimeoutMixin":36,"./util/_":37,"./util/babelHelpers.js":38,"./util/compat":39,"./util/dataHelpers":42,"./util/interaction":47,"./util/propTypes":49,"./util/validateListInterface":50,"./util/widgetHelpers":51,"classnames":52,"dom-helpers/query/contains":56,"react":"react","react/lib/getActiveElement":78,"uncontrollable":75}],13:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -8066,7 +7938,7 @@ module.exports = React.createClass({
   }
 
 });
-},{"./WidgetButton":27,"./util/configuration":42,"react":"react"}],15:[function(require,module,exports){
+},{"./WidgetButton":26,"./util/configuration":40,"react":"react"}],14:[function(require,module,exports){
 'use strict';
 var React = require('react'),
     Btn = require('./WidgetButton');
@@ -8164,7 +8036,7 @@ module.exports = React.createClass({
     );
   }
 });
-},{"./WidgetButton":27,"./mixins/PureRenderMixin":34,"./mixins/RtlChildContextMixin":35,"react":"react"}],16:[function(require,module,exports){
+},{"./WidgetButton":26,"./mixins/PureRenderMixin":33,"./mixins/RtlChildContextMixin":34,"react":"react"}],15:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -8329,7 +8201,7 @@ exports['default'] = _react2['default'].createClass({
 
 });
 module.exports = exports['default'];
-},{"./ListOption":18,"./mixins/AriaDescendantMixin":30,"./mixins/ListMovementMixin":32,"./util/_":38,"./util/babelHelpers.js":39,"./util/compat":41,"./util/dataHelpers":44,"./util/propTypes":51,"./util/widgetHelpers":53,"classnames":54,"react":"react"}],17:[function(require,module,exports){
+},{"./ListOption":17,"./mixins/AriaDescendantMixin":29,"./mixins/ListMovementMixin":31,"./util/_":37,"./util/babelHelpers.js":38,"./util/compat":39,"./util/dataHelpers":42,"./util/propTypes":49,"./util/widgetHelpers":51,"classnames":52,"react":"react"}],16:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -8603,7 +8475,7 @@ exports['default'] = _react2['default'].createClass({
 
 });
 module.exports = exports['default'];
-},{"./ListOption":18,"./mixins/AriaDescendantMixin":30,"./mixins/ListMovementMixin":32,"./util/_":38,"./util/babelHelpers.js":39,"./util/compat":41,"./util/dataHelpers":44,"./util/propTypes":51,"./util/widgetHelpers":53,"classnames":54,"react":"react","react/lib/warning":82}],18:[function(require,module,exports){
+},{"./ListOption":17,"./mixins/AriaDescendantMixin":29,"./mixins/ListMovementMixin":31,"./util/_":37,"./util/babelHelpers.js":38,"./util/compat":39,"./util/dataHelpers":42,"./util/propTypes":49,"./util/widgetHelpers":51,"classnames":52,"react":"react","react/lib/warning":80}],17:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -8655,7 +8527,7 @@ var ListOption = _react2['default'].createClass({
 
 exports['default'] = ListOption;
 module.exports = exports['default'];
-},{"./util/babelHelpers.js":39,"classnames":54,"react":"react"}],19:[function(require,module,exports){
+},{"./util/babelHelpers.js":38,"classnames":52,"react":"react"}],18:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -8847,7 +8719,7 @@ var MonthView = _react2['default'].createClass({
 
 exports['default'] = MonthView;
 module.exports = exports['default'];
-},{"./mixins/AriaDescendantMixin":30,"./mixins/RtlChildContextMixin":35,"./util/_":38,"./util/babelHelpers.js":39,"./util/configuration":42,"./util/dates":45,"./util/propTypes":51,"./util/widgetHelpers":53,"classnames":54,"react":"react"}],20:[function(require,module,exports){
+},{"./mixins/AriaDescendantMixin":29,"./mixins/RtlChildContextMixin":34,"./util/_":37,"./util/babelHelpers.js":38,"./util/configuration":40,"./util/dates":43,"./util/propTypes":49,"./util/widgetHelpers":51,"classnames":52,"react":"react"}],19:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -9434,7 +9306,7 @@ function msgs(msgs) {
 module.exports = _uncontrollable2['default'](Multiselect, { open: 'onToggle', value: 'onChange', searchTerm: 'onSearch' });
 
 module.exports.BaseMultiselect = Multiselect;
-},{"./List":16,"./ListGroupable":17,"./MultiselectInput":21,"./MultiselectTagList":22,"./Popup":23,"./mixins/AriaDescendantMixin":30,"./mixins/DataFilterMixin":31,"./mixins/PopupScrollToMixin":33,"./mixins/RtlParentContextMixin":36,"./mixins/TimeoutMixin":37,"./util/_":38,"./util/babelHelpers.js":39,"./util/compat":41,"./util/dataHelpers":44,"./util/dom/support":47,"./util/interaction":49,"./util/propTypes":51,"./util/validateListInterface":52,"./util/widgetHelpers":53,"classnames":54,"react":"react","uncontrollable":77}],21:[function(require,module,exports){
+},{"./List":15,"./ListGroupable":16,"./MultiselectInput":20,"./MultiselectTagList":21,"./Popup":22,"./mixins/AriaDescendantMixin":29,"./mixins/DataFilterMixin":30,"./mixins/PopupScrollToMixin":32,"./mixins/RtlParentContextMixin":35,"./mixins/TimeoutMixin":36,"./util/_":37,"./util/babelHelpers.js":38,"./util/compat":39,"./util/dataHelpers":42,"./util/dom/support":45,"./util/interaction":47,"./util/propTypes":49,"./util/validateListInterface":50,"./util/widgetHelpers":51,"classnames":52,"react":"react","uncontrollable":75}],20:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -9493,7 +9365,7 @@ exports['default'] = _react2['default'].createClass({
 
 });
 module.exports = exports['default'];
-},{"./util/babelHelpers.js":39,"./util/compat":41,"./util/propTypes":51,"react":"react"}],22:[function(require,module,exports){
+},{"./util/babelHelpers.js":38,"./util/compat":39,"./util/propTypes":49,"react":"react"}],21:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -9682,7 +9554,7 @@ exports['default'] = _react2['default'].createClass({
   }
 });
 module.exports = exports['default'];
-},{"./mixins/AriaDescendantMixin":30,"./mixins/PureRenderMixin":34,"./util/_":38,"./util/babelHelpers.js":39,"./util/dataHelpers":44,"./util/interaction":49,"./util/propTypes":51,"./util/widgetHelpers":53,"classnames":54,"react":"react"}],23:[function(require,module,exports){
+},{"./mixins/AriaDescendantMixin":29,"./mixins/PureRenderMixin":33,"./util/_":37,"./util/babelHelpers.js":38,"./util/dataHelpers":42,"./util/interaction":47,"./util/propTypes":49,"./util/widgetHelpers":51,"classnames":52,"react":"react"}],22:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -9892,7 +9764,7 @@ function childKey(children) {
   });
   for (var key in nextChildMapping) return key;
 }
-},{"./util/babelHelpers.js":39,"./util/compat":41,"./util/configuration":42,"classnames":54,"dom-helpers/query/height":59,"dom-helpers/style":66,"react":"react"}],24:[function(require,module,exports){
+},{"./util/babelHelpers.js":38,"./util/compat":39,"./util/configuration":40,"classnames":52,"dom-helpers/query/height":57,"dom-helpers/style":64,"react":"react"}],23:[function(require,module,exports){
 /**
  * A streamlined version of TransitionGroup built for managing at most two active children
  * also provides additional hooks for animation start/end
@@ -10082,7 +9954,7 @@ function getChild(children) {
 function key(child) {
   return child && child.key;
 }
-},{"./util/_":38,"./util/compat":41,"dom-helpers/query/height":59,"dom-helpers/query/width":64,"dom-helpers/style":66,"react":"react"}],25:[function(require,module,exports){
+},{"./util/_":37,"./util/compat":39,"dom-helpers/query/height":57,"dom-helpers/query/width":62,"dom-helpers/style":64,"react":"react"}],24:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -10205,7 +10077,7 @@ module.exports = React.createClass({
     return this.isMounted() && this.refs.container.isTransitioning();
   }
 });
-},{"./ReplaceTransitionGroup":24,"./util/babelHelpers.js":39,"./util/compat":41,"./util/configuration":42,"dom-helpers/query/width":64,"dom-helpers/style":66,"react":"react"}],26:[function(require,module,exports){
+},{"./ReplaceTransitionGroup":23,"./util/babelHelpers.js":38,"./util/compat":39,"./util/configuration":40,"dom-helpers/query/width":62,"dom-helpers/style":64,"react":"react"}],25:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -10405,7 +10277,7 @@ module.exports = React.createClass({
   }
 
 });
-},{"./List":16,"./mixins/TimeoutMixin":37,"./util/babelHelpers.js":39,"./util/configuration":42,"./util/dates":45,"./util/propTypes":51,"react":"react"}],27:[function(require,module,exports){
+},{"./List":15,"./mixins/TimeoutMixin":36,"./util/babelHelpers.js":38,"./util/configuration":40,"./util/dates":43,"./util/propTypes":49,"react":"react"}],26:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -10428,7 +10300,7 @@ module.exports = React.createClass({
     );
   }
 });
-},{"./util/babelHelpers.js":39,"classnames":54,"react":"react"}],28:[function(require,module,exports){
+},{"./util/babelHelpers.js":38,"classnames":52,"react":"react"}],27:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./util/babelHelpers.js');
@@ -10584,7 +10456,7 @@ var YearView = _react2['default'].createClass({
 
 exports['default'] = YearView;
 module.exports = exports['default'];
-},{"./mixins/AriaDescendantMixin":30,"./mixins/RtlChildContextMixin":35,"./util/_":38,"./util/babelHelpers.js":39,"./util/configuration":42,"./util/dates":45,"./util/propTypes":51,"./util/widgetHelpers":53,"classnames":54,"react":"react"}],29:[function(require,module,exports){
+},{"./mixins/AriaDescendantMixin":29,"./mixins/RtlChildContextMixin":34,"./util/_":37,"./util/babelHelpers.js":38,"./util/configuration":40,"./util/dates":43,"./util/propTypes":49,"./util/widgetHelpers":51,"classnames":52,"react":"react"}],28:[function(require,module,exports){
 'use strict';
 
 var _require = require('./util/localizers');
@@ -10704,7 +10576,7 @@ function globalizeNumberLocalizer(globalize) {
 module.exports = {
   globalizeNumberLocalizer: globalizeNumberLocalizer, globalizeDateLocalizer: globalizeDateLocalizer
 };
-},{"./util/localizers":50,"date-arithmetic":55}],30:[function(require,module,exports){
+},{"./util/localizers":48,"date-arithmetic":53}],29:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('../util/babelHelpers.js');
@@ -10785,7 +10657,7 @@ exports['default'] = function (nodeOrComponent) {
 };
 
 module.exports = exports['default'];
-},{"../util/babelHelpers.js":39,"../util/compat":41,"react":"react"}],31:[function(require,module,exports){
+},{"../util/babelHelpers.js":38,"../util/compat":39,"react":"react"}],30:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('../util/babelHelpers.js');
@@ -10862,7 +10734,7 @@ function getFilter(matcher, searchTerm, ctx) {
     return matcher(val, searchTerm);
   };
 }
-},{"../util/babelHelpers.js":39,"../util/dataHelpers":44,"../util/filter":48,"../util/propTypes":51,"react":"react"}],32:[function(require,module,exports){
+},{"../util/babelHelpers.js":38,"../util/dataHelpers":42,"../util/filter":46,"../util/propTypes":49,"react":"react"}],31:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('../util/babelHelpers.js');
@@ -10944,7 +10816,7 @@ function findPrevInstance(textField, data, word, startIndex) {
     if (foundStart && matches(itemText, word)) return data[idx];
   }
 }
-},{"../util/babelHelpers.js":39,"../util/dataHelpers":44,"../util/filter":48,"react":"react"}],33:[function(require,module,exports){
+},{"../util/babelHelpers.js":38,"../util/dataHelpers":42,"../util/filter":46,"react":"react"}],32:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('../util/babelHelpers.js');
@@ -10980,7 +10852,7 @@ exports['default'] = {
   }
 };
 module.exports = exports['default'];
-},{"../util/babelHelpers.js":39,"dom-helpers/util/scrollTo":75}],34:[function(require,module,exports){
+},{"../util/babelHelpers.js":38,"dom-helpers/util/scrollTo":73}],33:[function(require,module,exports){
 'use strict';
 var _ = require('../util/_');
 
@@ -10991,7 +10863,7 @@ module.exports = {
     return !_.isShallowEqual(this.props, nextProps) || !_.isShallowEqual(this.state, nextState);
   }
 };
-},{"../util/_":38}],35:[function(require,module,exports){
+},{"../util/_":37}],34:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('../util/babelHelpers.js');
@@ -11014,7 +10886,7 @@ exports['default'] = {
 
 };
 module.exports = exports['default'];
-},{"../util/babelHelpers.js":39,"react":"react"}],36:[function(require,module,exports){
+},{"../util/babelHelpers.js":38,"react":"react"}],35:[function(require,module,exports){
 'use strict';
 var React = require('react');
 
@@ -11043,7 +10915,7 @@ module.exports = {
   }
 
 };
-},{"react":"react"}],37:[function(require,module,exports){
+},{"react":"react"}],36:[function(require,module,exports){
 'use strict';
 
 var _require = require('../util/_');
@@ -11070,7 +10942,7 @@ module.exports = {
   }
 
 };
-},{"../util/_":38}],38:[function(require,module,exports){
+},{"../util/_":37}],37:[function(require,module,exports){
 'use strict';
 var idCount = 0;
 
@@ -11182,7 +11054,7 @@ function shallowEqual(objA, objB) {
 
   return true;
 }
-},{}],39:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
     define(["exports"], factory);
@@ -11284,57 +11156,7 @@ function shallowEqual(objA, objB) {
     }
   };
 })
-},{}],40:[function(require,module,exports){
-/*eslint-disable no-empty */
-'use strict';
-
-module.exports = function caret(el, start, end) {
-  if (start === undefined) return get(el);
-
-  set(el, start, end);
-};
-
-function get(el) {
-  var start, end, rangeEl, clone;
-
-  if (el.selectionStart !== undefined) {
-    start = el.selectionStart;
-    end = el.selectionEnd;
-  } else {
-    try {
-      el.focus();
-      rangeEl = el.createTextRange();
-      clone = rangeEl.duplicate();
-
-      rangeEl.moveToBookmark(document.selection.createRange().getBookmark());
-      clone.setEndPoint('EndToStart', rangeEl);
-
-      start = clone.text.length;
-      end = start + rangeEl.text.length;
-    } catch (e) {/* not focused or not visible */}
-  }
-
-  return { start: start, end: end };
-}
-
-function set(el, start, end) {
-  var rangeEl;
-
-  try {
-    if (el.selectionStart !== undefined) {
-      el.focus();
-      el.setSelectionRange(start, end);
-    } else {
-      el.focus();
-      rangeEl = el.createTextRange();
-      rangeEl.collapse(true);
-      rangeEl.moveStart('character', start);
-      rangeEl.moveEnd('character', end - start);
-      rangeEl.select();
-    }
-  } catch (e) {/* not focused or not visible */}
-}
-},{}],41:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 var React = require('react'),
     _ = require('./_');
@@ -11370,7 +11192,7 @@ module.exports = {
     return child;
   }
 };
-},{"./_":38,"react":"react"}],42:[function(require,module,exports){
+},{"./_":37,"react":"react"}],40:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -11403,7 +11225,7 @@ module.exports = {
   }
 };
 }).call(this,require('_process'))
-},{"../globalize-localizers":29,"./dom/animate":46,"_process":1,"globalize":76}],43:[function(require,module,exports){
+},{"../globalize-localizers":28,"./dom/animate":44,"_process":1,"globalize":74}],41:[function(require,module,exports){
 'use strict';
 
 var _calendarViewHierarchy, _calendarViewUnits;
@@ -11435,7 +11257,7 @@ module.exports = {
 
   calendarViewUnits: (_calendarViewUnits = {}, _calendarViewUnits[views.MONTH] = 'day', _calendarViewUnits[views.YEAR] = views.MONTH, _calendarViewUnits[views.DECADE] = views.YEAR, _calendarViewUnits[views.CENTURY] = views.DECADE, _calendarViewUnits)
 };
-},{}],44:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -11495,7 +11317,7 @@ function dataItem(data, item, valueField) {
 
   return item;
 }
-},{"./_":38}],45:[function(require,module,exports){
+},{"./_":37}],43:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./babelHelpers.js');
@@ -11596,7 +11418,7 @@ var dates = module.exports = babelHelpers._extends(dateMath, {
     return this.add(this.startOf(new Date(), 'day'), 1, 'day');
   }
 });
-},{"./babelHelpers.js":39,"./configuration":42,"./constants":43,"date-arithmetic":55}],46:[function(require,module,exports){
+},{"./babelHelpers.js":38,"./configuration":40,"./constants":41,"date-arithmetic":53}],44:[function(require,module,exports){
 'use strict';
 var hyphenate = require('dom-helpers/util/hyphenate'),
     css = require('dom-helpers/style'),
@@ -11677,13 +11499,13 @@ function animate(node, properties, duration, easing, callback) {
     callback && callback.call(this);
   }
 }
-},{"dom-helpers/events/off":56,"dom-helpers/events/on":57,"dom-helpers/style":66,"dom-helpers/transition/properties":68,"dom-helpers/util/hyphenate":71}],47:[function(require,module,exports){
+},{"dom-helpers/events/off":54,"dom-helpers/events/on":55,"dom-helpers/style":64,"dom-helpers/transition/properties":66,"dom-helpers/util/hyphenate":69}],45:[function(require,module,exports){
 'use strict';
 
 module.exports = {
   ios: typeof navigator !== 'undefined' && navigator.userAgent.match(/(iPod|iPhone|iPad)/) && navigator.userAgent.match(/AppleWebKit/)
 };
-},{}],48:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 var common = {
   eq: function eq(a, b) {
@@ -11722,7 +11544,7 @@ var common = {
 };
 
 module.exports = common;
-},{}],49:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -11798,7 +11620,7 @@ function interactionDecorator(disabledOnly) {
     return desc;
   };
 }
-},{"./dataHelpers":44}],50:[function(require,module,exports){
+},{"./dataHelpers":42}],48:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -11900,7 +11722,7 @@ module.exports = {
   NumberLocalizer: NumberLocalizer, DateLocalizer: DateLocalizer
 };
 }).call(this,require('_process'))
-},{"./_":38,"./babelHelpers.js":39,"_process":1,"react":"react","react/lib/invariant":81}],51:[function(require,module,exports){
+},{"./_":37,"./babelHelpers.js":38,"_process":1,"react":"react","react/lib/invariant":79}],49:[function(require,module,exports){
 'use strict';
 
 var babelHelpers = require('./babelHelpers.js');
@@ -11981,7 +11803,7 @@ function createChainableTypeChecker(validate) {
 
   return chainedCheckType;
 }
-},{"./babelHelpers.js":39,"./configuration":42,"./filter":48,"react":"react"}],52:[function(require,module,exports){
+},{"./babelHelpers.js":38,"./configuration":40,"./filter":46,"react":"react"}],50:[function(require,module,exports){
 (function (process){
 'use strict';
 var METHODS = ['next', 'prev', 'first', 'last'];
@@ -12005,7 +11827,7 @@ function assert(condition, msg) {
   }
 }
 }).call(this,require('_process'))
-},{"_process":1}],53:[function(require,module,exports){
+},{"_process":1}],51:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -12029,7 +11851,7 @@ function instanceId(component) {
 function isFirstFocusedRender(component) {
   return component._firstFocus || component.state.focused && (component._firstFocus = true);
 }
-},{"./_":38}],54:[function(require,module,exports){
+},{"./_":37}],52:[function(require,module,exports){
 /*!
   Copyright (c) 2015 Jed Watson.
   Licensed under the MIT License (MIT), see
@@ -12079,7 +11901,7 @@ function isFirstFocusedRender(component) {
 	}
 }());
 
-},{}],55:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 var MILI    = 'milliseconds'
   , SECONDS = 'seconds'
   , MINUTES = 'minutes'
@@ -12248,7 +12070,7 @@ function createComparer(operator) {
   };
 }
 
-},{}],56:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 'use strict';
 var canUseDOM = require('../util/inDOM');
 var off = function off() {};
@@ -12266,7 +12088,7 @@ if (canUseDOM) {
 }
 
 module.exports = off;
-},{"../util/inDOM":73}],57:[function(require,module,exports){
+},{"../util/inDOM":71}],55:[function(require,module,exports){
 'use strict';
 var canUseDOM = require('../util/inDOM');
 var on = function on() {};
@@ -12283,7 +12105,7 @@ if (canUseDOM) {
 }
 
 module.exports = on;
-},{"../util/inDOM":73}],58:[function(require,module,exports){
+},{"../util/inDOM":71}],56:[function(require,module,exports){
 'use strict';
 var canUseDOM = require('../util/inDOM');
 
@@ -12304,7 +12126,7 @@ var contains = (function () {
 })();
 
 module.exports = contains;
-},{"../util/inDOM":73}],59:[function(require,module,exports){
+},{"../util/inDOM":71}],57:[function(require,module,exports){
 'use strict';
 
 var offset = require('./offset'),
@@ -12314,13 +12136,13 @@ module.exports = function height(node, client) {
   var win = getWindow(node);
   return win ? win.innerHeight : client ? node.clientHeight : offset(node).height;
 };
-},{"./isWindow":60,"./offset":61}],60:[function(require,module,exports){
+},{"./isWindow":58,"./offset":59}],58:[function(require,module,exports){
 'use strict';
 
 module.exports = function getWindow(node) {
   return node === node.window ? node : node.nodeType === 9 ? node.defaultView || node.parentWindow : false;
 };
-},{}],61:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 'use strict';
 var contains = require('./contains'),
     getWindow = require('./isWindow');
@@ -12345,7 +12167,7 @@ module.exports = function offset(node) {
     height: box.height || node.offsetHeight
   };
 };
-},{"./contains":58,"./isWindow":60}],62:[function(require,module,exports){
+},{"./contains":56,"./isWindow":58}],60:[function(require,module,exports){
 'use strict';
 
 var css = require('../style'),
@@ -12370,7 +12192,7 @@ module.exports = function scrollPrarent(node) {
 
   return document;
 };
-},{"../style":66,"./height":59}],63:[function(require,module,exports){
+},{"../style":64,"./height":57}],61:[function(require,module,exports){
 'use strict';
 var getWindow = require('./isWindow');
 
@@ -12381,7 +12203,7 @@ module.exports = function scrollTop(node, val) {
 
   if (win) win.scrollTo('pageXOffset' in win ? win.pageXOffset : win.document.documentElement.scrollLeft, val);else node.scrollTop = val;
 };
-},{"./isWindow":60}],64:[function(require,module,exports){
+},{"./isWindow":58}],62:[function(require,module,exports){
 'use strict';
 
 var offset = require('./offset'),
@@ -12391,7 +12213,7 @@ module.exports = function width(node, client) {
   var win = getWindow(node);
   return win ? win.innerWidth : client ? node.clientWidth : offset(node).width;
 };
-},{"./isWindow":60,"./offset":61}],65:[function(require,module,exports){
+},{"./isWindow":58,"./offset":59}],63:[function(require,module,exports){
 "use strict";
 
 module.exports = function _getComputedStyle(node) {
@@ -12410,7 +12232,7 @@ module.exports = function _getComputedStyle(node) {
     }
   };
 };
-},{}],66:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 'use strict';
 
 var camelize = require('../util/camelizeStyle'),
@@ -12434,13 +12256,13 @@ module.exports = function style(node, property, value) {
 
   node.style.cssText += ';' + css;
 };
-},{"../util/camelizeStyle":70,"../util/hyphenateStyle":72,"./getComputedStyle":65,"./removeStyle":67}],67:[function(require,module,exports){
+},{"../util/camelizeStyle":68,"../util/hyphenateStyle":70,"./getComputedStyle":63,"./removeStyle":65}],65:[function(require,module,exports){
 'use strict';
 
 module.exports = function removeStyle(node, key) {
   return 'removeProperty' in node.style ? node.style.removeProperty(key) : node.style.removeAttribute(key);
 };
-},{}],68:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 'use strict';
 var canUseDOM = require('../util/inDOM');
 
@@ -12496,7 +12318,7 @@ function getTransitionProperties() {
 
   return { end: endEvent, prefix: prefix };
 }
-},{"../util/inDOM":73}],69:[function(require,module,exports){
+},{"../util/inDOM":71}],67:[function(require,module,exports){
 "use strict";
 
 var rHyphen = /-(.)/g;
@@ -12506,7 +12328,7 @@ module.exports = function camelize(string) {
     return chr.toUpperCase();
   });
 };
-},{}],70:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -12520,7 +12342,7 @@ var msPattern = /^-ms-/;
 module.exports = function camelizeStyleName(string) {
   return camelize(string.replace(msPattern, 'ms-'));
 };
-},{"./camelize":69}],71:[function(require,module,exports){
+},{"./camelize":67}],69:[function(require,module,exports){
 'use strict';
 
 var rUpper = /([A-Z])/g;
@@ -12528,7 +12350,7 @@ var rUpper = /([A-Z])/g;
 module.exports = function hyphenate(string) {
   return string.replace(rUpper, '-$1').toLowerCase();
 };
-},{}],72:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 /**
  * Copyright 2013-2014, Facebook, Inc.
  * All rights reserved.
@@ -12543,10 +12365,10 @@ var msPattern = /^ms-/;
 module.exports = function hyphenateStyleName(string) {
   return hyphenate(string).replace(msPattern, "-ms-");
 };
-},{"./hyphenate":71}],73:[function(require,module,exports){
+},{"./hyphenate":69}],71:[function(require,module,exports){
 'use strict';
 module.exports = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
-},{}],74:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 'use strict';
 
 var canUseDOM = require('./inDOM');
@@ -12593,7 +12415,7 @@ compatRaf.cancel = function (id) {
 };
 
 module.exports = compatRaf;
-},{"./inDOM":73}],75:[function(require,module,exports){
+},{"./inDOM":71}],73:[function(require,module,exports){
 'use strict';
 var getOffset = require('../query/offset'),
     height = require('../query/height'),
@@ -12645,7 +12467,7 @@ module.exports = function scrollTo(selected, scrollParent) {
         return raf.cancel(id);
     };
 };
-},{"../query/height":59,"../query/isWindow":60,"../query/offset":61,"../query/scrollParent":62,"../query/scrollTop":63,"./requestAnimationFrame":74}],76:[function(require,module,exports){
+},{"../query/height":57,"../query/isWindow":58,"../query/offset":59,"../query/scrollParent":60,"../query/scrollTop":61,"./requestAnimationFrame":72}],74:[function(require,module,exports){
 /*!
  * Globalize
  *
@@ -14233,7 +14055,7 @@ Globalize.culture = function( cultureSelector ) {
 
 }( this ));
 
-},{}],77:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 (function (process){
 "use strict";
 var babelHelpers = require("./util/babelHelpers.js");
@@ -14402,7 +14224,7 @@ function has(o, k) {
 }
 //return !controlled
 }).call(this,require('_process'))
-},{"./util/babelHelpers.js":78,"_process":1,"react":"react","react/lib/invariant":81}],78:[function(require,module,exports){
+},{"./util/babelHelpers.js":76,"_process":1,"react":"react","react/lib/invariant":79}],76:[function(require,module,exports){
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
     define(["exports"], factory);
@@ -14440,7 +14262,7 @@ function has(o, k) {
     return target;
   };
 })
-},{}],79:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -14474,7 +14296,7 @@ emptyFunction.thatReturnsArgument = function(arg) { return arg; };
 
 module.exports = emptyFunction;
 
-},{}],80:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -14503,7 +14325,7 @@ function getActiveElement() /*?DOMElement*/ {
 
 module.exports = getActiveElement;
 
-},{}],81:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -14560,7 +14382,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":1}],82:[function(require,module,exports){
+},{"_process":1}],80:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -14623,7 +14445,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"./emptyFunction":79,"_process":1}],83:[function(require,module,exports){
+},{"./emptyFunction":77,"_process":1}],81:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -14877,7 +14699,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./FormioComponent":84,"./components":94,"formiojs":2,"react":"react"}],84:[function(require,module,exports){
+},{"./FormioComponent":82,"./components":92,"formiojs":2,"react":"react"}],82:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -14905,24 +14727,36 @@ module.exports = React.createClass({
 });
 
 
-},{"react":"react"}],85:[function(require,module,exports){
+},{"react":"react"}],83:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
+var componentMixin = require('./mixins/componentMixin');
+var selectMixin = require('./mixins/selectMixin');
+var formiojs = require('formiojs');
 
 module.exports = React.createClass({
   displayName: 'Address',
-  render: function render() {
-    return React.createElement(
-      'div',
-      null,
-      'I am an address'
-    );
+  mixins: [componentMixin, selectMixin],
+  getTextField: function getTextField() {
+    return 'formatted_address';
+  },
+  getValueField: function getValueField() {
+    return null;
+  },
+  doSearch: function doSearch(text) {
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + text + '&sensor=false').then((function (response) {
+      response.json().then((function (data) {
+        this.setState({
+          selectItems: data.results
+        });
+      }).bind(this));
+    }).bind(this));
   }
 });
 
 
-},{"react":"react"}],86:[function(require,module,exports){
+},{"./mixins/componentMixin":93,"./mixins/selectMixin":96,"formiojs":2,"react":"react"}],84:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -14952,7 +14786,7 @@ module.exports = React.createClass({
 });
 
 
-},{"react":"react"}],87:[function(require,module,exports){
+},{"react":"react"}],85:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -14992,7 +14826,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":95,"./mixins/multiMixin":97,"react":"react"}],88:[function(require,module,exports){
+},{"./mixins/componentMixin":93,"./mixins/multiMixin":95,"react":"react"}],86:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -15026,7 +14860,7 @@ module.exports = React.createClass({
 });
 
 
-},{"../FormioComponent":84,"react":"react"}],89:[function(require,module,exports){
+},{"../FormioComponent":82,"react":"react"}],87:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -15039,7 +14873,7 @@ module.exports = React.createClass({
 });
 
 
-},{"react":"react"}],90:[function(require,module,exports){
+},{"react":"react"}],88:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -15067,7 +14901,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":95,"./mixins/multiMixin":97,"react":"react","react-widgets/lib/DateTimePicker":12}],91:[function(require,module,exports){
+},{"./mixins/componentMixin":93,"./mixins/multiMixin":95,"react":"react","react-widgets/lib/DateTimePicker":10}],89:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -15081,7 +14915,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":95,"./mixins/inputMixin":96,"./mixins/multiMixin":97,"react":"react"}],92:[function(require,module,exports){
+},{"./mixins/componentMixin":93,"./mixins/inputMixin":94,"./mixins/multiMixin":95,"react":"react"}],90:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -15115,7 +14949,7 @@ module.exports = React.createClass({
 });
 
 
-},{"../FormioComponent":84,"react":"react"}],93:[function(require,module,exports){
+},{"../FormioComponent":82,"react":"react"}],91:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -15129,7 +14963,7 @@ module.exports = React.createClass({
 });
 
 
-},{"react":"react"}],94:[function(require,module,exports){
+},{"react":"react"}],92:[function(require,module,exports){
 'use strict';
 
 // Is this the best way to create a registry? We don't have providers like Angular.
@@ -15158,7 +14992,7 @@ FormioComponents.well = require('./well');
 module.exports = {};
 
 
-},{"./address":85,"./button":86,"./checkbox":87,"./columns":88,"./content":89,"./datetime":90,"./email":91,"./fieldset":92,"./hidden":93,"./number":99,"./panel":100,"./password":101,"./phoneNumber":102,"./radio":103,"./resource":104,"./select":105,"./signature":106,"./textarea":107,"./textfield":108,"./well":109}],95:[function(require,module,exports){
+},{"./address":83,"./button":84,"./checkbox":85,"./columns":86,"./content":87,"./datetime":88,"./email":89,"./fieldset":90,"./hidden":91,"./number":97,"./panel":98,"./password":99,"./phoneNumber":100,"./radio":101,"./resource":102,"./select":103,"./signature":104,"./textarea":105,"./textfield":106,"./well":107}],93:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -15232,7 +15066,7 @@ module.exports = {
 };
 
 
-},{"react":"react"}],96:[function(require,module,exports){
+},{"react":"react"}],94:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -15257,7 +15091,7 @@ module.exports = {
 };
 
 
-},{"react":"react","react-input-mask":5}],97:[function(require,module,exports){
+},{"react":"react","react-input-mask":5}],95:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -15381,40 +15215,57 @@ module.exports = {
 };
 
 
-},{"react":"react"}],98:[function(require,module,exports){
+},{"react":"react"}],96:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
-var Combobox = require('react-widgets/lib/Combobox');
+var DropdownList = require('react-widgets/lib/DropdownList');
 var Multiselect = require('react-widgets/lib/Multiselect');
 
 module.exports = {
   getInitialState: function getInitialState() {
     return {
-      selectItems: []
+      selectItems: [],
+      searchTerm: ''
     };
   },
-  getValueField: function getValueField() {
-    return this.props.component.valueProperty || 'value';
+  valueField: function valueField() {
+    var valueField = this.props.component.valueProperty || 'value';
+    if (typeof this.getValueField === 'function') {
+      valueField = this.getValueField();
+    }
+    return valueField;
+  },
+  textField: function textField() {
+    var textField = 'label';
+    if (typeof this.getTextField === 'function') {
+      textField = this.getTextField();
+    }
+    return textField;
   },
   onChangeSelect: function onChangeSelect(value) {
-    if (Array.isArray(value)) {
+    if (Array.isArray(value) && this.valueField()) {
       value.forEach((function (val, index) {
-        value[index] = val[this.getValueField()];
+        value[index] = val[this.valueField()];
       }).bind(this));
-    } else if (typeof value === "object") {
-      value = value[this.getValueField()];
+    } else if (typeof value === "object" && this.valueField()) {
+      value = value[this.valueField()];
     }
     this.setValue(value);
   },
-  onBlur: function onBlur(event) {
-    // TODO: Need to stop custom values from saving by clearing on blur.
+  onSearch: function onSearch(text) {
+    this.setState({
+      searchTerm: text
+    });
+    if (typeof this.doSearch === 'function') {
+      this.doSearch(text);
+    }
   },
   getElements: function getElements() {
     // TODO: Need to support custom item rendering in item template.
-    var Element = this.props.component.multiple ? Multiselect : Combobox;
-    var valueField = this.getValueField();
-    var textField = 'label';
+    var Element = this.props.component.multiple ? Multiselect : DropdownList;
+    var valueField = this.valueField();
+    var textField = this.textField();
     var classLabel = "control-label" + (this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
     var inputLabel = this.props.component.label && !this.props.component.hideLabel ? React.createElement(
       'label',
@@ -15439,8 +15290,9 @@ module.exports = {
           suggest: true,
           filter: 'contains',
           value: this.state.value,
-          onChange: this.onChangeSelect,
-          onBlur: this.onBlur
+          searchTerm: this.state.searchTerm,
+          onSearch: this.onSearch,
+          onChange: this.onChangeSelect
         })
       )
     );
@@ -15448,7 +15300,7 @@ module.exports = {
 };
 
 
-},{"react":"react","react-widgets/lib/Combobox":9,"react-widgets/lib/Multiselect":20}],99:[function(require,module,exports){
+},{"react":"react","react-widgets/lib/DropdownList":12,"react-widgets/lib/Multiselect":19}],97:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -15479,7 +15331,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":95,"./mixins/multiMixin":97,"react":"react"}],100:[function(require,module,exports){
+},{"./mixins/componentMixin":93,"./mixins/multiMixin":95,"react":"react"}],98:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -15522,7 +15374,7 @@ module.exports = React.createClass({
 });
 
 
-},{"../FormioComponent":84,"react":"react"}],101:[function(require,module,exports){
+},{"../FormioComponent":82,"react":"react"}],99:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -15536,7 +15388,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":95,"./mixins/inputMixin":96,"./mixins/multiMixin":97,"react":"react"}],102:[function(require,module,exports){
+},{"./mixins/componentMixin":93,"./mixins/inputMixin":94,"./mixins/multiMixin":95,"react":"react"}],100:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -15550,7 +15402,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":95,"./mixins/inputMixin":96,"./mixins/multiMixin":97,"react":"react"}],103:[function(require,module,exports){
+},{"./mixins/componentMixin":93,"./mixins/inputMixin":94,"./mixins/multiMixin":95,"react":"react"}],101:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -15590,7 +15442,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":95,"./mixins/multiMixin":97,"react":"react"}],104:[function(require,module,exports){
+},{"./mixins/componentMixin":93,"./mixins/multiMixin":95,"react":"react"}],102:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -15605,7 +15457,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":95,"./mixins/selectMixin":98,"formiojs":2,"react":"react"}],105:[function(require,module,exports){
+},{"./mixins/componentMixin":93,"./mixins/selectMixin":96,"formiojs":2,"react":"react"}],103:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -15666,7 +15518,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":95,"./mixins/selectMixin":98,"formiojs":2,"react":"react"}],106:[function(require,module,exports){
+},{"./mixins/componentMixin":93,"./mixins/selectMixin":96,"formiojs":2,"react":"react"}],104:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -15690,7 +15542,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":95,"react":"react","react-signature-pad":6}],107:[function(require,module,exports){
+},{"./mixins/componentMixin":93,"react":"react","react-signature-pad":6}],105:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -15716,7 +15568,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":95,"./mixins/multiMixin":97,"react":"react"}],108:[function(require,module,exports){
+},{"./mixins/componentMixin":93,"./mixins/multiMixin":95,"react":"react"}],106:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -15730,7 +15582,7 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":95,"./mixins/inputMixin":96,"./mixins/multiMixin":97,"react":"react"}],109:[function(require,module,exports){
+},{"./mixins/componentMixin":93,"./mixins/inputMixin":94,"./mixins/multiMixin":95,"react":"react"}],107:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -15758,4 +15610,4 @@ module.exports = React.createClass({
 });
 
 
-},{"../FormioComponent":84,"react":"react"}]},{},[83]);
+},{"../FormioComponent":82,"react":"react"}]},{},[81]);
