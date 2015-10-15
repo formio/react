@@ -213,6 +213,14 @@ module.exports = React.createClass({
       }
     }.bind(this));
   },
+  resetForm() {
+    this.setState(function(previousState) {
+      for(var key in previousState.submission.data) {
+        delete previousState.submission.data[key];
+      }
+      return previousState;
+    });
+  },
   render: function() {
     if (this.state.form.components) {
       this.componentNodes = this.state.form.components.map(function(component) {
@@ -231,6 +239,7 @@ module.exports = React.createClass({
             isFormValid={this.state.isValid}
             data={this.state.submission.data}
             onElementRender={this.props.onElementRender}
+            resetForm={this.resetForm}
             formio={this.formio}
             showAlert={this.showAlert}
           />
