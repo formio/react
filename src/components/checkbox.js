@@ -17,7 +17,7 @@ module.exports = React.createClass({
     var required = (this.props.component.validate.required ? 'field-required' : '');
     return(
       <div className="checkbox">
-        <label htmlFor={this.props.component.key} className={required}>
+        <label className={required}>
           <input
             type="checkbox"
             id={this.props.component.key}

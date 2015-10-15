@@ -14,7 +14,7 @@ module.exports = React.createClass({
         {this.props.component.values.map(function(v) {
           return (
             <div className="radio">
-              <label className="control-label" htmlFor="value">
+              <label className="control-label">
                 <input
                   type={this.props.component.inputType}
                   id={v.value}

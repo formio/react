@@ -34454,7 +34454,7 @@ module.exports = React.createClass({
       { className: 'checkbox' },
       React.createElement(
         'label',
-        { htmlFor: this.props.component.key, className: required },
+        { className: required },
         React.createElement('input', {
           type: 'checkbox',
           id: this.props.component.key,
@@ -35068,7 +35068,7 @@ module.exports = React.createClass({
           { className: 'radio' },
           React.createElement(
             'label',
-            { className: 'control-label', htmlFor: 'value' },
+            { className: 'control-label' },
             React.createElement('input', {
               type: this.props.component.inputType,
               id: v.value,
