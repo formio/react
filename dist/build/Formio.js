@@ -14657,6 +14657,14 @@ module.exports = React.createClass({
       }
     }).bind(this));
   },
+  resetForm: function resetForm() {
+    this.setState(function (previousState) {
+      for (var key in previousState.submission.data) {
+        delete previousState.submission.data[key];
+      }
+      return previousState;
+    });
+  },
   render: function render() {
     if (this.state.form.components) {
       this.componentNodes = this.state.form.components.map((function (component) {
@@ -14674,6 +14682,7 @@ module.exports = React.createClass({
           isFormValid: this.state.isValid,
           data: this.state.submission.data,
           onElementRender: this.props.onElementRender,
+          resetForm: this.resetForm,
           formio: this.formio,
           showAlert: this.showAlert
         });
@@ -14764,6 +14773,17 @@ var React = require('react');
 // TODO: Support other button actions like reset.
 module.exports = React.createClass({
   displayName: 'Button',
+  onClick: function onClick(event) {
+    switch (this.props.component.action) {
+      case 'submit':
+        // Allow default submit to continue.
+        break;
+      case 'reset':
+        event.preventDefault();
+        this.props.resetForm();
+        break;
+    }
+  },
   render: function render() {
     var classNames = "btn btn-" + this.props.component.theme + " btn-" + this.props.component.size;
     classNames += this.props.component.block ? ' btn-block' : '';
@@ -14776,7 +14796,8 @@ module.exports = React.createClass({
       {
         className: classNames,
         type: this.props.component.action == 'submit' ? 'submit' : 'button',
-        disabled: disabled
+        disabled: disabled,
+        onClick: this.onClick
       },
       submitting,
       leftIcon,
