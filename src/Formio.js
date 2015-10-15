@@ -231,6 +231,7 @@ module.exports = React.createClass({
             isFormValid={this.state.isValid}
             data={this.state.submission.data}
             onElementRender={this.props.onElementRender}
+            formio={this.formio}
             showAlert={this.showAlert}
           />
         );
