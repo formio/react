@@ -71,7 +71,7 @@ An object representing the default data for the form.
 
 A function callback that will be called when a submission is successful.
 
-### `onFormSubmit` : `(response: object)`
+### `onFormError` : `(response: object)`
 
 A function callback that will be called when a submisison is unsuccessful.
 
