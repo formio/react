@@ -65,7 +65,7 @@ An object representing the form. Use this instead of src for custom forms.
 
 An object representing the default data for the form.
 
-**Note:** `src` ill override this if a submission url is entered.
+**Note:** `src` will override this if a submission url is entered.
 
 ### `onFormSubmit` : `(submission: object)`
 
