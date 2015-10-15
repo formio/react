@@ -35210,7 +35210,6 @@ module.exports = React.createClass({
   },
   componentDidMount: function componentDidMount() {
     this.signature = this.refs[this.props.component.key];
-    console.log(this.state);
     if (this.state.value) {
       this.signature.fromDataURL(this.state.value);
     }
