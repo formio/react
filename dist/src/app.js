@@ -34346,13 +34346,6 @@ var Demo = React.createClass({
     );
   }
 });
-/*    form=""
- submission=""
- onFormSubmit=""
- onFormLoad=""
- onSubmissionLoad=""
- onElementRender=""
- onFormError=""*/
 
 React.render(React.createElement(Demo, null), document.getElementById('formio'));
 
@@ -34363,7 +34356,6 @@ React.render(React.createElement(Demo, null), document.getElementById('formio'))
 var React = require('react');
 var componentMixin = require('./mixins/componentMixin');
 var selectMixin = require('./mixins/selectMixin');
-var formiojs = require('formiojs');
 
 module.exports = React.createClass({
   displayName: 'Address',
@@ -34386,11 +34378,12 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":245,"./mixins/selectMixin":248,"formiojs":2,"react":231}],236:[function(require,module,exports){
+},{"./mixins/componentMixin":245,"./mixins/selectMixin":248,"react":231}],236:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 
+// TODO: Support other button actions like reset.
 module.exports = React.createClass({
   displayName: 'Button',
   render: function render() {
@@ -35083,7 +35076,7 @@ var formiojs = require('formiojs');
 module.exports = React.createClass({
   displayName: 'Resource',
   mixins: [componentMixin, selectMixin],
-  componentWillMount: function componentWillMount() {}
+  doSearch: function doSearch(text) {}
 });
 
 

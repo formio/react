@@ -14733,7 +14733,6 @@ module.exports = React.createClass({
 var React = require('react');
 var componentMixin = require('./mixins/componentMixin');
 var selectMixin = require('./mixins/selectMixin');
-var formiojs = require('formiojs');
 
 module.exports = React.createClass({
   displayName: 'Address',
@@ -14756,11 +14755,12 @@ module.exports = React.createClass({
 });
 
 
-},{"./mixins/componentMixin":93,"./mixins/selectMixin":96,"formiojs":2,"react":"react"}],84:[function(require,module,exports){
+},{"./mixins/componentMixin":93,"./mixins/selectMixin":96,"react":"react"}],84:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 
+// TODO: Support other button actions like reset.
 module.exports = React.createClass({
   displayName: 'Button',
   render: function render() {
@@ -15453,7 +15453,7 @@ var formiojs = require('formiojs');
 module.exports = React.createClass({
   displayName: 'Resource',
   mixins: [componentMixin, selectMixin],
-  componentWillMount: function componentWillMount() {}
+  doSearch: function doSearch(text) {}
 });
 
 

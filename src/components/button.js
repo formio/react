@@ -2,6 +2,7 @@
 
 var React = require('react');
 
+// TODO: Support other button actions like reset.
 module.exports = React.createClass({
   displayName: 'Button',
   render: function() {

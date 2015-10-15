@@ -52,13 +52,6 @@ var Demo = React.createClass({
     );
   }
 });
-/*    form=""
- submission=""
- onFormSubmit=""
- onFormLoad=""
- onSubmissionLoad=""
- onElementRender=""
- onFormError=""*/
 
 React.render(
   <Demo />
