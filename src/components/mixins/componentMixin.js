@@ -4,7 +4,29 @@ var React = require('react');
 
 module.exports = {
   getInitialState: function () {
-    var value = this.props.value || null;
+    var value = this.props.value || '';
+    // Number and datetime expect null instead of empty.
+    if (value === '' && (this.props.component.type == 'number' || this.props.component.type == 'datetime')) {
+      value = null;
+    }
+    value = this.safeSingleToMultiple(value);
+    return {
+      value: value,
+      isValid: true,
+      errorMessage: '',
+      isPristine: true
+    };
+  },
+  componentWillReceiveProps: function(nextProps) {
+    if (this.props.value !== nextProps.value) {
+      var value = this.safeSingleToMultiple(nextProps.value);
+      this.setState({
+        value: value
+      });
+    }
+  },
+  safeSingleToMultiple: function(value) {
+    // If this was a single but is not a multivalue.
     if (this.props.component.multiple && !Array.isArray(value)) {
       value = [value];
     }
@@ -12,12 +34,7 @@ module.exports = {
     else if (!this.props.component.multiple && Array.isArray(value)) {
       value = value[0];
     }
-    return {
-      value: value,
-      isValid: true,
-      errorMessage: '',
-      isPristine: true
-    };
+    return value;
   },
   componentWillMount: function () {
     this.props.attachToForm(this);

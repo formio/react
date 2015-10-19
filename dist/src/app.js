@@ -34282,7 +34282,7 @@ var Demo = React.createClass({
   displayName: 'Demo',
   getInitialState: function getInitialState() {
     return {
-      src: 'https://randall.form.io/test/submission/561f217a57ef340100695eda',
+      src: '',
       inputSrc: ''
     };
   },
@@ -34644,7 +34644,29 @@ var React = require('react');
 
 module.exports = {
   getInitialState: function getInitialState() {
-    var value = this.props.value || null;
+    var value = this.props.value || '';
+    // Number and datetime expect null instead of empty.
+    if (value === '' && (this.props.component.type == 'number' || this.props.component.type == 'datetime')) {
+      value = null;
+    }
+    value = this.safeSingleToMultiple(value);
+    return {
+      value: value,
+      isValid: true,
+      errorMessage: '',
+      isPristine: true
+    };
+  },
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+    if (this.props.value !== nextProps.value) {
+      var value = this.safeSingleToMultiple(nextProps.value);
+      this.setState({
+        value: value
+      });
+    }
+  },
+  safeSingleToMultiple: function safeSingleToMultiple(value) {
+    // If this was a single but is not a multivalue.
     if (this.props.component.multiple && !Array.isArray(value)) {
       value = [value];
     }
@@ -34652,12 +34674,7 @@ module.exports = {
     else if (!this.props.component.multiple && Array.isArray(value)) {
         value = value[0];
       }
-    return {
-      value: value,
-      isValid: true,
-      errorMessage: '',
-      isPristine: true
-    };
+    return value;
   },
   componentWillMount: function componentWillMount() {
     this.props.attachToForm(this);
@@ -34720,8 +34737,10 @@ var Input = require('react-input-mask');
 module.exports = {
   getSingleElement: function getSingleElement(value, index) {
     index = index || 0;
+    var mask = this.props.component.mask || "";
     return React.createElement(Input, {
       type: this.props.component.inputType,
+      key: index,
       className: 'form-control',
       id: this.props.component.key,
       'data-index': index,
@@ -34729,7 +34748,7 @@ module.exports = {
       value: value,
       disabled: this.props.readOnly,
       placeholder: this.props.component.placeholder,
-      mask: this.props.component.inputMask,
+      mask: mask,
       onChange: this.onChange
     });
   }
@@ -35057,15 +35076,19 @@ var multiMixin = require('./mixins/multiMixin');
 module.exports = React.createClass({
   displayName: 'Radio',
   mixins: [componentMixin, multiMixin],
+  onChangeRadio: function onChangeRadio(event) {
+    var value = event.currentTarget.id;
+    this.setValue(value, 0);
+  },
   getSingleElement: function getSingleElement(value, index) {
     index = index || 0;
     return React.createElement(
       'div',
       { className: 'radio-wrapper' },
-      this.props.component.values.map((function (v) {
+      this.props.component.values.map((function (v, id) {
         return React.createElement(
           'div',
-          { className: 'radio' },
+          { key: id, className: 'radio' },
           React.createElement(
             'label',
             { className: 'control-label' },
@@ -35074,9 +35097,9 @@ module.exports = React.createClass({
               id: v.value,
               'data-index': index,
               name: this.props.component.key,
-              value: v.value,
+              checked: v.value === this.state.value,
               disabled: this.props.readOnly,
-              onChange: this.onChange
+              onChange: this.onChangeRadio
             }),
             v.label
           )

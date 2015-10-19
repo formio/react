@@ -7,22 +7,26 @@ var multiMixin = require('./mixins/multiMixin');
 module.exports = React.createClass({
   displayName: 'Radio',
   mixins: [componentMixin, multiMixin],
+  onChangeRadio: function(event) {
+    var value = event.currentTarget.id;
+    this.setValue(value, 0);
+  },
   getSingleElement: function(value, index) {
     index = index || 0;
     return(
       <div className="radio-wrapper">
-        {this.props.component.values.map(function(v) {
+        {this.props.component.values.map(function(v, id) {
           return (
-            <div className="radio">
+            <div key={id} className="radio">
               <label className="control-label">
                 <input
                   type={this.props.component.inputType}
                   id={v.value}
                   data-index={index}
                   name={this.props.component.key}
-                  value={v.value}
+                  checked={v.value===this.state.value}
                   disabled={this.props.readOnly}
-                  onChange={this.onChange}
+                  onChange={this.onChangeRadio}
                   ></input>
                 {v.label}
               </label>
