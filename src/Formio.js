@@ -6,6 +6,24 @@ var FormioComponent = require('./FormioComponent');
 
 require('./components');
 
+var debounce = function (func, threshold, execAsap) {
+  var timeout;
+  return function debounced () {
+    var obj = this, args = arguments;
+    function delayed () {
+      if (!execAsap)
+        func.apply(obj, args);
+      timeout = null;
+    };
+    if (timeout)
+      clearTimeout(timeout);
+    else if (execAsap)
+      func.apply(obj, args);
+
+    timeout = setTimeout(delayed, threshold || 100);
+  };
+};
+
 module.exports = React.createClass({
   displayName: 'Formio',
   getInitialState: function() {
@@ -38,7 +56,7 @@ module.exports = React.createClass({
     delete this.inputs[component.props.name];
     delete this.data[component.props.name];
   },
-  validate: function(component) {
+  validate: debounce(function(component) {
     var state = {
       isValid: true,
       errorMessage: ''
@@ -55,7 +73,7 @@ module.exports = React.createClass({
       state = this.validateItem(component.state.value, component);
     }
     component.setState(state, this.validateForm);
-  },
+  }, 500),
   validateItem: function(item, component) {
     var state = {
       isValid: true,

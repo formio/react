@@ -4,6 +4,24 @@ var React = require('react');
 var componentMixin = require('./mixins/componentMixin');
 var selectMixin = require('./mixins/selectMixin');
 
+var debounce = function (func, threshold, execAsap) {
+  var timeout;
+  return function debounced () {
+    var obj = this, args = arguments;
+    function delayed () {
+      if (!execAsap)
+        func.apply(obj, args);
+      timeout = null;
+    };
+    if (timeout)
+      clearTimeout(timeout);
+    else if (execAsap)
+      func.apply(obj, args);
+
+    timeout = setTimeout(delayed, threshold || 100);
+  };
+};
+
 module.exports = React.createClass({
   displayName: 'Address',
   mixins: [componentMixin, selectMixin],
@@ -13,7 +31,7 @@ module.exports = React.createClass({
   getValueField: function() {
     return null;
   },
-  doSearch: function(text) {
+  doSearch: debounce(function(text) {
     fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + text + '&sensor=false')
       .then(function(response) {
         response.json().then(function(data) {
@@ -22,5 +40,5 @@ module.exports = React.createClass({
           });
         }.bind(this));
       }.bind(this));
-  }
+  }, 200)
 });
