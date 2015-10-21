@@ -23,7 +23,7 @@ module.exports = React.createClass({
             id={this.props.component.key}
             data-index={index}
             name={this.props.name}
-            value={value}
+            checked={value}
             disabled={this.props.readOnly}
             onChange={this.onChangeCheckbox}
           />{this.props.component.label}

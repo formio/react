@@ -34460,7 +34460,7 @@ module.exports = React.createClass({
           id: this.props.component.key,
           'data-index': index,
           name: this.props.name,
-          value: value,
+          checked: value,
           disabled: this.props.readOnly,
           onChange: this.onChangeCheckbox
         }),
@@ -34674,6 +34674,10 @@ module.exports = {
     else if (!this.props.component.multiple && Array.isArray(value)) {
         value = value[0];
       }
+    // Set dates to Date object.
+    if (this.props.component.type === 'datetime' && value && !(value instanceof Date)) {
+      value = new Date(value);
+    }
     return value;
   },
   componentWillMount: function componentWillMount() {
@@ -34989,7 +34993,7 @@ module.exports = React.createClass({
       min: this.props.component.validate.min,
       max: this.props.component.validate.max,
       step: this.props.component.validate.step,
-      onChange: this.onChangeNumber
+      onChange: this.onChange
     });
   }
 });

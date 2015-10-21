@@ -34,6 +34,10 @@ module.exports = {
     else if (!this.props.component.multiple && Array.isArray(value)) {
       value = value[0];
     }
+    // Set dates to Date object.
+    if (this.props.component.type === 'datetime' && value && !(value instanceof Date)) {
+      value = new Date(value);
+    }
     return value;
   },
   componentWillMount: function () {

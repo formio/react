@@ -23,7 +23,7 @@ module.exports = React.createClass({
         min={this.props.component.validate.min}
         max={this.props.component.validate.max}
         step={this.props.component.validate.step}
-        onChange={this.onChangeNumber}
+        onChange={this.onChange}
         >
       </input>
     );
