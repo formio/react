@@ -6,7 +6,7 @@ var Input = require('react-input-mask');
 module.exports = {
   getSingleElement: function(value, index) {
     index = index || 0;
-    var mask = this.props.component.mask || "";
+    var mask = this.props.component.inputMask || "";
     return(
       <Input
         type={this.props.component.inputType}

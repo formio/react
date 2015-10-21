@@ -34741,7 +34741,7 @@ var Input = require('react-input-mask');
 module.exports = {
   getSingleElement: function getSingleElement(value, index) {
     index = index || 0;
-    var mask = this.props.component.mask || "";
+    var mask = this.props.component.inputMask || "";
     return React.createElement(Input, {
       type: this.props.component.inputType,
       key: index,
