@@ -9,6 +9,7 @@ module.exports = React.createClass({
   displayName: 'Resource',
   mixins: [componentMixin, selectMixin],
   componentWillMount: function() {
+    this.formio = new formiojs(this.props.formio.projectUrl + '/form/' + this.props.component.resource);
     this.doSearch();
   },
   getValueField: function() {
@@ -17,7 +18,6 @@ module.exports = React.createClass({
   doSearch: function(text) {
     var settings = this.props.component;
     if (settings.resource) {
-      this.formio = new formiojs(this.props.formio.projectUrl + '/form/' + settings.resource);
       var params = {};
 
       // If they wish to filter the results.
@@ -25,7 +25,11 @@ module.exports = React.createClass({
         params.select = settings.selectFields;
       }
 
-      // TODO: Should implement settings.searchExpression && settings.searchFields
+      if (settings.searchFields && Array.isArray(settings.searchFields) && text) {
+        settings.searchFields.forEach(function(field) {
+          params[field] = text;
+        });
+      }
 
       // Load the submissions.
       this.formio.loadSubmissions({

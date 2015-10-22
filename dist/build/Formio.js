@@ -14454,6 +14454,21 @@ var FormioComponent = require('./FormioComponent');
 
 require('./components');
 
+var debounce = function debounce(func, threshold, execAsap) {
+  var timeout;
+  return function debounced() {
+    var obj = this,
+        args = arguments;
+    function delayed() {
+      if (!execAsap) func.apply(obj, args);
+      timeout = null;
+    };
+    if (timeout) clearTimeout(timeout);else if (execAsap) func.apply(obj, args);
+
+    timeout = setTimeout(delayed, threshold || 100);
+  };
+};
+
 module.exports = React.createClass({
   displayName: 'Formio',
   getInitialState: function getInitialState() {
@@ -14486,7 +14501,7 @@ module.exports = React.createClass({
     delete this.inputs[component.props.name];
     delete this.data[component.props.name];
   },
-  validate: function validate(component) {
+  validate: debounce(function (component) {
     var state = {
       isValid: true,
       errorMessage: ''
@@ -14502,7 +14517,7 @@ module.exports = React.createClass({
       state = this.validateItem(component.state.value, component);
     }
     component.setState(state, this.validateForm);
-  },
+  }, 500),
   validateItem: function validateItem(item, component) {
     var state = {
       isValid: true,
@@ -14744,6 +14759,21 @@ var React = require('react');
 var componentMixin = require('./mixins/componentMixin');
 var selectMixin = require('./mixins/selectMixin');
 
+var debounce = function debounce(func, threshold, execAsap) {
+  var timeout;
+  return function debounced() {
+    var obj = this,
+        args = arguments;
+    function delayed() {
+      if (!execAsap) func.apply(obj, args);
+      timeout = null;
+    };
+    if (timeout) clearTimeout(timeout);else if (execAsap) func.apply(obj, args);
+
+    timeout = setTimeout(delayed, threshold || 100);
+  };
+};
+
 module.exports = React.createClass({
   displayName: 'Address',
   mixins: [componentMixin, selectMixin],
@@ -14753,7 +14783,7 @@ module.exports = React.createClass({
   getValueField: function getValueField() {
     return null;
   },
-  doSearch: function doSearch(text) {
+  doSearch: debounce(function (text) {
     fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + text + '&sensor=false').then((function (response) {
       response.json().then((function (data) {
         this.setState({
@@ -14761,7 +14791,7 @@ module.exports = React.createClass({
         });
       }).bind(this));
     }).bind(this));
-  }
+  }, 200)
 });
 
 
@@ -15319,6 +15349,14 @@ module.exports = {
     ) : '';
     var requiredInline = !this.props.component.label && this.props.component.validate && this.props.component.validate.required ? React.createElement('span', { className: 'glyphicon glyphicon-asterisk form-control-feedback field-required-inline', 'aria-hidden': 'true' }) : '';
     var className = this.props.component.prefix || this.props.component.suffix ? 'input-group' : '';
+    var filter;
+    if (typeof this.doSearch === 'function') {
+      filter = function (dataItem, searchTerm) {
+        return true;
+      };
+    } else {
+      filter = 'contains';
+    }
     return React.createElement(
       'div',
       null,
@@ -15333,7 +15371,7 @@ module.exports = {
           valueField: valueField,
           textField: textField,
           suggest: true,
-          filter: 'contains',
+          filter: filter,
           value: this.state.value,
           searchTerm: this.state.searchTerm,
           onSearch: this.onSearch,
@@ -15503,6 +15541,7 @@ module.exports = React.createClass({
   displayName: 'Resource',
   mixins: [componentMixin, selectMixin],
   componentWillMount: function componentWillMount() {
+    this.formio = new formiojs(this.props.formio.projectUrl + '/form/' + this.props.component.resource);
     this.doSearch();
   },
   getValueField: function getValueField() {
@@ -15511,7 +15550,6 @@ module.exports = React.createClass({
   doSearch: function doSearch(text) {
     var settings = this.props.component;
     if (settings.resource) {
-      this.formio = new formiojs(this.props.formio.projectUrl + '/form/' + settings.resource);
       var params = {};
 
       // If they wish to filter the results.
@@ -15519,7 +15557,11 @@ module.exports = React.createClass({
         params.select = settings.selectFields;
       }
 
-      // TODO: Should implement settings.searchExpression && settings.searchFields
+      if (settings.searchFields && Array.isArray(settings.searchFields) && text) {
+        settings.searchFields.forEach(function (field) {
+          params[field] = text;
+        });
+      }
 
       // Load the submissions.
       this.formio.loadSubmissions({
