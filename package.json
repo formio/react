@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/formio/react-formio#readme",
   "dependencies": {
+    "babel": "^5.8.23",
     "babelify": "^6.3.0",
     "formiojs": "git+https://github.com/formio/formio.js.git",
     "moment": "^2.10.6",
