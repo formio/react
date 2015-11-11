@@ -46,6 +46,9 @@ module.exports = {
   },
   itemComponent: function() {
     var template = this.props.component.template;
+    if (!template) {
+      return null;
+    }
     // Replace double brackets in angular with single brackets in react.
     template = template.replace(/\{\s*\{/g, '{').replace(/\}\s*\}/g, '}');
     return React.createClass({
