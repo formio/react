@@ -172,7 +172,8 @@ module.exports = React.createClass({
   },
   showAlert: function(type, message) {
     this.setState(function(previousState) {
-      return previousState.alerts.concat({type: type, message: message});
+      previousState.alerts = previousState.alerts.concat({type: type, message: message});
+      return previousState;
     })
   },
   onSubmit: function (event) {
@@ -227,7 +228,7 @@ module.exports = React.createClass({
         }.bind(this));
       }
       else {
-        this.showAlert('error', response);
+        this.showAlert('danger', response);
       }
     }.bind(this));
   },
@@ -265,9 +266,9 @@ module.exports = React.createClass({
       }.bind(this));
     }
     var loading = (this.state.isLoading ? <i id="formio-loading" className="glyphicon glyphicon-refresh glyphicon-spin"></i> : '');
-    var alerts = this.state.alerts.map(function(alert) {
+    var alerts = this.state.alerts.map(function(alert, index) {
         var className = "alert alert-" + alert.type;
-        return (<div className={className} role="alert">{alert.message}</div>);
+        return (<div className={className} role="alert" key={index}>{alert.message}</div>);
       });
 
 
