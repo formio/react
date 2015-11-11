@@ -201,7 +201,6 @@ module.exports = React.createClass({
         this.props.onFormSubmit(submission);
       }
       this.setState({
-        submission: submission,
         isSubmitting: false,
         alerts: [{
           type: 'success',
