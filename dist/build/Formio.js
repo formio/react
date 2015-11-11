@@ -100103,7 +100103,8 @@ module.exports = React.createClass({
   },
   showAlert: function showAlert(type, message) {
     this.setState(function (previousState) {
-      return previousState.alerts.concat({ type: type, message: message });
+      previousState.alerts = previousState.alerts.concat({ type: type, message: message });
+      return previousState;
     });
   },
   onSubmit: function onSubmit(event) {
@@ -100130,7 +100131,6 @@ module.exports = React.createClass({
         this.props.onFormSubmit(submission);
       }
       this.setState({
-        submission: submission,
         isSubmitting: false,
         alerts: [{
           type: 'success',
@@ -100155,7 +100155,7 @@ module.exports = React.createClass({
           }
         }).bind(this));
       } else {
-        this.showAlert('error', response);
+        this.showAlert('danger', response);
       }
     }).bind(this));
   },
@@ -100191,11 +100191,11 @@ module.exports = React.createClass({
       }).bind(this));
     }
     var loading = this.state.isLoading ? React.createElement('i', { id: 'formio-loading', className: 'glyphicon glyphicon-refresh glyphicon-spin' }) : '';
-    var alerts = this.state.alerts.map(function (alert) {
+    var alerts = this.state.alerts.map(function (alert, index) {
       var className = "alert alert-" + alert.type;
       return React.createElement(
         'div',
-        { className: className, role: 'alert' },
+        { className: className, role: 'alert', key: index },
         alert.message
       );
     });
@@ -100826,6 +100826,9 @@ module.exports = {
   },
   itemComponent: function itemComponent() {
     var template = this.props.component.template;
+    if (!template) {
+      return null;
+    }
     // Replace double brackets in angular with single brackets in react.
     template = template.replace(/\{\s*\{/g, '{').replace(/\}\s*\}/g, '}');
     return React.createClass({
