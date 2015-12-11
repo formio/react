@@ -1,7 +1,7 @@
 'use strict'
 
 var React = require('react');
-var formiojs = require('formiojs')();
+var formiojs = require('formiojs');
 var FormioComponent = require('./FormioComponent');
 
 require('./components');
