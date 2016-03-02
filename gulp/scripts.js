@@ -10,6 +10,10 @@ module.exports = function(gulp, plugins) {
       this.emit('end'); // Keep gulp from hanging on this task
     }
 
+    gulp.src('./src/Formio.js')
+      .pipe(plugins.react())
+      .pipe(gulp.dest('dist/lib'));
+
     plugins.browserify({
       entries: ['./src/Formio.js'],
       transform: [plugins.babelify, plugins.reactify]
@@ -23,7 +27,7 @@ module.exports = function(gulp, plugins) {
       .pipe(plugins.streamify(plugins.uglify('Formio.min.js')))
       .pipe(gulp.dest('dist/build'));
 
-   plugins.browserify({
+    plugins.browserify({
       entries: ['./src/app.js'],
       transform: [plugins.babelify, plugins.reactify]
     })
