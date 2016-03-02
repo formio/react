@@ -10,7 +10,7 @@ module.exports = function(gulp, plugins) {
       this.emit('end'); // Keep gulp from hanging on this task
     }
 
-    gulp.src('./src/Formio.js')
+    gulp.src('./src/**/*.js')
       .pipe(plugins.react())
       .pipe(gulp.dest('dist/lib'));
 
