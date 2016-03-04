@@ -6,7 +6,7 @@ module.exports = function(gulp, plugins) {
       notify: false,
       port: 9002,
       server: {
-        baseDir: ['dist/src'],
+        baseDir: ['dist/example'],
         routes: {
           "/bower_components": "bower_components",
           "/node_modules": "node_modules"
@@ -21,7 +21,7 @@ module.exports = function(gulp, plugins) {
 
     // watch for changes
     gulp.watch([
-      'dist/src/*'
+      'dist/example/*'
     ]).on('change', bs.reload);
   };
 };

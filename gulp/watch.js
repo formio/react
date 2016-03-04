@@ -13,11 +13,11 @@ module.exports = function(gulp, plugins) {
     return watcher.on('update', function () {
       watcher.bundle()
         .pipe(plugins.source('app.js'))
-        .pipe(gulp.dest('dist/src'));
+        .pipe(gulp.dest('dist/example'));
       console.log('Updated');
     })
       .bundle()
       .pipe(plugins.source('app.js'))
-      .pipe(gulp.dest('dist/src'));
+      .pipe(gulp.dest('dist/example'));
   };
 };

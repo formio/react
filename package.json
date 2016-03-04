@@ -2,7 +2,7 @@
   "name": "react-formio",
   "version": "0.1.1",
   "description": "React rendering library for form.io embedded forms.",
-  "main": "dist/lib/Formio.js",
+  "main": "dist/build/Formio.js",
   "scripts": {
     "test": "npm test/test"
   },
@@ -23,9 +23,11 @@
     "url": "https://github.com/formio/react-formio/issues"
   },
   "homepage": "https://github.com/formio/react-formio#readme",
+  "browserify-shim": {
+    "react": "global:React"
+  },
   "dependencies": {
-    "babel": "^5.8.23",
-    "babelify": "^6.3.0",
+    "babel-standalone": "^6.4.4",
     "formiojs": "git+https://github.com/formio/formio.js.git",
     "moment": "^2.10.6",
     "react": "^0.13.3",
@@ -34,8 +36,10 @@
     "react-widgets": "^2.8.2"
   },
   "devDependencies": {
+    "babelify": "^6.3.0",
     "browser-sync": "^2.9.8",
-    "browserify": "^11.2.0",
+    "browserify": "^13.0.0",
+    "browserify-shim": "^3.8.12",
     "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",

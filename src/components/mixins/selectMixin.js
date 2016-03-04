@@ -2,7 +2,7 @@
 var React = require('react');
 var DropdownList = require('react-widgets/lib/DropdownList');
 var Multiselect = require('react-widgets/lib/Multiselect');
-var Babel = require('babel');
+var Babel = require('babel-standalone');
 
 module.exports = {
   getInitialState: function() {

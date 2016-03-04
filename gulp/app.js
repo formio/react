@@ -11,19 +11,12 @@ module.exports = function(gulp, plugins) {
     }
 
     return plugins.browserify({
-      entries: ['./src/Formio.js'],
-      standalone: 'Formio',
-      transform: [plugins.babelify, plugins.reactify]
-    })
-      .transform(plugins.shim, {global: true})
-      .external('react')
+        entries: ['./src/app.js'],
+        transform: [plugins.babelify, plugins.reactify]
+      })
       .bundle()
       .on('error', handleErrors)
-      .pipe(plugins.source('Formio.js'))
-      .pipe(gulp.dest('dist/build'))
-      .pipe(plugins.rename('Formio.min.js'))
-      .pipe(plugins.streamify(plugins.uglify('Formio.min.js')))
-      .pipe(gulp.dest('dist/build'));
-
+      .pipe(plugins.source('app.js'))
+      .pipe(gulp.dest('dist/example'));
   }
 }

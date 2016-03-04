@@ -1,7 +1,7 @@
 'use strict'
 
 var React = require('react');
-var formiojs = require('formiojs')();
+var formiojs = require('formiojs');
 var FormioComponent = require('./FormioComponent');
 
 require('./components');
@@ -231,7 +231,7 @@ module.exports = React.createClass({
       }
     }.bind(this));
   },
-  resetForm() {
+  resetForm: function() {
     this.setState(function(previousState) {
       for(var key in previousState.submission.data) {
         delete previousState.submission.data[key];
