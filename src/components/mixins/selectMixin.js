@@ -2,7 +2,6 @@
 var React = require('react');
 var DropdownList = require('react-widgets/lib/DropdownList');
 var Multiselect = require('react-widgets/lib/Multiselect');
-var Babel = require('babel-standalone');
 
 module.exports = {
   getInitialState: function() {
@@ -49,15 +48,31 @@ module.exports = {
     if (!template) {
       return null;
     }
-    // Replace double brackets in angular with single brackets in react.
-    template = template.replace(/\{\s*\{/g, '{').replace(/\}\s*\}/g, '}');
+
+    //helper function to render raw html under a react element.
+    function raw (html) {
+      return {dangerouslySetInnerHTML: {__html: html}};
+    }
+
     return React.createClass({
       render: function () {
-        var item = this.props.item;
-        if (item) {
-          return eval(Babel.transform(template).code);
+        var props = this.props;
+
+        //string-replace callback, called for every match in the template.
+        function transform (fullMatch, expression) {
+          with (props) { //bring the properties of "props" into local scope so that the expression can reference them
+            return eval(expression); //evaluate the expression.
+          }
         }
-        return (<span></span>);
+
+        if (props.item) {
+          //find all {{ }} expression blocks and then replace the blocks with their evaluation.
+          //Then render the markup raw under this react element
+          return React.createElement('div', raw(
+              template.replace(/\{\s*\{([^\}]*)\}\s*\}/gm, transform)));
+        }
+
+        return React.createElement('span');
       }
     });
   },
