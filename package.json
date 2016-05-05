@@ -27,7 +27,7 @@
     "react": "global:React"
   },
   "dependencies": {
-    "formiojs": "git+https://github.com/formio/formio.js.git",
+    "formiojs": "formio/formio.js",
     "moment": "^2.10.6",
     "react": "^0.13.3",
     "react-input-mask": "^0.3.0",
