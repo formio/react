@@ -60,9 +60,8 @@ module.exports = {
 
         //string-replace callback, called for every match in the template.
         function transform (fullMatch, expression) {
-          with (props) { //bring the properties of "props" into local scope so that the expression can reference them
-            return eval(expression); //evaluate the expression.
-          }
+ //bring the properties of "props" into local scope so that the expression can reference them
+            return props.eval(expression); //evaluate the expression.
         }
 
         if (props.item) {

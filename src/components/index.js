@@ -22,5 +22,6 @@ FormioComponents.signature = require('./signature');
 FormioComponents.textarea = require('./textarea');
 FormioComponents.textfield = require('./textfield');
 FormioComponents.well = require('./well');
+FormioComponents.currency = require('./currency');
 
 module.exports = {};
