@@ -3,6 +3,39 @@ var React = require('react');
 var DropdownList = require('react-widgets/lib/DropdownList');
 var Multiselect = require('react-widgets/lib/Multiselect');
 
+function defineTransformerOutsideStrictMode () {
+    var safeGlobalName = '____formioSelectMixinGetTransformer';
+    var globalObject = typeof window !== 'undefined'
+                            ? window
+                            : typeof global !== "undefined"
+                                ? global
+                                : {};
+
+    /* We are essentially doing this, but because we're in strict mode by default in all babeled
+     * modules, we need to escape it
+     *
+     * //string-replace callback, called for every match in the template.
+     * function transform (_, expression) {
+     *  //bring the properties of "props" into local scope so that the expression can reference them
+     *  with (props) {
+     *    return eval(expression); //evaluate the expression.
+     *  }
+     * }
+     */
+
+    //This escapes strict mode.
+    (1,eval)('function '+safeGlobalName+' (props) { return function (_, exp) { with(props) { return eval(exp); } } }');
+
+    var ret = eval(safeGlobalName);
+
+    //cleanup
+    delete globalObject[safeGlobalName];
+
+    return ret;
+}
+
+var getTransformer = defineTransformerOutsideStrictMode();
+
 module.exports = {
   getInitialState: function() {
     return {
@@ -58,12 +91,7 @@ module.exports = {
       render: function () {
         var props = this.props;
 
-        //string-replace callback, called for every match in the template.
-        function transform (fullMatch, expression) {
-        //  with (props) { //bring the properties of "props" into local scope so that the expression can reference them
-            return eval(expression); //evaluate the expression.
-          //}
-        }
+        var transform = getTransformer(props);
 
         if (props.item) {
           //find all {{ }} expression blocks and then replace the blocks with their evaluation.
