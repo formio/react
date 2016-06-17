@@ -241,9 +241,9 @@ module.exports = React.createClass({
   },
   render: function() {
     if (this.state.form.components) {
-      this.componentNodes = this.state.form.components.map(function(component) {
+      this.componentNodes = this.state.form.components.map(function(component, index) {
         var value = (this.state.submission.data && this.state.submission.data.hasOwnProperty(component.key) ? this.state.submission.data[component.key] : component.defaultValue || '');
-        var key = component.key || component.type;
+        var key = component.key || component.type + index;
         return (
           <FormioComponent
             key={key}
