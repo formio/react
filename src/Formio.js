@@ -56,6 +56,12 @@ module.exports = React.createClass({
     delete this.inputs[component.props.name];
     delete this.data[component.props.name];
   },
+  change: function() {
+    if (typeof this.props.onChange === 'function') {
+      this.updateData();
+      this.props.onChange(this.data);
+    }
+  },
   validate: debounce(function(component) {
     var state = {
       isValid: true,
@@ -193,43 +199,50 @@ module.exports = React.createClass({
       method = this.state.submission._id ? 'put' : 'post';
       request = formiojs.request(this.state.form.action, method, sub);
     }
-    else {
+    else if (this.formio) {
       request = this.formio.saveSubmission(sub);
     }
-    request.then(function(submission) {
-      if (typeof this.props.onFormSubmit === 'function') {
-        this.props.onFormSubmit(submission);
-      }
-      this.setState({
-        isSubmitting: false,
-        alerts: [{
-          type: 'success',
-          message: 'Submission was ' + ((method === 'put') ? 'updated' : 'created')
-        }]
-      });
-    }.bind(this))
-    .catch(function(response) {
-      if (typeof this.props.onFormError === 'function') {
-        this.props.onFormError(response);
-      }
-      this.setState({
-        isSubmitting: false
-      });
-      if (response.hasOwnProperty('name') && response.name === "ValidationError") {
-        response.details.forEach(function (detail) {
-          if (this.inputs[detail.path]) {
-            this.inputs[detail.path].setState({
-              isValid: false,
-              isPristine: false,
-              errorMessage: detail.message
-            })
+    if (request) {
+      request.then(function(submission) {
+          if (typeof this.props.onFormSubmit === 'function') {
+            this.props.onFormSubmit(submission);
+          }
+          this.setState({
+            isSubmitting: false,
+            alerts: [{
+              type: 'success',
+              message: 'Submission was ' + ((method === 'put') ? 'updated' : 'created')
+            }]
+          });
+        }.bind(this))
+        .catch(function(response) {
+          if (typeof this.props.onFormError === 'function') {
+            this.props.onFormError(response);
+          }
+          this.setState({
+            isSubmitting: false
+          });
+          if (response.hasOwnProperty('name') && response.name === "ValidationError") {
+            response.details.forEach(function (detail) {
+              if (this.inputs[detail.path]) {
+                this.inputs[detail.path].setState({
+                  isValid: false,
+                  isPristine: false,
+                  errorMessage: detail.message
+                })
+              }
+            }.bind(this));
+          }
+          else {
+            this.showAlert('danger', response);
           }
         }.bind(this));
+    }
+    else {
+      if (typeof this.props.onFormSubmit === 'function') {
+        this.props.onFormSubmit(sub);
       }
-      else {
-        this.showAlert('danger', response);
-      }
-    }.bind(this));
+    }
   },
   resetForm: function() {
     this.setState(function(previousState) {
@@ -253,6 +266,7 @@ module.exports = React.createClass({
             attachToForm={this.attachToForm}
             detachFromForm={this.detachFromForm}
             validate={this.validate}
+            change={this.change}
             isSubmitting={this.state.isSubmitting}
             isFormValid={this.state.isValid}
             data={this.state.submission.data}

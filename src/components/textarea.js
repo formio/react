@@ -8,9 +8,11 @@ module.exports = React.createClass({
   displayName: 'Textarea',
   mixins: [componentMixin, multiMixin],
   getSingleElement: function(value, index) {
+    index = index || 0;
     return(
       <textarea
         className="form-control"
+        key={index}
         id={this.props.component.key}
         data-index={index}
         name={this.props.name}

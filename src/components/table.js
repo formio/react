@@ -32,7 +32,6 @@ module.exports = React.createClass({
                         {column.components.map(function(component, index) {
                           var value = (this.props.data && this.props.data.hasOwnProperty(component.key) ? this.props.data[component.key] : component.defaultValue || '');
                           var key = (component.key) ? component.key : component.type + index;
-                          console.log(key, value);
                           return (
                             <FormioComponent
                               {...this.props}
