@@ -20,6 +20,7 @@ FormioComponents.radio = require('./radio');
 FormioComponents.resource = require('./resource');
 FormioComponents.select = require('./select');
 FormioComponents.signature = require('./signature');
+FormioComponents.table = require('./table');
 FormioComponents.textarea = require('./textarea');
 FormioComponents.textfield = require('./textfield');
 FormioComponents.well = require('./well');
