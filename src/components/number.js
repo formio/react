@@ -9,6 +9,7 @@ module.exports = React.createClass({
   mixins: [componentMixin, multiMixin],
   getSingleElement: function(value, index) {
     index = index || 0;
+    value = value || 0;
     return(
       <input
         type={this.props.component.inputType}
