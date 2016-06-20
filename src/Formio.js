@@ -242,6 +242,10 @@ module.exports = React.createClass({
       if (typeof this.props.onFormSubmit === 'function') {
         this.props.onFormSubmit(sub);
       }
+      this.setState({
+        alerts: [],
+        isSubmitting: false
+      });
     }
   },
   resetForm: function() {
