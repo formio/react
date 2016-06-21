@@ -4,12 +4,19 @@ var React = require('react');
 
 module.exports = {
   getInitialState: function () {
-    var value = this.props.value || '';
-    // Number and datetime expect null instead of empty.
-    if (value === '' && (this.props.component.type == 'number' || this.props.component.type == 'datetime')) {
-      value = null;
+    var value = this.props.value;
+    // Allow components to set different default values.
+    if (!value) {
+      if (typeof this.getInitialValue === 'function') {
+        value = this.getInitialValue();
+      }
+      else {
+        value = '';
+      }
     }
-    value = this.safeSingleToMultiple(value);
+    if (this.props.component.type !== 'datagrid') {
+      value = this.safeSingleToMultiple(value);
+    }
     return {
       value: value,
       isValid: true,
