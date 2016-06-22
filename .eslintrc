@@ -4,6 +4,7 @@
   "parser": "babel-eslint",
   "rules": {
     "max-len": 0,
+    "max-depth": [1, 5],
     "no-unused-vars": 0
   },
   "globals": {

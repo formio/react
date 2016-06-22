@@ -6,7 +6,7 @@ module.exports = {
     index = index || 0;
     var mask = this.props.component.inputMask || '';
     return (
-      <Input
+      <input
         type={this.props.component.inputType}
         key={index}
         className='form-control'
@@ -19,7 +19,7 @@ module.exports = {
         mask={mask}
         onChange={this.onChange}
         >
-      </Input>
+      </input>
     );
   }
 };
