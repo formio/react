@@ -36,7 +36,8 @@ module.exports = {
     resolve: {
       extensions: ['', '.js', '.jsx'],
       alias: {
-        requirejs$:  "./dist/build/"
+        requirejs$:  "./dist/build/",
+
       },
     },
     noParse: [
