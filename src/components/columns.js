@@ -1,14 +1,12 @@
-'use strict'
-
 var React = require('react');
 var FormioComponent = require('../FormioComponent');
 
 module.exports = React.createClass({
   displayName: 'Column',
   render: function() {
-    return(
+    return (
       <div className="row">
-        {this.props.component.columns.map(function (column, index) {
+        {this.props.component.columns.map(function(column, index) {
             return (
               <div key={index} className="col-xs-6">
                 {column.components.map(function(component) {
@@ -25,7 +23,7 @@ module.exports = React.createClass({
                   }.bind(this))
                 }
               </div>
-            )
+            );
           }.bind(this))
         }
       </div>

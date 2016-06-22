@@ -1,5 +1,3 @@
-'use strict'
-
 var React = require('react');
 var FormioComponent = require('../FormioComponent');
 
@@ -7,7 +5,7 @@ module.exports = React.createClass({
   displayName: 'Fieldset',
   render: function() {
     var legend = (this.props.component.legend ? <legend>{this.props.component.legend}</legend> : '');
-    return(
+    return (
       <fieldset>
         {legend}
         {this.props.component.components.map(function(component) {

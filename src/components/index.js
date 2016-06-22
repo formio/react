@@ -1,4 +1,3 @@
-'use strict'
 
 // Is this the best way to create a registry? We don't have providers like Angular.
 window.FormioComponents = {};
@@ -16,7 +15,7 @@ FormioComponents.number = require('./number');
 FormioComponents.panel = require('./panel');
 FormioComponents.password = require('./password');
 FormioComponents.phoneNumber = require('./phoneNumber');
-FormioComponents.radio = require('./radio');
+FormioComponents.radio = require('./radio=--0op');
 //FormioComponents.resource = require('./resource');
 //FormioComponents.select = require('./select');
 //FormioComponents.signature = require('./signature');

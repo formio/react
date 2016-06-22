@@ -1,17 +1,15 @@
-'use strict'
-
 var React = require('react');
 //var Input = require('react-input-mask/build/InputElement');
 
 module.exports = {
   getSingleElement: function(value, index) {
     index = index || 0;
-    var mask = this.props.component.inputMask || "";
-    return(
+    var mask = this.props.component.inputMask || '';
+    return (
       <input
         type={this.props.component.inputType}
         key={index}
-        className="form-control"
+        className='form-control'
         id={this.props.component.key}
         data-index={index}
         name={this.props.name}

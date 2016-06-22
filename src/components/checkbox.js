@@ -1,5 +1,3 @@
-'use strict'
-
 var React = require('react');
 var componentMixin = require('./mixins/componentMixin');
 var multiMixin = require('./mixins/multiMixin');
@@ -15,7 +13,7 @@ module.exports = React.createClass({
   getSingleElement: function(value, index) {
     index = index || 0;
     var required = (this.props.component.validate.required ? 'field-required' : '');
-    return(
+    return (
       <div className="checkbox">
         <label className={required}>
           <input

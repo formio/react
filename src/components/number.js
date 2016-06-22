@@ -1,5 +1,3 @@
-'use strict'
-
 var React = require('react');
 var componentMixin = require('./mixins/componentMixin');
 var multiMixin = require('./mixins/multiMixin');
@@ -10,7 +8,7 @@ module.exports = React.createClass({
   getSingleElement: function(value, index) {
     index = index || 0;
     value = value || 0;
-    return(
+    return (
       <input
         type={this.props.component.inputType}
         className="form-control"

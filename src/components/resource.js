@@ -1,15 +1,13 @@
-'use strict'
-
 var React = require('react');
 var componentMixin = require('./mixins/componentMixin');
 var selectMixin = require('./mixins/selectMixin');
-var formiojs = require('formiojs')();
+var Formiojs = require('formiojs')();
 
 module.exports = React.createClass({
   displayName: 'Resource',
   mixins: [componentMixin, selectMixin],
   componentWillMount: function() {
-    this.formio = new formiojs(this.props.formio.projectUrl + '/form/' + this.props.component.resource);
+    this.formio = new Formiojs(this.props.formio.projectUrl + '/form/' + this.props.component.resource);
     this.doSearch();
   },
   getValueField: function() {
@@ -34,7 +32,7 @@ module.exports = React.createClass({
       // Load the submissions.
       this.formio.loadSubmissions({
         params: params
-      }).then(function (submissions) {
+      }).then(function(submissions) {
         this.setState({
           selectItems: submissions
         });

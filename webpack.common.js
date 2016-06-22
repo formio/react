@@ -12,13 +12,13 @@ module.exports = {
     "react-dom"
   ],
   module: {
-    //preLoaders: [
-    //  {
-    //    test: /\.jsx?$/,
-    //    loader: "eslint",
-    //    exclude: /node_modules/
-    //  }
-    //],
+    preLoaders: [
+      {
+        test: /\.jsx?$/,
+        loader: "eslint",
+        exclude: /node_modules/
+      }
+    ],
     loaders: [
       {
         test: /require\.js$/,

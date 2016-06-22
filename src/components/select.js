@@ -1,5 +1,3 @@
-'use strict'
-
 var React = require('react');
 var componentMixin = require('./mixins/componentMixin');
 var selectMixin = require('./mixins/selectMixin');
@@ -55,5 +53,5 @@ module.exports = React.createClass({
           selectItems: []
         });
     }
-  },
+  }
 });

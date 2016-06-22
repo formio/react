@@ -1,26 +1,7 @@
-'use strict'
-
 var React = require('react');
 var componentMixin = require('./mixins/componentMixin');
 var selectMixin = require('./mixins/selectMixin');
-
-var debounce = function (func, threshold, execAsap) {
-  var timeout;
-  return function debounced () {
-    var obj = this, args = arguments;
-    function delayed () {
-      if (!execAsap)
-        func.apply(obj, args);
-      timeout = null;
-    };
-    if (timeout)
-      clearTimeout(timeout);
-    else if (execAsap)
-      func.apply(obj, args);
-
-    timeout = setTimeout(delayed, threshold || 100);
-  };
-};
+var debounce = require('lodash').debounce;
 
 module.exports = React.createClass({
   displayName: 'Address',

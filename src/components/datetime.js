@@ -1,5 +1,3 @@
-'use strict'
-
 var React = require('react');
 var componentMixin = require('./mixins/componentMixin');
 var multiMixin = require('./mixins/multiMixin');
@@ -15,7 +13,7 @@ module.exports = React.createClass({
     this.setValue(value, index);
   },
   getSingleElement: function(value, index) {
-    return(
+    return (
       <DateTimePicker
         id={this.props.component.key}
         data-index={index}
