@@ -1,7 +1,7 @@
 var React = require('react');
 var valueMixin = require('./mixins/valueMixin');
 var selectMixin = require('./mixins/selectMixin');
-var debounce = require('lodash').debounce;
+var debounce = require('lodash/debounce');
 
 module.exports = React.createClass({
   displayName: 'Address',

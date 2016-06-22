@@ -1,7 +1,7 @@
 var React = require('react');
 var Formiojs = require('formiojs');
 var FormioComponent = require('./FormioComponent');
-var debounce = require('lodash').debounce;
+var debounce = require('lodash/debounce');
 
 require('./components');
 
@@ -61,6 +61,20 @@ module.exports = React.createClass({
     }
     component.setState(state, this.validateForm);
   }, 500),
+  validateForm: function() {
+    var allIsValid = true;
+
+    var inputs = this.inputs;
+    Object.keys(inputs).forEach(function(name) {
+      if (!inputs[name].state.isValid) {
+        allIsValid = false;
+      }
+    });
+
+    this.setState({
+      isValid: allIsValid
+    });
+  },
   validateItem: function(item, component) {
     var state = {
       isValid: true,
@@ -142,20 +156,6 @@ module.exports = React.createClass({
     Object.keys(this.inputs).forEach(function(name) {
       this.data[name] = this.inputs[name].state.value;
     }.bind(this));
-  },
-  validateForm: function() {
-    var allIsValid = true;
-
-    var inputs = this.inputs;
-    Object.keys(inputs).forEach(function(name) {
-      if (!inputs[name].state.isValid) {
-        allIsValid = false;
-      }
-    });
-
-    this.setState({
-      isValid: allIsValid
-    });
   },
   showAlert: function(type, message) {
     this.setState(function(previousState) {
