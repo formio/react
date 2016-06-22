@@ -1,12 +1,10 @@
-'use strict'
-
 var React = require('react');
 
 module.exports = {
-  getInitialState: function () {
+  getInitialState: function() {
     var value = this.props.value || '';
     // Number and datetime expect null instead of empty.
-    if (value === '' && (this.props.component.type == 'number' || this.props.component.type == 'datetime')) {
+    if (value === '' && (this.props.component.type === 'number' || this.props.component.type === 'datetime')) {
       value = null;
     }
     value = this.safeSingleToMultiple(value);
@@ -40,10 +38,10 @@ module.exports = {
     }
     return value;
   },
-  componentWillMount: function () {
+  componentWillMount: function() {
     this.props.attachToForm(this);
   },
-  componentWillUnmount: function () {
+  componentWillUnmount: function() {
     this.props.detachFromForm(this);
   },
   onChange: function(event) {
@@ -51,8 +49,8 @@ module.exports = {
     var index = (this.props.component.multiple ? event.currentTarget.getAttribute('data-index') : null);
     this.setValue(value, index);
   },
-  setValue: function (value, index) {
-    this.setState(function(previousState, currentProps) {
+  setValue: function(value, index) {
+    this.setState(function(previousState) {
       if (index) {
         previousState.value[index] = value;
       }
@@ -66,15 +64,15 @@ module.exports = {
         this.props.change();
       }
       if (typeof this.props.validate === 'function') {
-        this.props.validate(this)
+        this.props.validate(this);
       }
     }.bind(this));
   },
   getComponent: function() {
-    var classNames = "form-group has-feedback form-field-type-" + this.props.component.type + (this.state.errorMessage !== '' && !this.state.isPristine ? ' has-error': '');
-    var id = "form-group-" + this.props.component.key;
+    var classNames = 'form-group has-feedback form-field-type-' + this.props.component.type + (this.state.errorMessage !== '' && !this.state.isPristine ? ' has-error': '');
+    var id = 'form-group-' + this.props.component.key;
     var Elements = this.getElements();
-    var Error = (this.state.errorMessage && !this.state.isPristine ? <p className="help-block">{this.state.errorMessage}</p> : '');
+    var Error = (this.state.errorMessage && !this.state.isPristine ? <p className='help-block'>{this.state.errorMessage}</p> : '');
     return (
       <div className={classNames} id={id}>
         <div>

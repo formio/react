@@ -1,5 +1,3 @@
-'use strict'
-
 var React = require('react');
 var FormioComponent = require('../FormioComponent');
 
@@ -12,8 +10,9 @@ module.exports = React.createClass({
     tableClasses += (this.props.component.bordered) ? ' table-bordered' : '';
     tableClasses += (this.props.component.hover) ? ' table-hover' : '';
     tableClasses += (this.props.component.condensed) ? ' table-condensed' : '';
-    return(
+    return (
       <div className="table-responsive">
+        {title}
         <table className={tableClasses}>
           <thead>
             {this.props.component.header.map(function(header, index) {

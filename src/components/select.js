@@ -1,13 +1,11 @@
-'use strict'
-
 var React = require('react');
-var componentMixin = require('./mixins/componentMixin');
+var valueMixin = require('./mixins/valueMixin');
 var selectMixin = require('./mixins/selectMixin');
 var formiojs = require('formiojs');
 
 module.exports = React.createClass({
   displayName: 'Select',
-  mixins: [componentMixin, selectMixin],
+  mixins: [valueMixin, selectMixin],
   componentWillMount: function() {
     switch (this.props.component.dataSrc) {
       case 'values':
@@ -55,5 +53,5 @@ module.exports = React.createClass({
           selectItems: []
         });
     }
-  },
+  }
 });

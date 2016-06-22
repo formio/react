@@ -1,28 +1,9 @@
-'use strict'
-
 var React = require('react');
-var formiojs = require('formiojs');
+var Formiojs = require('formiojs');
 var FormioComponent = require('./FormioComponent');
+var debounce = require('lodash').debounce;
 
 require('./components');
-
-var debounce = function (func, threshold, execAsap) {
-  var timeout;
-  return function debounced () {
-    var obj = this, args = arguments;
-    function delayed () {
-      if (!execAsap)
-        func.apply(obj, args);
-      timeout = null;
-    };
-    if (timeout)
-      clearTimeout(timeout);
-    else if (execAsap)
-      func.apply(obj, args);
-
-    timeout = setTimeout(delayed, threshold || 100);
-  };
-};
 
 module.exports = React.createClass({
   displayName: 'Formio',
@@ -43,16 +24,16 @@ module.exports = React.createClass({
       formAction: false
     };
   },
-  componentWillMount: function () {
+  componentWillMount: function() {
     this.data = {};
     this.inputs = {};
   },
-  attachToForm: function (component) {
+  attachToForm: function(component) {
     this.inputs[component.props.component.key] = component;
     this.data[component.props.component.key] = component.state.value;
     this.validate(component);
   },
-  detachFromForm: function (component) {
+  detachFromForm: function(component) {
     delete this.inputs[component.props.name];
     delete this.data[component.props.name];
   },
@@ -103,7 +84,7 @@ module.exports = React.createClass({
         }
         // Regex
         if (state.isValid && component.props.component.validate && component.props.component.validate.pattern) {
-          var re = new RegExp(component.props.component.validate.pattern, "g");
+          var re = new RegExp(component.props.component.validate.pattern, 'g');
           state.isValid = item.match(re);
           if (!state.isValid) {
             state.errorMessage = (component.props.component.label || component.props.component.key) + ' must match the expression: ' + component.props.component.validate.pattern;
@@ -121,7 +102,7 @@ module.exports = React.createClass({
           var valid = eval(custom);
           state.isValid = (valid === true);
           if (!state.isValid) {
-            state.errorMessage = valid || ((component.props.component.label || component.props.component.key) + "is not a valid value.");
+            state.errorMessage = valid || ((component.props.component.label || component.props.component.key) + 'is not a valid value.');
           }
         }
       }
@@ -135,7 +116,7 @@ module.exports = React.createClass({
   },
   componentDidMount: function() {
     if (this.props.src) {
-      this.formio = new formiojs(this.props.src);
+      this.formio = new Formiojs(this.props.src);
       this.formio.loadForm().then(function(form) {
         if (typeof this.props.onFormLoad === 'function') {
           this.props.onFormLoad(form);
@@ -152,21 +133,21 @@ module.exports = React.createClass({
           }
           this.setState({
             submission: submission
-          }, this.validateForm)
+          }, this.validateForm);
         }.bind(this));
       }
     }
   },
   updateData: function(component) {
-    Object.keys(this.inputs).forEach(function (name) {
+    Object.keys(this.inputs).forEach(function(name) {
       this.data[name] = this.inputs[name].state.value;
     }.bind(this));
   },
-  validateForm: function () {
+  validateForm: function() {
     var allIsValid = true;
 
     var inputs = this.inputs;
-    Object.keys(inputs).forEach(function (name) {
+    Object.keys(inputs).forEach(function(name) {
       if (!inputs[name].state.isValid) {
         allIsValid = false;
       }
@@ -180,9 +161,9 @@ module.exports = React.createClass({
     this.setState(function(previousState) {
       previousState.alerts = previousState.alerts.concat({type: type, message: message});
       return previousState;
-    })
+    });
   },
-  onSubmit: function (event) {
+  onSubmit: function(event) {
     event.preventDefault();
     this.setState({
       alerts: [],
@@ -197,7 +178,7 @@ module.exports = React.createClass({
     // Do the submit here.
     if (this.state.form.action) {
       method = this.state.submission._id ? 'put' : 'post';
-      request = formiojs.request(this.state.form.action, method, sub);
+      request = Formiojs.request(this.state.form.action, method, sub);
     }
     else if (this.formio) {
       request = this.formio.saveSubmission(sub);
@@ -222,14 +203,14 @@ module.exports = React.createClass({
           this.setState({
             isSubmitting: false
           });
-          if (response.hasOwnProperty('name') && response.name === "ValidationError") {
-            response.details.forEach(function (detail) {
+          if (response.hasOwnProperty('name') && response.name === 'ValidationError') {
+            response.details.forEach(function(detail) {
               if (this.inputs[detail.path]) {
                 this.inputs[detail.path].setState({
                   isValid: false,
                   isPristine: false,
                   errorMessage: detail.message
-                })
+                });
               }
             }.bind(this));
           }
@@ -250,7 +231,7 @@ module.exports = React.createClass({
   },
   resetForm: function() {
     this.setState(function(previousState) {
-      for(var key in previousState.submission.data) {
+      for (var key in previousState.submission.data) {
         delete previousState.submission.data[key];
       }
       return previousState;
@@ -282,15 +263,14 @@ module.exports = React.createClass({
         );
       }.bind(this));
     }
-    var loading = (this.state.isLoading ? <i id="formio-loading" className="glyphicon glyphicon-refresh glyphicon-spin"></i> : '');
+    var loading = (this.state.isLoading ? <i id='formio-loading' className='glyphicon glyphicon-refresh glyphicon-spin'></i> : '');
     var alerts = this.state.alerts.map(function(alert, index) {
-        var className = "alert alert-" + alert.type;
-        return (<div className={className} role="alert" key={index}>{alert.message}</div>);
+        var className = 'alert alert-' + alert.type;
+        return (<div className={className} role='alert' key={index}>{alert.message}</div>);
       });
 
-
     return (
-      <form role="form" name="formioForm" onSubmit={this.onSubmit}>
+      <form role='form' name='formioForm' onSubmit={this.onSubmit}>
         {loading}
         {alerts}
         {this.componentNodes}

@@ -1,7 +1,5 @@
-'use strict'
-
 var React = require('react');
-var componentMixin = require('./mixins/componentMixin');
+var valueMixin = require('./mixins/valueMixin');
 var multiMixin = require('./mixins/multiMixin');
 var DateTimePicker = require('react-widgets/lib/DateTimePicker');
 var momentLocalizer = require('react-widgets/lib/localizers/moment');
@@ -10,12 +8,12 @@ momentLocalizer(moment);
 
 module.exports = React.createClass({
   displayName: 'Datetime',
-  mixins: [componentMixin, multiMixin],
+  mixins: [valueMixin, multiMixin],
   onChangeDatetime: function(index, value, str) {
     this.setValue(value, index);
   },
   getSingleElement: function(value, index) {
-    return(
+    return (
       <DateTimePicker
         id={this.props.component.key}
         data-index={index}

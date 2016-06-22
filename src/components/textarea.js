@@ -1,15 +1,13 @@
-'use strict'
-
 var React = require('react');
-var componentMixin = require('./mixins/componentMixin');
+var valueMixin = require('./mixins/valueMixin');
 var multiMixin = require('./mixins/multiMixin');
 
 module.exports = React.createClass({
   displayName: 'Textarea',
-  mixins: [componentMixin, multiMixin],
+  mixins: [valueMixin, multiMixin],
   getSingleElement: function(value, index) {
     index = index || 0;
-    return(
+    return (
       <textarea
         className="form-control"
         key={index}
