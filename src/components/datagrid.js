@@ -1,12 +1,12 @@
 'use strict'
 
 var React = require('react');
-var componentMixin = require('./mixins/componentMixin');
+var valueMixin = require('./mixins/valueMixin');
 var FormioComponent = require('../FormioComponent');
 
 module.exports = React.createClass({
   displayName: 'Datagrid',
-  mixins: [componentMixin],
+  mixins: [valueMixin],
   getInitialValue: function() {
     return [{}];
   },
