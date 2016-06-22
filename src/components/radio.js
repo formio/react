@@ -1,10 +1,10 @@
 var React = require('react');
-var componentMixin = require('./mixins/componentMixin');
+var valueMixin = require('./mixins/valueMixin');
 var multiMixin = require('./mixins/multiMixin');
 
 module.exports = React.createClass({
   displayName: 'Radio',
-  mixins: [componentMixin, multiMixin],
+  mixins: [valueMixin, multiMixin],
   onChangeRadio: function(event) {
     var value = event.currentTarget.id;
     this.setValue(value, 0);

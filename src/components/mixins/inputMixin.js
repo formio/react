@@ -1,12 +1,12 @@
 var React = require('react');
-//var Input = require('react-input-mask/build/InputElement');
+var Input = require('react-input-mask/build/InputElement');
 
 module.exports = {
   getSingleElement: function(value, index) {
     index = index || 0;
     var mask = this.props.component.inputMask || '';
     return (
-      <input
+      <Input
         type={this.props.component.inputType}
         key={index}
         className='form-control'
@@ -19,7 +19,7 @@ module.exports = {
         mask={mask}
         onChange={this.onChange}
         >
-      </input>
+      </Input>
     );
   }
 };

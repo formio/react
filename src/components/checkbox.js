@@ -1,10 +1,10 @@
 var React = require('react');
-var componentMixin = require('./mixins/componentMixin');
+var valueMixin = require('./mixins/valueMixin');
 var multiMixin = require('./mixins/multiMixin');
 
 module.exports = React.createClass({
   displayName: 'Checkbox',
-  mixins: [componentMixin, multiMixin],
+  mixins: [valueMixin, multiMixin],
   onChangeCheckbox: function(event) {
     var value = event.currentTarget.checked;
     var index = (this.props.component.multiple ? event.currentTarget.getAttribute('data-index') : null);

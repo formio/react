@@ -1,10 +1,10 @@
 var React = require('react');
-var componentMixin = require('./mixins/componentMixin');
+var valueMixin = require('./mixins/valueMixin');
 var SignaturePad = require('react-signature-pad');
 
 module.exports = React.createClass({
   displayName: 'Signature',
-  mixins: [componentMixin],
+  mixins: [valueMixin],
   onEnd: function(type, image) {
     this.setState({
       value: this.signature.toDataURL()

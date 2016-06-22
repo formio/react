@@ -1,11 +1,11 @@
 var React = require('react');
-var componentMixin = require('./mixins/componentMixin');
+var valueMixin = require('./mixins/valueMixin');
 var selectMixin = require('./mixins/selectMixin');
 var Formiojs = require('formiojs')();
 
 module.exports = React.createClass({
   displayName: 'Resource',
-  mixins: [componentMixin, selectMixin],
+  mixins: [valueMixin, selectMixin],
   componentWillMount: function() {
     this.formio = new Formiojs(this.props.formio.projectUrl + '/form/' + this.props.component.resource);
     this.doSearch();

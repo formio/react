@@ -1,11 +1,11 @@
 var React = require('react');
-var componentMixin = require('./mixins/componentMixin');
+var valueMixin = require('./mixins/valueMixin');
 var selectMixin = require('./mixins/selectMixin');
 var debounce = require('lodash').debounce;
 
 module.exports = React.createClass({
   displayName: 'Address',
-  mixins: [componentMixin, selectMixin],
+  mixins: [valueMixin, selectMixin],
   getTextField: function() {
     return 'formatted_address';
   },
