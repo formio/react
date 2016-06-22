@@ -20581,22 +20581,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	FormioComponents.columns = __webpack_require__(11);
 	FormioComponents.content = __webpack_require__(12);
 	FormioComponents.custom = __webpack_require__(13);
+	FormioComponents.datagrid = __webpack_require__(14);
 	//FormioComponents.datetime = require('./datetime');
-	FormioComponents.email = __webpack_require__(14);
-	FormioComponents.fieldset = __webpack_require__(17);
-	FormioComponents.hidden = __webpack_require__(18);
-	FormioComponents.number = __webpack_require__(19);
-	FormioComponents.panel = __webpack_require__(20);
-	FormioComponents.password = __webpack_require__(21);
-	FormioComponents.phoneNumber = __webpack_require__(22);
-	FormioComponents.radio = __webpack_require__(23);
+	FormioComponents.email = __webpack_require__(15);
+	FormioComponents.fieldset = __webpack_require__(18);
+	FormioComponents.hidden = __webpack_require__(19);
+	FormioComponents.number = __webpack_require__(20);
+	FormioComponents.panel = __webpack_require__(21);
+	FormioComponents.password = __webpack_require__(22);
+	FormioComponents.phoneNumber = __webpack_require__(23);
+	FormioComponents.radio = __webpack_require__(24);
 	//FormioComponents.resource = require('./resource');
 	//FormioComponents.select = require('./select');
 	//FormioComponents.signature = require('./signature');
-	FormioComponents.table = __webpack_require__(24);
-	FormioComponents.textarea = __webpack_require__(25);
-	FormioComponents.textfield = __webpack_require__(26);
-	FormioComponents.well = __webpack_require__(27);
+	FormioComponents.table = __webpack_require__(25);
+	FormioComponents.textarea = __webpack_require__(26);
+	FormioComponents.textfield = __webpack_require__(27);
+	FormioComponents.well = __webpack_require__(28);
 
 	module.exports = {};
 
@@ -20697,12 +20698,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = {
 	  getInitialState: function getInitialState() {
-	    var value = this.props.value || '';
-	    // Number and datetime expect null instead of empty.
-	    if (value === '' && (this.props.component.type === 'number' || this.props.component.type === 'datetime')) {
-	      value = null;
+	    var value = this.props.value;
+	    // Allow components to set different default values.
+	    if (!value) {
+	      if (typeof this.getInitialValue === 'function') {
+	        value = this.getInitialValue();
+	      } else {
+	        value = '';
+	      }
 	    }
-	    value = this.safeSingleToMultiple(value);
+	    if (this.props.component.type !== 'datagrid') {
+	      value = this.safeSingleToMultiple(value);
+	    }
 	    return {
 	      value: value,
 	      isValid: true,
@@ -20996,14 +21003,121 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var React = __webpack_require__(1);
 	var valueMixin = __webpack_require__(9);
-	var multiMixin = __webpack_require__(10);
-	var inputMixin = __webpack_require__(15);
+	var FormioComponent = __webpack_require__(3);
 
 	module.exports = React.createClass({
-	  displayName: 'Email',
-	  mixins: [valueMixin, multiMixin, inputMixin]
+	  displayName: 'Datagrid',
+	  mixins: [valueMixin],
+	  getInitialValue: function getInitialValue() {
+	    return [{}];
+	  },
+	  addRow: function addRow() {
+	    var rows = this.state.value;
+	    rows.push({});
+	    this.setState({
+	      value: rows
+	    });
+	  },
+	  removeRow: function removeRow(id) {
+	    var rows = this.state.value;
+	    rows.splice(id, 1);
+	    this.setState({
+	      value: rows
+	    });
+	  },
+	  getElements: function getElements() {
+	    var classLabel = 'control-label' + (this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
+	    var inputLabel = this.props.component.label && !this.props.component.hideLabel ? React.createElement(
+	      'label',
+	      { htmlFor: this.props.component.key, className: classLabel },
+	      this.props.component.label
+	    ) : '';
+	    var headers = this.props.component.components.map(function (component, index) {
+	      return React.createElement(
+	        'th',
+	        { key: index },
+	        component.label || ''
+	      );
+	    });
+	    var tableClasses = 'table datagrid-table';
+	    tableClasses += this.props.component.striped ? ' table-striped' : '';
+	    tableClasses += this.props.component.bordered ? ' table-bordered' : '';
+	    tableClasses += this.props.component.hover ? ' table-hover' : '';
+	    tableClasses += this.props.component.condensed ? ' table-condensed' : '';
+
+	    return React.createElement(
+	      'div',
+	      { className: 'formio-data-grid' },
+	      React.createElement(
+	        'label',
+	        { className: classLabel },
+	        inputLabel
+	      ),
+	      React.createElement(
+	        'table',
+	        { className: tableClasses },
+	        React.createElement(
+	          'thead',
+	          null,
+	          React.createElement(
+	            'tr',
+	            null,
+	            headers
+	          )
+	        ),
+	        React.createElement(
+	          'tbody',
+	          null,
+	          this.state.value.map(function (row, index) {
+	            return React.createElement(
+	              'tr',
+	              { key: index },
+	              this.props.component.components.map(function (component, index) {
+	                var value = row.hasOwnProperty(component.key) ? row[component.key] : component.defaultValue || '';
+	                var key = component.key ? component.key : component.type + index;
+	                return React.createElement(
+	                  'td',
+	                  { key: key },
+	                  React.createElement(FormioComponent, _extends({}, this.props, {
+	                    name: component.key,
+	                    component: component,
+	                    value: value
+	                  }))
+	                );
+	              }.bind(this)),
+	              React.createElement(
+	                'td',
+	                null,
+	                React.createElement(
+	                  'a',
+	                  { onClick: this.removeRow.bind(this, index), className: 'btn btn-default' },
+	                  React.createElement('span', { className: 'glyphicon glyphicon-remove-circle' })
+	                )
+	              )
+	            );
+	          }.bind(this))
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'datagrid-add' },
+	        React.createElement(
+	          'a',
+	          { onClick: this.addRow, className: 'btn btn-primary' },
+	          React.createElement(
+	            'span',
+	            { className: 'glyphicon glyphicon-plus', 'aria-hidden': 'true' },
+	            ' ',
+	            this.props.component.addAnother || 'Add Another'
+	          )
+	        )
+	      )
+	    );
+	  }
 	});
 
 /***/ },
@@ -21013,7 +21127,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React = __webpack_require__(1);
-	var Input = __webpack_require__(16);
+	var valueMixin = __webpack_require__(9);
+	var multiMixin = __webpack_require__(10);
+	var inputMixin = __webpack_require__(16);
+
+	module.exports = React.createClass({
+	  displayName: 'Email',
+	  mixins: [valueMixin, multiMixin, inputMixin]
+	});
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var Input = __webpack_require__(17);
 
 	module.exports = {
 	  getSingleElement: function getSingleElement(value, index) {
@@ -21036,7 +21166,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://github.com/sanniassin/react-input-mask
@@ -21845,7 +21975,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = InputElement;
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21881,7 +22011,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21897,7 +22027,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21909,6 +22039,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = React.createClass({
 	  displayName: 'Number',
 	  mixins: [valueMixin, multiMixin],
+	  getInitialValue: function getInitialValue() {
+	    return 0;
+	  },
 	  getSingleElement: function getSingleElement(value, index) {
 	    index = index || 0;
 	    value = value || 0;
@@ -21931,7 +22064,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21977,22 +22110,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-	var valueMixin = __webpack_require__(9);
-	var multiMixin = __webpack_require__(10);
-	var inputMixin = __webpack_require__(15);
-
-	module.exports = React.createClass({
-	  displayName: 'Password',
-	  mixins: [valueMixin, multiMixin, inputMixin]
-	});
-
-/***/ },
 /* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -22001,7 +22118,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__(1);
 	var valueMixin = __webpack_require__(9);
 	var multiMixin = __webpack_require__(10);
-	var inputMixin = __webpack_require__(15);
+	var inputMixin = __webpack_require__(16);
+
+	module.exports = React.createClass({
+	  displayName: 'Password',
+	  mixins: [valueMixin, multiMixin, inputMixin]
+	});
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var valueMixin = __webpack_require__(9);
+	var multiMixin = __webpack_require__(10);
+	var inputMixin = __webpack_require__(16);
 
 	module.exports = React.createClass({
 	  displayName: 'PhoneNumber',
@@ -22009,7 +22142,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22055,7 +22188,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22132,7 +22265,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22162,7 +22295,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22170,7 +22303,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__(1);
 	var valueMixin = __webpack_require__(9);
 	var multiMixin = __webpack_require__(10);
-	var inputMixin = __webpack_require__(15);
+	var inputMixin = __webpack_require__(16);
 
 	module.exports = React.createClass({
 	  displayName: 'Textfield',
@@ -22178,7 +22311,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

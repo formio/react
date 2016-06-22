@@ -1,5 +1,3 @@
-'use strict'
-
 var React = require('react');
 var valueMixin = require('./mixins/valueMixin');
 var FormioComponent = require('../FormioComponent');
@@ -25,12 +23,12 @@ module.exports = React.createClass({
     });
   },
   getElements: function() {
-    var classLabel = "control-label" + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
+    var classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
     var inputLabel = (this.props.component.label && !this.props.component.hideLabel ? <label htmlFor={this.props.component.key} className={classLabel}>{this.props.component.label}</label> : '');
     var headers = this.props.component.components.map(function(component, index) {
       return (
         <th key={index}>{component.label || ''}</th>
-      )
+      );
     });
     var tableClasses = 'table datagrid-table';
     tableClasses += (this.props.component.striped) ? ' table-striped' : '';
@@ -39,7 +37,7 @@ module.exports = React.createClass({
     tableClasses += (this.props.component.condensed) ? ' table-condensed' : '';
 
     return (
-    <div className="formio-data-grid">
+    <div className='formio-data-grid'>
       <label className={classLabel}>{inputLabel}</label>
       <table className={tableClasses}>
         <thead>
@@ -67,8 +65,8 @@ module.exports = React.createClass({
                 );
               }.bind(this))}
               <td>
-                <a onClick={this.removeRow.bind(this, index)} className="btn btn-default">
-                  <span className="glyphicon glyphicon-remove-circle"></span>
+                <a onClick={this.removeRow.bind(this, index)} className='btn btn-default'>
+                  <span className='glyphicon glyphicon-remove-circle'></span>
                 </a>
               </td>
             </tr>
@@ -76,9 +74,9 @@ module.exports = React.createClass({
         }.bind(this))}
         </tbody>
       </table>
-      <div className="datagrid-add">
-        <a onClick={this.addRow} className="btn btn-primary">
-          <span className="glyphicon glyphicon-plus" aria-hidden="true"> { this.props.component.addAnother || "Add Another"}</span>
+      <div className='datagrid-add'>
+        <a onClick={this.addRow} className='btn btn-primary'>
+          <span className='glyphicon glyphicon-plus' aria-hidden='true'> { this.props.component.addAnother || 'Add Another'}</span>
         </a>
       </div>
     </div>
