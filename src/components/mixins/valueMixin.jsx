@@ -87,6 +87,10 @@ module.exports = {
     );
   },
   render: function() {
-    return this.getComponent();
+    var element = this.getComponent();
+    if (typeof this.props.onElementRender === 'function') {
+      element = this.props.onElementRender(this, element);
+    }
+    return element;
   }
 };
