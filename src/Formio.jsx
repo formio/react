@@ -30,7 +30,6 @@ module.exports = React.createClass({
   },
   attachToForm: function(component) {
     this.inputs[component.props.component.key] = component;
-    this.data[component.props.component.key] = component.state.value;
     this.validate(component);
   },
   detachFromForm: function(component) {
