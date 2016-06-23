@@ -1,6 +1,6 @@
 var React = require('react');
-var valueMixin = require('./mixins/valueMixin');
-var multiMixin = require('./mixins/multiMixin');
+var valueMixin = require('./mixins/valueMixin.jsx');
+var multiMixin = require('./mixins/multiMixin.jsx');
 
 module.exports = React.createClass({
   displayName: 'Radio',

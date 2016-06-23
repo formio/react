@@ -1,6 +1,6 @@
 var React = require('react');
-var valueMixin = require('./mixins/valueMixin');
-var selectMixin = require('./mixins/selectMixin');
+var valueMixin = require('./mixins/valueMixin.jsx');
+var selectMixin = require('./mixins/selectMixin.jsx');
 var debounce = require('lodash/debounce');
 
 module.exports = React.createClass({

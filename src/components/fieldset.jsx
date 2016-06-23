@@ -1,11 +1,13 @@
 var React = require('react');
-var FormioComponent = require('../FormioComponent');
+var FormioComponent = require('../FormioComponent.jsx');
 
 module.exports = React.createClass({
-  displayName: 'Well',
+  displayName: 'Fieldset',
   render: function() {
+    var legend = (this.props.component.legend ? <legend>{this.props.component.legend}</legend> : '');
     return (
-      <div className="well">
+      <fieldset>
+        {legend}
         {this.props.component.components.map(function(component) {
           var value = (this.props.data && this.props.data.hasOwnProperty(component.key) ? this.props.data[component.key] : component.defaultValue || '');
           return (
@@ -19,7 +21,7 @@ module.exports = React.createClass({
           );
         }.bind(this))
         }
-      </div>
+      </fieldset>
     );
   }
 });

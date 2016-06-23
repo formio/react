@@ -2,12 +2,19 @@ var React = require('react');
 
 module.exports = {
   getInitialState: function() {
-    var value = this.props.value || '';
-    // Number and datetime expect null instead of empty.
-    if (value === '' && (this.props.component.type === 'number' || this.props.component.type === 'datetime')) {
-      value = null;
+    var value = this.props.value;
+    // Allow components to set different default values.
+    if (!value) {
+      if (typeof this.getInitialValue === 'function') {
+        value = this.getInitialValue();
+      }
+      else {
+        value = '';
+      }
     }
-    value = this.safeSingleToMultiple(value);
+    if (this.props.component.type !== 'datagrid') {
+      value = this.safeSingleToMultiple(value);
+    }
     return {
       value: value,
       isValid: true,
@@ -60,11 +67,8 @@ module.exports = {
       previousState.isPristine = false;
       return previousState;
     }, function() {
-      if (typeof this.props.change === 'function') {
-        this.props.change();
-      }
-      if (typeof this.props.validate === 'function') {
-        this.props.validate(this);
+      if (typeof this.props.onChange === 'function') {
+        this.props.onChange(this);
       }
     }.bind(this));
   },

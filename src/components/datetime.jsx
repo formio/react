@@ -1,6 +1,6 @@
 var React = require('react');
-var valueMixin = require('./mixins/valueMixin');
-var multiMixin = require('./mixins/multiMixin');
+var valueMixin = require('./mixins/valueMixin.jsx');
+var multiMixin = require('./mixins/multiMixin.jsx');
 var DateTimePicker = require('react-widgets/lib/DateTimePicker');
 var momentLocalizer = require('react-widgets/lib/localizers/moment');
 var moment = require('moment');
@@ -9,6 +9,9 @@ momentLocalizer(moment);
 module.exports = React.createClass({
   displayName: 'Datetime',
   mixins: [valueMixin, multiMixin],
+  getInitialValue: function() {
+    return null;
+  },
   onChangeDatetime: function(index, value, str) {
     this.setValue(value, index);
   },
