@@ -170,7 +170,7 @@ module.exports = React.createClass({
         // Eval the custom conditional and update the show value.
         var show = eval('(function() { ' + component.props.component.customConditional.toString() + '; return show; })()');
         // Show by default, if an invalid type is given.
-        return boolean.hasOwnProperty(show.toString()) ? boolean[show] : true;
+        return show.toString() === 'true';
       }
       catch (e) {
         return true;
