@@ -1,6 +1,6 @@
 var React = require('react');
-var valueMixin = require('./mixins/valueMixin');
-var FormioComponent = require('../FormioComponent');
+var valueMixin = require('./mixins/valueMixin.jsx');
+var FormioComponent = require('../FormioComponent.jsx');
 
 module.exports = React.createClass({
   displayName: 'Datagrid',
@@ -14,6 +14,7 @@ module.exports = React.createClass({
     this.setState({
       value: rows
     });
+    this.props.onChange(this);
   },
   removeRow: function(id) {
     var rows = this.state.value;
@@ -21,6 +22,15 @@ module.exports = React.createClass({
     this.setState({
       value: rows
     });
+    this.props.onChange(this);
+  },
+  elementChange: function(row, component) {
+    var value = this.state.value;
+    value[row][component.props.component.key] = component.state.value;
+    this.setState({
+      value: value
+    });
+    this.props.onChange(this);
   },
   getElements: function() {
     var classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
@@ -47,9 +57,9 @@ module.exports = React.createClass({
         </thead>
         <tbody>
         {
-          this.state.value.map(function(row, index) {
+          this.state.value.map(function(row, rowIndex) {
           return (
-            <tr key={index}>
+            <tr key={rowIndex}>
               {this.props.component.components.map(function(component, index) {
                 var value = (row.hasOwnProperty(component.key) ? row[component.key] : component.defaultValue || '');
                 var key = (component.key) ? component.key : component.type + index;
@@ -59,13 +69,14 @@ module.exports = React.createClass({
                       {...this.props}
                       name={component.key}
                       component={component}
+                      onChange={this.elementChange.bind(null, rowIndex)}
                       value={value}
                     />
                   </td>
                 );
               }.bind(this))}
               <td>
-                <a onClick={this.removeRow.bind(this, index)} className='btn btn-default'>
+                <a onClick={this.removeRow.bind(this, rowIndex)} className='btn btn-default'>
                   <span className='glyphicon glyphicon-remove-circle'></span>
                 </a>
               </td>

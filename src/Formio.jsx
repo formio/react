@@ -1,6 +1,6 @@
 var React = require('react');
 var Formiojs = require('formiojs');
-var FormioComponent = require('./FormioComponent');
+var FormioComponent = require('./FormioComponent.jsx');
 var debounce = require('lodash/debounce');
 
 require('./components');
@@ -37,10 +37,11 @@ module.exports = React.createClass({
     delete this.inputs[component.props.name];
     delete this.data[component.props.name];
   },
-  change: function() {
+  onChange: function(component) {
+    this.data[component.props.component.key] = component.state.value;
+    this.validate(component);
     if (typeof this.props.onChange === 'function') {
-      this.updateData();
-      this.props.onChange(this.data);
+      this.props.onChange({data: this.data});
     }
   },
   validate: debounce(function(component) {
@@ -107,7 +108,6 @@ module.exports = React.createClass({
         // Custom
         if (state.isValid && component.props.component.validate && component.props.component.validate.custom) {
           var custom = component.props.component.validate.custom;
-          this.updateData();
           custom = custom.replace(/({{\s+(.*)\s+}})/, function(match, $1, $2) {
             return this.data[$2];
           }.bind(this));
@@ -152,11 +152,6 @@ module.exports = React.createClass({
       }
     }
   },
-  updateData: function(component) {
-    Object.keys(this.inputs).forEach(function(name) {
-      this.data[name] = this.inputs[name].state.value;
-    }.bind(this));
-  },
   showAlert: function(type, message) {
     this.setState(function(previousState) {
       previousState.alerts = previousState.alerts.concat({type: type, message: message});
@@ -169,7 +164,6 @@ module.exports = React.createClass({
       alerts: [],
       isSubmitting: true
     });
-    this.updateData();
     var sub = this.state.submission;
     sub.data = this.data;
 
@@ -251,7 +245,7 @@ module.exports = React.createClass({
             attachToForm={this.attachToForm}
             detachFromForm={this.detachFromForm}
             validate={this.validate}
-            change={this.change}
+            onChange={this.onChange}
             isSubmitting={this.state.isSubmitting}
             isFormValid={this.state.isValid}
             data={this.state.submission.data}

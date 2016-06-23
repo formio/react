@@ -67,11 +67,8 @@ module.exports = {
       previousState.isPristine = false;
       return previousState;
     }, function() {
-      if (typeof this.props.change === 'function') {
-        this.props.change();
-      }
-      if (typeof this.props.validate === 'function') {
-        this.props.validate(this);
+      if (typeof this.props.onChange === 'function') {
+        this.props.onChange(this);
       }
     }.bind(this));
   },

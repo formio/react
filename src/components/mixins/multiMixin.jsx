@@ -7,6 +7,9 @@ module.exports = {
     this.setState({
       value: values
     });
+    if (typeof this.props.onChange === 'function') {
+      this.props.onChange(this);
+    }
   },
   removeFieldValue: function(id) {
     var values = this.state.value;
@@ -14,6 +17,9 @@ module.exports = {
     this.setState({
       value: values
     });
+    if (typeof this.props.onChange === 'function') {
+      this.props.onChange(this);
+    }
   },
   getElements: function() {
     var Component;
