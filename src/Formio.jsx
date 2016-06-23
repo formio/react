@@ -158,13 +158,26 @@ module.exports = React.createClass({
       return false;
    }
   },
-  handleConditional: function (e) {
-  if (document.getElementById(e.props.component.conditional.when)) {
-    if ((document.getElementById(e.props.component.conditional.when).value )?
-            (document.getElementById(e.props.component.conditional.when).value === e.props.component.conditional.eq) : false) {
-       return this.handleConditionalHideNShow(e.props.component.conditional.show === 'true'? true : false);
+  checkConditional: function (component) {
+    if (component.props.component.conditional && component.props.component.conditional.when) {
+      var value = (this.data.hasOwnProperty(component.props.component.conditional.when) ? this.data[component.props.component.conditional.when] : '');
+      return (value.toString() === component.props.component.conditional.eq.toString()) === (component.props.component.conditional.show.toString() === 'true');
+    }
+    else if (component.props.component.customConditional) {
+      try {
+        // Create a child block, and expose the submission data.
+        var data = this.data; // eslint-disable-line no-unused-vars
+        // Eval the custom conditional and update the show value.
+        var show = eval('(function() { ' + component.props.component.customConditional.toString() + '; return show; })()');
+        // Show by default, if an invalid type is given.
+        return boolean.hasOwnProperty(show.toString()) ? boolean[show] : true;
       }
-      return this.handleConditionalHideNShow(e.props.component.conditional.show === 'true'?  false : true);
+      catch (e) {
+        return true;
+      }
+    }
+    else {
+      return true;
     }
   },
   showAlert: function(type, message) {
@@ -268,7 +281,7 @@ module.exports = React.createClass({
             resetForm={this.resetForm}
             formio={this.formio}
             showAlert={this.showAlert}
-            handleConditional={this.handleConditional}
+            checkConditional={this.checkConditional}
           />
         );
       }.bind(this));
