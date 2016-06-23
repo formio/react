@@ -155,6 +155,35 @@ module.exports = React.createClass({
       }
     }
   },
+  handleConditionalHideNShow: function(elementConditionalValue) {
+  if (elementConditionalValue) {
+      return true;
+    } else {
+      return false;
+   }
+  },
+  checkConditional: function (component) {
+    if (component.props.component.conditional && component.props.component.conditional.when) {
+      var value = (this.data.hasOwnProperty(component.props.component.conditional.when) ? this.data[component.props.component.conditional.when] : '');
+      return (value.toString() === component.props.component.conditional.eq.toString()) === (component.props.component.conditional.show.toString() === 'true');
+    }
+    else if (component.props.component.customConditional) {
+      try {
+        // Create a child block, and expose the submission data.
+        var data = this.data; // eslint-disable-line no-unused-vars
+        // Eval the custom conditional and update the show value.
+        var show = eval('(function() { ' + component.props.component.customConditional.toString() + '; return show; })()');
+        // Show by default, if an invalid type is given.
+        return show.toString() === 'true';
+      }
+      catch (e) {
+        return true;
+      }
+    }
+    else {
+      return true;
+    }
+  },
   showAlert: function(type, message) {
     this.setState(function(previousState) {
       previousState.alerts = previousState.alerts.concat({type: type, message: message});
@@ -256,6 +285,7 @@ module.exports = React.createClass({
             resetForm={this.resetForm}
             formio={this.formio}
             showAlert={this.showAlert}
+            checkConditional={this.checkConditional}
           />
         );
       }.bind(this));
