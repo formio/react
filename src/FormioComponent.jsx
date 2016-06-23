@@ -16,13 +16,17 @@ module.exports = React.createClass({
     if (typeof this.props.onElementRender === 'function') {
       this.props.onElementRender(this.props.component);
     }
-    return (
-      <div className={className}>
-        <FormioElement
-          name={this.props.component.key}
-          {...this.props}
-          />
-      </div>
-    );
+    if (this.props.checkConditional(this)) {
+      return (
+        <div className={className}>
+          <FormioElement
+            name={this.props.component.key}
+            {...this.props}
+            />
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 });
