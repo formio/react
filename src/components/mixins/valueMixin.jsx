@@ -12,7 +12,7 @@ module.exports = {
         value = '';
       }
     }
-    if (this.props.component.type !== 'datagrid') {
+    if ((this.props.component.type !== 'datagrid') && (this.props.component.type !== 'container')) {
       value = this.safeSingleToMultiple(value);
     }
     return {
