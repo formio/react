@@ -12,6 +12,7 @@ FormioComponents.datetime = require('./datetime.jsx');
 FormioComponents.email = require('./email.jsx');
 FormioComponents.fieldset = require('./fieldset.jsx');
 FormioComponents.hidden = require('./hidden.jsx');
+FormioComponents.htmlelement = require('./htmlelement.jsx');
 FormioComponents.number = require('./number.jsx');
 FormioComponents.panel = require('./panel.jsx');
 FormioComponents.password = require('./password.jsx');
