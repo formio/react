@@ -31,7 +31,7 @@ var Formio = require('react-formio');
 
 // React <= 0.13
 React.render(
-  <Formio src="https://example.formio/example" />
+  <Formio src="https://example.form.io/example" />
   , document.getElementById('example')
 );
 
@@ -39,7 +39,7 @@ React.render(
 var ReactDOM = require('react-dom');
 
 ReactDOM.render(
-  <Formio src="https://example.formio/example" />
+  <Formio src="https://example.form.io/example" />
   , document.getElementById('example')
 );
 ```
