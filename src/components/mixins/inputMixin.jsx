@@ -17,6 +17,7 @@ module.exports = {
         disabled={this.props.readOnly}
         placeholder={this.props.component.placeholder}
         mask={mask}
+        alwaysShowMask="true"
         onChange={this.onChange}
         >
       </Input>
