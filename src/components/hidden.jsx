@@ -1,9 +1,11 @@
 var React = require('react');
+var valueMixin = require('./mixins/valueMixin.jsx');
 
 module.exports = React.createClass({
+  mixins: [valueMixin],
   displayName: 'Hidden',
-  render: function() {
-    var value = (this.props.data && this.props.data.hasOwnProperty(this.props.component.key)) ? this.props.data[this.props.component.key] : '';
+  getElements: function() {
+    var value = (this.state && this.state.hasOwnProperty('value')) ? this.state.value : '';
     return (
       <input type="hidden" id={this.props.component.key} name={this.props.component.key} value={value}></input>
     );
