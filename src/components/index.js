@@ -5,6 +5,7 @@ FormioComponents.address = require('./address.jsx');
 FormioComponents.button = require('./button.jsx');
 FormioComponents.checkbox = require('./checkbox.jsx');
 FormioComponents.columns = require('./columns.jsx');
+FormioComponents.container = require('./container.jsx');
 FormioComponents.content = require('./content.jsx');
 FormioComponents.custom = require('./custom.jsx');
 FormioComponents.datagrid = require('./datagrid.jsx');
