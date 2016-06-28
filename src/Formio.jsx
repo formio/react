@@ -43,7 +43,7 @@ module.exports = React.createClass({
     this.data[component.props.component.key] = component.state.value;
     this.validate(component);
     if (typeof this.props.onChange === 'function') {
-      this.props.onChange({data: this.data});
+      this.props.onChange({data: this.data}, component.props.component.key, component.state.value);
     }
   },
   validate: _.debounce(function(component) {
