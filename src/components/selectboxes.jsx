@@ -5,8 +5,10 @@ var valueMixin = require('./mixins/valueMixin.jsx');
 module.exports = React.createClass({
   displayName: 'SelectBox',
   mixins: [valueMixin],
+    getInitialValue: function() {
+        return {};
+    },
   componentWillMount: function() {
-    this.state.value = {};
     //To update the state with false value we need set all values to the false by default. We can bypass settingup false values, as it is handled by server side.
     //But settingup false values  also help to insert all element in right order to the array (i.e. firstSelcetBox ... lastSelcetBox).
     for (var i = 0; i < this.props.component.values.length; i++) {
