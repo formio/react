@@ -160,13 +160,6 @@ module.exports = React.createClass({
       }
     }
   },
-  handleConditionalHideNShow: function(elementConditionalValue) {
-  if (elementConditionalValue) {
-      return true;
-    } else {
-      return false;
-   }
-  },
   checkConditional: function (component) {
     if (component.props.component.conditional && component.props.component.conditional.when) {
       var value = (this.data.hasOwnProperty(component.props.component.conditional.when) ? this.data[component.props.component.conditional.when] : '');

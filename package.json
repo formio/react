@@ -4,7 +4,7 @@
   "description": "React rendering library for form.io embedded forms.",
   "main": "dist/Formio.js",
   "scripts": {
-    "test": "mocha test/.setup.js test/**/*-test.js",
+    "test": "mocha --timeout 30000 --reporter spec test/.setup.js test/*-test.js",
     "build": "webpack -p",
     "dev": "webpack -w --devtool source-map"
   },
