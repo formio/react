@@ -92,3 +92,7 @@ canvas {
 .formio-signature-footer {
     margin: 0 10px;
 }
+
+.formio-table-content-centered {
+     text-align: center;
+ }
