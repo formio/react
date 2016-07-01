@@ -7,7 +7,7 @@ module.exports = React.createClass({
   getInitialValue: function() {
     return {};
   },
-  onChangeRadiod: function(answersData, questionsData) {
+  onUpdateAnswer: function(answersData, questionsData) {
     var value = this.state.value;
     value[questionsData] = answersData;
     this.setState({
@@ -32,7 +32,7 @@ module.exports = React.createClass({
               <input
                 type="radio"
                 checked={this.state.value[questionsData.value] === answersData.value ? true : false}
-                onChange={this.onChangeRadiod.bind(null, answersData.value, questionsData.value)}
+                onChange={this.onUpdateAnswer.bind(null, answersData.value, questionsData.value)}
               >
               </input>
             </td>
