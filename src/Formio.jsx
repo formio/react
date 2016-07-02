@@ -40,10 +40,15 @@ module.exports = React.createClass({
     delete this.data[component.props.name];
   },
   onChange: function(component) {
-    this.data[component.props.component.key] = component.state.value;
+    if (component.state.value === null) {
+      delete this.data[component.props.component.key];
+    }
+    else {
+      this.data[component.props.component.key] = component.state.value;
+    }
     this.validate(component);
     if (typeof this.props.onChange === 'function') {
-      this.props.onChange({data: this.data});
+      this.props.onChange({data: this.data}, component.props.component.key, component.state.value);
     }
   },
   validate: _.debounce(function(component) {
@@ -154,13 +159,6 @@ module.exports = React.createClass({
         }.bind(this));
       }
     }
-  },
-  handleConditionalHideNShow: function(elementConditionalValue) {
-  if (elementConditionalValue) {
-      return true;
-    } else {
-      return false;
-   }
   },
   checkConditional: function (component) {
     if (component.props.component.conditional && component.props.component.conditional.when) {

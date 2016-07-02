@@ -1,4 +1,32 @@
 
+/* FA-877 - Fix component widths in the data grid with prefix/sufix. */
+.input-group {
+    width: 100%;
+}
+.form-field-type-datagrid .input-group {
+    width: auto;
+}
+
+.form-field-type-datagrid .form-group {
+    margin-bottom: 0;
+}
+
+.form-field-type-datagrid .datagrid-table {
+    margin-bottom: 0px;
+}
+
+.form-field-type-datagrid .datagrid-add {
+    margin-bottom: 20px;
+}
+
+.form-field-type-datetime .input-group,
+.form-field-type-datetime .input-group-btn {
+    width: 100%;
+}
+.form-field-type-datetime .input-group-btn {
+    width: auto;
+}
+
 .m-signature-pad {
     border: 1px solid #e8e8e8;
     background-color: #fff;
