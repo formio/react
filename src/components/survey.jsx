@@ -10,10 +10,7 @@ module.exports = React.createClass({
   onUpdateAnswer: function(answersData, questionsData) {
     var value = this.state.value;
     value[questionsData] = answersData;
-    this.setState({
-      value: value
-    });
-    this.props.onChange(this);
+    this.setValue(value);
   },
   generateAnswerCell: function(questionsData, inputType) {
     var cellData = [];
@@ -47,8 +44,6 @@ module.exports = React.createClass({
     var tableClasses = 'table';
     tableClasses += ' table-striped';
     tableClasses += ' table-bordered';
-    tableClasses += ' table-hover';
-    tableClasses += ' table-condensed';
 
     var required = (this.props.component.validate.required ? 'field-required' : '');
     var key = (this.props.component.key) ? this.props.component.key : this.props.component.type ;
