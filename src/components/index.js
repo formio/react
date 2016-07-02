@@ -9,6 +9,7 @@ FormioComponents.container = require('./container.jsx');
 FormioComponents.content = require('./content.jsx');
 FormioComponents.currency = require('./currency.jsx');
 FormioComponents.custom = require('./custom.jsx');
+FormioComponents.currency = require('./currency.jsx');
 FormioComponents.datagrid = require('./datagrid.jsx');
 FormioComponents.datetime = require('./datetime.jsx');
 FormioComponents.email = require('./email.jsx');
