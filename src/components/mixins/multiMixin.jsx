@@ -39,7 +39,7 @@ module.exports = {
                 {prefix} {Element} {suffix}
               </div>
             </td>
-            <td><a onClick={this.removeFieldValue.bind(null, id)} className='btn btn-danger'>
+            <td><a onClick={this.removeFieldValue.bind(null, id)} className={'btn btn-danger remove-row remove-row-' + id}>
               <span className='glyphicon glyphicon-remove-circle'></span></a>
             </td>
           </tr>
@@ -52,7 +52,7 @@ module.exports = {
             <tbody>
               {rows}
               <tr>
-                <td colSpan='2'><a onClick={this.addFieldValue} className='btn btn-primary'>
+                <td colSpan='2'><a onClick={this.addFieldValue} className='btn btn-primary add-row'>
                   <span className='glyphicon glyphicon-plus' aria-hidden='true'></span> Add another</a>
                 </td>
               </tr>

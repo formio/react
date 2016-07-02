@@ -2,6 +2,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
 import Formio from '../src/Formio.jsx';
+import sinon from 'sinon';
 
 import form from './forms/empty.json';
 
@@ -220,8 +221,48 @@ describe('Textfield', function () {
       done();
     });
 
-    // Check adding additional values
+    it('adds and removes rows', function(done) {
+      form.components[0].defaultValue = 'My Value';
+      const wrapper = mount(<Formio form={form}></Formio>);
+      const element = wrapper.find('.form-field-type-textfield');
+      const table = element.find('table');
+      table.find('a.btn.add-row').simulate('click');
+      expect(table.find('tr').length).to.equal(3);
+      expect(table.find('tr').at(0).find('input').prop('data-index')).to.equal(0);
+      expect(table.find('tr').at(1).find('input').prop('data-index')).to.equal(1);
+      table.find('a.btn.add-row').simulate('click');
+      expect(table.find('tr').length).to.equal(4);
+      expect(table.find('tr').at(0).find('input').prop('data-index')).to.equal(0);
+      expect(table.find('tr').at(1).find('input').prop('data-index')).to.equal(1);
+      expect(table.find('tr').at(2).find('input').prop('data-index')).to.equal(2);
+      table.find('a.btn.add-row').simulate('click');
+      expect(table.find('tr').length).to.equal(5);
+      expect(table.find('tr').at(0).find('input').prop('data-index')).to.equal(0);
+      expect(table.find('tr').at(1).find('input').prop('data-index')).to.equal(1);
+      expect(table.find('tr').at(2).find('input').prop('data-index')).to.equal(2);
+      expect(table.find('tr').at(3).find('input').prop('data-index')).to.equal(3);
+      table.find('a.btn.remove-row-3').simulate('click');
+      expect(table.find('tr').length).to.equal(4);
+      expect(table.find('tr').at(0).find('input').prop('data-index')).to.equal(0);
+      expect(table.find('tr').at(1).find('input').prop('data-index')).to.equal(1);
+      expect(table.find('tr').at(2).find('input').prop('data-index')).to.equal(2);
+      table.find('a.btn.remove-row-1').simulate('click');
+      expect(table.find('tr').length).to.equal(3);
+      expect(table.find('tr').at(0).find('input').prop('data-index')).to.equal(0);
+      expect(table.find('tr').at(1).find('input').prop('data-index')).to.equal(1);
+      table.find('a.btn.remove-row-1').simulate('click');
+      expect(table.find('tr').length).to.equal(2);
+      expect(table.find('tr').at(0).find('input').prop('data-index')).to.equal(0);
+      table.find('a.btn.remove-row-0').simulate('click');
+      expect(table.find('tr').length).to.equal(1);
+      table.find('a.btn.add-row').simulate('click');
+      expect(table.find('tr').length).to.equal(2);
+      expect(table.find('tr').at(0).find('input').prop('data-index')).to.equal(0);
+      done();
+    })
   });
 
   // Check validations
+
+  // Check change event
 });
