@@ -160,19 +160,7 @@ module.exports = React.createClass({
       }
     }
   },
-<<<<<<< HEAD
-  checkConditional: function (component) {
-=======
-  handleConditionalHideNShow: function(elementConditionalValue) {
-  if (elementConditionalValue) {
-      return true;
-    }
-  else {
-      return false;
-   }
-  },
   checkConditional: function(component) {
->>>>>>> 7369a4f5d2fa9f12f2b3699fa61570ec48fab2b1
     if (component.props.component.conditional && component.props.component.conditional.when) {
       var value = (this.data.hasOwnProperty(component.props.component.conditional.when) ? this.data[component.props.component.conditional.when] : '');
       return (value.toString() === component.props.component.conditional.eq.toString()) === (component.props.component.conditional.show.toString() === 'true');

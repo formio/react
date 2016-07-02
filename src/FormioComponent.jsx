@@ -13,19 +13,10 @@ module.exports = React.createClass({
     }
     if (this.props.checkConditional(this)) {
       return (
-<<<<<<< HEAD
         <FormioElement
           name={this.props.component.key}
           {...this.props}
         />
-=======
-          <div className={className}>
-            <FormioElement
-                name={this.props.component.key}
-                {...this.props}
-            />
-          </div>
->>>>>>> 7369a4f5d2fa9f12f2b3699fa61570ec48fab2b1
       );
     }
     else {
