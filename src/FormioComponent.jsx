@@ -18,7 +18,8 @@ module.exports = React.createClass({
           {...this.props}
         />
       );
-    } else {
+    }
+    else {
       return null;
     }
   }

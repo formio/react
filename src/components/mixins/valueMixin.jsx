@@ -53,6 +53,10 @@ module.exports = {
   },
   onChange: function(event) {
     var value = event.currentTarget.value;
+    // Allow components to respond to onChange event.
+    if (typeof this.onChangeCustom === 'function') {
+      value = this.onChangeCustom(value);
+    }
     var index = (this.props.component.multiple ? event.currentTarget.getAttribute('data-index') : null);
     this.setValue(value, index);
   },
