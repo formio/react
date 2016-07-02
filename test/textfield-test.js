@@ -265,4 +265,6 @@ describe('Textfield', function () {
   // Check validations
 
   // Check change event
+
+  // Check with and without labels/required
 });
