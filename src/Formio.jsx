@@ -1,6 +1,6 @@
 var React = require('react');
 var Formiojs = require('formiojs');
-var FormioComponent = require('./FormioComponent.jsx');
+var FormioComponents = require('./FormioComponents.jsx');
 var _ = require('lodash');
 
 require('./components');
@@ -161,16 +161,16 @@ module.exports = React.createClass({
     }
   },
   checkConditional: function(component) {
-    if (component.props.component.conditional && component.props.component.conditional.when) {
-      var value = (this.data.hasOwnProperty(component.props.component.conditional.when) ? this.data[component.props.component.conditional.when] : '');
-      return (value.toString() === component.props.component.conditional.eq.toString()) === (component.props.component.conditional.show.toString() === 'true');
+    if (component.conditional && component.conditional.when) {
+      var value = (this.data.hasOwnProperty(component.conditional.when) ? this.data[component.conditional.when] : '');
+      return (value.toString() === component.conditional.eq.toString()) === (component.conditional.show.toString() === 'true');
     }
-    else if (component.props.component.customConditional) {
+    else if (component.customConditional) {
       try {
         // Create a child block, and expose the submission data.
         var data = this.data; // eslint-disable-line no-unused-vars
         // Eval the custom conditional and update the show value.
-        var show = eval('(function() { ' + component.props.component.customConditional.toString() + '; return show; })()');
+        var show = eval('(function() { ' + component.customConditional.toString() + '; return show; })()');
         // Show by default, if an invalid type is given.
         return show.toString() === 'true';
       }
@@ -262,32 +262,7 @@ module.exports = React.createClass({
     });
   },
   render: function() {
-    if (this.state.form.components) {
-      this.componentNodes = this.state.form.components.map(function(component, index) {
-        var value = (this.data && this.data.hasOwnProperty(component.key) ? this.data[component.key] : component.defaultValue || '');
-        var key = component.key || component.type + index;
-        return (
-          <FormioComponent
-            key={key}
-            component={component}
-            value={value}
-            readOnly={this.props.readOnly}
-            attachToForm={this.attachToForm}
-            detachFromForm={this.detachFromForm}
-            validate={this.validate}
-            onChange={this.onChange}
-            isSubmitting={this.state.isSubmitting}
-            isFormValid={this.state.isValid}
-            data={this.state.submission.data}
-            onElementRender={this.props.onElementRender}
-            resetForm={this.resetForm}
-            formio={this.formio}
-            showAlert={this.showAlert}
-            checkConditional={this.checkConditional}
-          />
-        );
-      }.bind(this));
-    }
+    var components = this.state.form.components || [];
     var loading = (this.state.isLoading ? <i id='formio-loading' className='glyphicon glyphicon-refresh glyphicon-spin'></i> : '');
     var alerts = this.state.alerts.map(function(alert, index) {
         var className = 'alert alert-' + alert.type;
@@ -298,7 +273,22 @@ module.exports = React.createClass({
       <form role='form' name='formioForm' onSubmit={this.onSubmit}>
         {loading}
         {alerts}
-        {this.componentNodes}
+        <FormioComponents
+          components={components}
+          values={this.state.submission.data}
+          readOnly={this.props.readOnly}
+          attachToForm={this.attachToForm}
+          detachFromForm={this.detachFromForm}
+          isSubmitting={this.state.isSubmitting}
+          isFormValid={this.state.isValid}
+          onElementRender={this.props.onElementRender}
+          resetForm={this.resetForm}
+          formio={this.formio}
+          validate={this.validate}
+          onChange={this.onChange}
+          checkConditional={this.checkConditional}
+          showAlert={this.showAlert}
+        />
       </form>
     );
   }

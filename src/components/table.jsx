@@ -1,5 +1,5 @@
 var React = require('react');
-var FormioComponent = require('../FormioComponent.jsx');
+var FormioComponents = require('../FormioComponents.jsx');
 
 module.exports = React.createClass({
   displayName: 'Panel',
@@ -28,19 +28,10 @@ module.exports = React.createClass({
                   {row.map(function(column, index) {
                     return (
                       <td key={index}>
-                        {column.components.map(function(component, index) {
-                          var value = (this.props.data && this.props.data.hasOwnProperty(component.key) ? this.props.data[component.key] : component.defaultValue || '');
-                          var key = (component.key) ? component.key : component.type + index;
-                          return (
-                            <FormioComponent
-                              {...this.props}
-                              key={key}
-                              name={component.key}
-                              component={component}
-                              value={value}
-                            />
-                          );
-                        }.bind(this))}
+                        <FormioComponents
+                          {...this.props}
+                          components={column.components}
+                        ></FormioComponents>
                       </td>
                     );
                   }.bind(this))}

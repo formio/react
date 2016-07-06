@@ -1,6 +1,5 @@
 var React = require('react');
 var valueMixin = require('./mixins/valueMixin.jsx');
-var FormioComponent = require('../FormioComponent.jsx');
 
 module.exports = React.createClass({
   displayName: 'Datagrid',
@@ -61,11 +60,19 @@ module.exports = React.createClass({
           return (
             <tr key={rowIndex}>
               {this.props.component.components.map(function(component, index) {
+                var key = component.key || component.type + index;
                 var value = (row.hasOwnProperty(component.key) ? row[component.key] : component.defaultValue || '');
-                var key = (component.key) ? component.key : component.type + index;
+                // FormioComponents is a global variable so external scripts can define custom components.
+                var FormioElement;
+                if (FormioComponents[component.type]) {
+                  FormioElement = FormioComponents[component.type];
+                }
+                else {
+                  FormioElement = FormioComponents['custom'];
+                }
                 return (
                   <td key={key}>
-                    <FormioComponent
+                    <FormioElement
                       {...this.props}
                       name={component.key}
                       component={component}
