@@ -1,5 +1,5 @@
 var React = require('react');
-var FormioComponents = require('../FormioComponents.jsx');
+var FormioComponents = require('../FormioComponents');
 
 module.exports = React.createClass({
   displayName: 'Panel',
