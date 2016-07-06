@@ -8,7 +8,7 @@ module.exports = React.createClass({
       <div className="row">
         {this.props.component.columns.map(function(column, index) {
             return (
-              <div key={index} className="col-xs-6">
+              <div key={index} className="col-sm-6">
                 {column.components.map(function(component) {
                   var value = (this.props.data && this.props.data.hasOwnProperty(component.key) ? this.props.data[component.key] : component.defaultValue || '');
                   return (
