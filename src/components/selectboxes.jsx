@@ -4,15 +4,15 @@ var valueMixin = require('./mixins/valueMixin.jsx');
 module.exports = React.createClass({
   displayName: 'SelectBox',
   mixins: [valueMixin],
-  getInitialValue: function () {
+  getInitialValue: function() {
     return {};
   },
-  onChangeCheckbox: function (key, e) {
+  onChangeCheckbox: function(key, e) {
     var value = this.state.value;
     value[key] = e.currentTarget.checked;
     this.setValue(value);
   },
-  getElements: function () {
+  getElements: function() {
     var classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
     var inputLabel = (this.props.component.label && !this.props.component.hideLabel ?
       <label htmlFor={this.props.component.key} className={classLabel}>{this.props.component.label}</label> : '');
@@ -24,7 +24,7 @@ module.exports = React.createClass({
       <div>
         {inputLabel} {requiredInline}
         <div className="selectbox">
-          {this.props.component.values.map(function (item, index) {
+          {this.props.component.values.map(function(item, index) {
             return (
               <div className="checkbox" key={index}>
                 <label className={required}>

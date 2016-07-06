@@ -6,7 +6,7 @@ var inputMixin = require('./mixins/inputMixin.jsx');
 module.exports = React.createClass({
   displayName: 'Currency',
   mixins: [inputMixin, valueMixin, multiMixin],
-  onChangeCustom: function (value) {
+  onChangeCustom: function(value) {
     // May be better way than adding to prototype.
     var splice = function(string, idx, rem, s) {
       return (string.slice(0, idx) + s + string.slice(idx + Math.abs(rem)));
