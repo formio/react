@@ -1,5 +1,5 @@
 var React = require('react');
-var valueMixin = require('./mixins/valueMixin.jsx');
+var valueMixin = require('./mixins/valueMixin');
 var SignaturePad = require('react-signature-pad');
 
 module.exports = React.createClass({

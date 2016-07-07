@@ -1,3 +1,4 @@
+var webpack = require('webpack');
 
 module.exports = {
   entry: "./src/Formio.jsx",
@@ -11,10 +12,17 @@ module.exports = {
     "react",
     "react-dom"
   ],
+  resolve: {
+    extensions: ['', '.js', '.jsx'],
+    alias: {
+      requirejs$:  "./dist/build/",
+
+    },
+  },
   module: {
     preLoaders: [
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
         loader: "eslint",
         exclude: /node_modules/
       }
@@ -29,7 +37,7 @@ module.exports = {
         loader: 'jsx-loader?insertPragma=React.DOM&harmony'
       },
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
         loader: 'babel',
         exclude: /node_modules/,
         query: {
@@ -37,13 +45,18 @@ module.exports = {
         }
       }
     ],
-    resolve: {
-      extensions: ['', '.js', '.jsx'],
-      alias: {
-        requirejs$:  "./dist/build/",
-
-      },
-    },
+    plugins: [
+      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false
+        },
+        output: {
+          comments: false
+        },
+        sourceMap: false
+      }),
+    ],
     noParse: [
       /node_modules\/formiojs\//,
     ],
