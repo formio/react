@@ -29,7 +29,7 @@
 
 .m-signature-pad {
     border: 1px solid #e8e8e8;
-    background-color: #fff;
+    background-color: #F5F5EB;
     border-radius: 4px;
     height: 150px;
 }
@@ -84,7 +84,6 @@ canvas {
         height: auto;
         min-width: 250px;
         min-height: 140px;
-        margin: 5%;
     }
     #github {
         display: none;
@@ -122,5 +121,5 @@ canvas {
 }
 
 .formio-table-content-centered {
-     text-align: center;
- }
+    text-align: center;
+}
