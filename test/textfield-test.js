@@ -61,7 +61,6 @@ describe('Textfield', function () {
       expect(element.find('.formio-component-single .input-group input').attr('data-index')).to.equal('0');
       expect(element.find('.formio-component-single .input-group input').attr('value')).to.equal('');
       expect(element.find('.formio-component-single .input-group input').attr('placeholder')).to.equal('');
-      expect(element.find('.formio-component-single .input-group input').attr('mask')).to.equal('');
       done();
     });
 
@@ -194,7 +193,6 @@ describe('Textfield', function () {
       expect(table.find('tr td div.input-group input').attr('type')).to.equal('text');
       expect(table.find('tr td div.input-group input').attr('placeholder')).to.equal('');
       expect(table.find('tr td div.input-group input').attr('value')).to.equal('');
-      expect(table.find('tr td div.input-group input').attr('mask')).to.equal('');
       expect(table.find('tr td div.input-group input').attr('id')).to.equal('myTextfield');
       expect(table.find('tr td div.input-group input').attr('name')).to.equal('myTextfield');
       expect(table.find('tr td div.input-group input').attr('class')).to.equal('form-control');
