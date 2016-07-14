@@ -35,6 +35,7 @@
     "formiojs": "formio/formio.js",
     "lodash": "^4.13.1",
     "moment": "^2.10.6",
+    "react-dropzone-component": "^1.0.4",
     "react-input-mask": "^0.7.0",
     "react-signature-pad": "0.0.5",
     "react-widgets": "^3.3.1"

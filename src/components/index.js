@@ -13,6 +13,7 @@ FormioComponents.datagrid = require('./datagrid');
 FormioComponents.datetime = require('./datetime');
 FormioComponents.email = require('./email');
 FormioComponents.fieldset = require('./fieldset');
+FormioComponents.file = require('./file');
 FormioComponents.hidden = require('./hidden');
 FormioComponents.htmlelement = require('./htmlelement');
 FormioComponents.number = require('./number');

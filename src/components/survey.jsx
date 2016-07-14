@@ -18,14 +18,14 @@ module.exports = React.createClass({
       this.props.component.values.map(function(answersData, index) {
         if (inputType === 'label') {
           return (
-            <td className=" formio-table-content-centered">
+            <td className=" formio-content-centered">
               {answersData.label}
             </td>
           );
         }
         else {
           return (
-            <td key={index} className=" formio-table-content-centered">
+            <td key={index} className=" formio-content-centered">
               <input
                 type="radio"
                 checked={this.state.value[questionsData.value] === answersData.value ? true : false}
