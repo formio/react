@@ -73,6 +73,7 @@ module.exports = React.createClass({
   render: function() {
     //To Do :- Remove _this
     var _this = this;
+    var dropzoneObj;
     var tableClasses = 'table';
     var storageType = this.props.component.storage;
     var key = this.props.component.key;
@@ -85,7 +86,7 @@ module.exports = React.createClass({
       postUrl: urlPath
     };
 
-    // To Do:- add the params also need to
+    // To Do:- Need to add the params.
     var djsConfig = {
       addRemoveLinks: false,
       showFiletypeIcon: false,
@@ -99,7 +100,7 @@ module.exports = React.createClass({
       previewTemplate: ReactDOMServer.renderToStaticMarkup(
         <div className="dz-preview dz-file-preview">
           <div className="dz-details">
-            <div className="dz-filename"><span data-dz-name="true"></span><span className="dz-error-mark" ><span> ✘</span></span></div>
+            <div className="dz-filename"><span data-dz-name="true"></span><span className="dz-error-mark" data-dz-remove=""><span> ✘</span></span></div>
           </div>
           <div className="progress">
             <div className="progress-bar"  data-dz-uploadprogress="true" role="progressbar" aria-valuenow="70"
@@ -111,6 +112,7 @@ module.exports = React.createClass({
       )
     };
     var eventHandlers = {
+      init: initCallback,
       success: onDrop,
       complete: uploadComplete
     };
@@ -119,7 +121,7 @@ module.exports = React.createClass({
     tableClasses += ' table-bordered';
     tableClasses +=  ' table-hover';
     tableClasses += ' table-condensed';
-    tableClases += 'formio-dropzone-margin';
+    tableClasses += 'formio-dropzone-margin';
 
     //To Do :- Need to use 'this' instead of '_this'
     function onDrop(file) {
@@ -130,8 +132,14 @@ module.exports = React.createClass({
       });
     }
 
-    function uploadComplete(file) {
-      //To Do :- Remove the progress bar once complete the uploading.
+    function uploadComplete(file, progress) {
+      if (file.status === 'success' && isMultiple) {
+        dropzoneObj.removeFile(file);
+      }
+    }
+
+    function initCallback(dropzone) {
+      dropzoneObj = dropzone;
     }
 
     return (
@@ -157,4 +165,3 @@ module.exports = React.createClass({
     );
   }
 });
-
