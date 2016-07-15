@@ -185,3 +185,8 @@ canvas {
     transition: width .6s ease;
     margin-bottom: 10px;
 }
+
+.dz-drag-hover > .dz-default.dz-message {
+    border-color: #127abe;
+}
+
