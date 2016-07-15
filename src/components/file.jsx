@@ -6,7 +6,8 @@ module.exports = React.createClass({
   displayName: 'File',
   getInitialState: function() {
     return {
-      files: []
+      files: [],
+      shouldMultipleHeaderCell : this.props.component.multiple || false
     };
   },
   fileUploadView: function(key,storageType, isMultiple, componentConfig, eventHandlers, djsConfig) {
@@ -55,6 +56,11 @@ module.exports = React.createClass({
     );
   },
   removeRow: function(id) {
+    if (id === 'multipleHeaderCell') {
+      return (
+        this.setState({shouldMultipleHeaderCell: false})
+        );
+    }
     var rows = this.state.files;
     rows.splice(id, 1);
     this.setState({
@@ -72,21 +78,21 @@ module.exports = React.createClass({
   },
   render: function() {
     //To Do :- Remove _this
-    var _this = this;
-    var dropzoneObj;
-    var tableClasses = 'table';
-    var storageType = this.props.component.storage;
-    var key = this.props.component.key;
-    var title = this.props.component.label ? this.props.component.label : '';
-    var isMultiple = this.props.component.multiple;
-    var formUrl = this.props.formio.formUrl;
-    var urlPath = formUrl + '/storage/' + storageType;
-    var componentConfig = {
+    var _this = this,
+      dropzoneObj,
+      tableClasses = 'table',
+      storageType = this.props.component.storage,
+      key = this.props.component.key,
+      title = this.props.component.label ? this.props.component.label : '',
+      isMultiple = this.props.component.multiple,
+      formUrl = this.props.formio.formUrl,
+      urlPath = formUrl + '/storage/' + storageType;
+
+    var  componentConfig = {
       showFiletypeIcon: false,
       postUrl: urlPath
     };
 
-    // To Do:- Need to add the params.
     var djsConfig = {
       addRemoveLinks: false,
       showFiletypeIcon: false,
@@ -111,6 +117,7 @@ module.exports = React.createClass({
         </div>
       )
     };
+
     var eventHandlers = {
       init: initCallback,
       success: onDrop,
@@ -150,7 +157,7 @@ module.exports = React.createClass({
           {this.headercell('', 'File Name', 'Size')}
           </thead>
           <tbody>
-          {isMultiple ? this.configureTableCell('','NaN Bytes', 'multipleHeaderCell') : null}
+          {(isMultiple && this.state.shouldMultipleHeaderCell) ? this.configureTableCell('','NaN Bytes', 'multipleHeaderCell') : null}
           {this.state.files.length > 0 ?
             this.state.files.map((File, i) =>
               this.configureTableCell(File.name, File.size, i))
