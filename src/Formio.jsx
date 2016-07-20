@@ -269,27 +269,53 @@ module.exports = React.createClass({
         return (<div className={className} role='alert' key={index}>{alert.message}</div>);
       });
 
-    return (
-      <form role='form' name='formioForm' onSubmit={this.onSubmit}>
-        {loading}
-        {alerts}
-        <FormioComponents
-          components={components}
-          values={this.state.submission.data}
-          readOnly={this.props.readOnly}
-          attachToForm={this.attachToForm}
-          detachFromForm={this.detachFromForm}
-          isSubmitting={this.state.isSubmitting}
-          isFormValid={this.state.isValid}
-          onElementRender={this.props.onElementRender}
-          resetForm={this.resetForm}
-          formio={this.formio}
-          validate={this.validate}
-          onChange={this.onChange}
-          checkConditional={this.checkConditional}
-          showAlert={this.showAlert}
-        />
-      </form>
-    );
+      if (this.state.form.display === 'wizard') {
+        return (
+            <form role='form' name='formioForm' onSubmit={this.onSubmit}>
+                {loading}
+                {alerts}
+                <FormioWizard
+                    components={components}
+                    values={this.state.submission.data}
+                    readOnly={this.props.readOnly}
+                    attachToForm={this.attachToForm}
+                    detachFromForm={this.detachFromForm}
+                    isSubmitting={this.state.isSubmitting}
+                    isFormValid={this.state.isValid}
+                    onElementRender={this.props.onElementRender}
+                    resetForm={this.resetForm}
+                    formio={this.formio}
+                    validate={this.validate}
+                    onChange={this.onChange}
+                    checkConditional={this.checkConditional}
+                    showAlert={this.showAlert}
+                />
+            </form>
+        );
+      }
+      else {
+          return (
+            <form role='form' name='formioForm' onSubmit={this.onSubmit}>
+              {loading}
+              {alerts}
+              <FormioComponents
+                components={components}
+                values={this.state.submission.data}
+                readOnly={this.props.readOnly}
+                attachToForm={this.attachToForm}
+                detachFromForm={this.detachFromForm}
+                isSubmitting={this.state.isSubmitting}
+                isFormValid={this.state.isValid}
+                onElementRender={this.props.onElementRender}
+                resetForm={this.resetForm}
+                formio={this.formio}
+                validate={this.validate}
+                onChange={this.onChange}
+                checkConditional={this.checkConditional}
+                showAlert={this.showAlert}
+              />
+            </form>
+          );
+    }
   }
 });
