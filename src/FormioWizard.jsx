@@ -4,8 +4,8 @@ var FormioComponents = require('./FormioComponents');
 module.exports = React.createClass({
   displayName: 'FormioWizard',
   getInitialState: function() {
-    let pages = [];
-    let numPages = 0;
+    var pages = [];
+    var numPages = 0;
     this.props.components.forEach(function(component, index) {
       if (component.type === 'panel') {
         pages.push(component);
@@ -19,9 +19,9 @@ module.exports = React.createClass({
     };
   },
   nextPage: function(event) {
-    event.preventDefault();
     console.log('click');
-    this.setState((previousState) => {
+    event.preventDefault();
+    this.setState(function(previousState) {
       if (previousState.currentPage < (numPages - 1)) {
         previousState.currentPage++;
       }
@@ -34,19 +34,32 @@ module.exports = React.createClass({
         previousState.currentPage--;
       }
       return previousState;
-    })
+    });
   },
   render: function () {
+    var pages = this.state.pages;
+    for(var i = 0; i < pages.length;i++){
+      console.log(pages[i]);
+    }
+    //debugger;
+
     return (
       <div className="formio-wizard">
+        <div className="row bs-wizard hasTitles">
+          <div className="col-sm-2 bs-wizard-step active">
+            <div className="text-center bs-wizard-stepnum">
+              {this.state.pages[this.state.currentPage].title}
+            </div>
+          </div>
+        </div>
         <FormioComponents
           {...this.props}
           components = {this.state.pages[this.state.currentPage].components}
         >
         </FormioComponents>
         <button
-          type="button"
           onClick={this.nextPage}
+          type="button"
         >Next</button>
       </div>
     );
