@@ -325,7 +325,7 @@ describe('Textfield', function () {
     })
   });
 
-  // Check validations
+  // Check validations/alerts
 
   // Check change event
 

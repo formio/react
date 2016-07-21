@@ -1,6 +1,7 @@
 var React = require('react');
 var Formiojs = require('formiojs');
 var FormioComponents = require('./FormioComponents');
+var FormioWizard = require('./FormioWizard');
 var _ = require('lodash');
 
 require('./components');
@@ -262,60 +263,40 @@ module.exports = React.createClass({
     });
   },
   render: function() {
+    var Element;
     var components = this.state.form.components || [];
     var loading = (this.state.isLoading ? <i id='formio-loading' className='glyphicon glyphicon-refresh glyphicon-spin'></i> : '');
     var alerts = this.state.alerts.map(function(alert, index) {
         var className = 'alert alert-' + alert.type;
         return (<div className={className} role='alert' key={index}>{alert.message}</div>);
       });
-
-      if (this.state.form.display === 'wizard') {
-        return (
-            <form role='form' name='formioForm' onSubmit={this.onSubmit}>
-                {loading}
-                {alerts}
-                <FormioWizard
-                    components={components}
-                    values={this.state.submission.data}
-                    readOnly={this.props.readOnly}
-                    attachToForm={this.attachToForm}
-                    detachFromForm={this.detachFromForm}
-                    isSubmitting={this.state.isSubmitting}
-                    isFormValid={this.state.isValid}
-                    onElementRender={this.props.onElementRender}
-                    resetForm={this.resetForm}
-                    formio={this.formio}
-                    validate={this.validate}
-                    onChange={this.onChange}
-                    checkConditional={this.checkConditional}
-                    showAlert={this.showAlert}
-                />
-            </form>
-        );
-      }
-      else {
-          return (
-            <form role='form' name='formioForm' onSubmit={this.onSubmit}>
-              {loading}
-              {alerts}
-              <FormioComponents
-                components={components}
-                values={this.state.submission.data}
-                readOnly={this.props.readOnly}
-                attachToForm={this.attachToForm}
-                detachFromForm={this.detachFromForm}
-                isSubmitting={this.state.isSubmitting}
-                isFormValid={this.state.isValid}
-                onElementRender={this.props.onElementRender}
-                resetForm={this.resetForm}
-                formio={this.formio}
-                validate={this.validate}
-                onChange={this.onChange}
-                checkConditional={this.checkConditional}
-                showAlert={this.showAlert}
-              />
-            </form>
-          );
+    if (this.state.form.display === 'wizard') {
+      Element = FormioWizard;
     }
+    else {
+      Element = FormioComponents;
+    }
+    return (
+      <form role='form' name='formioForm' onSubmit={this.onSubmit}>
+        {loading}
+        {alerts}
+        <Element
+          components={components}
+          values={this.state.submission.data}
+          readOnly={this.props.readOnly}
+          attachToForm={this.attachToForm}
+          detachFromForm={this.detachFromForm}
+          isSubmitting={this.state.isSubmitting}
+          isFormValid={this.state.isValid}
+          onElementRender={this.props.onElementRender}
+          resetForm={this.resetForm}
+          formio={this.formio}
+          validate={this.validate}
+          onChange={this.onChange}
+          checkConditional={this.checkConditional}
+          showAlert={this.showAlert}
+        />
+      </form>
+    );
   }
 });
