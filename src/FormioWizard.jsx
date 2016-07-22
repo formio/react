@@ -38,29 +38,50 @@ module.exports = React.createClass({
   },
   render: function () {
     var pages = this.state.pages;
+    var pageArray = [];
+
     for(var i = 0; i < pages.length;i++){
-      console.log(pages[i]);
+      var blueButton =
+        <a className="bs-wizard-dot bg-primary">
+          <div className="bs-wizard-dot-inner bg-success"></div>
+        </a>;
+
+      pageArray.push(
+        <div className="bs-wizard-step">
+          <div className="text-center bs-wizard-stepnum">
+            {pages[i].title}
+          </div>
+          <div className="progress">
+            <div className="progress-bar progress-bar-primary"></div>
+          </div>
+        </div>
+      )
     }
-    //debugger;
+
+    // Add class active to current page section
+    if(pages[this.state.currentPage]){
+      console.log('test');
+    }
 
     return (
       <div className="formio-wizard">
-        <div className="row bs-wizard hasTitles">
-          <div className="col-sm-2 bs-wizard-step active">
-            <div className="text-center bs-wizard-stepnum">
-              {this.state.pages[this.state.currentPage].title}
+          <div className="panel-body">
+            <div className="panel-heading">
+              <h3 className="panel-title">Preview</h3>
             </div>
+            <div className="row bs-wizard hasTitles">
+              {pageArray}
+            </div>
+            <FormioComponents
+              {...this.props}
+              components = {this.state.pages[this.state.currentPage].components}
+            >
+            </FormioComponents>
+            <button
+              onClick={this.nextPage}
+              type="button"
+            >Next</button>
           </div>
-        </div>
-        <FormioComponents
-          {...this.props}
-          components = {this.state.pages[this.state.currentPage].components}
-        >
-        </FormioComponents>
-        <button
-          onClick={this.nextPage}
-          type="button"
-        >Next</button>
       </div>
     );
   }
