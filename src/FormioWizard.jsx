@@ -19,18 +19,13 @@ module.exports = React.createClass({
     };
   },
   nextPage: function(event) {
-    try {
-      console.log('click');
-      event.preventDefault();
-      this.setState(function(previousState) {
-        if (previousState.currentPage < (numPages - 1)) {
-          previousState.currentPage++;
-        }
-        return previousState;
-      });
-    } catch(e){
-      console.log(e);
-    }
+    event.preventDefault();
+    this.setState((previousState) => {
+      if (previousState.currentPage < (previousState.numPages - 1)) {
+        previousState.currentPage++;
+      }
+      return previousState;
+    });
   },
   previousPage: function() {
     this.setState((previousState) => {
@@ -43,9 +38,6 @@ module.exports = React.createClass({
   render: function () {
     var pages = this.state.pages;
     var pageArray = [];
-
-    console.log(this.props.nextPage);
-
 
     for(var i = 0; i < pages.length;i++){
       var curPageClassName = 'col-sm-2 bs-wizard-step';
@@ -89,11 +81,9 @@ module.exports = React.createClass({
                   components = {this.state.pages[this.state.currentPage].components}
                 >
                 </FormioComponents>
-                <button onClick={console.log('this is firing')}
-                  type="button"
-                >NEXT BUTTON</button>
-                </div>
+                <input type="button" onClick={function(){this.nextPage.apply(this,arguments);}.bind(this)/*this.nextPage*/} value="NEXT" />
               </div>
+            </div>
           </div>
       </div>
     );
