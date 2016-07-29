@@ -33,6 +33,7 @@ module.exports = React.createClass({
         previousState.currentPage--;
       }
       return previousState;
+      console.log(this.previousState);
     });
   },
   render: function () {
@@ -42,23 +43,28 @@ module.exports = React.createClass({
     for(var i = 0; i < pages.length;i++){
       var curPageClassName = 'col-sm-2 bs-wizard-step';
       var innerDot = 'bs-wizard-dot-inner';
+      var isActive;
 
-      if(i === this.state.currentPage){
-        curPageClassName += ' active';
+      if (i === this.state.currentPage) {
+        isActive = ' active';
         innerDot += ' bg-success';
-      } else {
-        curPageClassName += ' disabled';
+      }
+      else if (i > this.state.currentPage) isActive = ' disabled';
+      else if (i < this.state.currentPage) {
+        isActive = ' complete';
+        innerDot += ' bg-success';
       }
 
+
       pageArray.push(
-        <div className={curPageClassName}>
-          <div className="text-center bs-wizard-stepnum">
+        <div className={curPageClassName + isActive}>
+          <div className='text-center bs-wizard-stepnum'>
             {pages[i].title}
           </div>
-          <div className="progress">
-            <div className="progress-bar progress-bar-primary"></div>
+          <div className='progress'>
+            <div className='progress-bar progress-bar-primary'></div>
           </div>
-          <a className="bs-wizard-dot bg-primary">
+          <a className='bs-wizard-dot bg-primary'>
             <div className={innerDot}></div>
           </a>
         </div>
@@ -81,7 +87,13 @@ module.exports = React.createClass({
                   components = {this.state.pages[this.state.currentPage].components}
                 >
                 </FormioComponents>
-                <input type="button" onClick={function(){this.nextPage.apply(this,arguments);}.bind(this)/*this.nextPage*/} value="NEXT" />
+                <button type="button">Cancel</button>
+                <button type="button" onClick={function(){this.previousPage.apply(this,arguments);}.bind(this)}>
+                  Previous
+                </button>
+                <button type="button" onClick={function(){this.nextPage.apply(this,arguments);}.bind(this)}>
+                  Next
+                </button>
               </div>
             </div>
           </div>
