@@ -137,6 +137,18 @@ describe('Textfield', function () {
       expect(element.attr('value')).to.equal('My Value');
       done();
     });
+
+    it('sets a custom class', function(done) {
+      component.customClass = 'my-custom-class'
+      const element = render(
+        <Textfield
+          component={component}
+          attachToForm={attachToForm}
+        ></Textfield>
+      ).children().eq(0);
+      expect(element.attr('class').split(' ')).to.contain('my-custom-class');
+      done();
+    });
   });
 
   describe('Multiple Textfield', function() {
