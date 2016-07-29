@@ -16,7 +16,7 @@ module.exports = React.createClass({
   },
   render: function() {
     var classNames = 'btn btn-' + this.props.component.theme + ' btn-' + this.props.component.size;
-    classNames += (this.props.component.block ? ' btn-block' : '');
+    classNames += (this.props.component.block ? ' btn-block' : '') + ' ' + (this.props.component.customClass ? this.props.component.customClass : '');
     var leftIcon = (this.props.component.leftIcon ? <span className={this.props.component.leftIcon} aria-hidden='true'></span> : '');
     var rightIcon = (this.props.component.rightIcon ? <span className={this.props.component.rightIcon} aria-hidden='true'></span> : '');
     var disabled = this.props.isSubmitting || (this.props.component.disableOnInvalid && !this.props.isFormValid);
