@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
@@ -109,6 +108,18 @@ describe('Radio', function () {
         ></Radio>
       ).find('.formio-component-single');
       expect(element.find('.formio-component-single label').attr('class')).to.equal('control-label');
+      done();
+    });
+
+    it('sets a custom class', function(done) {
+      component.customClass = 'my-custom-class'
+      const element = render(
+        <Radio
+          component={component}
+          attachToForm={attachToForm}
+        ></Radio>
+      ).children().eq(0);
+      expect(element.attr('class').split(' ')).to.contain('my-custom-class');
       done();
     });
 

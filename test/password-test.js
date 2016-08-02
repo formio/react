@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
@@ -168,6 +167,18 @@ describe('Password', function () {
       ).find('input');
       expect(element.attr('value').length).to.be.at.least(component.validate.minLength);
       component.validate.minLength = '';
+      done();
+    });
+
+    it('sets a custom class', function(done) {
+      component.customClass = 'my-custom-class'
+      const element = render(
+        <Password
+          component={component}
+          attachToForm={attachToForm}
+        ></Password>
+      ).children().eq(0);
+      expect(element.attr('class').split(' ')).to.contain('my-custom-class');
       done();
     });
 

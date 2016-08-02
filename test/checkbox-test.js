@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
@@ -74,6 +73,18 @@ describe('Checkbox', function () {
         ></Checkbox>
       );
       expect(element.find('.formio-component-single .input-group .checkbox label').attr('class')).to.equal('field-required');
+      done();
+    });
+
+    it('sets a custom class', function(done) {
+      component.customClass = 'my-custom-class'
+      const element = render(
+        <Checkbox
+          component={component}
+          attachToForm={attachToForm}
+        ></Checkbox>
+      ).children().eq(0);
+      expect(element.attr('class').split(' ')).to.contain('my-custom-class');
       done();
     });
   });

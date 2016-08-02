@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
@@ -63,6 +61,18 @@ describe('Hidden', function () {
         ></Hidden>
       ).find('input');
       expect(element.attr('value')).to.equal('My Value');
+      done();
+    });
+
+    it('sets a custom class', function(done) {
+      component.customClass = 'my-custom-class'
+      const element = render(
+        <Hidden
+          component={component}
+          attachToForm={attachToForm}
+        ></Hidden>
+      ).children().eq(0);
+      expect(element.attr('class').split(' ')).to.contain('my-custom-class');
       done();
     });
 

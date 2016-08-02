@@ -139,6 +139,18 @@ describe('Number', function(){
             expect(element.attr('value')).to.equal('My Value');
             done();
         });
+
+        it('sets a custom class', function(done) {
+          component.customClass = 'my-custom-class'
+          const element = render(
+            <Number
+              component={component}
+              attachToForm={attachToForm}
+            ></Number>
+          ).children().eq(0);
+          expect(element.attr('class').split(' ')).to.contain('my-custom-class');
+          done();
+        });
     });
 
     describe('Multiple Number Field', function(){
@@ -325,6 +337,18 @@ describe('Number', function(){
           expect(table.find('tr').length).to.equal(2);
           expect(table.find('tr').at(0).find('input').prop('data-index')).to.equal(0);
           done();
+      });
+
+      it('sets a custom class', function(done) {
+        component.customClass = 'my-custom-class'
+        const element = render(
+          <Number
+            component={component}
+            attachToForm={attachToForm}
+          ></Number>
+        ).children().eq(0);
+        expect(element.attr('class').split(' ')).to.contain('my-custom-class');
+        done();
       });
     });
 });
