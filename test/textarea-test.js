@@ -159,7 +159,6 @@ describe('Textarea', function () {
       done();
     });
 
-<<<<<<< HEAD
     it('sets a custom class', function(done) {
       component.customClass = 'my-custom-class'
       const element = render(
@@ -171,9 +170,6 @@ describe('Textarea', function () {
       expect(element.attr('class').split(' ')).to.contain('my-custom-class');
       done();
     });
-
-=======
->>>>>>> master
   });
 
   describe('Multiple Textarea', function() {

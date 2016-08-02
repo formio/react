@@ -171,7 +171,6 @@ describe('Password', function () {
       done();
     });
 
-
     it('sets a custom class', function(done) {
       component.customClass = 'my-custom-class'
       const element = render(
