@@ -1,173 +1,132 @@
 var React = require('react');
-var DropzoneComponent = require('react-dropzone-component');
-var ReactDOMServer = require('react-dom/server');
+var Dropzone = require('react-dropzone');
+var Formiojs = require('formiojs');
+var FormioUtils = require('formio-utils');
 
-module.exports = React.createClass({
-  displayName: 'File',
-  getInitialState: function() {
-    return {
-      files: [],
-      shouldMultipleHeaderCell : this.props.component.multiple || false
-    };
-  },
-  fileUploadView: function(key,storageType, isMultiple, componentConfig, eventHandlers, djsConfig) {
-    if (storageType) {
-      if (!this.state.files.length > 0 || isMultiple) {
-        return (
-          <div>
-            <DropzoneComponent config={componentConfig}
-                               eventHandlers={eventHandlers}
-                               djsConfig={djsConfig}/>
-          </div>
-        );
-      }
-    }
-    else {
-      return (
-        <div key = {key} className='formio-dropzone-default-content' >
-          {this.fileUploadInnerView()}
-        </div>
-      );
-    }
-  },
-  fileUploadInnerView : function() {
+var FormioFileList = React.createClass({
+  displayName: 'FormioFileList',
+  fileRow: function (file, id) {
     return (
-      <div className='formio-content-centered'>
-        <i id='formio-file-upload' className='glyphicon glyphicon-cloud-upload'></i>
-        <span> Drop files to attach, or</span>
-        <a href="#">  browse</a><span> .</span>
-      </div>
-    );
-  },
-  headercell : function(firstCell,secCell,thirdCell) {
-    return (
-      <tr>
-        <th className="formio-dropzone-table">{firstCell}</th>
-        <th >{secCell}</th>
-        <th >{thirdCell}</th>
+      <tr key={id}>
+        <td className="formio-dropzone-table">
+          <a onClick={this.props.removeFile.bind(null, id)} class="btn btn-sm btn-default"><span class="glyphicon glyphicon-remove"></span></a>
+        </td>
+        <td><a href="#">{file.name}</a></td>
+        <td>{ this.fileSize(file.size) }</td>
       </tr>
     );
   },
-  noStorageError: function() {
+  render: function() {
+    return (
+      <table className="table table-striped table-bordered">
+        <thead>
+        <tr>
+          <th className="formio-dropzone-table"></th>
+          <th>File Name</th>
+          <th>Size</th>
+        </tr>
+        </thead>
+        <tbody>
+          { this.props.files.map(this.fileRow) }
+        </tbody>
+      </table>
+    );
+  }
+});
+
+module.exports = React.createClass({
+  displayName: 'File',
+  getInitialState: function () {
+    return {
+      value: this.props.value || [],
+      fileUploads: []
+    };
+  },
+  fileSelector: function () {
+    if (!this.state.value.length > 0 || this.props.component.multiple) {
+      return (
+        <Dropzone onDrop={this.upload} multiple={this.props.component.multiple} className='formio-dropzone-default-content'>
+          <div className='formio-content-centered'>
+            <i id='formio-file-upload' className='glyphicon glyphicon-cloud-upload'></i>
+            <span> Drop files to attach, or</span>
+            <a style={{ cursor: 'pointer'}}> browse</a><span>.</span>
+          </div>
+        </Dropzone>
+      );
+    }
+  },
+  upload: function(files) {
+    if (this.props.component.storage && files && files.length) {
+      files.forEach(files, (file) => {
+        // Get a unique name for this file to keep file collisions from occurring.
+        var fileName = FormioUtils.uniqueName(file.name);
+        this.setState((previousState) => {
+          previousState.fileUploads[fileName] = {
+            name: fileName,
+            size: file.size,
+            status: 'info',
+            message: 'Starting upload'
+          };
+          return previousState;
+        });
+        var dir = $scope.component.dir || '';
+        this.props.formio.uploadFile($scope.component.storage, file, fileName, dir, function processNotify(evt) {
+            this.setState((previousState) => {
+              previousState.fileUploads[fileName].status = 'progress';
+              previousState.fileUploads[fileName].progress = parseInt(100.0 * evt.loaded / evt.total);
+              delete previousState.fileUploads[fileName].message;
+              return previousState;
+            });
+          })
+          .then(function(fileInfo) {
+            this.setState((previousState) => {
+              delete $scope.fileUploads[fileName];
+              previousState.value.push(fileInfo);
+              return previousState;
+            });
+          })
+          .catch(function(response) {
+            // Handle error
+            var oParser = new DOMParser();
+            var oDOM = oParser.parseFromString(response.data, 'text/xml');
+            var message = oDOM.getElementsByTagName('Message')[0].innerHTML;
+
+            this.setState((previousState) => {
+              previousState.fileUploads[fileName].status = 'error';
+              previousState.fileUploads[fileName].message = message;
+              delete previousState.fileUploads[fileName].progress;
+              return previousState;
+            });
+          });
+      });
+    }
+  },
+  noStorageError: function () {
     return (
       <div className='formio-dropzone-error-content'>
         <span>No storage has been set for this field. File uploads are disabled until storage is set up.</span>
       </div>
     );
   },
-  removeRow: function(id) {
-    if (id === 'multipleHeaderCell') {
-      return (
-        this.setState({shouldMultipleHeaderCell: false})
-        );
-    }
-    var rows = this.state.files;
-    rows.splice(id, 1);
-    this.setState({
-      files: rows
+  removeFile: function (id) {
+    this.setState(function(previousState) {
+      previousState.value.splice(id, 1);
+      return previousState;
     });
   },
-  configureTableCell: function(fileName,fileSize, id) {
-    return (
-      <tr id = {id} key={id}>
-        <td  className="formio-dropzone-table"><span className='glyphicon glyphicon-remove' onClick={this.removeRow.bind(null, id)}> </span></td>
-        <td><a href="#">{fileName}</a></td>
-        <td>{fileSize}</td>
-      </tr>
-    );
-  },
-  render: function() {
-    //To Do :- Remove _this
-    var _this = this,
-      dropzoneObj,
-      tableClasses = 'table',
-      storageType = this.props.component.storage,
-      key = this.props.component.key,
-      title = this.props.component.label ? this.props.component.label : '',
-      isMultiple = this.props.component.multiple,
-      formUrl = this.props.formio.formUrl,
-      urlPath = formUrl + '/storage/' + storageType;
-
-    var  componentConfig = {
-      showFiletypeIcon: false,
-      postUrl: urlPath
-    };
-
-    var djsConfig = {
-      addRemoveLinks: false,
-      showFiletypeIcon: false,
-      clickable: true,
-      acceptedFiles: 'image/jpeg,image/png,image/gif, audio/*,video/*,.pdf,.txt',
-      dictCancelUpload: null,
-      dictRemoveFile: null,
-      maxFilesize: 15,
-      params:{},
-      dictDefaultMessage:'<div class=\"formio-content-centered\"><i id=\"formio-file-upload\" class=\"glyphicon glyphicon-cloud-upload\"></i><span> Drop files to attach, or</span><a  href=\"#\">  browse</a><span> .</span></div>',
-      previewTemplate: ReactDOMServer.renderToStaticMarkup(
-        <div className="dz-preview dz-file-preview">
-          <div className="dz-details">
-            <div className="dz-filename"><span data-dz-name="true"></span><span className="dz-error-mark" data-dz-remove=""><span> ✘</span></span></div>
-          </div>
-          <div className="progress">
-            <div className="progress-bar"  data-dz-uploadprogress="true" role="progressbar" aria-valuenow="70"
-                 aria-valuemin="0" aria-valuemax="100" >
-            </div>
-          </div>
-          <div className="dz-error-message"><span data-dz-errormessage="true"></span></div>
-        </div>
-      )
-    };
-
-    var eventHandlers = {
-      init: initCallback,
-      success: onDrop,
-      complete: uploadComplete
-    };
-
-    tableClasses += ' table-striped';
-    tableClasses += ' table-bordered';
-    tableClasses +=  ' table-hover';
-    tableClasses += ' table-condensed';
-    tableClasses += 'formio-dropzone-margin';
-
-    //To Do :- Need to use 'this' instead of '_this'
-    function onDrop(file) {
-      var test = _this.state.files;
-      test.push(file);
-      _this.setState({
-        files: test
-      });
-    }
-
-    function uploadComplete(file, progress) {
-      if (file.status === 'success' && isMultiple) {
-        dropzoneObj.removeFile(file);
-      }
-    }
-
-    function initCallback(dropzone) {
-      dropzoneObj = dropzone;
-    }
+  render: function () {
+    var classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
+    var inputLabel = (this.props.component.label && !this.props.component.hideLabel ?
+      <label htmlFor={this.props.component.key} className={classLabel}>{this.props.component.label}</label> : '');
+    var requiredInline = (!this.props.component.label && this.props.component.validate && this.props.component.validate.required ?
+      <span className='glyphicon glyphicon-asterisk form-control-feedback field-required-inline' aria-hidden='true'></span> : '');
 
     return (
-      <div  className='formio-dropzone-margin' key ={key}>
-        {title}
-        <table className={tableClasses}>
-          <thead>
-          {this.headercell('', 'File Name', 'Size')}
-          </thead>
-          <tbody>
-          {(isMultiple && this.state.shouldMultipleHeaderCell) ? this.configureTableCell('','NaN Bytes', 'multipleHeaderCell') : null}
-          {this.state.files.length > 0 ?
-            this.state.files.map((File, i) =>
-              this.configureTableCell(File.name, File.size, i))
-            : null}
-          </tbody>
-        </table>
-        <div>
-          {this.fileUploadView(key,storageType, isMultiple, componentConfig, eventHandlers, djsConfig)}
-        </div>
-        {storageType ? null : this.noStorageError()}
+      <div className='formio-dropzone-margin'>
+        {inputLabel} {requiredInline}
+        <FormioFileList files={this.state.value} formio={this.props.formio} removeFile={this.removeFile}></FormioFileList>
+        {this.fileSelector()}
+        {this.props.component.storage ? null : this.noStorageError()}
       </div>
     );
   }

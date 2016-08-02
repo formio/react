@@ -152,7 +152,7 @@ canvas {
 }
 
 .formio-dropzone-margin {
-    margin: 10px;
+    margin: 10px 0;
 }
 
 .formio-dropzone-error-content {
