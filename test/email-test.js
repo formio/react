@@ -1,89 +1,83 @@
+
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
-import Textfield from '../src/components/textfield.jsx';
+import Email from '../src/components/email.jsx';
 import sinon from 'sinon';
 
 import form from './forms/empty.json';
 
-describe('Textfield', function () {
-  describe('Single Textfield', function () {
+describe('Email', function () {
+  describe('Single email', function () {
     var component= {
-      'input': true,
-      'tableView': true,
-      'inputType': 'text',
-      'inputMask': '',
-      'label': 'My Textfield',
-      'key': 'myTextfield',
-      'placeholder': '',
-      'prefix': '',
-      'suffix': '',
-      'multiple': false,
-      'defaultValue': '',
-      'protected': false,
-      'unique': false,
-      'persistent': true,
-      'validate': {
-        'required': false,
-        'minLength': '',
-        'maxLength': '',
-        'pattern': '',
-        'custom': '',
-        'customPrivate': false
+      "validate": {
+        "required": false
       },
-      'conditional': {
-        'show': null,
-        'when': null,
-        'eq': ''
+      "conditional": {
+        "eq": "",
+        "when": null,
+        "show": ""
       },
-      'type': 'textfield'
+      "type": "email",
+      "persistent": true,
+      "unique": true,
+      "protected": false,
+      "defaultValue": "",
+      "suffix": "",
+      "prefix": "",
+      "placeholder": "",
+      "key": "email",
+      "label": "my email",
+      "inputType": "email",
+      "tableView": true,
+      "input": true
     };
+
     var attachToForm = sinon.spy();
-    it('renders a basic textfield', function (done) {
+    it('Renders a basic email', function (done) {
       const element = render(
-        <Textfield
-          component={component}
-          attachToForm={attachToForm}
-        ></Textfield>
+        <Email
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
       ).children().eq(0);
       expect(element).to.have.length(1);
-      expect(element.hasClass('form-group form-field-type-textfield form-group-myTextfield')).to.equal(true);
-      expect(element.attr('id')).to.equal('form-group-myTextfield');
+      expect(element.hasClass('form-group form-field-type-email form-group-email')).to.equal(true);
+      expect(element.attr('id')).to.equal('form-group-email');
       expect(element.find('.formio-component-single').length).to.equal(1);
       expect(element.find('.formio-component-single label').length).to.equal(1);
-      expect(element.find('.formio-component-single label').html()).to.equal('My Textfield');
-      expect(element.find('.formio-component-single label').attr('for')).to.equal('myTextfield');
+      expect(element.find('.formio-component-single label').html()).to.equal('my email');
+      expect(element.find('.formio-component-single label').attr('for')).to.equal('email');
       expect(element.find('.formio-component-single .input-group').length).to.equal(1);
       expect(element.find('.formio-component-single .input-group input').length).to.equal(1);
-      expect(element.find('.formio-component-single .input-group input').attr('type')).to.equal('text');
       expect(element.find('.formio-component-single .input-group input').attr('class')).to.equal('form-control');
-      expect(element.find('.formio-component-single .input-group input').attr('id')).to.equal('myTextfield');
+      expect(element.find('.formio-component-single .input-group input').attr('id')).to.equal('email');
       expect(element.find('.formio-component-single .input-group input').attr('data-index')).to.equal('0');
       expect(element.find('.formio-component-single .input-group input').attr('value')).to.equal('');
       expect(element.find('.formio-component-single .input-group input').attr('placeholder')).to.equal('');
       done();
     });
 
-    it('fills in the placeholder value', function(done) {
-      component.placeholder = 'My Placeholder';
+    it('Fills in the placeholder value', function(done) {
+      component.placeholder = 'Test Placeholder';
       const element = render(
-        <Textfield
-          component={component}
-          attachToForm={attachToForm}
-        ></Textfield>
-      ).find('input#myTextfield');
-      expect(element.attr('placeholder')).to.equal('My Placeholder');
+        <Email
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
+      ).find('input#email');
+      expect(element.attr('placeholder')).to.equal('Test Placeholder');
       component.placeholder = '';
       done();
     });
-  
-    it('renders with a prefix', function(done) {
+
+    it('Renders with a prefix', function(done) {
       component.prefix = '$';
       const element = render(
-        <Textfield
-          component={component}
-          attachToForm={attachToForm}
-        ></Textfield>
+        <Email
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
       ).find('.input-group');
       expect(element.children().length).to.equal(2);
       expect(element.children().eq(0).hasClass('input-group-addon')).to.equal(true);
@@ -91,14 +85,14 @@ describe('Textfield', function () {
       component.prefix = '';
       done();
     });
-  
-    it('renders with a suffix', function(done) {
+
+    it('Renders with a suffix', function(done) {
       component.suffix = 'Pounds';
       const element = render(
-        <Textfield
-          component={component}
-          attachToForm={attachToForm}
-        ></Textfield>
+        <Email
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
       ).find('.input-group');
       expect(element.children().length).to.equal(2);
       expect(element.children().eq(1).hasClass('input-group-addon')).to.equal(true);
@@ -107,14 +101,14 @@ describe('Textfield', function () {
       done();
     });
 
-    it('renders with prefix and suffix', function(done) {
+    it('Renders with prefix and suffix', function(done) {
       component.prefix = 'Prefix';
       component.suffix = 'Suffix';
       const element = render(
-        <Textfield
-          component={component}
-          attachToForm={attachToForm}
-        ></Textfield>
+        <Email
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
       ).find('.input-group');
       expect(element.children().length).to.equal(3);
       expect(element.children().eq(0).hasClass('input-group-addon')).to.equal(true);
@@ -126,114 +120,132 @@ describe('Textfield', function () {
       done();
     });
 
-    it('sets a default value', function(done) {
+    it('Sets a default value', function(done) {
       const element = render(
-        <Textfield
-          component={component}
-          value='My Value'
-          attachToForm={attachToForm}
-        ></Textfield>
+        <Email
+      component={component}
+      value='testEmail@test.com'
+      attachToForm={attachToForm}
+        ></Email>
       ).find('input');
-      expect(element.attr('value')).to.equal('My Value');
+      expect(element.attr('value')).to.equal('testEmail@test.com');
       done();
     });
 
-    it('sets a custom class', function(done) {
-      component.customClass = 'my-custom-class'
+    it('Check single email with required', function(done) {
+      component.validate.required = true;
       const element = render(
-        <Textfield
-          component={component}
-          attachToForm={attachToForm}
-        ></Textfield>
-      ).children().eq(0);
-      expect(element.attr('class').split(' ')).to.contain('my-custom-class');
+        <Email
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
+      );
+      expect(element.find('.formio-component-single label ').attr('class')).to.equal('control-label field-required');
       done();
     });
+
+    it('Check single email without required', function(done) {
+      component.validate.required = false;
+      const element = render(
+        <Email
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
+      );
+      expect(element.find('.formio-component-single label ').attr('class')).to.equal('control-label');
+      done();
+    });
+
+    it('Check single email without label', function(done) {
+      component.label = '';
+      const element = render(
+        <Email
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
+      );
+      expect(element.find('.formio-component-single label').length).to.equal(0);
+      done();
+    });
+
   });
 
-  describe('Multiple Textfield', function() {
+  describe('Multiple email', function() {
     var component = {
-      'input': true,
-      'tableView': true,
-      'inputType': 'text',
-      'inputMask': '',
-      'label': 'My Textfield',
-      'key': 'myTextfield',
-      'placeholder': '',
-      'prefix': '',
-      'suffix': '',
-      'multiple': true,
-      'defaultValue': '',
-      'protected': false,
-      'unique': false,
-      'persistent': true,
-      'validate': {
-        'required': false,
-        'minLength': '',
-        'maxLength': '',
-        'pattern': '',
-        'custom': '',
-        'customPrivate': false
+      "multiple": true,
+      "validate": {
+        "required": true
       },
-      'conditional': {
-        'show': null,
-        'when': null,
-        'eq': ''
+      "conditional": {
+        "eq": "",
+        "when": null,
+        "show": ""
       },
-      'type': 'textfield'
+      "type": "email",
+      "persistent": true,
+      "unique": true,
+      "protected": false,
+      "defaultValue": "",
+      "suffix": "",
+      "prefix": "",
+      "placeholder": "",
+      "key": "email",
+      "label": "my email",
+      "inputType": "email",
+      "tableView": true,
+      "input": true
     };
     var attachToForm = sinon.spy();
-    it('renders a multi-value textfield', function(done) {
+    it('Renders a multi-value email', function(done) {
       const element = render(
-        <Textfield
-          name="myTextfield"
-          component={component}
-          attachToForm={attachToForm}
-        ></Textfield>
-      ).find('.form-field-type-textfield');
+        <Email
+      name="email"
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
+      ).find('.form-field-type-email');
       expect(element).to.have.length(1);
-      expect(element.hasClass('form-group form-field-type-textfield form-group-myTextfield')).to.equal(true);
-      expect(element.attr('id')).to.equal('form-group-myTextfield');
+      expect(element.hasClass('form-group form-field-type-email form-group-email')).to.equal(true);
+      expect(element.attr('id')).to.equal('form-group-email');
       expect(element.children().eq(0).hasClass('formio-component-multiple')).to.equal(true);
-      expect(element.children().eq(0).children().eq(0).attr('for')).to.equal('myTextfield');
+      expect(element.children().eq(0).children().eq(0).attr('for')).to.equal('email');
       expect(element.children().eq(0).children().eq(0).hasClass('control-label')).to.equal(true);
-      expect(element.children().eq(0).children().eq(0).text()).to.equal('My Textfield');
+      expect(element.children().eq(0).children().eq(0).text()).to.equal('my email');
       const table = element.children().eq(0).children().eq(1);
       expect(table.hasClass('table table-bordered')).to.equal(true);
       expect(table.find('tr').length).to.equal(2);
       expect(table.find('tr td div.input-group').length).to.equal(1);
-      expect(table.find('tr td div.input-group input').attr('type')).to.equal('text');
       expect(table.find('tr td div.input-group input').attr('placeholder')).to.equal('');
       expect(table.find('tr td div.input-group input').attr('value')).to.equal('');
-      expect(table.find('tr td div.input-group input').attr('id')).to.equal('myTextfield');
-      expect(table.find('tr td div.input-group input').attr('name')).to.equal('myTextfield');
+      expect(table.find('tr td div.input-group input').attr('id')).to.equal('email');
+      expect(table.find('tr td div.input-group input').attr('name')).to.equal('email');
       expect(table.find('tr td div.input-group input').attr('class')).to.equal('form-control');
       expect(table.find('tr td div.input-group input').attr('data-index')).to.equal('0');
       done();
     });
 
-    it('fills in the placeholder value', function(done) {
+    it('Fills in the placeholder value', function(done) {
       component.placeholder = 'My Placeholder';
       const element = render(
-        <Textfield
-          name="myTextfield"
-          component={component}
-          attachToForm={attachToForm}
-        ></Textfield>
-      ).find('input#myTextfield');
+        <Email
+      name="email"
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
+      ).find('input#email');
       expect(element.attr('placeholder')).to.equal('My Placeholder');
       component.placeholder = '';
       done();
     });
 
-    it('renders with a prefix', function(done) {
+    it('Renders with a prefix', function(done) {
       component.prefix = '$';
       const element = render(
-        <Textfield
-          name="myTextfield"
-          component={component}
-          attachToForm={attachToForm}
-        ></Textfield>
+        <Email
+      name="email"
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
       ).find('.input-group');
       expect(element.children().length).to.equal(2);
       expect(element.children().eq(0).hasClass('input-group-addon')).to.equal(true);
@@ -242,14 +254,14 @@ describe('Textfield', function () {
       done();
     });
 
-    it('renders with a suffix', function(done) {
+    it('Renders with a suffix', function(done) {
       component.suffix = 'Pounds';
       const element = render(
-        <Textfield
-          name="myTextfield"
-          component={component}
-          attachToForm={attachToForm}
-        ></Textfield>
+        <Email
+      name="email"
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
       ).find('.input-group');
       expect(element.children().length).to.equal(2);
       expect(element.children().eq(1).hasClass('input-group-addon')).to.equal(true);
@@ -258,15 +270,15 @@ describe('Textfield', function () {
       done();
     });
 
-    it('renders with prefix and suffix', function(done) {
+    it('Renders with prefix and suffix', function(done) {
       component.prefix = 'Prefix';
       component.suffix = 'Suffix';
       const element = render(
-        <Textfield
-          name="myTextfield"
-          component={component}
-          attachToForm={attachToForm}
-        ></Textfield>
+        <Email
+      name="email"
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
       ).find('.input-group');
       expect(element.children().length).to.equal(3);
       expect(element.children().eq(0).hasClass('input-group-addon')).to.equal(true);
@@ -278,28 +290,14 @@ describe('Textfield', function () {
       done();
     });
 
-    it('sets a default value', function(done) {
-      const element = render(
-        <Textfield
-          name="myTextfield"
-          value="My Value"
-          component={component}
-          attachToForm={attachToForm}
-        ></Textfield>
-      ).find('input');
-      expect(element.attr('value')).to.equal('My Value');
-      done();
-    });
-
-    it('adds and removes rows', function(done) {
-      component.defaultValue = 'My Value';
+    it('Adds and removes rows', function(done) {
       const element = mount(
-        <Textfield
-          name="myTextfield"
-          component={component}
-          attachToForm={attachToForm}
-        ></Textfield>
-      ).find('.form-field-type-textfield');
+        <Email
+      name="email"
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
+      ).find('.form-field-type-email');
       const table = element.find('table');
       table.find('a.btn.add-row').simulate('click');
       expect(table.find('tr').length).to.equal(3);
@@ -335,11 +333,44 @@ describe('Textfield', function () {
       expect(table.find('tr').at(0).find('input').prop('data-index')).to.equal(0);
       done();
     })
+
+    it('Check multiple email with required', function(done) {
+      component.validate.required = true;
+      const element = render(
+        <Email
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
+      );
+      expect(element.find('.formio-component-multiple label ').attr('class')).to.equal('control-label field-required');
+      done();
+    });
+
+    it('Check multiple email without required', function(done) {
+      component.validate.required = false;
+      const element = render(
+        <Email
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
+      );
+      expect(element.find('.formio-component-multiple label ').attr('class')).to.equal('control-label');
+      component.validate.required = true;
+      done();
+    });
+
+    it('Check multiple email without label', function(done) {
+      component.label = '';
+      const element = render(
+        <Email
+      component={component}
+      attachToForm={attachToForm}
+        ></Email>
+      );
+      expect(element.find('.formio-component-multiple label').length).to.equal(0);
+      done();
+    });
   });
 
-  // Check validations
-
-  // Check change event
-
-  // Check with and without labels/required
 });
+
