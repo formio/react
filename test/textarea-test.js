@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
@@ -169,7 +170,6 @@ describe('Textarea', function () {
       expect(element.attr('class').split(' ')).to.contain('my-custom-class');
       done();
     });
-
   });
 
   describe('Multiple Textarea', function() {

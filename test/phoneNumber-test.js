@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
@@ -178,6 +179,7 @@ describe('phoneNumber', function () {
       expect(element.find('.formio-component-single label').length).to.equal(0);
       done();
     });
+
 
     it('sets a custom class', function(done) {
       component.customClass = 'my-custom-class'
