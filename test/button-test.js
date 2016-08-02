@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
@@ -78,7 +77,18 @@ describe('Button', function () {
       done();
     });
 
+    it('sets a custom class', function(done) {
+      component.customClass = 'my-custom-class'
+      const element = render(
+        <Button
+          component={component}
+          attachToForm={attachToForm}
+        ></Button>
+      ).children().eq(0);
+      expect(element.attr('class').split(' ')).to.contain('my-custom-class');
+      done();
+    });
+
   });
 
 });
-

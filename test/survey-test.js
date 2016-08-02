@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
@@ -130,6 +129,18 @@ describe('Survey', function () {
 
       expect(element.find('tbody tr td input').length).to.equal(component.questions.length * component.questions.length);
 
+      done();
+    });
+
+    it('sets a custom class', function(done) {
+      component.customClass = 'my-custom-class'
+      const element = render(
+        <Survey
+          component={component}
+          attachToForm={attachToForm}
+        ></Survey>
+      ).children().eq(0);
+      expect(element.attr('class').split(' ')).to.contain('my-custom-class');
       done();
     });
 

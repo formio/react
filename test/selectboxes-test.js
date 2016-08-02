@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
@@ -110,6 +109,18 @@ describe('Selectboxes', function () {
       ).find('label').eq(0);
       expect(element.attr('class')).to.equal('control-label');
       expect(element.length).to.equal(1);
+      done();
+    });
+
+    it('sets a custom class', function(done) {
+      component.customClass = 'my-custom-class'
+      const element = render(
+        <Selectboxes
+          component={component}
+          attachToForm={attachToForm}
+        ></Selectboxes>
+      ).children().eq(0);
+      expect(element.attr('class').split(' ')).to.contain('my-custom-class');
       done();
     });
 

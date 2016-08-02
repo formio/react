@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
@@ -156,6 +155,18 @@ describe('Textarea', function () {
         ></Textarea>
       );
       expect(element.find('.formio-component-single label').length).to.equal(0);
+      done();
+    });
+
+    it('sets a custom class', function(done) {
+      component.customClass = 'my-custom-class'
+      const element = render(
+        <Textarea
+          component={component}
+          attachToForm={attachToForm}
+        ></Textarea>
+      ).children().eq(0);
+      expect(element.attr('class').split(' ')).to.contain('my-custom-class');
       done();
     });
 
@@ -364,6 +375,18 @@ describe('Textarea', function () {
         ></Textarea>
       );
       expect(element.find('.formio-component-multiple label').length).to.equal(0);
+      done();
+    });
+
+    it('sets a custom class', function(done) {
+      component.customClass = 'my-custom-class'
+      const element = render(
+        <Textarea
+          component={component}
+          attachToForm={attachToForm}
+        ></Textarea>
+      ).children().eq(0);
+      expect(element.attr('class').split(' ')).to.contain('my-custom-class');
       done();
     });
   });
