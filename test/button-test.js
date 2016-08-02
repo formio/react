@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
@@ -76,6 +77,7 @@ describe('Button', function () {
       expect(element.hasClass('btn btn-success btn-' + component.size)).to.equal(true);
       done();
     });
+
 
     it('sets a custom class', function(done) {
       component.customClass = 'my-custom-class'

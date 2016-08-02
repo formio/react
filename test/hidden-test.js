@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
@@ -63,6 +64,7 @@ describe('Hidden', function () {
       expect(element.attr('value')).to.equal('My Value');
       done();
     });
+
 
     it('sets a custom class', function(done) {
       component.customClass = 'my-custom-class'

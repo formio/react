@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
@@ -169,6 +170,7 @@ describe('Password', function () {
       component.validate.minLength = '';
       done();
     });
+
 
     it('sets a custom class', function(done) {
       component.customClass = 'my-custom-class'

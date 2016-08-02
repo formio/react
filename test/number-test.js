@@ -140,6 +140,7 @@ describe('Number', function(){
             done();
         });
 
+
         it('sets a custom class', function(done) {
           component.customClass = 'my-custom-class'
           const element = render(
@@ -350,5 +351,6 @@ describe('Number', function(){
         expect(element.attr('class').split(' ')).to.contain('my-custom-class');
         done();
       });
+
     });
 });
