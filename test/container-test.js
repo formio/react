@@ -41,7 +41,7 @@ describe('Container', function () {
       done();
     });
 
-    it('Check the nested components of table', function (done) {
+    it('Check the nested components of container', function (done) {
       const element = shallow(<Container
         component={component}
         attachToForm={attachToForm}
