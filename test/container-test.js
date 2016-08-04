@@ -35,7 +35,7 @@ describe('Container', function () {
       const element = shallow(<Container
         component={component}
         attachToForm={attachToForm}
-        {...this.props} />)
+        />)
       expect(element.find('.form-group .form-field-type-container .form-group-container').length).to.equal(1);
       expect(element.find('.form-group .form-field-type-container .form-group-container .formio-container').length).to.equal(1);
       done();
@@ -45,7 +45,7 @@ describe('Container', function () {
       const element = shallow(<Container
         component={component}
         attachToForm={attachToForm}
-        {...this.props} />).find('.form-group .form-field-type-container .form-group-container .formio-container');
+        />).find('.form-group .form-field-type-container .form-group-container .formio-container');
 
       //To test type of nested components of container
       for (var i= 0; i<component.components.length; i++) {
