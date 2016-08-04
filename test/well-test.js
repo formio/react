@@ -31,7 +31,7 @@ describe('Well', function () {
       const element = shallow(<Well
         component={component}
         attachToForm={attachToForm}
-        {...this.props} />)
+        />)
       expect(element.find('.well').length).to.equal(1);
       done();
     });
@@ -40,7 +40,7 @@ describe('Well', function () {
       const element = shallow(<Well
         component={component}
         attachToForm={attachToForm}
-        {...this.props} />).find('.well');
+        />).find('.well');
 
       //To test type of nested components of well
       for (var i= 0; i<component.components.length; i++) {
