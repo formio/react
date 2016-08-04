@@ -32,7 +32,7 @@ describe('Panel', function () {
       const element = shallow(<Panel
         component={component}
         attachToForm={attachToForm}
-        {...this.props} />)
+        />)
       expect(element.find('.panel').length).to.equal(1);
       done();
     });
@@ -41,7 +41,7 @@ describe('Panel', function () {
       const element = shallow(<Panel
         component={component}
         attachToForm={attachToForm}
-        {...this.props} />).find('.panel');
+        />).find('.panel');
       expect(element.nodes[0].props.className).to.equal('panel panel-' + component.theme + ' ');
       done();
     });
@@ -50,7 +50,7 @@ describe('Panel', function () {
       const element = shallow(<Panel
         component={component}
         attachToForm={attachToForm}
-        {...this.props} />).find('.panel');
+        />).find('.panel');
       expect(element.nodes[0].props.children[0].props.className).to.equal('panel-heading');
       expect(element.nodes[0].props.children[0].props.children.props.className).to.equal('panel-title');
       done();
@@ -60,7 +60,7 @@ describe('Panel', function () {
       const element = shallow(<Panel
         component={component}
         attachToForm={attachToForm}
-        {...this.props} />).find('.panel-body');
+        />).find('.panel-body');
 
       //To test type of nested components of panel
       for (var i= 0; i<component.components.length; i++) {
