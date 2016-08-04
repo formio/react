@@ -32,8 +32,7 @@
     "react": "global:React"
   },
   "dependencies": {
-    "formio-utils": "^0.1.9",
-    "formiojs": "formio/formio.js",
+    "formiojs": "^1.1.0",
     "lodash": "^4.13.1",
     "moment": "^2.10.6",
     "react-dropzone": "^3.5.3",
