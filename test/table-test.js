@@ -58,7 +58,7 @@ describe('Table', function () {
       const element = shallow(<Table
       component={component}
       attachToForm={attachToForm}
-      {...this.props} />)
+      />)
       expect(element.find('.table').length).to.equal(1);
       expect(element.find('.table thead').length).to.equal(1);
       expect(element.find('.table tbody').length).to.equal(1);
@@ -74,7 +74,7 @@ describe('Table', function () {
       const element = shallow(<Table
       component={component}
       attachToForm={attachToForm}
-      {...this.props} />).find('table');
+      />).find('table');
       expect(element.hasClass('table table-striped table-bordered table-hover table-condensed')).to.equal(true);
       done();
     });
@@ -83,7 +83,7 @@ describe('Table', function () {
       const element = shallow(<Table
       component={component}
       attachToForm={attachToForm}
-      {...this.props} />).find('table');
+      />).find('table');
       expect(element.find('table tbody tr').length).to.equal(component.numRows);
       done();
     });
@@ -92,7 +92,7 @@ describe('Table', function () {
       const element = shallow(<Table
       component={component}
       attachToForm={attachToForm}
-      {...this.props} />).find('table');
+      />).find('table');
       //  As any class is not assigned for tr so unable to separate out the td's.
       // TODO:- Need to do it in better way. By settingup the className for tr.
       expect(element.find('table tbody tr td').length).to.equal(component.numCols * component.numCols);
@@ -103,7 +103,7 @@ describe('Table', function () {
       const element = shallow(<Table
       component={component}
       attachToForm={attachToForm}
-      {...this.props} />).find('.table tbody tr td');
+      />).find('.table tbody tr td');
       //To test the number of nested components of table.
       expect(element.length).to.equal(component.numCols * component.numRows);
       //To test type of nested components of table
