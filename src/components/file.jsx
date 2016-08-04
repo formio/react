@@ -1,6 +1,10 @@
 var React = require('react');
 var Dropzone = require('react-dropzone');
 
+var fileSize = function(a, b, c, d, e) {
+  return (b = Math, c = b.log, d = 1024, e = c(a) / c(d) | 0, a / b.pow(d, e)).toFixed(2) + ' ' + (e ? 'kMGTPEZY'[--e] + 'B' : 'Bytes');
+};
+
 var FormioFileList = React.createClass({
   displayName: 'FormioFileList',
   fileRow: function (file, id) {
@@ -10,7 +14,7 @@ var FormioFileList = React.createClass({
           <a onClick={this.props.removeFile.bind(null, id)} className='btn btn-sm btn-default'><span className='glyphicon glyphicon-remove'></span></a>
         </td>
         <td><a href='#'>{file.name}</a></td>
-        <td>{ this.fileSize(file.size) }</td>
+        <td>{ fileSize(file.size) }</td>
       </tr>
     );
   },
@@ -68,7 +72,7 @@ module.exports = React.createClass({
           return previousState;
         });
         var dir = this.props.component.dir || '';
-        this.props.formio.uploadFile(this.props.component.storage, file, fileName, dir, function processNotify(evt) {
+        this.props.formio.uploadFile(this.props.component.storage, file, fileName, dir, (evt) => {
             this.setState((previousState) => {
               previousState.fileUploads[fileName].status = 'progress';
               previousState.fileUploads[fileName].progress = parseInt(100.0 * evt.loaded / evt.total);
@@ -76,22 +80,17 @@ module.exports = React.createClass({
               return previousState;
             });
           })
-          .then(function(fileInfo) {
+          .then((fileInfo) => {
             this.setState((previousState) => {
               delete previousState.fileUploads[fileName];
               previousState.value.push(fileInfo);
               return previousState;
             });
           })
-          .catch(function(response) {
-            // Handle error
-            var oParser = new DOMParser();
-            var oDOM = oParser.parseFromString(response.data, 'text/xml');
-            var message = oDOM.getElementsByTagName('Message')[0].innerHTML;
-
+          .catch((response) => {
             this.setState((previousState) => {
               previousState.fileUploads[fileName].status = 'error';
-              previousState.fileUploads[fileName].message = message;
+              previousState.fileUploads[fileName].message = response;
               delete previousState.fileUploads[fileName].progress;
               return previousState;
             });
@@ -105,9 +104,6 @@ module.exports = React.createClass({
         <span>No storage has been set for this field. File uploads are disabled until storage is set up.</span>
       </div>
     );
-  },
-  fileSize: function(a, b, c, d, e) {
-    return (b = Math, c = b.log, d = 1024, e = c(a) / c(d) | 0, a / b.pow(d, e)).toFixed(2) + ' ' + (e ? 'kMGTPEZY'[--e] + 'B' : 'Bytes');
   },
   uniqueName: function(name) {
     var parts = name.toLowerCase().replace(/[^0-9a-z\.]/g, '').split('.');
@@ -147,10 +143,10 @@ module.exports = React.createClass({
         <div className='row'>
           <div className='fileName control-label col-sm-10'>
             { fileUpload.name }
-            <span onclick={this.removeUpload.bind(this, fileUpload.name)} className='glyphicon glyphicon-remove'></span>
+            <span onClick={this.removeUpload.bind(null, index)}><i className='glyphicon glyphicon-remove'/></span>
           </div>
           <div className='fileSize control-label col-sm-2 text-right'>
-            { this.fileSize(fileUpload.size) }
+            { fileSize(fileUpload.size) }
           </div>
         </div>
         <div className='row'>
@@ -186,6 +182,9 @@ module.exports = React.createClass({
         <FormioFileList files={this.state.value} formio={this.props.formio} removeFile={this.removeFile}></FormioFileList>
         {this.fileSelector()}
         {this.props.component.storage ? null : this.noStorageError()}
+        {Object.keys(this.state.fileUploads).map((key) => {
+          return this.fileUpload(this.state.fileUploads[key], key)
+        })}
       </div>
     );
   }
