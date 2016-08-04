@@ -67,8 +67,8 @@ module.exports = React.createClass({
           };
           return previousState;
         });
-        var dir = $scope.component.dir || '';
-        this.props.formio.uploadFile($scope.component.storage, file, fileName, dir, function processNotify(evt) {
+        var dir = this.props.component.dir || '';
+        this.props.formio.uploadFile(this.props.component.storage, file, fileName, dir, function processNotify(evt) {
             this.setState((previousState) => {
               previousState.fileUploads[fileName].status = 'progress';
               previousState.fileUploads[fileName].progress = parseInt(100.0 * evt.loaded / evt.total);
@@ -78,7 +78,7 @@ module.exports = React.createClass({
           })
           .then(function(fileInfo) {
             this.setState((previousState) => {
-              delete $scope.fileUploads[fileName];
+              delete previousState.fileUploads[fileName];
               previousState.value.push(fileInfo);
               return previousState;
             });
@@ -117,6 +117,12 @@ module.exports = React.createClass({
       ext = '.' + parts[(parts.length - 1)];
     }
     return fileName.substr(0, 10) + '-' + this.guid() + ext;
+  },
+  guid: function() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
+      return v.toString(16);
+    });
   },
   fileUpload: function(fileUpload, index) {
     var errorClass = (fileUpload.status === 'error' ? ' has-error' : '');
