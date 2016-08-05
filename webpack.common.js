@@ -33,10 +33,6 @@ module.exports = {
         loader: "exports?requirejs!script"
       },
       {
-        test: /\.jsx?$/,
-        loader: 'jsx-loader?insertPragma=React.DOM&harmony'
-      },
-      {
         test: /\.(js|jsx)$/,
         loader: 'babel',
         exclude: /node_modules/,
