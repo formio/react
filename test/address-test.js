@@ -53,7 +53,7 @@ describe('Address field', function () {
           component={component}
           attachToForm={attachToForm}
         ></Address>
-      ).find('.rw-input');
+      ).find('.rw-dropdownlist');
       expect(element).to.have.length(1);
       done();
     });
@@ -66,7 +66,7 @@ describe('Address field', function () {
         ></Address>
       );
       expect(element.find('.rw-open')).to.have.length(0);
-      element.find('.rw-i').simulate('click');
+      element.find('.rw-i-caret-down').simulate('click');
       expect(element.find('.rw-open')).to.have.length(1);
       expect(element.find('.rw-popup')).to.have.length(1);
       element.find('.rw-dropdownlist').simulate('click');
@@ -82,7 +82,7 @@ describe('Address field', function () {
         ></Address>
       );
       expect(element.find('.rw-open')).to.have.length(0);
-      element.find('.rw-i').simulate('click');
+      element.find('.rw-i-caret-down').simulate('click');
       expect(element.find('.rw-open')).to.have.length(1);
       expect(element.find('.rw-popup')).to.have.length(1);
       expect(element.find('.rw-list-empty').html()).to.equal('<li class="rw-list-empty">There are no items in this list</li>');
@@ -97,7 +97,7 @@ describe('Address field', function () {
         ></Address>
       );
       expect(element.find('.rw-open')).to.have.length(0);
-      element.find('.rw-i').simulate('click');
+      element.find('.rw-i-caret-down').simulate('click');
       expect(element.find('.rw-open')).to.have.length(1);
       expect(element.find('.rw-popup')).to.have.length(1);
       expect(element.find('.rw-popup input')).to.have.length(1);
@@ -193,16 +193,12 @@ describe('Address field', function () {
 
       //To check the simulated change
       element.find('.rw-input').simulate('change', {target: {value: 's'}});
-      expect(element.find('.rw-multiselect-wrapper').html()).to.equal('<div class="rw-multiselect-wrapper"><ul id="rw_17_taglist" aria-label="selected items" ' +
-        'role="listbox" tabindex="-1" class="rw-multiselect-taglist"><li id="rw_17_taglist__option__0" tabindex="-1" role="option" class="">' +
-        '<!-- react-text: 12 --><!-- /react-text --><span tabindex="-1" aria-disabled="false" aria-label="Unselect"><span class="rw-tag-btn"' +
-        ' aria-hidden="true">×</span></span></li></ul><input tabindex="0" role="listbox" aria-expanded="true" aria-busy="false"' +
-        ' aria-owns="rw_17__listbox rw_17__notify rw_17_taglist" aria-haspopup="true" value="s" placeholder="" size="2" class="rw-input"' +
-        ' autocomplete="off" aria-disabled="false" aria-readonly="false" aria-activedescendant="rw_17__createlist_option"></div>');
+      expect(element.find('.rw-multiselect-wrapper input').html()).to.equal('<input tabindex="0" role="listbox" aria-expanded="true" aria-busy="false" ' +
+        'aria-owns="rw_17__listbox rw_17__notify rw_17_taglist" aria-haspopup="true" value="s" placeholder="" size="2" class="rw-input" autocomplete="off" ' +
+        'aria-disabled="false" aria-readonly="false" aria-activedescendant="rw_17__createlist_option">');
       done();
     });
-
-    // TODO: Write a test case to check empty search field for first occurance of multiple address component.
+// TODO: Write a test case to check empty search field for first occurance of multiple address component.
   });
 
 });
