@@ -107,7 +107,7 @@ describe('Select Field', function () {
         ></Select>
       );
       expect(element.find('.rw-open')).to.have.length(0);
-      element.find('.rw-input').simulate('click');
+      element.find('.rw-i-caret-down').simulate('click');
       expect(element.find('.rw-open')).to.have.length(1);
       expect(element.find('.rw-popup')).to.have.length(1);
 
