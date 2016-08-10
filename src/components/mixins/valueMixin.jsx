@@ -35,6 +35,10 @@ module.exports = {
     if (this.props.component.multiple && !Array.isArray(value)) {
       value = [value];
     }
+    //RE-60 :-Need to return the value as array of object instead of object while converting  a multivalue to single value for datagrid component
+    else if (this.props.component.type === 'datagrid') {
+      return value;
+    }
     // If this was a multivalue but is now single value.
     else if (!this.props.component.multiple && Array.isArray(value)) {
       value = value[0];
