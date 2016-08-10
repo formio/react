@@ -72,9 +72,21 @@ describe('Checkbox', function () {
       attachToForm={attachToForm}
         ></Checkbox>
       );
-      expect(element.find('.formio-component-single .input-group .checkbox label').attr('class')).to.equal('field-required');
+      expect(element.find('.formio-component-single .input-group .checkbox label').attr('class')).to.equal('control-label field-required not-checked');
       done();
     });
+
+    //it('Sets the checked class when selected', function(done) {
+    //  const element = mount(
+    //    <Checkbox
+    //      component={component}
+    //      attachToForm={attachToForm}
+    //    ></Checkbox>
+    //  );
+    //  element.find('input').simulate('change', { currentTarget: { checked: true }});
+    //  expect(element.find('label').hasClass('checked')).to.equal(true);
+    //  done();
+    //});
 
     it('sets a custom class', function(done) {
       component.customClass = 'my-custom-class'

@@ -12,7 +12,7 @@ module.exports = React.createClass({
   },
   getSingleElement: function(value, index) {
     index = index || 0;
-    var required = (this.props.component.validate.required ? 'field-required' : '');
+    var required = "control-label" + (this.props.component.validate.required ? ' field-required' : '') + (value ? ' checked' : ' not-checked');
     return (
       <div className="checkbox">
         <label className={required}>
