@@ -112,6 +112,20 @@ describe('Selectboxes', function () {
       done();
     });
 
+    it('Sets the checked class when selected', function(done) {
+      const element = mount(
+        <Selectboxes
+          component={component}
+          attachToForm={attachToForm}
+        ></Selectboxes>
+      );
+      // There is a label in the header so indexes are off by 1.
+      expect(element.find('label').at(1).hasClass('not-checked')).to.equal(true);
+      element.find('input').at(0).simulate('change', {"target": {"checked": true}});
+      expect(element.find('label').at(1).hasClass('checked')).to.equal(true);
+      done();
+    });
+
     it('sets a custom class', function(done) {
       component.customClass = 'my-custom-class'
       const element = render(
