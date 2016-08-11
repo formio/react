@@ -111,7 +111,7 @@ describe('Datetime', function () {
       expect(element.find('.rw-calendar-popup')).to.have.length(1);
       element.find('.rw-btn-calendar').simulate('click');
       expect(element.find('.rw-open')).to.have.length(0);
-      expect(element.find('.rw-calendar-popup')).to.have.length(0);
+      expect(element.find('.rw-list')).to.have.length(0);
       done();
     });
 
