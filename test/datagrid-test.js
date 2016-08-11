@@ -108,22 +108,8 @@ describe('Datagrid', function () {
 
     });
 
-//TODO:- Need to write the test case for add another and remove component scenario. Currently test gets fail on both add and remove component scenario.
-    
-    //it('Check with label for datagrid component', function (done) {
-    //  component.components = [
-    //    components.textfeild,
-    //    components.password,
-    //    components.phoneNumber
-    //  ];
-    //  const element = shallow(<Datagrid
-    //    component={component}
-    //    attachToForm={attachToForm}
-    //  />).find('.datagrid-add');
-    //  element.find('a').simulate('click');
-    //  done();
-    //});
-
+/*TODO:- Need to write the test case for add another and remove component scenario. Currently test gets fail on both add and remove component scenario,
+ because we shallow the child component and try to call the parent method.*/
   });
 
 });
