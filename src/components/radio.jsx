@@ -6,7 +6,7 @@ module.exports = React.createClass({
   displayName: 'Radio',
   mixins: [valueMixin, multiMixin],
   onChangeRadio: function(event) {
-    const value = event.currentTarget.id;
+    const value = event.target.id;
     this.setValue(value, 0);
   },
   getSingleElement: function(value, index) {
@@ -15,7 +15,7 @@ module.exports = React.createClass({
     return (
       <div className="radio-wrapper">
         {this.props.component.values.map(function(v, id) {
-          const controlLabel = "control-label" + (v.value === this.state.value ? ' checked' : ' not-checked')
+          const controlLabel = 'control-label' + (v.value === this.state.value ? ' checked' : ' not-checked');
           return (
             <div key={id} className={radioClass}>
               <label className={controlLabel}>

@@ -6,13 +6,13 @@ module.exports = React.createClass({
   displayName: 'Checkbox',
   mixins: [valueMixin, multiMixin],
   onChangeCheckbox: function(event) {
-    var value = event.currentTarget.checked;
-    var index = (this.props.component.multiple ? event.currentTarget.getAttribute('data-index') : null);
+    var value = event.target.checked;
+    var index = (this.props.component.multiple ? event.target.getAttribute('data-index') : null);
     this.setValue(value, index);
   },
   getSingleElement: function(value, index) {
     index = index || 0;
-    var required = "control-label" + (this.props.component.validate.required ? ' field-required' : '') + (value ? ' checked' : ' not-checked');
+    var required = 'control-label' + (this.props.component.validate.required ? ' field-required' : '') + (value ? ' checked' : ' not-checked');
     return (
       <div className="checkbox">
         <label className={required}>
