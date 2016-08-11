@@ -92,7 +92,7 @@ describe('Resource field', function () {
         ></Resource>
       );
       expect(element.find('.rw-open')).to.have.length(0);
-      element.find('.rw-i').simulate('click');
+      element.find('.rw-i-caret-down').simulate('click');
       expect(element.find('.rw-open')).to.have.length(1);
       expect(element.find('.rw-popup')).to.have.length(1);
       expect(element.find('.rw-list-empty').html()).to.equal('<li class="rw-list-empty">There are no items in this list</li>');
