@@ -2,7 +2,8 @@ var React = require('react');
 var Dropzone = require('react-dropzone');
 
 var fileSize = function(a, b, c, d, e) {
-  return (b = Math, c = b.log, d = 1024, e = c(a) / c(d) | 0, a / b.pow(d, e)).toFixed(2) + ' ' + (e ? 'kMGTPEZY'[--e] + 'B' : 'Bytes');
+  /* eslint-disable space-before-function-paren */
+   return (b = Math, c = b.log, d = 1024, e = c(a) / c(d) | 0, a / b.pow(d, e)).toFixed(2) + ' ' + (e ? 'kMGTPEZY'[--e] + 'B' : 'Bytes');
 };
 
 var FormioFileList = React.createClass({
@@ -38,20 +39,20 @@ var FormioFileList = React.createClass({
 
 module.exports = React.createClass({
   displayName: 'File',
-  getInitialState: function () {
+  getInitialState: function() {
     return {
       value: this.props.value || [],
       fileUploads: {}
     };
   },
-  fileSelector: function () {
+  fileSelector: function() {
     if (!this.state.value.length > 0 || this.props.component.multiple) {
       return (
         <Dropzone onDrop={this.upload} multiple={this.props.component.multiple} className='formio-dropzone-default-content'>
           <div className='formio-content-centered'>
             <i id='formio-file-upload' className='glyphicon glyphicon-cloud-upload'></i>
             <span> Drop files to attach, or</span>
-            <a style={{ cursor: 'pointer'}}> browse</a><span>.</span>
+            <a style={{cursor: 'pointer'}}> browse</a><span>.</span>
           </div>
         </Dropzone>
       );
@@ -98,7 +99,7 @@ module.exports = React.createClass({
       });
     }
   },
-  noStorageError: function () {
+  noStorageError: function() {
     return (
       <div className='formio-dropzone-error-content'>
         <span>No storage has been set for this field. File uploads are disabled until storage is set up.</span>
@@ -157,19 +158,19 @@ module.exports = React.createClass({
       </div>
     );
   },
-  removeFile: function (id) {
+  removeFile: function(id) {
     this.setState(function(previousState) {
       previousState.value.splice(id, 1);
       return previousState;
     });
   },
-  removeUpload: function (name) {
+  removeUpload: function(name) {
     this.setState(function(previousState) {
       delete previousState.fileUploads[name];
       return previousState;
     });
   },
-  render: function () {
+  render: function() {
     var classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
     var inputLabel = (this.props.component.label && !this.props.component.hideLabel ?
       <label htmlFor={this.props.component.key} className={classLabel}>{this.props.component.label}</label> : '');
@@ -183,7 +184,7 @@ module.exports = React.createClass({
         {this.fileSelector()}
         {this.props.component.storage ? null : this.noStorageError()}
         {Object.keys(this.state.fileUploads).map((key) => {
-          return this.fileUpload(this.state.fileUploads[key], key)
+          return this.fileUpload(this.state.fileUploads[key], key);
         })}
       </div>
     );
