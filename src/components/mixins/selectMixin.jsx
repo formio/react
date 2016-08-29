@@ -95,7 +95,7 @@ module.exports = {
         if (props.item) {
           //find all {{ }} expression blocks and then replace the blocks with their evaluation.
           //Then render the markup raw under this react element
-          return React.createElement('div', raw(
+          return React.createElement('span', raw(
               template.replace(/\{\s*\{([^\}]*)\}\s*\}/gm, transform)));
         }
 
@@ -104,7 +104,7 @@ module.exports = {
     });
   },
   getElements: function() {
-    var Element = (this.props.component.multiple ? Multiselect : DropdownList);
+    var Element;
     var classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
     var inputLabel = (this.props.component.label && !this.props.component.hideLabel ? <label htmlFor={this.props.component.key} className={classLabel}>{this.props.component.label}</label> : '');
     var requiredInline = (!this.props.component.label && this.props.component.validate && this.props.component.validate.required ? <span className='glyphicon glyphicon-asterisk form-control-feedback field-required-inline' aria-hidden='true'></span> : '');
@@ -118,22 +118,45 @@ module.exports = {
     else {
       filter = 'contains';
     }
+    if (this.props.component.multiple) {
+      Element = (
+        <Multiselect
+          data={this.state.selectItems}
+          valueField={this.valueField()}
+          textField={this.textField()}
+          filter={filter}
+          value={this.state.value}
+          searchTerm={this.state.searchTerm}
+          onSearch={this.onSearch}
+          onChange={this.onChangeSelect}
+          tagComponent={this.itemComponent()}
+          itemComponent={this.itemComponent()}
+        >
+        </Multiselect>
+      );
+    }
+    else {
+      Element = (
+        <DropdownList
+          data={this.state.selectItems}
+          valueField={this.valueField()}
+          textField={this.textField()}
+          filter={filter}
+          value={this.state.value}
+          searchTerm={this.state.searchTerm}
+          onSearch={this.onSearch}
+          onChange={this.onChangeSelect}
+          valueComponent={this.itemComponent()}
+          itemComponent={this.itemComponent()}
+        >
+        </DropdownList>
+      );
+    }
     return (
       <div>
         {inputLabel} {requiredInline}
         <div className={className}>
-          <Element
-            data={this.state.selectItems}
-            valueField={this.valueField()}
-            textField={this.textField()}
-            filter={filter}
-            value={this.state.value}
-            searchTerm={this.state.searchTerm}
-            onSearch={this.onSearch}
-            onChange={this.onChangeSelect}
-            valueComponent={this.itemComponent()}
-            itemComponent={this.itemComponent()}
-            />
+          {Element}
         </div>
       </div>
     );
