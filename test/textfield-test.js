@@ -499,9 +499,5 @@ describe('Textfield @textfield', function () {
     })
   });
 
-  // Check validations
-
-  // Check change event
-
   // Check with and without labels/required
 });

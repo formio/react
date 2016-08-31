@@ -6,7 +6,7 @@ import sinon from 'sinon';
 
 import form from './forms/empty.json';
 
-describe('Number', function () {
+describe('Number @number', function () {
   describe('Number field', function () {
     var component = {
       'input': true,
@@ -151,6 +151,117 @@ describe('Number', function () {
       expect(element.attr('class').split(' ')).to.contain('my-custom-class');
       done();
     });
+
+    it('validates max', function(done) {
+      component.validate.max = '5';
+      const element = mount(
+        <Number
+          value={0}
+          component={component}
+          attachToForm={attachToForm}
+        ></Number>
+      );
+      expect(element.state('isPristine')).to.be.true;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      element.find('input').simulate('change', {target: {value: 5}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      expect(element.state('value')).to.equal(5);
+      element.find('input').simulate('change', {target: {value: 6}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('Number cannot be greater than 5');
+      expect(element.state('value')).to.equal(6);
+      element.find('input').simulate('change', {target: {value: 0}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      expect(element.state('value')).to.equal(0);
+      component.validate.max = '';
+      done();
+    });
+
+    it('validates min', function(done) {
+      component.validate.min = '5';
+      const element = mount(
+        <Number
+          value={0}
+          component={component}
+          attachToForm={attachToForm}
+        ></Number>
+      );
+      expect(element.state('isPristine')).to.be.true;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('Number cannot be less than 5');
+      element.find('input').simulate('change', {target: {value: 5}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      expect(element.state('value')).to.equal(5);
+      element.find('input').simulate('change', {target: {value: 3}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('Number cannot be less than 5');
+      expect(element.state('value')).to.equal(3);
+      element.find('input').simulate('change', {target: {value: 0}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('Number cannot be less than 5');
+      expect(element.state('value')).to.equal(0);
+      component.validate.min = '';
+      done();
+    });
+
+    it('validates min and max', function(done) {
+      component.validate.min = '5';
+      component.validate.max = '10';
+      const element = mount(
+        <Number
+          value=""
+          component={component}
+          attachToForm={attachToForm}
+        ></Number>
+      );
+      expect(element.state('isPristine')).to.be.true;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('Number cannot be less than 5');
+      element.find('input').simulate('change', {target: {value: 3}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('Number cannot be less than 5');
+      expect(element.state('value')).to.equal(3);
+      element.find('input').simulate('change', {target: {value: 5}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      expect(element.state('value')).to.equal(5);
+      element.find('input').simulate('change', {target: {value: 7}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      expect(element.state('value')).to.equal(7);
+      element.find('input').simulate('change', {target: {value: 10}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      expect(element.state('value')).to.equal(10);
+      element.find('input').simulate('change', {target: {value: 11}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('Number cannot be greater than 10');
+      expect(element.state('value')).to.equal(11);
+      element.find('input').simulate('change', {target: {value: 0}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('Number cannot be less than 5');
+      expect(element.state('value')).to.equal(0);
+      component.validate.min = '';
+      component.validate.max = '';
+      done();
+    });
+
   });
 
   describe('Multiple Number Field', function () {
