@@ -6,7 +6,7 @@ import sinon from 'sinon';
 
 import form from './forms/empty.json';
 
-describe('Email', function () {
+describe('Email @email', function () {
   describe('Single email', function () {
     var component= {
       "validate": {
@@ -176,6 +176,39 @@ describe('Email', function () {
         ></Email>
       ).children().eq(0);
       expect(element.attr('class').split(' ')).to.contain('my-custom-class');
+      done();
+    });
+
+    it('validates emails', function(done) {
+      const element = mount(
+        <Email
+          component={component}
+          attachToForm={attachToForm}
+        ></Email>
+      );
+      expect(element.state('isPristine')).to.be.true;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('email must be a valid email.');
+      element.find('input').simulate('change', {target: {value: 'bademail'}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('email must be a valid email.');
+      expect(element.state('value')).to.equal('bademail');
+      element.find('input').simulate('change', {target: {value: 'email@example'}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      expect(element.state('value')).to.equal('email@example');
+      element.find('input').simulate('change', {target: {value: 'email@example.com'}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      expect(element.state('value')).to.equal('email@example.com');
+      element.find('input').simulate('change', {target: {value: ''}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('email must be a valid email.');
+      expect(element.state('value')).to.equal('');
       done();
     });
 
