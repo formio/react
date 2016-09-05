@@ -6,7 +6,7 @@ import sinon from 'sinon';
 
 import form from './forms/empty.json';
 
-describe('Textfield', function () {
+describe('Textfield @textfield', function () {
   describe('Single Textfield', function () {
     var component= {
       'input': true,
@@ -61,6 +61,20 @@ describe('Textfield', function () {
       expect(element.find('.formio-component-single .input-group input').attr('data-index')).to.equal('0');
       expect(element.find('.formio-component-single .input-group input').attr('value')).to.equal('');
       expect(element.find('.formio-component-single .input-group input').attr('placeholder')).to.equal('');
+      done();
+    });
+
+    it('sets the initial state correctly', function(done) {
+      const element = mount(
+        <Textfield
+          component={component}
+          attachToForm={attachToForm}
+        ></Textfield>
+      );
+      expect(element.state('isPristine')).to.be.true;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      expect(element.state('value')).to.equal('');
       done();
     });
 
@@ -127,14 +141,160 @@ describe('Textfield', function () {
     });
 
     it('sets a default value', function(done) {
+      component.defaultValue = 'My Value';
       const element = render(
         <Textfield
           component={component}
-          value='My Value'
+          value={null}
           attachToForm={attachToForm}
         ></Textfield>
       ).find('input');
       expect(element.attr('value')).to.equal('My Value');
+      component.defaultValue = '';
+      done();
+    });
+
+    it('requires required fields', function(done) {
+      component.validate.required = true;
+      const element = mount(
+        <Textfield
+          name="myTextfield"
+          value=""
+          component={component}
+          attachToForm={attachToForm}
+        ></Textfield>
+      );
+      expect(element.state('isPristine')).to.be.true;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('My Textfield is required.');
+      element.find('input').simulate('change', {target: {value: 'My Value'}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      expect(element.state('value')).to.equal('My Value');
+      element.find('input').simulate('change', {target: {value: ''}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('My Textfield is required.');
+      expect(element.state('value')).to.equal('');
+      component.validate.required = false;
+      done();
+    });
+
+    it('initially fulfills required fields with default values', function(done) {
+      component.defaultValue = 'My Value'
+      component.validate.required = true;
+      const element = mount(
+        <Textfield
+          name="myTextfield"
+          value={null}
+          component={component}
+          attachToForm={attachToForm}
+        ></Textfield>
+      );
+      expect(element.state('isPristine')).to.be.true;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      element.find('input').simulate('change', {target: {value: ''}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('My Textfield is required.');
+      expect(element.state('value')).to.equal('');
+      component.validate.required = false;
+      component.defaultValue = '';
+      done();
+    });
+
+    it('validates maxLength', function(done) {
+      component.validate.maxLength = '5';
+      const element = mount(
+        <Textfield
+          name="myTextfield"
+          value=""
+          component={component}
+          attachToForm={attachToForm}
+        ></Textfield>
+      );
+      expect(element.state('isPristine')).to.be.true;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      element.find('input').simulate('change', {target: {value: 'My Value'}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('My Textfield cannot be longer than 5 characters.');
+      expect(element.state('value')).to.equal('My Value');
+      element.find('input').simulate('change', {target: {value: 'ABCDE'}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      expect(element.state('value')).to.equal('ABCDE');
+      component.validate.maxLength = '';
+      done();
+    });
+
+    it('validates minLength', function(done) {
+      component.validate.minLength = '5';
+      const element = mount(
+        <Textfield
+          name="myTextfield"
+          value=""
+          component={component}
+          attachToForm={attachToForm}
+        ></Textfield>
+      );
+      expect(element.state('isPristine')).to.be.true;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('My Textfield cannot be shorter than 5 characters.');
+      element.find('input').simulate('change', {target: {value: 'My Value'}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      expect(element.state('value')).to.equal('My Value');
+      element.find('input').simulate('change', {target: {value: 'ABCD'}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('My Textfield cannot be shorter than 5 characters.');
+      expect(element.state('value')).to.equal('ABCD');
+      element.find('input').simulate('change', {target: {value: ''}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('My Textfield cannot be shorter than 5 characters.');
+      expect(element.state('value')).to.equal('');
+      component.validate.minLength = '';
+      done();
+    });
+
+    it('validates minLength and maxLength', function(done) {
+      component.validate.minLength = '5';
+      component.validate.maxLength = '10';
+      const element = mount(
+        <Textfield
+          name="myTextfield"
+          value=""
+          component={component}
+          attachToForm={attachToForm}
+        ></Textfield>
+      );
+      expect(element.state('isPristine')).to.be.true;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('My Textfield cannot be shorter than 5 characters.');
+      element.find('input').simulate('change', {target: {value: 'My Value'}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.true;
+      expect(element.state('errorMessage')).to.equal('');
+      expect(element.state('value')).to.equal('My Value');
+      element.find('input').simulate('change', {target: {value: 'ABCDEFGHIJKLMNOPQRS'}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('My Textfield cannot be longer than 10 characters.');
+      expect(element.state('value')).to.equal('ABCDEFGHIJKLMNOPQRS');
+      element.find('input').simulate('change', {target: {value: ''}});
+      expect(element.state('isPristine')).to.be.false;
+      expect(element.state('isValid')).to.be.false;
+      expect(element.state('errorMessage')).to.equal('My Textfield cannot be shorter than 5 characters.');
+      expect(element.state('value')).to.equal('');
+      component.validate.minLength = '';
+      component.validate.maxLength = '';
       done();
     });
 
@@ -279,15 +439,17 @@ describe('Textfield', function () {
     });
 
     it('sets a default value', function(done) {
+      component.defaultValue = 'My Value';
       const element = render(
         <Textfield
           name="myTextfield"
-          value="My Value"
+          value={null}
           component={component}
           attachToForm={attachToForm}
         ></Textfield>
       ).find('input');
       expect(element.attr('value')).to.equal('My Value');
+      component.defaultValue = '';
       done();
     });
 
@@ -336,10 +498,6 @@ describe('Textfield', function () {
       done();
     })
   });
-
-  // Check validations
-
-  // Check change event
 
   // Check with and without labels/required
 });
