@@ -31,6 +31,21 @@ module.exports = React.createClass({
     this.data = this.data || {};
     this.inputs = {};
   },
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps.form !== this.props.form) {
+      this.setState({
+        form: nextProps.form
+      });
+    }
+    if (nextProps.submission !== this.props.submission) {
+      if (nextProps.submission && nextProps.submission.data) {
+        this.data = _.clone(nextProps.submission.data);
+      }
+      this.setSTate({
+        submission: nextProps.submission
+      });
+    }
+  },
   attachToForm: function(component) {
     this.inputs[component.props.component.key] = component;
     // Only add default values that are truthy.
