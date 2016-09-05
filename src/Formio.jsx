@@ -252,6 +252,7 @@ module.exports = React.createClass({
           onElementRender={this.props.onElementRender}
           resetForm={this.resetForm}
           formio={this.formio}
+          data={this.data}
           onChange={this.onChange}
           checkConditional={this.checkConditional}
           showAlert={this.showAlert}

@@ -1,39 +1,8 @@
 var React = require('react');
 var DropdownList = require('react-widgets/lib/DropdownList');
 var Multiselect = require('react-widgets/lib/Multiselect');
-
-function defineTransformerOutsideStrictMode() {
-    var safeGlobalName = '____formioSelectMixinGetTransformer';
-    var globalObject = typeof window !== 'undefined'
-                            ? window
-                            : typeof global !== 'undefined'
-                                ? global
-                                : {};
-
-    /* We are essentially doing this, but because we're in strict mode by default in all babeled
-     * modules, we need to escape it
-     *
-     * //string-replace callback, called for every match in the template.
-     * function transform (_, expression) {
-     *  //bring the properties of 'props' into local scope so that the expression can reference them
-     *  with (props) {
-     *    return eval(expression); //evaluate the expression.
-     *  }
-     * }
-     */
-
-    //This escapes strict mode.
-    (1,eval)('function '+safeGlobalName+' (props) { return function (_, exp) { with(props) { return eval(exp); } } }');
-
-    var ret = eval(safeGlobalName);
-
-    //cleanup
-    delete globalObject[safeGlobalName];
-
-    return ret;
-}
-
-var getTransformer = defineTransformerOutsideStrictMode();
+var util = require('../../util');
+var _ = require('lodash');
 
 module.exports = {
   getInitialState: function() {
@@ -59,11 +28,11 @@ module.exports = {
   onChangeSelect: function(value) {
     if (Array.isArray(value) && this.valueField()) {
       value.forEach(function(val, index) {
-        value[index] = val[this.valueField()];
+        value[index] = _.get(val, this.valueField());
       }.bind(this));
     }
     else if (typeof value === 'object' && this.valueField()) {
-      value = value[this.valueField()];
+      value = _.get(value, this.valueField());
     }
     this.setValue(value);
   },
@@ -88,18 +57,12 @@ module.exports = {
 
     return React.createClass({
       render: function() {
-        var props = this.props;
-
-        var transform = getTransformer(props);
-
-        if (props.item) {
-          //find all {{ }} expression blocks and then replace the blocks with their evaluation.
-          //Then render the markup raw under this react element
-          return React.createElement('span', raw(
-              template.replace(/\{\s*\{([^\}]*)\}\s*\}/gm, transform)));
+        if (this.props.item && typeof this.props.item === 'object') {
+          // Render the markup raw under this react element
+          return React.createElement('span', raw(util.interpolate(template, {item: this.props.item})));
         }
 
-        return React.createElement('span');
+        return React.createElement('span', {}, this.props.item);
       }
     });
   },
