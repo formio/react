@@ -11,11 +11,13 @@ module.exports = React.createClass({
   componentWillMount: function() {
     switch (this.props.component.dataSrc) {
       case 'values':
+        this.internalFilter = true;
         this.setState({
           selectItems: this.props.component.data.values
         });
         break;
       case 'json':
+        this.internalFilter = true;
         try {
           this.setState({
             selectItems: JSON.parse(this.props.component.data.json)
@@ -77,13 +79,15 @@ module.exports = React.createClass({
     }.bind(this));
   },
   doSearch: debounce(function(text) {
-    var url = this.url;
-    if (this.props.component.searchField) {
-      url += ((this.url.indexOf('?') === -1) ? '?' : '&') +
-        encodeURIComponent(this.props.component.searchField) +
-        '__regex=' +
-        encodeURIComponent(text);
+    if (this.url) {
+      var url = this.url;
+      if (this.props.component.searchField) {
+        url += ((this.url.indexOf('?') === -1) ? '?' : '&') +
+          encodeURIComponent(this.props.component.searchField) +
+          '__regex=' +
+          encodeURIComponent(text);
+      }
+      this.refreshData(url);
     }
-    this.refreshData(url);
   }, 200)
 });
