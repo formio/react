@@ -7,7 +7,7 @@ module.exports = React.createClass({
   displayName: 'Resource',
   mixins: [valueMixin, selectMixin],
   componentWillMount: function() {
-    this.formio = new Formiojs(this.props.formio.projectUrl + '/form/' + this.props.component.resource);
+    this.formio = new Formiojs(Formiojs.getBaseUrl() + '/project/' + this.props.component.project + '/form/' + this.props.component.resource);
     this.doSearch();
   },
   getValueField: function() {
