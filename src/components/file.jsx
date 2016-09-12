@@ -1,5 +1,6 @@
 var React = require('react');
 var Dropzone = require('react-dropzone');
+var valueMixin = require('./mixins/valueMixin');
 
 var fileSize = function(a, b, c, d, e) {
   /* eslint-disable space-before-function-paren */
@@ -39,11 +40,14 @@ var FormioFileList = React.createClass({
 
 module.exports = React.createClass({
   displayName: 'File',
-  getInitialState: function() {
-    return {
-      value: this.props.value || [],
+  mixins: [valueMixin],
+  getInitialValue: function() {
+    return [];
+  },
+  componentWillMount: function() {
+    this.setState({
       fileUploads: {}
-    };
+    });
   },
   fileSelector: function() {
     if (!this.state.value.length > 0 || this.props.component.multiple) {
@@ -84,9 +88,9 @@ module.exports = React.createClass({
           .then((fileInfo) => {
             this.setState((previousState) => {
               delete previousState.fileUploads[fileName];
-              previousState.value.push(fileInfo);
               return previousState;
             });
+            this.setValue(fileInfo, this.state.value.length);
           })
           .catch((response) => {
             this.setState((previousState) => {
@@ -170,7 +174,7 @@ module.exports = React.createClass({
       return previousState;
     });
   },
-  render: function() {
+  getElements: function() {
     var classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
     var inputLabel = (this.props.component.label && !this.props.component.hideLabel ?
       <label htmlFor={this.props.component.key} className={classLabel}>{this.props.component.label}</label> : '');
