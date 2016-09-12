@@ -7,7 +7,7 @@ module.exports = React.createClass({
   mixins: [valueMixin, multiMixin],
   onChangeRadio: function(event) {
     const value = event.target.id;
-    this.setValue(value, 0);
+    this.setValue(value);
   },
   getSingleElement: function(value, index) {
     index = index || 0;

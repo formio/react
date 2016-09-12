@@ -160,7 +160,7 @@ module.exports = {
   },
   setValue: function(value, index, pristine) {
     this.setState(function(previousState) {
-      if (index) {
+      if (index !== null && Array.isArray(previousState.value)) {
         previousState.value[index] = value;
       }
       else {
