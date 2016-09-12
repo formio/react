@@ -143,6 +143,7 @@ module.exports = {
     return value;
   },
   componentWillMount: function() {
+    this.setValue(this.state.value, null, true);
     this.props.attachToForm(this);
   },
   componentWillUnmount: function() {
@@ -157,7 +158,7 @@ module.exports = {
     var index = (this.props.component.multiple ? event.target.getAttribute('data-index') : null);
     this.setValue(value, index);
   },
-  setValue: function(value, index) {
+  setValue: function(value, index, pristine) {
     this.setState(function(previousState) {
       if (index) {
         previousState.value[index] = value;
@@ -165,7 +166,7 @@ module.exports = {
       else {
         previousState.value = value;
       }
-      previousState.isPristine = false;
+      previousState.isPristine = !!pristine;
       Object.assign(previousState, this.validate(previousState.value));
       return previousState;
     }.bind(this), function() {

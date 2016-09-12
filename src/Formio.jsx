@@ -48,10 +48,6 @@ module.exports = React.createClass({
   },
   attachToForm: function(component) {
     this.inputs[component.props.component.key] = component;
-    // Only add default values that are truthy.
-    if (component.state.value) {
-      this.data[component.props.component.key] = component.state.value;
-    }
     this.validate(component);
   },
   detachFromForm: function(component) {
