@@ -3,7 +3,6 @@ var React = require('react');
 module.exports = {
   getInitialState: function() {
     var value = this.props.value;
-    console.log(value);
     // Allow components to set different default values.
     if (value == null) {
       if (this.props.component.defaultValue) {
@@ -103,7 +102,7 @@ module.exports = {
     if (state.isValid && this.props.component.validate.custom) {
       var custom = this.props.component.validate.custom;
       custom = custom.replace(/({{\s+(.*)\s+}})/, function(match, $1, $2) {
-        return this.data[$2];
+        return this.props.data[$2];
       }.bind(this));
       var input = item;
       /* jshint evil: true */
