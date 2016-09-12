@@ -3,6 +3,7 @@ var React = require('react');
 module.exports = {
   getInitialState: function() {
     var value = this.props.value;
+    console.log(value);
     // Allow components to set different default values.
     if (value == null) {
       if (this.props.component.defaultValue) {
@@ -117,8 +118,12 @@ module.exports = {
   componentWillReceiveProps: function(nextProps) {
     if (this.props.value !== nextProps.value) {
       var value = this.safeSingleToMultiple(nextProps.value);
+      var valid = this.validate(value);
       this.setState({
-        value: value
+        value: value,
+        isValid: valid.isValid,
+        errorMessage: valid.errorMessage,
+        isPristine: true
       });
     }
   },
