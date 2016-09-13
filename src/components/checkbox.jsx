@@ -14,7 +14,7 @@ module.exports = React.createClass({
     index = index || 0;
     var required = 'control-label' + (this.props.component.validate.required ? ' field-required' : '') + (value ? ' checked' : ' not-checked');
     // Ensure value is boolean.
-    value = value === 'true' || value === true
+    value = value === 'true' || value === true;
     return (
       <div className="checkbox">
         <label className={required}>

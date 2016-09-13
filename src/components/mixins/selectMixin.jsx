@@ -34,7 +34,8 @@ module.exports = {
       value.forEach(function(val, index) {
         if (typeof val !== 'object') {
           value[index] = val;
-        } else {
+        }
+        else {
           value[index] = _.get(val, this.valueField());
         }
       }.bind(this));
