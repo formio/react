@@ -129,7 +129,12 @@ module.exports = {
   safeSingleToMultiple: function(value) {
     // If this was a single but is not a multivalue.
     if (this.props.component.multiple && !Array.isArray(value)) {
-      value = [value];
+      if (value !== '') {
+        value = [value];
+      }
+      else {
+        value = [];
+      }
     }
     // If this was a multivalue but is now single value.
     // RE-60 :-Need to return the value as array of object instead of object while converting  a multivalue to single value for datagrid component
@@ -159,6 +164,9 @@ module.exports = {
     this.setValue(value, index);
   },
   setValue: function(value, index, pristine) {
+    if (index === undefined) {
+      index = null;
+    }
     this.setState(function(previousState) {
       if (index !== null && Array.isArray(previousState.value)) {
         previousState.value[index] = value;
