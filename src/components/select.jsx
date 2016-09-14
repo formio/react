@@ -30,7 +30,7 @@ module.exports = React.createClass({
         }
         break;
       case 'resource':
-        this.url = formiojs.getBaseUrl() + '/project/' + this.props.component.data.project + '/form/'  + this.props.component.data.resource + '/submission';
+        this.url = formiojs.getBaseUrl() + '/project/' + this.props.component.data.project + '/form/'  + this.props.component.data.resource + '/submission?limit=9999';
         /* eslint-disable no-fallthrough */
       case 'url':
         this.url = this.url || this.props.component.data.url;

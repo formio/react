@@ -11,12 +11,15 @@ module.exports = React.createClass({
     this.doSearch();
   },
   getValueField: function() {
-    return '_id';
+    // This will cause the whole object to be returned.
+    return false;
   },
   doSearch: function(text) {
     var settings = this.props.component;
     if (settings.resource) {
-      var params = {};
+      var params = {
+        limit: 9999
+      };
 
       // If they wish to filter the results.
       if (settings.selectFields) {

@@ -74,12 +74,14 @@ module.exports = {
     var properties = {
       data: this.state.selectItems,
       placeholder: this.props.component.placeholder,
-      valueField: this.valueField(),
       textField: this.textField(),
       value: this.state.value,
       onChange: this.onChangeSelect,
       itemComponent: this.itemComponent()
     };
+    if (this.valueField()) {
+      properties.valueField = this.valueField();
+    }
     var classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
     var inputLabel = (this.props.component.label && !this.props.component.hideLabel ? <label htmlFor={this.props.component.key} className={classLabel}>{this.props.component.label}</label> : '');
     var requiredInline = (!this.props.component.label && this.props.component.validate && this.props.component.validate.required ? <span className='glyphicon glyphicon-asterisk form-control-feedback field-required-inline' aria-hidden='true'></span> : '');
