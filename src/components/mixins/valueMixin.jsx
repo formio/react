@@ -159,6 +159,9 @@ module.exports = {
     this.setValue(value, index);
   },
   setValue: function(value, index, pristine) {
+    if (index === undefined) {
+      index = null;
+    }
     this.setState(function(previousState) {
       if (index !== null && Array.isArray(previousState.value)) {
         previousState.value[index] = value;

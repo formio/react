@@ -21,6 +21,9 @@ module.exports = {
   textField: function() {
     // Default textfield to rendered output.
     var textField = function(item) {
+      if (typeof item !== 'object') {
+        return item;
+      }
       return util.interpolate(this.props.component.template, {item: item});
     }.bind(this);
     if (typeof this.getTextField === 'function') {
@@ -31,7 +34,7 @@ module.exports = {
   onChangeSelect: function(value) {
     if (Array.isArray(value) && this.valueField()) {
       value.forEach(function(val, index) {
-        value[index] = _.get(val, this.valueField());
+        value[index] = (typeof val === 'object' ? _.get(val, this.valueField()) : val);
       }.bind(this));
     }
     else if (typeof value === 'object' && this.valueField()) {
