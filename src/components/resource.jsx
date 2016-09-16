@@ -14,7 +14,7 @@ module.exports = React.createClass({
     // This will cause the whole object to be returned.
     return false;
   },
-  doSearch: function(text) {
+  refreshItems: function(text) {
     var settings = this.props.component;
     if (settings.resource) {
       var params = {

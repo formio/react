@@ -3,9 +3,22 @@ var valueMixin = require('./mixins/valueMixin');
 var selectMixin = require('./mixins/selectMixin');
 var formiojs = require('formiojs');
 var util = require('../util');
+var get = require('lodash/get');
 var debounce = require('lodash/debounce');
 
+var serialize = function(obj) {
+  var str = [];
+  for (var p in obj) {
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+    }
+  }
+  return str.join('&');
+};
+
 module.exports = React.createClass({
+  options: {},
+  lastInput: '',
   displayName: 'Select',
   mixins: [valueMixin, selectMixin],
   componentWillMount: function() {
@@ -30,39 +43,40 @@ module.exports = React.createClass({
         }
         break;
       case 'resource':
-        this.url = formiojs.getBaseUrl() + '/project/' + this.props.component.data.project + '/form/'  + this.props.component.data.resource + '/submission?limit=9999';
-        /* eslint-disable no-fallthrough */
       case 'url':
-        this.url = this.url || this.props.component.data.url;
-        var options = {cache: true};
-        if (this.url.substr(0, 1) === '/') {
-          this.url = formiojs.getBaseUrl() + this.url;
+        if (this.props.component.dataSrc === 'url') {
+          this.url = this.props.component.data.url;
+          if (this.url.substr(0, 1) === '/') {
+            this.url = formiojs.getBaseUrl() + this.props.component.data.url;
+          }
+
+          // Disable auth for outgoing requests.
+          if (!this.props.component.authenticate && this.url.indexOf(formiojs.getBaseUrl()) === -1) {
+            this.options = {
+              disableJWT: true,
+              headers: {
+                Authorization: undefined,
+                Pragma: undefined,
+                'Cache-Control': undefined
+              }
+            };
+          }
+        }
+        else {
+          this.url = formiojs.getBaseUrl();
+          if (this.props.component.data.project) {
+            this.url += '/project/' + this.props.component.data.project;
+          }
+          this.url += '/form/'  + this.props.component.data.resource + '/submission';
         }
 
-        // Allow templating the url.
-        this.url = util.interpolate(this.url, {
-          data: this.props.data,
-          formioBase: formiojs.getBaseUrl()
-        });
+        this.options.params = {
+          limit: 100,
+          skip: 0
+        };
 
-        // Add the other filter.
-        if (this.props.component.filter) {
-          var filter = util.interpolate(this.props.component.filter, {data: this.props.value});
-          this.url += ((this.url.indexOf('?') === -1) ? '?' : '&') + filter;
-        }
-        this.refreshData(this.url);
-        // Disable auth for outgoing requests.
-        // TODO: Make this work with formiojs.request or switch to Fetch()
-        //if (this.props.component.data.url.indexOf(Formio.getBaseUrl()) === -1) {
-        //  options = {
-        //    disableJWT: true,
-        //    headers: {
-        //      Authorization: undefined,
-        //      Pragma: undefined,
-        //      'Cache-Control': undefined
-        //    }
-        //  };
-        //}
+        this.refreshItems();
+
         break;
       default:
         this.setState({
@@ -70,24 +84,80 @@ module.exports = React.createClass({
         });
     }
   },
-  refreshData: function(url) {
-    // If this is a search, then add that to the filter.
-    formiojs.request(url).then(function(data) {
-      this.setState({
-        selectItems: data
-      });
-    }.bind(this));
-  },
-  doSearch: debounce(function(text) {
-    if (this.url) {
-      var url = this.url;
-      if (this.props.component.searchField) {
-        url += ((this.url.indexOf('?') === -1) ? '?' : '&') +
-          encodeURIComponent(this.props.component.searchField) +
-          '__regex=' +
-          encodeURIComponent(text);
-      }
-      this.refreshData(url);
+  refreshItems: debounce(function(input, newUrl, append) {
+    newUrl = newUrl || this.url;
+    // Allow templating the url.
+    newUrl = util.interpolate(newUrl, {
+      data: this.props.data,
+      formioBase: formiojs.getBaseUrl()
+    });
+    if (!newUrl) {
+      return;
     }
-  }, 200)
+
+    // If this is a search, then add that to the filter.
+    if (this.props.component.searchField && input) {
+      // If they typed in a search, reset skip.
+      if (this.lastInput !== input) {
+        this.lastInput = input;
+        this.options.params.skip = 0;
+      }
+      newUrl += ((newUrl.indexOf('?') === -1) ? '?' : '&') +
+        encodeURIComponent(this.props.component.searchField) +
+        '=' +
+        encodeURIComponent(input);
+    }
+
+    // Add the other filter.
+    if (this.props.component.filter) {
+      var filter = util.interpolate(this.props.component.filter, {data: this.props.data});
+      newUrl += ((newUrl.indexOf('?') === -1) ? '?' : '&') + filter;
+    }
+
+    // If they wish to return only some fields.
+    if (this.props.component.selectFields) {
+      this.options.params.select = this.props.component.selectFields;
+    }
+
+    // If this is a search, then add that to the filter.
+    newUrl += ((newUrl.indexOf('?') === -1) ? '?' : '&') + serialize(this.options.params);
+    formiojs.request(newUrl).then(function(data) {
+      // If the selectValue prop is defined, use it.
+      if (this.props.component.selectValues) {
+        this.setResult(get(data, this.props.component.selectValues, []), append);
+      }
+      // Attempt to default to the formio settings for a resource.
+      else if (data.hasOwnProperty('data')) {
+        this.setResult(data.data, append);
+      }
+      else if (data.hasOwnProperty('items')) {
+       this. setResult(data.items, append);
+      }
+      // Use the data itself.
+      else {
+        this.setResult(data, append);
+      }
+    }.bind(this));
+  }, 200),
+  loadMoreItems: function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.options.params.skip += this.options.params.limit;
+    this.refreshItems(null, null, true);
+  },
+  setResult: function(data, append) {
+    if (!Array.isArray(data)) {
+      data = [data];
+    }
+    this.setState(function(previousState) {
+      if (append) {
+        previousState.selectItems = previousState.selectItems.concat(data);
+      }
+      else {
+        previousState.selectItems = data;
+      }
+      previousState.hasNextPage = previousState.selectItems.length >= (this.options.params.limit + this.options.params.skip);
+      return previousState;
+    });
+  }
 });

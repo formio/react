@@ -41,7 +41,7 @@ module.exports = React.createClass({
       if (nextProps.submission && nextProps.submission.data) {
         this.data = _.clone(nextProps.submission.data);
       }
-      this.setSTate({
+      this.setState({
         submission: nextProps.submission
       });
     }

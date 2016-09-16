@@ -1,6 +1,7 @@
 var React = require('react');
 var DropdownList = require('react-widgets/lib/DropdownList');
 var Multiselect = require('react-widgets/lib/Multiselect');
+var List = require('react-widgets/lib/List');
 var util = require('../../util');
 var _ = require('lodash');
 
@@ -8,7 +9,8 @@ module.exports = {
   getInitialState: function() {
     return {
       selectItems: [],
-      searchTerm: ''
+      searchTerm: '',
+      hasNextPage: false
     };
   },
   valueField: function() {
@@ -46,8 +48,8 @@ module.exports = {
     this.setState({
       searchTerm: text
     });
-    if (typeof this.doSearch === 'function' && text) {
-      this.doSearch(text);
+    if (typeof this.refreshItems === 'function' && text) {
+      this.refreshItems(text);
     }
   },
   itemComponent: function() {
@@ -72,6 +74,23 @@ module.exports = {
       }
     });
   },
+  listComponent: function() {
+    var root = this;
+    return class extends List {
+      render() {
+        var loadMore;
+        if (root.state.hasNextPage) {
+          loadMore = <span className="btn btn-success btn-block" onClick={root.loadMoreItems} >Load More...</span>;
+        }
+        return (
+          <div className="wrapper">
+            {super.render()}
+            {loadMore}
+          </div>
+        );
+      }
+    };
+  },
   getElements: function() {
     var Element;
     var properties = {
@@ -80,7 +99,8 @@ module.exports = {
       textField: this.textField(),
       value: this.state.value,
       onChange: this.onChangeSelect,
-      itemComponent: this.itemComponent()
+      itemComponent: this.itemComponent(),
+      listComponent: this.listComponent()
     };
     if (this.valueField()) {
       properties.valueField = this.valueField();
