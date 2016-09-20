@@ -94,7 +94,7 @@ A function callback that will be called after a submission is loaded.
 
 A function callback that will be called each time a component is rendered.
 
-### 'options' : object
+### `options : object`
 
 A settings object to pass various options into the form. skipInit will stop the form from initialling setting values
 on the submission object which will result in data only changing when a user interacts with the form.
