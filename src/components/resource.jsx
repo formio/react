@@ -8,7 +8,7 @@ module.exports = React.createClass({
   mixins: [valueMixin, selectMixin],
   componentWillMount: function() {
     this.formio = new Formiojs(Formiojs.getBaseUrl() + '/project/' + this.props.component.project + '/form/' + this.props.component.resource);
-    this.doSearch();
+    this.refreshItems();
   },
   getValueField: function() {
     // This will cause the whole object to be returned.

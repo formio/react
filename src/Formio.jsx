@@ -242,6 +242,7 @@ module.exports = React.createClass({
           components={components}
           values={this.state.submission.data}
           readOnly={this.props.readOnly}
+          options={this.props.options}
           attachToForm={this.attachToForm}
           detachFromForm={this.detachFromForm}
           isSubmitting={this.state.isSubmitting}

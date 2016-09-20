@@ -143,7 +143,9 @@ module.exports = {
     return value;
   },
   componentWillMount: function() {
-    this.setValue(this.state.value, null, true);
+    if (!this.props.options.skipInit) {
+      this.setValue(this.state.value, null, true);
+    }
     this.props.attachToForm(this);
   },
   componentWillUnmount: function() {
