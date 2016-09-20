@@ -2,7 +2,7 @@
   "name": "react-formio",
   "version": "0.9.1",
   "description": "React rendering library for form.io embedded forms.",
-  "main": "lib/Formio.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "mocha --timeout 30000 --reporter spec test/.setup.js test/*-test.js",
     "dev": "webpack -w --devtool source-map",

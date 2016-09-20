@@ -1,9 +1,9 @@
 var webpack = require('webpack');
 
 module.exports = {
-  entry: "./src/Formio.jsx",
+  entry: "./src/index.jsx",
   output: {
-    filename: "Formio.js",
+    filename: "index.js",
     path: "./dist",
     libraryTarget: "umd",
     library: "Formio"

@@ -25,19 +25,21 @@ You can find it in the [/dist directory](https://github.com/formio/react-formio/
 
 Give `Formio` a `src` property and render:
 
+** For es5 require() modules. **
 ```javascript
 var React = require('react');
-var Formio = require('react-formio');
-
-// React <= 0.13
-React.render(
-  <Formio src="https://example.form.io/example" />
-  , document.getElementById('example')
-);
-
-// React >= 0.14
 var ReactDOM = require('react-dom');
+var Formio = require('react-formio').Formio;
+```
 
+** For es6 import/export modules. **
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Formio} from 'react-formio';
+```
+
+```javascript
 ReactDOM.render(
   <Formio src="https://example.form.io/example" />
   , document.getElementById('example')
@@ -67,6 +69,11 @@ An object representing the default data for the form.
 
 **Note:** `src` will override this if a submission url is entered.
 
+### `onChange` : `(submission: object, key: string, value: mixed)`
+
+A function callback that will be called when any field is changed. The full submission is passed as well as the field
+that is changing's key and value.
+
 ### `onFormSubmit` : `(submission: object)`
 
 A function callback that will be called when a submission is successful.
@@ -86,6 +93,17 @@ A function callback that will be called after a submission is loaded.
 ### `onElementRender` : `(element: object)`
 
 A function callback that will be called each time a component is rendered.
+
+### 'options' : object
+
+A settings object to pass various options into the form. skipInit will stop the form from initialling setting values
+on the submission object which will result in data only changing when a user interacts with the form.
+
+```javascript
+options={
+  skipInit: true
+}
+```
 
 ## License
 Released under the [MIT License](http://www.opensource.org/licenses/MIT).
