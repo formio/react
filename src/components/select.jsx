@@ -74,7 +74,7 @@ module.exports = React.createClass({
         });
     }
   },
-  refreshItems: debounce(function(input, newUrl, append) {
+  refreshItems: function(input, newUrl, append) {
     let data = Object.assign({}, this.props.data, this.props.subData);
     newUrl = newUrl || this.url;
     // Allow templating the url.
@@ -129,7 +129,7 @@ module.exports = React.createClass({
         this.setResult(data, append);
       }
     }.bind(this));
-  }, 200),
+  },
   loadMoreItems: function(event) {
     event.stopPropagation();
     event.preventDefault();
