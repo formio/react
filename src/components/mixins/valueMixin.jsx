@@ -143,7 +143,7 @@ module.exports = {
     return value;
   },
   componentWillMount: function() {
-    if (!this.props.options.skipInit) {
+    if (!this.props.options || !this.props.options.hasOwnProperty('skipInit') || !this.props.options.skipInit) {
       this.setValue(this.state.value, null, true);
     }
     this.props.attachToForm(this);
