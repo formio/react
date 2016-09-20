@@ -6,16 +6,6 @@ var util = require('../util');
 var get = require('lodash/get');
 var debounce = require('lodash/debounce');
 
-var serialize = function(obj) {
-  var str = [];
-  for (var p in obj) {
-    if (obj.hasOwnProperty(p)) {
-      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
-    }
-  }
-  return str.join('&');
-};
-
 module.exports = React.createClass({
   options: {},
   lastInput: '',
@@ -120,7 +110,7 @@ module.exports = React.createClass({
     }
 
     // If this is a search, then add that to the filter.
-    newUrl += ((newUrl.indexOf('?') === -1) ? '?' : '&') + serialize(this.options.params);
+    newUrl += ((newUrl.indexOf('?') === -1) ? '?' : '&') + util.serialize(this.options.params);
     formiojs.request(newUrl).then(function(data) {
       // If the selectValue prop is defined, use it.
       if (this.props.component.selectValues) {

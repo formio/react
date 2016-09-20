@@ -24,7 +24,8 @@ module.exports = React.createClass({
   getDefaultProps: function() {
     return {
       readOnly: false,
-      formAction: false
+      formAction: false,
+      options: {}
     };
   },
   componentWillMount: function() {
