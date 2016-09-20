@@ -109,17 +109,18 @@ module.exports = React.createClass({
       this.validate();
     }
   },
-  checkConditional: function(component) {
+  checkConditional: function(component, subData = {}) {
+    let data = Object.assign({}, this.data, subData);
     if (component.conditional && component.conditional.when) {
-      var value = (this.data.hasOwnProperty(component.conditional.when) ? this.data[component.conditional.when] : '');
+      var value = (data.hasOwnProperty(component.conditional.when) ? data[component.conditional.when] : '');
       return (value.toString() === component.conditional.eq.toString()) === (component.conditional.show.toString() === 'true');
     }
     else if (component.customConditional) {
       try {
         // Create a child block, and expose the submission data.
-        var data = this.data; // eslint-disable-line no-unused-vars
+        let data = data; // eslint-disable-line no-unused-vars
         // Eval the custom conditional and update the show value.
-        var show = eval('(function() { ' + component.customConditional.toString() + '; return show; })()');
+        let show = eval('(function() { ' + component.customConditional.toString() + '; return show; })()');
         // Show by default, if an invalid type is given.
         return show.toString() === 'true';
       }

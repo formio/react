@@ -125,6 +125,9 @@ module.exports = {
         isPristine: true
       });
     }
+    if (typeof this.willReceiveProps === 'function') {
+      this.willReceiveProps(nextProps);
+    }
   },
   safeSingleToMultiple: function(value) {
     // If this was a single but is not a multivalue.

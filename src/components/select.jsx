@@ -75,10 +75,11 @@ module.exports = React.createClass({
     }
   },
   refreshItems: debounce(function(input, newUrl, append) {
+    let data = Object.assign({}, this.props.data, this.props.subData);
     newUrl = newUrl || this.url;
     // Allow templating the url.
     newUrl = util.interpolate(newUrl, {
-      data: this.props.data,
+      data,
       formioBase: formiojs.getBaseUrl()
     });
     if (!newUrl) {
@@ -100,7 +101,7 @@ module.exports = React.createClass({
 
     // Add the other filter.
     if (this.props.component.filter) {
-      var filter = util.interpolate(this.props.component.filter, {data: this.props.data});
+      var filter = util.interpolate(this.props.component.filter, {data});
       newUrl += ((newUrl.indexOf('?') === -1) ? '?' : '&') + filter;
     }
 

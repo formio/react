@@ -32,13 +32,19 @@ module.exports = React.createClass({
     this.props.onChange(this);
   },
   getElements: function() {
-    var classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
-    var inputLabel = (this.props.component.label && !this.props.component.hideLabel ? <label htmlFor={this.props.component.key} className={classLabel}>{this.props.component.label}</label> : '');
-    var headers = this.props.component.components.map(function(component, index) {
-      return (
-        <th key={index}>{component.label || ''}</th>
-      );
-    });
+    let localKeys = this.props.component.components.map(component => component.key);
+    let classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
+    let inputLabel = (this.props.component.label && !this.props.component.hideLabel ? <label htmlFor={this.props.component.key} className={classLabel}>{this.props.component.label}</label> : '');
+    let headers = this.props.component.components.map(function(component, index) {
+      if (this.props.checkConditional(component) || localKeys.indexOf(component.conditional.when) !== -1) {
+        return (
+          <th key={index}>{component.label || ''}</th>
+        );
+      }
+      else {
+        return null;
+      }
+    }.bind(this));
     var tableClasses = 'table datagrid-table';
     tableClasses += (this.props.component.striped) ? ' table-striped' : '';
     tableClasses += (this.props.component.bordered) ? ' table-bordered' : '';
@@ -70,17 +76,30 @@ module.exports = React.createClass({
                 else {
                   FormioElement = FormioComponents['custom'];
                 }
-                return (
-                  <td key={key}>
-                    <FormioElement
-                      {...this.props}
-                      name={component.key}
-                      component={component}
-                      onChange={this.elementChange.bind(null, rowIndex)}
-                      value={value}
-                    />
-                  </td>
-                );
+                if (this.props.checkConditional(component, row)) {
+                  return (
+                    <td key={key}>
+                      <FormioElement
+                        {...this.props}
+                        name={component.key}
+                        component={component}
+                        onChange={this.elementChange.bind(null, rowIndex)}
+                        value={value}
+                        subData={{...row}}
+                      />
+                    </td>
+                  );
+                }
+                else if (localKeys.indexOf(component.key)) {
+                  return (
+                    <td key={key}>
+
+                    </td>
+                  );
+                }
+                else {
+                  return null;
+                }
               }.bind(this))}
               <td>
                 <a onClick={this.removeRow.bind(this, rowIndex)} className='btn btn-default'>
@@ -94,7 +113,7 @@ module.exports = React.createClass({
       </table>
       <div className='datagrid-add'>
         <a onClick={this.addRow} className='btn btn-primary'>
-          <span className='glyphicon glyphicon-plus' aria-hidden='true'> { this.props.component.addAnother || 'Add Another'}</span>
+          <span><i className='glyphicon glyphicon-plus' aria-hidden='true'/> { this.props.component.addAnother || 'Add Another'}</span>
         </a>
       </div>
     </div>

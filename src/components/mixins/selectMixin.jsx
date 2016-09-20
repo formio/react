@@ -13,6 +13,17 @@ module.exports = {
       hasNextPage: false
     };
   },
+  willReceiveProps: function(nextProps) {
+    if (this.url && this.props.component.refreshOn) {
+      const refreshOn = this.props.component.refreshOn;
+      if (this.props.data.hasOwnProperty(refreshOn) && this.props.data[refreshOn] !== nextProps.data[refreshOn]) {
+        this.refreshItems();
+      }
+      else if (this.props.subData && this.props.subData.hasOwnProperty(refreshOn) && this.props.subData[refreshOn] !== nextProps.subData[refreshOn]) {
+        this.refreshItems();
+      }
+    }
+  },
   valueField: function() {
     var valueField = this.props.component.valueProperty || 'value';
     if (typeof this.getValueField === 'function') {
