@@ -1,9 +1,9 @@
 var React = require('react');
 var Formiojs = require('formiojs');
-var FormioComponents = require('./FormioComponents');
+var FormioComponents = require('./Partials/FormioComponents');
 var _ = require('lodash');
 
-require('./components');
+require('./Partials/Components');
 
 module.exports = {
   Formio: React.createClass({
