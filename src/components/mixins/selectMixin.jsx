@@ -10,17 +10,22 @@ module.exports = {
     return {
       selectItems: [],
       searchTerm: '',
-      hasNextPage: false
+      hasNextPage: false,
+      refresh: false
     };
   },
   willReceiveProps: function(nextProps) {
     if (this.url && this.props.component.refreshOn) {
       const refreshOn = this.props.component.refreshOn;
       if (this.props.data.hasOwnProperty(refreshOn) && this.props.data[refreshOn] !== nextProps.data[refreshOn]) {
-        this.refreshItems();
+        this.setState({
+          refresh: true
+        });
       }
       else if (this.props.subData && this.props.subData.hasOwnProperty(refreshOn) && this.props.subData[refreshOn] !== nextProps.subData[refreshOn]) {
-        this.refreshItems();
+        this.setState({
+          refresh:true
+        });
       }
     }
   },
@@ -103,6 +108,12 @@ module.exports = {
     };
   },
   getElements: function() {
+    if (this.state.refresh) {
+      this.refreshItems();
+      this.setState({
+        refresh: false
+      });
+    }
     var Element;
     var properties = {
       data: this.state.selectItems,
