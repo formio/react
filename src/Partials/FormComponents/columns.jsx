@@ -1,5 +1,5 @@
-var React = require('react');
-var FormioComponents = require('../FormioComponents');
+import React from 'react';
+import FormioComponents from '../FormioComponents';
 
 module.exports = React.createClass({
   displayName: 'Column',

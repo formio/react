@@ -1,4 +1,4 @@
-var React = require('react');
+import React from 'react';
 
 // TODO: Support other button actions like reset.
 module.exports = React.createClass({

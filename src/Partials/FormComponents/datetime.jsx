@@ -1,9 +1,9 @@
-var React = require('react');
-var valueMixin = require('./mixins/valueMixin');
-var multiMixin = require('./mixins/multiMixin');
-var DateTimePicker = require('react-widgets/lib/DateTimePicker');
-var momentLocalizer = require('react-widgets/lib/localizers/moment');
-var moment = require('moment');
+import React from 'react';
+import valueMixin from './mixins/valueMixin';
+import multiMixin from './mixins/multiMixin';
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+import momentLocalizer from 'react-widgets/lib/localizers/moment';
+import moment from 'moment';
 momentLocalizer(moment);
 
 module.exports = React.createClass({

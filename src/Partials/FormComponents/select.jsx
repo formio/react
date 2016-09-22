@@ -1,10 +1,10 @@
-var React = require('react');
-var valueMixin = require('./mixins/valueMixin');
-var selectMixin = require('./mixins/selectMixin');
-var formiojs = require('formiojs');
-var util = require('../../util');
-var get = require('lodash/get');
-var debounce = require('lodash/debounce');
+import React from 'react';
+import valueMixin from './mixins/valueMixin';
+import selectMixin from './mixins/selectMixin';
+import formiojs from 'formiojs';
+import {interpolate, serialize} from '../../util';
+import get from 'lodash/get';
+import debounce from 'lodash/debounce';
 
 module.exports = React.createClass({
   options: {},
@@ -78,7 +78,7 @@ module.exports = React.createClass({
     let data = Object.assign({}, this.props.data, this.props.subData);
     newUrl = newUrl || this.url;
     // Allow templating the url.
-    newUrl = util.interpolate(newUrl, {
+    newUrl = interpolate(newUrl, {
       data,
       formioBase: formiojs.getBaseUrl()
     });
@@ -101,7 +101,7 @@ module.exports = React.createClass({
 
     // Add the other filter.
     if (this.props.component.filter) {
-      var filter = util.interpolate(this.props.component.filter, {data});
+      var filter = interpolate(this.props.component.filter, {data});
       newUrl += ((newUrl.indexOf('?') === -1) ? '?' : '&') + filter;
     }
 
@@ -111,7 +111,7 @@ module.exports = React.createClass({
     }
 
     // If this is a search, then add that to the filter.
-    newUrl += ((newUrl.indexOf('?') === -1) ? '?' : '&') + util.serialize(this.options.params);
+    newUrl += ((newUrl.indexOf('?') === -1) ? '?' : '&') + serialize(this.options.params);
     formiojs.request(newUrl).then(function(data) {
       // If the selectValue prop is defined, use it.
       if (this.props.component.selectValues) {

@@ -1,6 +1,6 @@
-var React = require('react');
-var valueMixin = require('./mixins/valueMixin');
-var FormioComponents = require('../FormioComponents');
+import React from 'react';
+import valueMixin from './mixins/valueMixin';
+import FormioComponents from '../FormioComponents';
 
 module.exports = React.createClass({
   displayName: 'Container',

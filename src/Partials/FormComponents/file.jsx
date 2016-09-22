@@ -1,6 +1,6 @@
-var React = require('react');
-var Dropzone = require('react-dropzone');
-var valueMixin = require('./mixins/valueMixin');
+import React from 'react';
+import Dropzone from 'react-dropzone';
+import valueMixin from './mixins/valueMixin';
 
 var fileSize = function(a, b, c, d, e) {
   /* eslint-disable space-before-function-paren */

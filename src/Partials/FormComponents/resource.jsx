@@ -1,7 +1,7 @@
-var React = require('react');
-var valueMixin = require('./mixins/valueMixin');
-var selectMixin = require('./mixins/selectMixin');
-var Formiojs = require('formiojs');
+import React from 'react';
+import valueMixin from './mixins/valueMixin';
+import selectMixin from './mixins/selectMixin';
+import Formiojs from 'formiojs';
 
 module.exports = React.createClass({
   displayName: 'Resource',

@@ -32,35 +32,35 @@ function defineTransformerOutsideStrictMode() {
 
 var getTransformer = defineTransformerOutsideStrictMode();
 
-//helper function to render raw html under a react element.
-function raw(html) {
-  return {dangerouslySetInnerHTML: {__html: html}};
-}
-
-module.exports = {
-  /**
-   * This function is intended to mimic the Angular $interpolate function.
-   *
-   * Since template strings are created using Angular syntax, we need to mimic rendering them to strings. This function
-   * will take the template and the associated variables and render it out. It currently does basic compiling but
-   * is not full featured compatible with Angular.
-   *
-   * @param template
-   * @param variables
-   * @returns {string|XML|*|void}
-   */
-  interpolate: function(template, variables) {
-    var transform = getTransformer(variables);
-    //find all {{ }} expression blocks and then replace the blocks with their evaluation.
-    return template.replace(/\{\s*\{([^\}]*)\}\s*\}/gm, transform);
-  },
-  serialize: function(obj) {
-    var str = [];
-    for (var p in obj) {
-      if (obj.hasOwnProperty(p)) {
-        str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
-      }
-    }
-    return str.join('&');
-  }
+/**
+ * This function is intended to mimic the Angular $interpolate function.
+ *
+ * Since template strings are created using Angular syntax, we need to mimic rendering them to strings. This function
+ * will take the template and the associated variables and render it out. It currently does basic compiling but
+ * is not full featured compatible with Angular.
+ *
+ * @param template
+ * @param variables
+ * @returns {string|XML|*|void}
+ */
+export const interpolate = (template, variables) => {
+  var transform = getTransformer(variables);
+  //find all {{ }} expression blocks and then replace the blocks with their evaluation.
+  return template.replace(/\{\s*\{([^\}]*)\}\s*\}/gm, transform);
 };
+
+/**
+ * This function serializes an object to a queryString.
+ * @param obj
+ * @returns {string}
+ */
+export const serialize = obj => {
+  var str = [];
+  for (var p in obj) {
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+    }
+  }
+  return str.join('&');
+};
+

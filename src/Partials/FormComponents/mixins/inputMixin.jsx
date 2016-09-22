@@ -1,5 +1,5 @@
-var React = require('react');
-var Input = require('react-input-mask');
+import React from 'react';
+import Input from 'react-input-mask';
 
 module.exports = {
   getSingleElement: function(value, index) {

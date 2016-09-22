@@ -1,7 +1,7 @@
-var React = require('react');
-var valueMixin = require('./mixins/valueMixin');
-var multiMixin = require('./mixins/multiMixin');
-var inputMixin = require('./mixins/inputMixin');
+import React from 'react';
+import valueMixin from './mixins/valueMixin';
+import multiMixin from './mixins/multiMixin';
+import inputMixin from './mixins/inputMixin';
 
 module.exports = React.createClass({
   displayName: 'Password',

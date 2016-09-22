@@ -1,9 +1,9 @@
-var React = require('react');
-var DropdownList = require('react-widgets/lib/DropdownList');
-var Multiselect = require('react-widgets/lib/Multiselect');
-var List = require('react-widgets/lib/List');
-var util = require('../../../util');
-var _ = require('lodash');
+import React from 'react';
+import DropdownList from 'react-widgets/lib/DropdownList';
+import Multiselect from 'react-widgets/lib/Multiselect';
+import List from 'react-widgets/lib/List';
+import {interpolate} from '../../../util';
+import _ from 'lodash';
 
 module.exports = {
   getInitialState: function() {
@@ -42,7 +42,7 @@ module.exports = {
       if (typeof item !== 'object') {
         return item;
       }
-      return util.interpolate(this.props.component.template, {item: item});
+      return interpolate(this.props.component.template, {item: item});
     }.bind(this);
     if (typeof this.getTextField === 'function') {
       textField = this.getTextField();
@@ -83,7 +83,7 @@ module.exports = {
       render: function() {
         if (this.props.item && typeof this.props.item === 'object') {
           // Render the markup raw under this react element
-          return React.createElement('span', raw(util.interpolate(template, {item: this.props.item})));
+          return React.createElement('span', raw(interpolate(template, {item: this.props.item})));
         }
 
         return React.createElement('span', {}, this.props.item);

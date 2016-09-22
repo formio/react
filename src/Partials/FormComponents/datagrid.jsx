@@ -1,5 +1,5 @@
-var React = require('react');
-var valueMixin = require('./mixins/valueMixin');
+import React from 'react';
+import valueMixin from './mixins/valueMixin';
 
 module.exports = React.createClass({
   displayName: 'Datagrid',
