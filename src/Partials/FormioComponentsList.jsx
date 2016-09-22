@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const FormioComponents = React.createClass({
+export const FormioComponentsList = React.createClass({
   displayName: 'FormioComponents',
   render: function() {
     return (

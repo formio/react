@@ -1,5 +1,5 @@
 import React from 'react';
-import FormioComponents from '../FormioComponents';
+import {FormioComponentsList} from '../FormioComponentsList';
 
 module.exports = React.createClass({
   displayName: 'Column',
@@ -9,10 +9,10 @@ module.exports = React.createClass({
         {this.props.component.columns.map(function(column, index) {
           return (
             <div key={index} className="col-sm-6">
-              <FormioComponents
+              <FormioComponentsList
                 {...this.props}
                 components={column.components}
-              ></FormioComponents>
+              ></FormioComponentsList>
             </div>
           );
         }.bind(this))}

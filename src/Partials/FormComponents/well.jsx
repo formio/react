@@ -1,15 +1,15 @@
 import React from 'react';
-import FormioComponents from '../FormioComponents';
+import {FormioComponentsList} from '../FormioComponentsList';
 
 module.exports = React.createClass({
   displayName: 'Well',
   render: function() {
     return (
       <div className="well">
-        <FormioComponents
+        <FormioComponentsList
           {...this.props}
           components={this.props.component.components}
-        ></FormioComponents>
+        ></FormioComponentsList>
       </div>
     );
   }

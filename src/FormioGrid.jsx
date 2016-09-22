@@ -5,7 +5,7 @@ import {
   Table, search, edit, sort, highlight, resolve,
   SearchColumns, resizableColumn
 } from 'reactabular';
-import Paginator from './Paginator';
+import Paginator from './Partials/Paginator';
 
 class FormioGrid extends React.Component {
 

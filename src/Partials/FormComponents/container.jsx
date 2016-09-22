@@ -1,6 +1,6 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
-import FormioComponents from '../FormioComponents';
+import {FormioComponentsList} from '../FormioComponentsList';
 
 module.exports = React.createClass({
   displayName: 'Container',
@@ -22,12 +22,12 @@ module.exports = React.createClass({
       <label htmlFor={this.props.component.key} className={classLabel}>{this.props.component.label}</label> : '');
     return (
       <div className='formio-container'>
-        <FormioComponents
+        <FormioComponentsList
           {...this.props}
           components={this.props.component.components}
           values={this.state.value}
           onChange={this.elementChange}
-        ></FormioComponents>
+        ></FormioComponentsList>
       </div>
     );
   }

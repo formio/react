@@ -1,5 +1,5 @@
 import React from 'react';
-import FormioComponents from '../FormioComponents';
+import {FormioComponentsList} from '../FormioComponentsList';
 
 module.exports = React.createClass({
   displayName: 'Fieldset',
@@ -9,10 +9,10 @@ module.exports = React.createClass({
     return (
       <fieldset className={className}>
         {legend}
-        <FormioComponents
+        <FormioComponentsList
           {...this.props}
           components={this.props.component.components}
-        ></FormioComponents>
+        ></FormioComponentsList>
       </fieldset>
     );
   }
