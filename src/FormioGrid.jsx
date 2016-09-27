@@ -42,6 +42,29 @@ class FormioGrid extends React.Component {
 
   columnsFromForm = (form) => {
     let columns = [];
+    let buttons = this.props.buttons.map((button) => {
+      return {
+        property: '_id',
+        header: {
+          label: button.label
+        },
+        cell: {
+          format: (rowKey, {rowData}) => {
+            return (
+              <a className={button.class} onClick={(event) => {this.onButtonClick(event, button.event, rowData)}}>
+                {(() => {
+                  if (button.icon) {
+                    return <i className={button.icon} aria-hidden="true"></i>;
+                  }
+                })()}
+                <span>{button.label}</span>
+              </a>
+            )
+          }
+        },
+        visible: true
+      }
+    });
     if (form && form.components) {
       FormioUtils.eachComponent(form.components, (component, path) => {
         if (component.input && component.tableView && component.key && path.indexOf('.') === -1) {
@@ -57,7 +80,6 @@ class FormioGrid extends React.Component {
               }
             },
             cell: {
-              highlight: true,
               format: this.formatCell
             },
             visible: true
@@ -65,7 +87,15 @@ class FormioGrid extends React.Component {
         }
       });
     }
-    return columns;
+    if (!buttons.length) {
+      return columns;
+    }
+    if (this.props.buttonLocation === 'right') {
+      return columns.concat(buttons);
+    }
+    else {
+      return buttons.concat(columns);
+    }
   };
 
   componentWillReceiveProps = (nextProps) => {
@@ -126,10 +156,18 @@ class FormioGrid extends React.Component {
     });
   }
 
+  onButtonClick = (event, type, row) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (typeof this.props.onButtonClick === 'function') {
+      this.props.onButtonClick(type, row._id);
+    }
+  }
+
   onRowClick = (row) => {
     return {
       onClick: () => {
-        if (!this.props.buttons && typeof this.props.onButtonClick === 'function') {
+        if (typeof this.props.onButtonClick === 'function') {
           this.props.onButtonClick('row', row._id);
         }
       }
