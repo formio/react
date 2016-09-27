@@ -73,5 +73,31 @@ module.exports = React.createClass({
         </table>
       </div>
     );
+  },
+  getValueDisplay: function(component, data) {
+    let values = component.values.reduce((values, item) => {
+      values[item.value] = item.label;
+      return values;
+    }, {});
+    return (
+      <table className="table table-striped table-bordered">
+        <thead>
+        {
+          component.questions.map((question, index) => {
+            return (
+              <tr key={index}>
+                <th>
+                  {question.label}
+                </th>
+                <td>
+                  {values[data[question.value]]}
+                </td>
+              </tr>
+            );
+          })
+        }
+        </thead>
+      </table>
+    );
   }
 });

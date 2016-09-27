@@ -1,6 +1,7 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import selectMixin from './mixins/selectMixin';
+import {raw, interpolate} from '../../util';
 import Formiojs from 'formiojs';
 
 module.exports = React.createClass({
@@ -41,5 +42,8 @@ module.exports = React.createClass({
         });
       }.bind(this));
     }
+  },
+  getValueField: function(component, data) {
+    return React.createElement('span', raw(interpolate(component.template, {item: data})));
   }
 });

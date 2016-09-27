@@ -10,11 +10,20 @@ var fileSize = function(a, b, c, d, e) {
 var FormioFileList = React.createClass({
   displayName: 'FormioFileList',
   fileRow: function (file, id) {
+    if (!file) {
+      return null;
+    }
     return (
       <tr key={id}>
-        <td className='formio-dropzone-table'>
-          <a onClick={this.props.removeFile.bind(null, id)} className='btn btn-sm btn-default'><span className='glyphicon glyphicon-remove'></span></a>
-        </td>
+        {(() => {
+            if (!this.props.readOnly) {
+              return (
+                <td className='formio-dropzone-table'>
+                  <a onClick={this.props.removeFile.bind(null, id)} className='btn btn-sm btn-default'><span className='glyphicon glyphicon-remove'></span></a>
+                </td>
+              );
+            }
+          })()}
         <td><a href='#'>{file.name}</a></td>
         <td>{ fileSize(file.size) }</td>
       </tr>
@@ -25,7 +34,13 @@ var FormioFileList = React.createClass({
       <table className='table table-striped table-bordered'>
         <thead>
         <tr>
-          <th className='formio-dropzone-table'></th>
+          {(() => {
+              if (!this.props.readOnly) {
+                return (
+                  <th className='formio-dropzone-table'></th>
+                );
+              }
+            })()}
           <th>File Name</th>
           <th>Size</th>
         </tr>
@@ -192,5 +207,10 @@ module.exports = React.createClass({
         })}
       </div>
     );
+  },
+  getValueDisplay: function(component, data) {
+    return (
+      <FormioFileList files={data} readOnly={true} />
+    )
   }
 });

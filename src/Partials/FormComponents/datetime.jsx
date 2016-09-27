@@ -29,5 +29,9 @@ module.exports = React.createClass({
         onChange={this.onChangeDatetime.bind(null, index)}
         />
     );
+  },
+  getValueDisplay: function(component, data) {
+    // TODO: use the date formatter in component.format
+    return data;
   }
 });

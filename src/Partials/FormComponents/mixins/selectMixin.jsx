@@ -2,7 +2,7 @@ import React from 'react';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import Multiselect from 'react-widgets/lib/Multiselect';
 import List from 'react-widgets/lib/List';
-import {interpolate} from '../../../util';
+import {interpolate, raw} from '../../../util';
 import _ from 'lodash';
 
 module.exports = {
@@ -84,11 +84,6 @@ module.exports = {
     var template = this.props.component.template;
     if (!template) {
       return null;
-    }
-
-    //helper function to render raw html under a react element.
-    function raw(html) {
-      return {dangerouslySetInnerHTML: {__html: html}};
     }
 
     return React.createClass({

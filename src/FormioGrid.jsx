@@ -39,10 +39,8 @@ class FormioGrid extends React.Component {
   };
 
   formatCell(value, {column}) {
-    if (typeof value !== 'object') {
-      return value;
-    }
-    return '[Object]';
+    const type = window.FormioComponents.hasOwnProperty(column.component.type) ? column.component.type : 'custom';
+    return window.FormioComponents[type].prototype.display(column.component, value);
   }
 
   columnsFromForm(form) {

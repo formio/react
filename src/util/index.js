@@ -64,3 +64,8 @@ export const serialize = obj => {
   return str.join('&');
 };
 
+//helper function to render raw html under a react element.
+export const raw = function(html) {
+  return {dangerouslySetInnerHTML: {__html: html}};
+}
+

@@ -125,5 +125,47 @@ module.exports = React.createClass({
       </div>
     </div>
     );
+  },
+  getValueDisplay: function(component, data) {
+    var renderComponent = (component, row) => {
+      var type = window.FormioComponents.hasOwnProperty(component.type) ? component.type : 'custom';
+      return window.FormioComponents[type].prototype.display(component, row[component.key] || '');
+    }
+    return (
+      <table className="table table-striped table-bordered">
+        <thead>
+          <tr>
+          {
+            component.components.map(function(component, index) {
+              return (
+                <th key={index}>
+                  { component.label }
+                </th>
+              );
+            })
+          }
+          </tr>
+        </thead>
+        <tbody>
+        {
+          data.map((row, rowIndex) => {
+            return (
+              <tr key={rowIndex}>
+                {
+                  component.components.map((subComponent, componentIndex) => {
+                    return (
+                      <td key={componentIndex}>
+                        {renderComponent(subComponent, row)}
+                      </td>
+                    );
+                  })
+                }
+              </tr>
+            );
+          })
+        }
+        </tbody>
+      </table>
+    );
   }
 });

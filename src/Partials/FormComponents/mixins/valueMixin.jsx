@@ -204,5 +204,23 @@ module.exports = {
       element = this.props.onElementRender(this, element);
     }
     return element;
+  },
+  display: function(component, value) {
+    if (typeof this.getValueDisplay === 'function') {
+      if (Array.isArray(value) && component.multiple && component.type !== 'file') {
+        return value.map(this.getValueDisplay.bind(null, component)).join(', ');
+      }
+      else {
+        return this.getValueDisplay(component, value);
+      }
+    }
+    if (Array.isArray(value)) {
+      return value.join(', ');
+    }
+    // If this is still an object, something went wrong and we don't know what to do with it.
+    if (typeof value === 'object') {
+      return '[object Object1]';
+    }
+    return value;
   }
 };

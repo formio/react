@@ -21,5 +21,8 @@ module.exports = React.createClass({
           });
         }.bind(this));
       }.bind(this));
-  }, 200)
+  }, 200),
+  getValueDisplay: function(component, data) {
+    return data ? data.formatted_address : '';
+  }
 });

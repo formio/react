@@ -36,5 +36,13 @@ module.exports = React.createClass({
         }
       </div>
     );
+  },
+  getValueDisplay: function(component, data) {
+    for (var i in component.values) {
+      if (component.values[i].value === data) {
+        return component.values[i].label;
+      }
+    }
+    return data;
   }
 });

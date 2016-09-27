@@ -2,7 +2,7 @@ import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import selectMixin from './mixins/selectMixin';
 import formiojs from 'formiojs';
-import {interpolate, serialize} from '../../util';
+import {interpolate, serialize, raw} from '../../util';
 import get from 'lodash/get';
 import debounce from 'lodash/debounce';
 
@@ -176,5 +176,62 @@ module.exports = React.createClass({
       previousState.hasNextPage = previousState.selectItems.length >= (this.options.params.limit + this.options.params.skip);
       return previousState;
     });
+  },
+  getValueDisplay: function(component, data) {
+    var getItem = function(data) {
+      switch (component.dataSrc) {
+        case 'values':
+          component.data.values.forEach(function(item) {
+            if (item.value === data) {
+              data = item;
+            }
+          });
+          return data;
+        case 'json':
+          if (component.valueProperty) {
+            var selectItems;
+            try {
+              selectItems = angular.fromJson(component.data.json);
+            }
+            catch (error) {
+              selectItems = [];
+            }
+            selectItems.forEach(function(item) {
+              if (item[component.valueProperty] === data) {
+                data = item;
+              }
+            });
+          }
+          return data;
+        // TODO: implement url and resource view.
+        case 'url':
+        case 'resource':
+        default:
+          return data;
+      }
+    };
+    if (component.multiple && Array.isArray(data)) {
+      return data.map(getItem).reduce(function(prev, item) {
+        var value;
+        if (typeof item === 'object') {
+          value = React.createElement('span', raw(interpolate(component.template, {item})));
+        }
+        else {
+          value = item;
+        }
+        return (prev === '' ? '' : ', ') + value;
+      }, '');
+    }
+    else {
+      var item = getItem(data);
+      var value;
+      if (typeof item === 'object') {
+        value = React.createElement('span', raw(interpolate(component.template, {item})));
+      }
+      else {
+        value = item;
+      }
+      return value;
+    }
   }
 });

@@ -28,5 +28,8 @@ module.exports = React.createClass({
         </label>
       </div>
     );
+  },
+  getValueDisplay: function(component, data) {
+    return data ? 'Yes' : 'No';
   }
 });
