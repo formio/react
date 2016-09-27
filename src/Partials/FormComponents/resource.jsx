@@ -44,7 +44,6 @@ module.exports = React.createClass({
     }
   },
   getValueDisplay: function(component, data) {
-    console.log(component);
     return React.createElement('span', raw(interpolate(component.template, {item: data})));
   }
 });

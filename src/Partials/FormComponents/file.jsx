@@ -205,8 +205,9 @@ module.exports = React.createClass({
     );
   },
   getValueDisplay: function(component, data) {
+    let files = Array.isArray(data) ? data : [data];
     return (
-      <FormioFileList files={data} readOnly={true} />
+      <FormioFileList files={files} readOnly={true} />
     )
   }
 });
