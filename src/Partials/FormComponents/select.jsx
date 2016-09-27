@@ -11,6 +11,12 @@ module.exports = React.createClass({
   lastInput: '',
   displayName: 'Select',
   mixins: [valueMixin, selectMixin],
+  getValueField: function() {
+    if (this.props.component.dataSrc === 'custom') {
+      return false;
+    }
+    return this.props.component.valueProperty || 'value';
+  },
   componentWillMount: function() {
     switch (this.props.component.dataSrc) {
       case 'values':
@@ -31,6 +37,24 @@ module.exports = React.createClass({
             selectItems: []
           });
         }
+        break;
+      case 'custom':
+        this.refreshItems = () => {
+          try {
+            /* eslint-disable no-unused-vars */
+            var data = {...this.props.data};
+            /* eslint-enable no-unused-vars */
+            this.setState({
+              selectItems: eval('(function(data) { var values = [];' + this.props.component.data.custom.toString() + '; return values; })(data)')
+            });
+          }
+          catch (error) {
+            this.setState({
+              selectItems: []
+            });
+          }
+        };
+        this.refreshItems();
         break;
       case 'resource':
       case 'url':
@@ -65,6 +89,63 @@ module.exports = React.createClass({
           skip: 0
         };
 
+        this.refreshItems = (input, newUrl, append) => {
+          let data = Object.assign({}, this.props.data, this.props.subData);
+          newUrl = newUrl || this.url;
+          // Allow templating the url.
+          newUrl = interpolate(newUrl, {
+            data,
+            formioBase: formiojs.getBaseUrl()
+          });
+          if (!newUrl) {
+            return;
+          }
+
+          // If this is a search, then add that to the filter.
+          if (this.props.component.searchField && input) {
+            // If they typed in a search, reset skip.
+            if (this.lastInput !== input) {
+              this.lastInput = input;
+              this.options.params.skip = 0;
+            }
+            newUrl += ((newUrl.indexOf('?') === -1) ? '?' : '&') +
+              encodeURIComponent(this.props.component.searchField) +
+              '=' +
+              encodeURIComponent(input);
+          }
+
+          // Add the other filter.
+          if (this.props.component.filter) {
+            var filter = interpolate(this.props.component.filter, {data});
+            newUrl += ((newUrl.indexOf('?') === -1) ? '?' : '&') + filter;
+          }
+
+          // If they wish to return only some fields.
+          if (this.props.component.selectFields) {
+            this.options.params.select = this.props.component.selectFields;
+          }
+
+          // If this is a search, then add that to the filter.
+          newUrl += ((newUrl.indexOf('?') === -1) ? '?' : '&') + serialize(this.options.params);
+          formiojs.request(newUrl).then(data => {
+            // If the selectValue prop is defined, use it.
+            if (this.props.component.selectValues) {
+              this.setResult(get(data, this.props.component.selectValues, []), append);
+            }
+            // Attempt to default to the formio settings for a resource.
+            else if (data.hasOwnProperty('data')) {
+              this.setResult(data.data, append);
+            }
+            else if (data.hasOwnProperty('items')) {
+              this. setResult(data.items, append);
+            }
+            // Use the data itself.
+            else {
+              this.setResult(data, append);
+            }
+          });
+        }
+
         this.refreshItems();
 
         break;
@@ -74,62 +155,7 @@ module.exports = React.createClass({
         });
     }
   },
-  refreshItems: function(input, newUrl, append) {
-    let data = Object.assign({}, this.props.data, this.props.subData);
-    newUrl = newUrl || this.url;
-    // Allow templating the url.
-    newUrl = interpolate(newUrl, {
-      data,
-      formioBase: formiojs.getBaseUrl()
-    });
-    if (!newUrl) {
-      return;
-    }
-
-    // If this is a search, then add that to the filter.
-    if (this.props.component.searchField && input) {
-      // If they typed in a search, reset skip.
-      if (this.lastInput !== input) {
-        this.lastInput = input;
-        this.options.params.skip = 0;
-      }
-      newUrl += ((newUrl.indexOf('?') === -1) ? '?' : '&') +
-        encodeURIComponent(this.props.component.searchField) +
-        '=' +
-        encodeURIComponent(input);
-    }
-
-    // Add the other filter.
-    if (this.props.component.filter) {
-      var filter = interpolate(this.props.component.filter, {data});
-      newUrl += ((newUrl.indexOf('?') === -1) ? '?' : '&') + filter;
-    }
-
-    // If they wish to return only some fields.
-    if (this.props.component.selectFields) {
-      this.options.params.select = this.props.component.selectFields;
-    }
-
-    // If this is a search, then add that to the filter.
-    newUrl += ((newUrl.indexOf('?') === -1) ? '?' : '&') + serialize(this.options.params);
-    formiojs.request(newUrl).then(function(data) {
-      // If the selectValue prop is defined, use it.
-      if (this.props.component.selectValues) {
-        this.setResult(get(data, this.props.component.selectValues, []), append);
-      }
-      // Attempt to default to the formio settings for a resource.
-      else if (data.hasOwnProperty('data')) {
-        this.setResult(data.data, append);
-      }
-      else if (data.hasOwnProperty('items')) {
-       this. setResult(data.items, append);
-      }
-      // Use the data itself.
-      else {
-        this.setResult(data, append);
-      }
-    }.bind(this));
-  },
+  refreshItems: function() {},
   loadMoreItems: function(event) {
     event.stopPropagation();
     event.preventDefault();

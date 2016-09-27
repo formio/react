@@ -6,28 +6,40 @@ import {interpolate} from '../../../util';
 import _ from 'lodash';
 
 module.exports = {
+  data: {},
   getInitialState: function() {
+    this.data = {...this.props.data};
     return {
       selectItems: [],
       searchTerm: '',
-      hasNextPage: false,
-      refresh: false
+      hasNextPage: false
     };
   },
   willReceiveProps: function(nextProps) {
-    if (this.url && this.props.component.refreshOn) {
+    if (this.props.component.refreshOn) {
       const refreshOn = this.props.component.refreshOn;
-      if (this.props.data.hasOwnProperty(refreshOn) && this.props.data[refreshOn] !== nextProps.data[refreshOn]) {
-        this.setState({
-          refresh: true
-        });
+      let refresh = false;
+      if (refreshOn === 'data') {
+        if (!_.isEqual(this.data, nextProps.data)) {
+          refresh = true;
+        }
       }
-      else if (this.props.subData && this.props.subData.hasOwnProperty(refreshOn) && this.props.subData[refreshOn] !== nextProps.subData[refreshOn]) {
-        this.setState({
-          refresh:true
-        });
+      else {
+        if ((!this.data.hasOwnProperty(refreshOn) && nextProps.hasOwnProperty(refreshOn)) || this.data[refreshOn] !== nextProps.data[refreshOn]) {
+          refresh = true;
+        }
+        else if (this.props.subData && this.props.subData.hasOwnProperty(refreshOn) && this.props.subData[refreshOn] !== nextProps.subData[refreshOn]) {
+          refresh = true;
+        }
+      }
+      if (refresh && this.props.component.clearOnRefresh) {
+        this.setValue(this.getDefaultValue());
+      }
+      if (refresh) {
+        this.refreshItems();
       }
     }
+    this.data = {...nextProps.data};
   },
   valueField: function() {
     var valueField = this.props.component.valueProperty || 'value';
@@ -108,12 +120,6 @@ module.exports = {
     };
   },
   getElements: function() {
-    if (this.state.refresh) {
-      this.refreshItems();
-      this.setState({
-        refresh: false
-      });
-    }
     var Element;
     var properties = {
       data: this.state.selectItems,
