@@ -1,8 +1,7 @@
 import React from 'react';
 
 module.exports = {
-  getInitialState: function() {
-    var value = this.props.value;
+  getDefaultValue: function(value) {
     // Allow components to set different default values.
     if (value == null) {
       if (this.props.component.defaultValue) {
@@ -21,6 +20,10 @@ module.exports = {
     if ((this.props.component.type !== 'datagrid') && (this.props.component.type !== 'container')) {
       value = this.safeSingleToMultiple(value);
     }
+    return value;
+  },
+  getInitialState: function() {
+    var value = this.getDefaultValue(this.props.value);
     var valid = this.validate(value);
     return {
       value: value,
@@ -178,7 +181,7 @@ module.exports = {
       Object.assign(previousState, this.validate(previousState.value));
       return previousState;
     }.bind(this), function() {
-      if (typeof this.props.onChange === 'function') {
+      if (typeof this.props.onChange === 'function' && !this.state.isPristine) {
         this.props.onChange(this);
       }
     }.bind(this));

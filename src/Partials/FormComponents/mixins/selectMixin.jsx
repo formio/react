@@ -25,7 +25,7 @@ module.exports = {
         }
       }
       else {
-        if (this.data.hasOwnProperty(refreshOn) && this.data[refreshOn] !== nextProps.data[refreshOn]) {
+        if ((!this.data.hasOwnProperty(refreshOn) && nextProps.hasOwnProperty(refreshOn)) || this.data[refreshOn] !== nextProps.data[refreshOn]) {
           refresh = true;
         }
         else if (this.props.subData && this.props.subData.hasOwnProperty(refreshOn) && this.props.subData[refreshOn] !== nextProps.subData[refreshOn]) {
@@ -33,8 +33,7 @@ module.exports = {
         }
       }
       if (refresh && this.props.component.clearOnRefresh) {
-        // Doesn't quite work yet as it will clear on load.
-        //this.setValue(this.props.component.multiple ? [] : '');
+        this.setValue(this.getDefaultValue());
       }
       if (refresh) {
         this.refreshItems();
