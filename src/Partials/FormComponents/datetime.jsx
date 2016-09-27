@@ -10,10 +10,26 @@ module.exports = React.createClass({
   displayName: 'Datetime',
   mixins: [valueMixin, multiMixin],
   getInitialValue: function() {
-    return null;
+    return this.parseMomentValue(
+      this.props.value
+    );
+  },
+  parseMomentValue(val) {
+    if(this.props.value.length === 0 ||
+      this.props.value.toLowerCase().indexOf('moment') === -1) return new Date();
+
+    try {
+      return new Date(eval(
+        val.toLowerCase()
+      ));
+    } catch(e) {}
+    return new Date(val);
   },
   onChangeDatetime: function(index, value, str) {
-    this.setValue(value, index);
+    this.setValue(
+      this.parseMomentValue(value),
+      index
+    );
   },
   getSingleElement: function(value, index) {
     return (
