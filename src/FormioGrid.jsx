@@ -8,6 +8,18 @@ import {
 import Paginator from './Partials/Paginator';
 
 class FormioGrid extends React.Component {
+  static defaultProps = {
+    form: {},
+    submissions: [],
+    paginationPage: 1,
+    paginationNumPages: 1,
+    paginationSizes: [25, 50, 75],
+    paginationSize: 25
+  }
+
+  static propTypes = {
+    src: React.PropTypes.string,
+  }
 
   constructor(props) {
     super(props);
@@ -36,8 +48,8 @@ class FormioGrid extends React.Component {
   columnsFromForm(form) {
     let columns = [];
     if (form && form.components) {
-      FormioUtils.eachComponent(form.components, (component) => {
-        if (component.input && component.tableView && component.key) {
+      FormioUtils.eachComponent(form.components, (component, path) => {
+        if (component.input && component.tableView && component.key && path.indexOf('.') === -1) {
           columns.push({
             component: component,
             property: 'data.' + component.key,
@@ -172,19 +184,5 @@ class FormioGrid extends React.Component {
     );
   }
 }
-
-FormioGrid.defaultProps = {
-  form: {},
-  submissions: [],
-  paginationPage: 1,
-  paginationNumPages: 1,
-  paginationSizes: [25, 50, 75],
-  paginationSize: 25
-}
-
-FormioGrid.propTypes = {
-  src: React.PropTypes.string,
-};
-
 
 export {FormioGrid};
