@@ -43,7 +43,8 @@ module.exports = React.createClass({
       }.bind(this));
     }
   },
-  getValueField: function(component, data) {
+  getValueDisplay: function(component, data) {
+    console.log(component);
     return React.createElement('span', raw(interpolate(component.template, {item: data})));
   }
 });

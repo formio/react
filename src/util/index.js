@@ -69,3 +69,8 @@ export const raw = function(html) {
   return {dangerouslySetInnerHTML: {__html: html}};
 }
 
+export const fileSize = function(a, b, c, d, e) {
+  /* eslint-disable space-before-function-paren */
+  return (b = Math, c = b.log, d = 1024, e = c(a) / c(d) | 0, a / b.pow(d, e)).toFixed(2) + ' ' + (e ? 'kMGTPEZY'[--e] + 'B' : 'Bytes');
+};
+

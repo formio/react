@@ -205,7 +205,7 @@ module.exports = {
     }
     return element;
   },
-  display: function(component, value) {
+  getDisplay: function(component, value) {
     if (typeof this.getValueDisplay === 'function') {
       if (Array.isArray(value) && component.multiple && component.type !== 'file') {
         return value.map(this.getValueDisplay.bind(null, component)).join(', ');

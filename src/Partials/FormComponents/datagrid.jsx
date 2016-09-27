@@ -129,7 +129,7 @@ module.exports = React.createClass({
   getValueDisplay: function(component, data) {
     var renderComponent = (component, row) => {
       var type = window.FormioComponents.hasOwnProperty(component.type) ? component.type : 'custom';
-      return window.FormioComponents[type].prototype.display(component, row[component.key] || '');
+      return window.FormioComponents[type].prototype.getDisplay(component, row[component.key] || '');
     }
     return (
       <table className="table table-striped table-bordered">

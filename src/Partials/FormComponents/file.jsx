@@ -1,11 +1,7 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
 import valueMixin from './mixins/valueMixin';
-
-var fileSize = function(a, b, c, d, e) {
-  /* eslint-disable space-before-function-paren */
-   return (b = Math, c = b.log, d = 1024, e = c(a) / c(d) | 0, a / b.pow(d, e)).toFixed(2) + ' ' + (e ? 'kMGTPEZY'[--e] + 'B' : 'Bytes');
-};
+import {fileSize} from '../../util';
 
 var FormioFileList = React.createClass({
   displayName: 'FormioFileList',
