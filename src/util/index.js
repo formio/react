@@ -69,7 +69,7 @@ export const serialize = obj => {
 //helper function to render raw html under a react element.
 export const raw = function(html) {
   return {dangerouslySetInnerHTML: {__html: html}};
-}
+};
 
 export const fileSize = function(a, b, c, d, e) {
   /* eslint-disable space-before-function-paren */
@@ -77,8 +77,8 @@ export const fileSize = function(a, b, c, d, e) {
 };
 
 // Resolve nested values within an array.
-export const nested = function({ rowData, column }) {
-  const { property } = column;
+export const nested = function({rowData, column}) {
+  const {property} = column;
 
   if (!property) {
     return {};
@@ -97,4 +97,4 @@ export const nested = function({ rowData, column }) {
     ...rowData,
     [property]: get(rowData, property)
   };
-}
+};

@@ -3,24 +3,26 @@ import Dropzone from 'react-dropzone';
 import valueMixin from './mixins/valueMixin';
 import {fileSize} from '../../util';
 
-var FormioFileList = React.createClass({
+const FormioFileList = React.createClass({
   displayName: 'FormioFileList',
-  fileRow: function (file, id) {
+  fileRow: function (file, index) {
     if (!file) {
       return null;
     }
     return (
-      <tr key={id}>
+      <tr key={index}>
         {(() => {
-            if (!this.props.readOnly) {
-              return (
-                <td className='formio-dropzone-table'>
-                  <a onClick={this.props.removeFile.bind(null, id)} className='btn btn-sm btn-default'><span className='glyphicon glyphicon-remove'></span></a>
-                </td>
-              );
-            }
-          })()}
-        <td><a href='#'>{file.name}</a></td>
+          if (!this.props.readOnly) {
+            return (
+              <td className='formio-dropzone-table'>
+                <a onClick={this.props.removeFile.bind(null, index)} className='btn btn-sm btn-default'><span className='glyphicon glyphicon-remove'></span></a>
+              </td>
+            );
+          }
+        })()}
+        <td>
+          <FormioFile file={file} formio={this.props.formio} />
+        </td>
         <td>{ fileSize(file.size) }</td>
       </tr>
     );
@@ -31,12 +33,12 @@ var FormioFileList = React.createClass({
         <thead>
         <tr>
           {(() => {
-              if (!this.props.readOnly) {
-                return (
-                  <th className='formio-dropzone-table'></th>
-                );
-              }
-            })()}
+            if (!this.props.readOnly) {
+              return (
+                <th className='formio-dropzone-table'></th>
+              );
+            }
+          })()}
           <th>File Name</th>
           <th>Size</th>
         </tr>
@@ -46,6 +48,74 @@ var FormioFileList = React.createClass({
         </tbody>
       </table>
     );
+  }
+});
+
+const FormioImageList = React.createClass({
+  displayName: 'FormioImageList',
+  render: function() {
+    return <div>
+      {
+        this.props.files.map((file, index) => {
+          return (
+            <span key={index}>
+              <FormioImage file={file} formio={this.props.formio} width={this.props.width} />
+              {(() => {
+                if (!this.props.readOnly) {
+                  return (
+                    <span style={{width:'1%', 'white-space':'nowrap'}}><a onClick={this.props.removeFile.bind(null, index)} className='btn btn-sm btn-default'><span className='glyphicon glyphicon-remove'></span></a></span>
+                  );
+                }
+              })()}
+            </span>
+          );
+        })
+      }
+      <span ng-repeat="file in files track by $index" ng-if="file">
+      </span>
+    </div>
+  }
+});
+
+const FormioFile = React.createClass({
+  displayName: 'FormioFile',
+  getFile: function(event) {
+    event.preventDefault();
+    this.props.formio
+       .downloadFile(this.props.file).then(file => {
+        if (file) {
+          window.open(file.url, '_blank');
+        }
+      })
+      .catch(function(response) {
+        // Is alert the best way to do this?
+        // User is expecting an immediate notification due to attempting to download a file.
+        alert(response);
+      });
+  },
+  render: function() {
+    return <a href={this.props.file.url} onClick={event => {this.getFile(event)}} target="_blank">{this.props.file.name}</a>;
+  }
+});
+
+const FormioImage = React.createClass({
+  displayName: 'FormioImage',
+  getInitialState: function() {
+    return {
+      imageSrc: ''
+    }
+  },
+  componentWillMount: function() {
+    this.props.formio
+      .downloadFile(this.props.file)
+        .then(result => {
+          this.setState({
+            imageSrc: result.url
+          });
+        });
+  },
+  render: function() {
+    return <img src={this.state.imageSrc} alt={this.props.file.name} style={{width: this.props.width}} />;
   }
 });
 
@@ -185,6 +255,14 @@ module.exports = React.createClass({
       return previousState;
     });
   },
+  fileList: function() {
+    if (!this.props.component.image) {
+      return <FormioFileList files={this.state.value} formio={this.props.formio} removeFile={this.removeFile} />
+    }
+    else {
+      return <FormioImageList files={this.state.value} formio={this.props.formio} width={this.props.component.imageSize} removeFile={this.removeFile} />
+    }
+  },
   getElements: function() {
     var classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
     var inputLabel = (this.props.component.label && !this.props.component.hideLabel ?
@@ -195,7 +273,7 @@ module.exports = React.createClass({
     return (
       <div className='formio-dropzone-margin'>
         {inputLabel} {requiredInline}
-        <FormioFileList files={this.state.value} formio={this.props.formio} removeFile={this.removeFile}></FormioFileList>
+        {this.fileList()}
         {this.fileSelector()}
         {this.props.component.storage ? null : this.noStorageError()}
         {Object.keys(this.state.fileUploads).map((key) => {
