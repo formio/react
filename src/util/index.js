@@ -1,3 +1,5 @@
+import get from 'lodash/get';
+import has from 'lodash/has';
 
 function defineTransformerOutsideStrictMode() {
   var safeGlobalName = '____formioSelectMixinGetTransformer';
@@ -74,3 +76,25 @@ export const fileSize = function(a, b, c, d, e) {
   return (b = Math, c = b.log, d = 1024, e = c(a) / c(d) | 0, a / b.pow(d, e)).toFixed(2) + ' ' + (e ? 'kMGTPEZY'[--e] + 'B' : 'Bytes');
 };
 
+// Resolve nested values within an array.
+export const nested = function({ rowData, column }) {
+  const { property } = column;
+
+  if (!property) {
+    return {};
+  }
+
+  if (!has(rowData, property)) {
+    //console.warn( // eslint-disable-line no-console
+    //  `resolve.nested - Failed to find "${property}" property from`,
+    //  rowData
+    //);
+
+    return {};
+  }
+
+  return {
+    ...rowData,
+    [property]: get(rowData, property)
+  };
+}

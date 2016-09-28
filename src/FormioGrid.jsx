@@ -6,6 +6,7 @@ import {
   SearchColumns, resizableColumn
 } from 'reactabular';
 import Paginator from './Partials/Paginator';
+import {nested} from './util';
 
 class FormioGrid extends React.Component {
   static defaultProps = {
@@ -188,7 +189,7 @@ class FormioGrid extends React.Component {
   render = () => {
     let rows = resolve.resolve({
       columns: this.state.columns,
-      method: resolve.nested
+      method: nested
     })(this.state.submissions);
     return (
       <div className="table-responsive">

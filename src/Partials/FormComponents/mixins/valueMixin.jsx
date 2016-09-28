@@ -219,7 +219,7 @@ module.exports = {
     }
     // If this is still an object, something went wrong and we don't know what to do with it.
     if (typeof value === 'object') {
-      return '[object Object1]';
+      return '[object Object]';
     }
     return value;
   }
