@@ -12,6 +12,9 @@ class FormioGrid extends React.Component {
   static defaultProps = {
     form: {},
     submissions: [],
+    query: {
+      sort: '-created'
+    },
     paginationPage: 1,
     paginationNumPages: 1,
     paginationSizes: [25, 50, 75],
@@ -146,6 +149,7 @@ class FormioGrid extends React.Component {
   loadSubmissions = () => {
     this.formio.loadSubmissions({
       params: {
+        ...this.props.query,
         limit: this.state.paginationSize,
         skip: (this.state.paginationPage - 1) * this.state.paginationSize
       }
