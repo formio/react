@@ -46,7 +46,11 @@ var getTransformer = defineTransformerOutsideStrictMode();
 export const interpolate = (template, variables) => {
   var transform = getTransformer(variables);
   //find all {{ }} expression blocks and then replace the blocks with their evaluation.
-  return template.replace(/\{\s*\{([^\}]*)\}\s*\}/gm, transform);
+  try {
+    return template.replace(/\{\s*\{([^\}]*)\}\s*\}/gm, transform);
+  } catch(e) {
+    return '';
+  }
 };
 
 /**
@@ -73,4 +77,3 @@ export const fileSize = function(a, b, c, d, e) {
   /* eslint-disable space-before-function-paren */
   return (b = Math, c = b.log, d = 1024, e = c(a) / c(d) | 0, a / b.pow(d, e)).toFixed(2) + ' ' + (e ? 'kMGTPEZY'[--e] + 'B' : 'Bytes');
 };
-
