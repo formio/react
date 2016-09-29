@@ -79,8 +79,6 @@ export const fileSize = function(a, b, c, d, e) {
   /* eslint-disable space-before-function-paren */
   return (b = Math, c = b.log, d = 1024, e = c(a) / c(d) | 0, a / b.pow(d, e)).toFixed(2) + ' ' + (e ? 'kMGTPEZY'[--e] + 'B' : 'Bytes');
 };
-<<<<<<< HEAD
-=======
 
 // Resolve nested values within an array.
 export const nested = function({rowData, column}) {
@@ -104,4 +102,3 @@ export const nested = function({rowData, column}) {
     [property]: get(rowData, property)
   };
 };
->>>>>>> d41043b64ef5cde9082838917ba96a181328d302
