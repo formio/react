@@ -15,6 +15,9 @@ module.exports = React.createClass({
     if (this.props.component.dataSrc === 'custom') {
       return false;
     }
+    if (this.props.component.dataSrc === 'resource' && this.props.component.valueProperty === '') {
+      return '_id';
+    }
     return this.props.component.valueProperty || 'value';
   },
   componentWillMount: function() {
