@@ -63,7 +63,7 @@ export const Formio = React.createClass({
       this.data[component.props.component.key] = component.state.value;
     }
     this.validate();
-    if (typeof this.props.onChange === 'function') {
+    if (typeof this.props.onChange === 'function' && !component.state.isPristine) {
       this.props.onChange({data: this.data}, component.props.component.key, component.state.value);
     }
   },

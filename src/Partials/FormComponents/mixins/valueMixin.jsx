@@ -181,7 +181,7 @@ module.exports = {
       Object.assign(previousState, this.validate(previousState.value));
       return previousState;
     }.bind(this), function() {
-      if (typeof this.props.onChange === 'function' && !this.state.isPristine) {
+      if (typeof this.props.onChange === 'function') {
         this.props.onChange(this);
       }
     }.bind(this));
