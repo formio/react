@@ -16,7 +16,7 @@ module.exports = {
     };
   },
   willReceiveProps: function(nextProps) {
-    if (this.props.component.refreshOn) {
+    if (this.props.component.refreshOn && !nextProps.formPristine) {
       const refreshOn = this.props.component.refreshOn;
       let refresh = false;
       if (refreshOn === 'data') {

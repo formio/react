@@ -18,7 +18,8 @@ export const Formio = React.createClass({
       alerts: [],
       isLoading: (this.props.form ? false : true),
       isSubmitting: false,
-      isValid: true
+      isValid: true,
+      isPristine: true
     };
   },
   getDefaultProps: function () {
@@ -65,6 +66,12 @@ export const Formio = React.createClass({
     this.validate();
     if (typeof this.props.onChange === 'function' && !component.state.isPristine) {
       this.props.onChange({data: this.data}, component.props.component.key, component.state.value);
+    }
+    // If a field is no longer pristine, the form is no longer pristine.
+    if (!component.state.isPristine && this.state.isPristine) {
+      this.setState({
+        isPristine: false
+      });
     }
   },
   validate: function () {
@@ -256,6 +263,7 @@ export const Formio = React.createClass({
           onChange={this.onChange}
           checkConditional={this.checkConditional}
           showAlert={this.showAlert}
+          formPristine={this.state.isPristine}
         />
       </form>
     );
