@@ -22,7 +22,12 @@ function defineTransformerOutsideStrictMode() {
    */
 
   //This escapes strict mode.
-  (1,eval)('function '+safeGlobalName+' (props) { return function (_, exp) { with(props) { return eval(exp); } } }');
+  try {
+    (1,eval)('function '+safeGlobalName+' (props) { return function (_, exp) { with(props) { return eval(exp); } } }');
+  }
+  catch (error) {
+    return '';
+  }
 
   var ret = eval(safeGlobalName);
 
