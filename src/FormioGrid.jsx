@@ -7,6 +7,7 @@ import {
 } from 'reactabular';
 import Paginator from './Partials/Paginator';
 import {nested} from './util';
+import {FormioComponents} from './Partials/FormioComponents';
 
 class FormioGrid extends React.Component {
   static defaultProps = {
@@ -40,8 +41,7 @@ class FormioGrid extends React.Component {
   };
 
   formatCell = (value, {column}) => {
-    const type = window.FormioComponents.hasOwnProperty(column.component.type) ? column.component.type : 'custom';
-    return window.FormioComponents[type].prototype.getDisplay(column.component, value);
+    return FormioComponents.getComponent(column.component.type).prototype.getDisplay(column.component, value);
   }
 
   columnsFromForm = (form) => {
