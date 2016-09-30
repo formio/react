@@ -17,12 +17,11 @@ export default (name, src) => {
     if (action.name !== state.name) {
       return state;
     }
-    switch(action.type) {
+    switch (action.type) {
       case SUBMISSIONS_REQUEST:
-        const limit = action.limit || state.limit;
         return {
           ...state,
-          limit,
+          limit: action.limit || state.limit,
           isFetching: true,
           submissions: [],
           pagination: {
@@ -47,9 +46,9 @@ export default (name, src) => {
           ...state,
           isFetching: false,
           error: action.error
-        }
+        };
       default:
         return state;
     }
   };
-}
+};

@@ -13,7 +13,7 @@ export default (name, src) => {
     if (action.name !== state.name) {
       return state;
     }
-    switch(action.type) {
+    switch (action.type) {
       case SUBMISSION_REQUEST:
         return {
           ...state,
@@ -34,9 +34,9 @@ export default (name, src) => {
           isFetching: false,
           isInvalid: true,
           error: action.error
-        }
+        };
       default:
         return state;
     }
   };
-}
+};
