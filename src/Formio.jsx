@@ -3,7 +3,7 @@ import Formiojs from 'formiojs';
 import {FormioComponentsList} from './Partials/FormioComponentsList';
 import _ from 'lodash';
 
-import './Partials/FormComponents';
+import './Partials/Components';
 
 export const Formio = React.createClass({
   displayName: 'Formio',

@@ -1,5 +1,6 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
+import {FormioComponents} from '../FormioComponents';
 
 module.exports = React.createClass({
   displayName: 'Datagrid',
@@ -75,14 +76,7 @@ module.exports = React.createClass({
               {this.props.component.components.map(function(component, index) {
                 var key = component.key || component.type + index;
                 var value = (row.hasOwnProperty(component.key) ? row[component.key] : component.defaultValue || '');
-                // FormioComponents is a global variable so external scripts can define custom components.
-                var FormioElement;
-                if (FormioComponents[component.type]) {
-                  FormioElement = FormioComponents[component.type];
-                }
-                else {
-                  FormioElement = FormioComponents['custom'];
-                }
+                var FormioElement = FormioComponents.getComponent(component.type);
                 if (this.props.checkConditional(component, row)) {
                   return (
                     <td key={key}>

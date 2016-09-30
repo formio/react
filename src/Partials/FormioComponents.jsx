@@ -1,10 +1,5 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var components = {};
-var groups = {
+const components = {};
+const groups = {
   __component: {
     title: 'Basic Components'
   },
@@ -14,16 +9,17 @@ var groups = {
   layout: {
     title: 'Layout Components'
   }
-};
+}
 
-var FormioComponents = exports.FormioComponents = {
-  addGroup: function addGroup(name, group) {
+export const FormioComponents = {
+  addGroup: function(name, group) {
     groups[name] = group;
   },
-  register: function register(type, component, group) {
+  register: function(type, component, group) {
     if (!components[type]) {
       components[type] = component;
-    } else {
+    }
+    else {
       Object.assign(components[type], component);
     }
 
@@ -32,9 +28,9 @@ var FormioComponents = exports.FormioComponents = {
       components[type].group = group || '__component';
     }
   },
-  getComponent: function getComponent(type) {
+  getComponent: function(type) {
     return components.hasOwnProperty(type) ? components[type] : components['custom'];
   },
-  components: components,
-  groups: groups
-};
+  components,
+  groups
+}
