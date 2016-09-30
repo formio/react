@@ -1,51 +1,42 @@
-'use strict';
+import {SUBMISSION_REQUEST, SUBMISSION_SUCCESS, SUBMISSION_FAILURE} from '../actions/submission';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _actionsSubmission = require('../actions/submission');
-
-exports['default'] = function (name, src) {
-  return function (state, action) {
-    if (state === undefined) state = {
-      src: src + '/submission',
-      name: name,
-      isFetching: false,
-      lastUpdated: 0,
-      submission: {},
-      error: ''
-    };
-
+export default (name, src) => {
+  return (state = {
+    src: src + '/submission',
+    name: name,
+    isFetching: false,
+    lastUpdated: 0,
+    submission: {},
+    error: ''
+  }, action) => {
     // Only proceed for this form.
     if (action.name !== state.name) {
       return state;
     }
-    switch (action.type) {
-      case _actionsSubmission.SUBMISSION_REQUEST:
-        return _extends({}, state, {
+    switch(action.type) {
+      case SUBMISSION_REQUEST:
+        return {
+          ...state,
           src: action.src,
           name: action.name,
-          isFetching: true
-        });
-      case _actionsSubmission.SUBMISSION_SUCCESS:
-        return _extends({}, state, {
+          isFetching: true,
+        };
+      case SUBMISSION_SUCCESS:
+        return {
+          ...state,
           submission: action.submission,
           isFetching: false,
           error: ''
-        });
-      case _actionsSubmission.SUBMISSION_FAILURE:
-        return _extends({}, state, {
+        };
+      case SUBMISSION_FAILURE:
+        return {
+          ...state,
           isFetching: false,
           isInvalid: true,
           error: action.error
-        });
+        }
       default:
         return state;
     }
   };
-};
-
-module.exports = exports['default'];
+}

@@ -1,34 +1,21 @@
-'use strict';
+import formiojs from 'formiojs';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _formiojs = require('formiojs');
-
-var _formiojs2 = _interopRequireDefault(_formiojs);
-
-var SUBMISSION_REQUEST = 'SUBMISSION_REQUEST';
-exports.SUBMISSION_REQUEST = SUBMISSION_REQUEST;
+export const SUBMISSION_REQUEST = 'SUBMISSION_REQUEST';
 function requestSubmission(name, src) {
   return {
     type: SUBMISSION_REQUEST
   };
 }
 
-var SUBMISSION_SUCCESS = 'SUBMISSION_SUCCESS';
-exports.SUBMISSION_SUCCESS = SUBMISSION_SUCCESS;
+export const SUBMISSION_SUCCESS = 'SUBMISSION_SUCCESS';
 function receiveSubmission(submission) {
   return {
     type: SUBMISSION_SUCCESS,
-    submission: submission
+    submission
   };
 }
 
-var SUBMISSION_FAILURE = 'SUBMISSION_FAILURE';
-exports.SUBMISSION_FAILURE = SUBMISSION_FAILURE;
+export const SUBMISSION_FAILURE = 'SUBMISSION_FAILURE';
 function failSubmission(err) {
   return {
     type: SUBMISSION_FAILURE,
@@ -36,8 +23,8 @@ function failSubmission(err) {
   };
 }
 
-var fetchSubmission = function fetchSubmission(name, src) {
-  return function (dispatch, getState) {
+export const fetchSubmission = (name, src) => {
+  return (dispatch, getState) => {
     // Check to see if the submission is already loaded.
     if (getState().submission) {
       return;
@@ -45,13 +32,14 @@ var fetchSubmission = function fetchSubmission(name, src) {
 
     dispatch(requestSubmission(name, src));
 
-    var formio = (0, _formiojs2['default'])(src);
+    const formio = formiojs(src);
 
-    formio.loadSubmission().then(function (result) {
-      dispatch(receiveSubmission(result));
-    })['catch'](function (result) {
-      dispatch(failSubmission(result));
-    });
+    formio.loadSubmission()
+      .then((result) => {
+        dispatch(receiveSubmission(result));
+      })
+      .catch((result) => {
+        dispatch(failSubmission(result));
+      });
   };
 };
-exports.fetchSubmission = fetchSubmission;
