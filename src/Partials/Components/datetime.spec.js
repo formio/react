@@ -2,6 +2,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
 import DateTimePicker from './datetime.jsx';
+import { date as DateLocalizer } from 'react-widgets/lib/util/localizers';
 import sinon from 'sinon';
 
 import form from '../../../test/forms/empty.json';
@@ -17,6 +18,7 @@ describe('Datetime', function () {
       "format": "yyyy-MM-dd HH:mm",
       "enableDate": true,
       "enableTime": true,
+      "defaultDate": new Date(),
       "datepickerMode": "day",
       "datePicker": {
         "showWeeks": true,
@@ -67,6 +69,18 @@ describe('Datetime', function () {
       expect(element.find('.formio-component-single .input-group .rw-datetimepicker input').length).to.equal(1);
       expect(element.find('.formio-component-single .input-group .rw-datetimepicker input').attr('class')).to.equal('rw-input');
       expect(element.find('.formio-component-single .input-group .rw-datetimepicker input').attr('id')).to.equal('testDate_input');
+      done();
+    });
+
+    it('Renders with the default date value', function (done) {
+      const format = DateLocalizer.getFormat('default');
+      const element = render(
+        <DateTimePicker
+          component={component}
+          attachToForm={attachToForm}
+        ></DateTimePicker>
+      ).find('.formio-component-single .input-group .rw-datetimepicker input');
+      expect(element.val()).to.equal(DateLocalizer.format(component.defaultDate, format));
       done();
     });
 
