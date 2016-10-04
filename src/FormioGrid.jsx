@@ -6,8 +6,27 @@ import {
   SearchColumns, resizableColumn
 } from 'reactabular';
 import Paginator from './Partials/Paginator';
+import {nested} from './util';
+import {FormioComponents} from './Partials/FormioComponents';
 
 class FormioGrid extends React.Component {
+  static defaultProps = {
+    form: {},
+    submissions: [],
+    query: {
+      sort: '-created'
+    },
+    paginationPage: 1,
+    paginationNumPages: 1,
+    paginationSizes: [25, 50, 75],
+    paginationSize: 25,
+    buttons: [],
+    buttonLocation: 'right'
+  }
+
+  static propTypes = {
+    src: React.PropTypes.string,
+  }
 
   constructor(props) {
     super(props);
@@ -19,25 +38,40 @@ class FormioGrid extends React.Component {
       paginationNumPage: this.props.paginationNumPage,
       paginationSize: this.props.paginationSize
     };
-
-    this.onRowClick = this.onRowClick.bind(this);
-    this.onPageChange = this.onPageChange.bind(this);
-    this.loadForm = this.loadForm.bind(this);
-    this.loadSubmissions = this.loadSubmissions.bind(this);
   };
 
-  formatCell(value, {column}) {
-    if (typeof value !== 'object') {
-      return value;
-    }
-    return '[Object]';
+  formatCell = (value, {column}) => {
+    return FormioComponents.getComponent(column.component.type).prototype.getDisplay(column.component, value);
   }
 
-  columnsFromForm(form) {
+  columnsFromForm = (form) => {
     let columns = [];
+    let buttons = this.props.buttons.map((button) => {
+      return {
+        property: '_id',
+        header: {
+          label: button.label
+        },
+        cell: {
+          format: (rowKey, {rowData}) => {
+            return (
+              <a className={button.class} onClick={(event) => {this.onButtonClick(event, button.event, rowData)}}>
+                {(() => {
+                  if (button.icon) {
+                    return <i className={button.icon} aria-hidden="true"></i>;
+                  }
+                })()}
+                <span>{button.label}</span>
+              </a>
+            )
+          }
+        },
+        visible: true
+      }
+    });
     if (form && form.components) {
-      FormioUtils.eachComponent(form.components, (component) => {
-        if (component.input && component.tableView && component.key) {
+      FormioUtils.eachComponent(form.components, (component, path) => {
+        if (component.input && component.tableView && component.key && path.indexOf('.') === -1) {
           columns.push({
             component: component,
             property: 'data.' + component.key,
@@ -50,7 +84,6 @@ class FormioGrid extends React.Component {
               }
             },
             cell: {
-              highlight: true,
               format: this.formatCell
             },
             visible: true
@@ -58,10 +91,18 @@ class FormioGrid extends React.Component {
         }
       });
     }
-    return columns;
+    if (!buttons.length) {
+      return columns;
+    }
+    if (this.props.buttonLocation === 'right') {
+      return columns.concat(buttons);
+    }
+    else {
+      return buttons.concat(columns);
+    }
   };
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps = (nextProps) => {
     if (nextProps.form !== this.props.form) {
       this.setState({
         columns: this.columnsFromForm(nextProps.form)
@@ -89,7 +130,7 @@ class FormioGrid extends React.Component {
     }
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     if (this.props.src) {
       this.formio = new Formiojs(this.props.src);
       this.loadForm();
@@ -97,7 +138,7 @@ class FormioGrid extends React.Component {
     }
   };
 
-  loadForm() {
+  loadForm = () => {
     this.formio.loadForm().then(form => {
       this.setState({
         columns: this.columnsFromForm(form)
@@ -105,9 +146,10 @@ class FormioGrid extends React.Component {
     });
   }
 
-  loadSubmissions() {
+  loadSubmissions = () => {
     this.formio.loadSubmissions({
       params: {
+        ...this.props.query,
         limit: this.state.paginationSize,
         skip: (this.state.paginationPage - 1) * this.state.paginationSize
       }
@@ -119,17 +161,25 @@ class FormioGrid extends React.Component {
     });
   }
 
-  onRowClick(row) {
+  onButtonClick = (event, type, row) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (typeof this.props.onButtonClick === 'function') {
+      this.props.onButtonClick(type, row._id);
+    }
+  }
+
+  onRowClick = (row) => {
     return {
       onClick: () => {
-        if (!this.props.buttons && typeof this.props.onButtonClick === 'function') {
+        if (typeof this.props.onButtonClick === 'function') {
           this.props.onButtonClick('row', row._id);
         }
       }
     };
   }
 
-  onPageChange(page) {
+  onPageChange = (page) => {
     if (typeof this.props.onPageChange === 'function') {
       this.props.onPageChange(page);
     }
@@ -140,10 +190,10 @@ class FormioGrid extends React.Component {
     }
   }
 
-  render() {
+  render = () => {
     let rows = resolve.resolve({
       columns: this.state.columns,
-      method: resolve.nested
+      method: nested
     })(this.state.submissions);
     return (
       <div className="table-responsive">
@@ -172,19 +222,5 @@ class FormioGrid extends React.Component {
     );
   }
 }
-
-FormioGrid.defaultProps = {
-  form: {},
-  submissions: [],
-  paginationPage: 1,
-  paginationNumPages: 1,
-  paginationSizes: [25, 50, 75],
-  paginationSize: 25
-}
-
-FormioGrid.propTypes = {
-  src: React.PropTypes.string,
-};
-
 
 export {FormioGrid};

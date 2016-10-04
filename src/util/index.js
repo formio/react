@@ -1,3 +1,5 @@
+import get from 'lodash/get';
+import has from 'lodash/has';
 
 function defineTransformerOutsideStrictMode() {
   var safeGlobalName = '____formioSelectMixinGetTransformer';
@@ -20,7 +22,12 @@ function defineTransformerOutsideStrictMode() {
    */
 
   //This escapes strict mode.
-  (1,eval)('function '+safeGlobalName+' (props) { return function (_, exp) { with(props) { return eval(exp); } } }');
+  try {
+    (1,eval)('function '+safeGlobalName+' (props) { return function (_, exp) { with(props) { return eval(exp); } } }');
+  }
+  catch (error) {
+    return '';
+  }
 
   var ret = eval(safeGlobalName);
 
@@ -46,7 +53,12 @@ var getTransformer = defineTransformerOutsideStrictMode();
 export const interpolate = (template, variables) => {
   var transform = getTransformer(variables);
   //find all {{ }} expression blocks and then replace the blocks with their evaluation.
-  return template.replace(/\{\s*\{([^\}]*)\}\s*\}/gm, transform);
+  try {
+    return template.replace(/\{\s*\{([^\}]*)\}\s*\}/gm, transform);
+  }
+  catch (error) {
+    return '';
+  }
 };
 
 /**
@@ -64,3 +76,35 @@ export const serialize = obj => {
   return str.join('&');
 };
 
+//helper function to render raw html under a react element.
+export const raw = function(html) {
+  return {dangerouslySetInnerHTML: {__html: html}};
+};
+
+export const fileSize = function(a, b, c, d, e) {
+  /* eslint-disable space-before-function-paren */
+  return (b = Math, c = b.log, d = 1024, e = c(a) / c(d) | 0, a / b.pow(d, e)).toFixed(2) + ' ' + (e ? 'kMGTPEZY'[--e] + 'B' : 'Bytes');
+};
+
+// Resolve nested values within an array.
+export const nested = function({rowData, column}) {
+  const {property} = column;
+
+  if (!property) {
+    return {};
+  }
+
+  if (!has(rowData, property)) {
+    //console.warn( // eslint-disable-line no-console
+    //  `resolve.nested - Failed to find "${property}" property from`,
+    //  rowData
+    //);
+
+    return {};
+  }
+
+  return {
+    ...rowData,
+    [property]: get(rowData, property)
+  };
+};
