@@ -117,7 +117,12 @@ module.exports = {
   getElements: function() {
     var Element;
     var properties = {
-      data: this.state.selectItems,
+      data: this.state.selectItems.filter((value) =>{
+        if (typeof value === 'object' && this.valueField()) {
+          value = _.get(value, this.valueField());
+        }
+        return this.state.value.indexOf(value) === -1;
+      }),
       placeholder: this.props.component.placeholder,
       textField: this.textField(),
       value: this.state.value,
