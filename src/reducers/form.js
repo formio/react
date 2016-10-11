@@ -1,4 +1,4 @@
-import {FORM_REQUEST, FORM_SUCCESS, FORM_FAILURE} from '../actions/form';
+import { FORM_REQUEST, FORM_SUCCESS, FORM_FAILURE } from '../actions/form';
 
 export default (name, src) => {
   return (state = {

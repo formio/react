@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 import formReducer from '../reducers/form';
 import submissionReducer from '../reducers/submission';
 import submissionsReducer from '../reducers/submissions';
@@ -17,5 +17,5 @@ export function injectReducers(name, src) {
 }
 
 export function formioReducers() {
-  return combineReducers({...reducers});
+  return combineReducers({ ...reducers });
 }

@@ -1,4 +1,4 @@
-import {FormioComponents} from '../FormioComponents';
+import { FormioComponents } from '../FormioComponents';
 
 import address from './address';
 import button from './button';

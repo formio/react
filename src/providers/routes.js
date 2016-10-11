@@ -15,4 +15,4 @@ export const FormioRoutes = (props, context) => {
       {routes}
     </div>
   );
-}
+};

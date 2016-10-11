@@ -42,7 +42,7 @@ export const fetchSubmissions = (name, page = 1) => {
     }
     const formio = formiojs(submissions.src);
 
-    formio.loadSubmissions({params})
+    formio.loadSubmissions({ params })
       .then((result) => {
         dispatch(receiveSubmissions(name, result));
       })
