@@ -2,7 +2,8 @@ import { SUBMISSION_REQUEST, SUBMISSION_SUCCESS, SUBMISSION_FAILURE } from '../a
 
 export default (name, src) => {
   return (state = {
-    src: src + '/submission',
+    src: src,
+    id: '',
     name: name,
     isFetching: false,
     lastUpdated: 0,
@@ -17,13 +18,14 @@ export default (name, src) => {
       case SUBMISSION_REQUEST:
         return {
           ...state,
-          src: action.src,
-          name: action.name,
+          id: action.id,
+          submission: {},
           isFetching: true,
         };
       case SUBMISSION_SUCCESS:
         return {
           ...state,
+          id: action.submission._id,
           submission: action.submission,
           isFetching: false,
           error: ''

@@ -26,23 +26,28 @@ function failForm(name, err) {
   };
 }
 
-export const fetchForm = (name) => {
-  return (dispatch, getState) => {
-    // Check to see if the form is already loaded.
-    if (getState().formio[name].form.form.components) {
-      return;
-    }
+export const FormActions = {
+  fetch: (name) => {
+    return (dispatch, getState) => {
+      // Check to see if the form is already loaded.
+      if (getState().formio[name].form.form.components) {
+        return;
+      }
 
-    dispatch(requestForm(name));
+      dispatch(requestForm(name));
 
-    const formio = formiojs(getState().formio[name].form.src);
+      const formio = formiojs(getState().formio[name].form.src);
 
-    formio.loadForm()
-      .then((result) => {
-        dispatch(receiveForm(name, result));
-      })
-      .catch((result) => {
-        dispatch(failForm(name, result));
-      });
-  };
-};
+      formio.loadForm()
+        .then((result) => {
+          dispatch(receiveForm(name, result));
+        })
+        .catch((result) => {
+          dispatch(failForm(name, result));
+        });
+    };
+  },
+  index: () => {
+
+  }
+}

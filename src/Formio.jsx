@@ -1,6 +1,6 @@
 import React from 'react';
 import Formiojs from 'formiojs';
-import {FormioComponentsList} from './partials/FormioComponentsList';
+import { FormioComponentsList } from './partials/FormioComponentsList';
 import _ from 'lodash';
 
 import './partials/Components';
