@@ -50,4 +50,4 @@ export const FormActions = {
   index: () => {
 
   }
-}
+};

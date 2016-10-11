@@ -4,17 +4,21 @@ import { connect } from 'react-redux';
 import { FormActions, SubmissionActions } from './actions';
 import { injectReducers, injectRoute } from './providers';
 import { Formio } from './Formio';
+import { FormioConfirm } from './FormioConfirm';
 import { FormioGrid } from './FormioGrid';
 
 export class FormioResource {
-  constructor(name, src, base = '') {
+  constructor(name, src, options = {}) {
     this.name = name;
     this.src = src;
-    this.base = base;
+    this.options = options;
+    this.options.base = this.options.base || '';
 
     injectReducers(name, src);
     injectRoute(this.getRoutes());
   }
+
+  getPath = () => this.options.base + '/' + this.name;
 
   getContainer = () => {
     return this.connectComponent({
@@ -24,22 +28,22 @@ export class FormioResource {
             <h2>{title}</h2>
             <ul className="nav nav-tabs">
               <li role="presentation">
-                <Link to={this.base + '/' + this.name + '/' + params[this.name + 'Id']}>View</Link>
+                <Link to={this.getPath() + '/' + params[this.name + 'Id']}>View</Link>
               </li>
               <li role="presentation">
-                <Link to={this.base + '/' + this.name + '/' + params[this.name + 'Id'] + '/edit'}>Edit</Link>
+                <Link to={this.getPath() + '/' + params[this.name + 'Id'] + '/edit'}>Edit</Link>
               </li>
               <li role="presentation">
-                <Link to={this.base + '/' + this.name + '/' + params[this.name + 'Id'] + '/delete'}>Delete</Link>
+                <Link to={this.getPath() + '/' + params[this.name + 'Id'] + '/delete'}>Delete</Link>
               </li>
             </ul>
-            <Match pattern={this.base + '/' + this.name + '/:' + this.name + 'Id'} exactly component={this.getView()} />
-            <Match pattern={this.base + '/' + this.name + '/:' + this.name + 'Id' + '/edit'} exactly component={this.getEdit()} />
-            <Match pattern={this.base + '/' + this.name + '/:' + this.name + 'Id' + '/delete'} exactly component={this.getDelete()} />
+            <Match pattern={this.getPath() + '/:' + this.name + 'Id'} exactly component={this.getView()} />
+            <Match pattern={this.getPath() + '/:' + this.name + 'Id' + '/edit'} exactly component={this.getEdit()} />
+            <Match pattern={this.getPath() + '/:' + this.name + 'Id' + '/delete'} exactly component={this.getDelete()} />
           </div>
         );
       },
-      mapStatetoProps: ({ formio }) => {
+      mapStateToProps: ({ formio }) => {
         return {
           title: formio[this.name].form.form.title
         };
@@ -49,7 +53,7 @@ export class FormioResource {
       }
     });
   };
-
+  
   getIndex = () => {
     return this.connectComponent({
       container: ({ form, submissions, pagination, limit, isFetching, onSortChange, onPageChange, onButtonClick }) => {
@@ -63,6 +67,8 @@ export class FormioResource {
         else {
           return (
             <div className="form-index">
+              <h3>{form.title}s</h3>
+              <Link className="btn btn-success" to={this.getPath() + 'Create'}><i className="glyphicon glyphicon-plus" aria-hidden="true"></i> New {form.title}</Link>
               <FormioGrid
                 submissions={submissions}
                 form={form}
@@ -97,13 +103,13 @@ export class FormioResource {
             switch(button) {
               case 'row':
               case 'view':
-                router.transitionTo(this.base + '/' + this.name + '/' + id);
+                router.transitionTo(this.getPath() + '/' + id);
                 break;
               case 'edit':
-                router.transitionTo(this.base + '/' + this.name + '/' + id + '/edit');
+                router.transitionTo(this.getPath() + '/' + id + '/edit');
                 break;
               case 'delete':
-                router.transitionTo(this.base + '/' + this.name + '/' + id + '/delete');
+                router.transitionTo(this.getPath() + '/' + id + '/delete');
                 break;
             }
           }
@@ -114,32 +120,32 @@ export class FormioResource {
 
   getCreate = () => {
     return this.connectComponent({
-      container: ({form, onFormSubmit}) => {
+      container: ({ pageTitle, form, onFormSubmit }) => {
+        let element = null;
         if (form.isFetching || !form.form) {
-          return (
-            <div className="form-create">
-              Loading...
-            </div>
-          );
+          element = 'Loading...';
         }
         else {
-          return (
-            <div className="form-create">
-              <Formio src={form.src} form={form.form} onFormSubmit={onFormSubmit} />
-            </div>
-          );
+          element = <Formio src={form.src} form={form.form} onFormSubmit={onFormSubmit} />;
         }
+        return (
+          <div className="form-create">
+            <h3>{pageTitle}</h3>
+            { element }
+          </div>
+        );
       },
       mapStateToProps: ({formio}) => {
         return {
-          form: formio[this.name].form
+          form: formio[this.name].form,
+          pageTitle: 'New ' + (formio[this.name].form.form.title || '')
         };
       },
-      mapDispatchToProps: (dispatch, state) => {
+      mapDispatchToProps: (dispatch, ownProps, router) => {
         dispatch(FormActions.fetch(this.name));
         return {
           onFormSubmit: submission => {
-            state.history.push(this.name);
+            router.transitionTo(this.getPath() + '/' + submission._id);
           }
         };
       }
@@ -218,7 +224,7 @@ export class FormioResource {
         dispatch(SubmissionActions.fetch(this.name, params[this.name + 'Id']));
         return {
           onFormSubmit: (error, submission) => {
-
+            router.transitionTo(this.getPath() + '/' + submission._id);
           }
         };
       }
@@ -227,21 +233,42 @@ export class FormioResource {
 
   getDelete = () => {
     return this.connectComponent({
-      container: () => {
+      container: ({ title, onYes, onNo }) => {
         return (
           <div className="form-delete">
-            Delete!
+            <FormioConfirm
+              message={'Are you sure you wish to delete the ' + title + '?'}
+              buttons={[
+                {
+                  text: 'Yes',
+                  class: 'btn btn-danger',
+                  callback: onYes
+                },
+                {
+                  text: 'No',
+                  class: 'btn btn-default',
+                  callback: onNo
+                }
+              ]}
+            />
           </div>
         );
       },
-        mapStateToProps: (state) => {
+      mapStateToProps: ({ formio }) => {
         return {
-          state
+          title: formio[this.name].form.form.title
         };
       },
-      mapDispatchToProps: (dispatch) => {
+      mapDispatchToProps: (dispatch, { params }, router) => {
+        dispatch(FormActions.fetch(this.name));
+        dispatch(SubmissionActions.fetch(this.name, params[this.name + 'Id']));
         return {
-          //dispatch
+          onYes: () => {
+            console.log('yes');
+          },
+          onNo: () => {
+            console.log('no');
+          }
         };
       }
     });
@@ -272,9 +299,9 @@ export class FormioResource {
   getRoutes = () => {
     return (
       <div className={this.name}>
-        <Match pattern={this.base + '/' + this.name} exactly component={this.getIndex()} />
-        <Match pattern={this.base + '/' + this.name + 'Create'} exactly component={this.getCreate()} />
-        <Match pattern={this.base + '/' + this.name + '/:' + this.name + 'Id'} component={this.getContainer()} />
+        <Match pattern={this.getPath()} exactly component={this.getIndex()} />
+        <Match pattern={this.getPath() + 'Create'} exactly component={this.getCreate()} />
+        <Match pattern={this.getPath() + '/:' + this.name + 'Id'} component={this.getContainer()} />
       </div>
     );
   }
