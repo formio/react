@@ -9,6 +9,10 @@ export function injectRoute(route) {
   );
 }
 
-export function formioRoutes() {
-  return routes;
+export const FormioRoutes = (props, context) => {
+  return (
+    <div>
+      {routes}
+    </div>
+  );
 }

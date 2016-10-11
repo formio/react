@@ -17,5 +17,5 @@ export function injectReducers(name, src) {
 }
 
 export function formioReducers() {
-  return {...reducers};
+  return combineReducers({...reducers});
 }
