@@ -6,27 +6,29 @@ class Paginator extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      paginationPage: this.props.paginationPage,
-      paginationNumPages: this.props.paginationNumPages
+      pagination: this.props.pagination
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.paginationPage !== this.props.paginationPage) {
+    if (nextProps.pagination.page !== this.props.pagination.page) {
       this.setState({
-        paginationPage: nextProps.paginationPage
+        pagination: {
+          page: nextProps.pagination.page
+        }
       });
     }
-    if (nextProps.paginationNumPages !== this.props.paginationNumPages) {
+    if (nextProps.pagination.numPages !== this.props.pagination.numPages) {
       this.setState({
-        paginationNumPages: nextProps.paginationNumPages
+        pagination: {
+          numPages: nextProps.pagination.numPages
+        }
       });
     }
   }
 
   render() {
-    const paginationPage = this.state.paginationPage;
-    const paginationNumPages = this.state.paginationNumPages;
+    const pagination = this.state.pagination;
     const bootstrapStyles = {
       className: 'pagination',
       tags: {
@@ -44,22 +46,26 @@ class Paginator extends React.Component {
           }
         },
         link: {
-          tag: 'a',
+          tag: 'a'
         }
       }
     };
+    const segments = _.clone(segmentize({
+      page: parseInt(pagination.page) + 1,
+      pages: parseInt(pagination.numPages),
+      beginPages: 3,
+      endPages: 3,
+      sidePages: 2
+    }));
+    // Fixes a bug in Pagify.Segment or segmentize.
+    segments.centerPage[0] = segments.centerPage[0] || 0;
     return <div className="paging">
       <Pagify.Context
         {...bootstrapStyles}
-        segments={segmentize({
-        page: parseInt(paginationPage) + 1,
-        pages: parseInt(paginationNumPages),
-        beginPages: 3,
-        endPages: 3,
-        sidePages: 2
-      })} onSelect={this.props.onSelect}
+        segments={segments}
+        onSelect={this.props.onSelect}
       >
-        <Pagify.Button page={paginationPage - 1}>Previous</Pagify.Button>
+        <Pagify.Button page={pagination.page - 1}>Previous</Pagify.Button>
 
         <Pagify.Segment field="beginPages" />
 
@@ -81,15 +87,13 @@ class Paginator extends React.Component {
 
         <Pagify.Segment field="endPages" />
 
-        <Pagify.Button page={paginationPage + 1}>Next</Pagify.Button>
+        <Pagify.Button page={pagination.page + 1}>Next</Pagify.Button>
       </Pagify.Context>
     </div>;
   }
 }
 
 Paginator.propTypes = {
-  paginationPage: React.PropTypes.number,
-  paginationNumPages: React.PropTypes.number,
   onSelect: React.PropTypes.func
 };
 

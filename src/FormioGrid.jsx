@@ -5,9 +5,9 @@ import {
   Table, search, edit, sort, highlight, resolve,
   SearchColumns, resizableColumn
 } from 'reactabular';
-import Paginator from './Partials/Paginator';
+import Paginator from './partials/Paginator';
 import {nested} from './util';
-import {FormioComponents} from './Partials/FormioComponents';
+import {FormioComponents} from './partials/FormioComponents';
 
 class FormioGrid extends React.Component {
   static defaultProps = {
@@ -16,10 +16,12 @@ class FormioGrid extends React.Component {
     query: {
       sort: '-created'
     },
-    paginationPage: 1,
-    paginationNumPages: 1,
-    paginationSizes: [25, 50, 75],
-    paginationSize: 25,
+    pagination: {
+      page: 1,
+      numPages: 1,
+      sizes: [25, 50, 75],
+      size: 25
+    },
     buttons: [],
     buttonLocation: 'right'
   }
@@ -34,9 +36,7 @@ class FormioGrid extends React.Component {
     this.state = {
       columns: this.columnsFromForm(props.form),
       submissions: this.props.submissions || [],
-      paginationPage: this.props.paginationPage,
-      paginationNumPage: this.props.paginationNumPage,
-      paginationSize: this.props.paginationSize
+      pagination: this.props.pagination
     };
   };
 
@@ -113,19 +113,25 @@ class FormioGrid extends React.Component {
         submissions: nextProps.submissions
       });
     }
-    if (nextProps.paginationPage !== this.state.paginationPage) {
+    if (nextProps.pagination.page !== this.state.pagination.page) {
       this.setState({
-        paginationPage: nextProps.paginationPage
+        pagination: {
+          page: nextProps.pagination.page
+        }
       });
     }
-    if (nextProps.paginationNumPage !== this.state.paginationNumPage) {
+    if (nextProps.pagination.numPage !== this.state.pagination.numPage) {
       this.setState({
-        paginationNumPage: nextProps.paginationNumPage
+        pagination: {
+          numPage: nextProps.pagination.numPage
+        }
       });
     }
-    if (nextProps.paginationSize !== this.state.paginationSize) {
+    if (nextProps.pagination.size !== this.state.pagination.size) {
       this.setState({
-        limit: nextProps.paginationSize
+        pagination: {
+          size: nextProps.pagination.size
+        }
       });
     }
   };
@@ -150,13 +156,15 @@ class FormioGrid extends React.Component {
     this.formio.loadSubmissions({
       params: {
         ...this.props.query,
-        limit: this.state.paginationSize,
-        skip: (this.state.paginationPage - 1) * this.state.paginationSize
+        limit: this.state.pagination.size,
+        skip: (this.state.pagination.page - 1) * this.state.pagination.size
       }
     }).then(submissions => {
       this.setState({
         submissions,
-        paginationNumPages: Math.ceil(submissions.serverCount / this.state.paginationSize)
+        pagination: {
+          numPages: Math.ceil(submissions.serverCount / this.state.pagination.size)
+        }
       })
     });
   }
@@ -185,7 +193,9 @@ class FormioGrid extends React.Component {
     }
     else {
       this.setState({
-        paginationPage: page
+        pagination: {
+          page: page
+        }
       }, this.loadSubmissions);
     }
   }
@@ -213,8 +223,7 @@ class FormioGrid extends React.Component {
 
         <div className="controls">
           <Paginator
-             paginationPage={this.state.paginationPage}
-             paginationNumPages={this.state.paginationNumPages}
+             pagination={this.state.pagination}
              onSelect={this.onPageChange}
            />
          </div>

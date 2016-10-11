@@ -1,9 +1,9 @@
 import React from 'react';
 import Formiojs from 'formiojs';
-import {FormioComponentsList} from './Partials/FormioComponentsList';
+import {FormioComponentsList} from './partials/FormioComponentsList';
 import _ from 'lodash';
 
-import './Partials/Components';
+import './partials/Components';
 
 export const Formio = React.createClass({
   displayName: 'Formio',

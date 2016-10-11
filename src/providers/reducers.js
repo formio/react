@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
-import formReducer from './form';
-import submissionReducer from './submission';
-import submissionsReducer from './submissions';
+import formReducer from '../reducers/form';
+import submissionReducer from '../reducers/submission';
+import submissionsReducer from '../reducers/submissions';
 
 let reducers = {};
 
