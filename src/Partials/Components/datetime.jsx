@@ -10,10 +10,36 @@ module.exports = React.createClass({
   displayName: 'Datetime',
   mixins: [valueMixin, multiMixin],
   getInitialValue: function() {
-    return null;
+    if (
+      typeof this.props.component === "undefined" ||
+      typeof this.props.component.defaultDate === "undefined" ||
+      this.props.component.defaultDate.length === 0
+    ) {
+      return '';
+    }
+    const { defaultDate } = this.props.component;
+
+    var dateVal = new Date(defaultDate);
+    if (isNaN(dateVal.getDate())) {
+      try {
+        dateVal = new Date(eval(defaultDate));
+      }
+      catch (e) {
+        dateVal = '';
+      }
+    }
+
+    if (isNaN(dateVal)) {
+      dateVal = '';
+    }
+
+    return dateVal;
   },
   onChangeDatetime: function(index, value, str) {
-    this.setValue(value, index);
+    this.setValue(
+      this.parseMomentValue(value),
+      index
+    );
   },
   getSingleElement: function(value, index) {
     return (
@@ -29,9 +55,5 @@ module.exports = React.createClass({
         onChange={this.onChangeDatetime.bind(null, index)}
         />
     );
-  },
-  getValueDisplay: function(component, data) {
-    // TODO: use the date formatter in component.format
-    return data;
   }
 });
