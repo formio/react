@@ -1,4 +1,4 @@
-import { SUBMISSIONS_REQUEST, SUBMISSIONS_SUCCESS, SUBMISSIONS_FAILURE } from '../actions/submissions';
+import { SUBMISSIONS_REQUEST, SUBMISSIONS_SUCCESS, SUBMISSIONS_FAILURE } from '../actions';
 
 export default (name, src) => {
   return (state = {
