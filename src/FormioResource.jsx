@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { FormActions, SubmissionActions } from './actions';
 import { injectReducers, injectRoute } from './providers';
 import { Formio } from './Formio';
-import { FormioConfirm } from './FormioConfirm';
+import { FormioConfirm } from './partials/FormioConfirm';
 import { FormioGrid } from './FormioGrid';
 
 export class FormioResource {
@@ -207,6 +207,7 @@ export class FormioResource {
                 src={ src }
                 form={ form.form }
                 submission={ submission.submission }
+                onFormSubmit={ onFormSubmit }
               />
             </div>
           );
@@ -223,7 +224,7 @@ export class FormioResource {
         dispatch(FormActions.fetch(this.name));
         dispatch(SubmissionActions.fetch(this.name, params[this.name + 'Id']));
         return {
-          onFormSubmit: (error, submission) => {
+          onFormSubmit: submission => {
             router.transitionTo(this.getPath() + '/' + submission._id);
           }
         };
@@ -264,10 +265,16 @@ export class FormioResource {
         dispatch(SubmissionActions.fetch(this.name, params[this.name + 'Id']));
         return {
           onYes: () => {
-            console.log('yes');
+            SubmissionActions.delete(this.name, params[this.name + 'Id'])
+              .then(() => {
+                router.transitionTo(this.getPath());
+              })
+              .catch((error) => {
+
+              })
           },
           onNo: () => {
-            console.log('no');
+            router.transitionTo(this.getPath());
           }
         };
       }

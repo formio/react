@@ -27,7 +27,7 @@ class FormioGrid extends React.Component {
   }
 
   static propTypes = {
-    src: React.PropTypes.string,
+    src: React.PropTypes.string
   }
 
   constructor(props) {

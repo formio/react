@@ -73,6 +73,10 @@ export const SubmissionActions = {
         });
     };
   },
+  delete: (name, id) => {
+    const formio = formiojs(getState().formio[name].form.src + '/submission/' + id);
+    return formio.deleteSubmission();
+  },
   index: (name, page = 1) => {
     return (dispatch, getState) => {
       dispatch(requestSubmissions(name, page));
