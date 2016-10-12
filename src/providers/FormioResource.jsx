@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Match, Link, propTypes } from 'react-router';
+import { Match, Link } from 'react-router';
 import { combineReducers } from 'redux';
 import { Formio, FormioConfirm, FormioGrid } from '../components';
 import FormioProvider from './FormioProvider';

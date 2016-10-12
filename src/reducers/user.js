@@ -1,32 +1,27 @@
-import { FORM_REQUEST, FORM_SUCCESS, FORM_FAILURE } from '../actions';
+import { USER_REQUEST, USER_SUCCESS, USER_FAILURE } from '../actions';
 
-export default (name, src) => {
+export default () => {
   return (state = {
-    src: src,
-    name: name,
     isFetching: false,
     lastUpdated: 0,
-    form: {},
+    user: null,
     error: ''
   }, action) => {
-    // Only proceed for this form.
-    if (action.name !== state.name) {
-      return state;
-    }
+    // Only proceed for this user.
     switch (action.type) {
-      case FORM_REQUEST:
+      case USER_REQUEST:
         return {
           ...state,
           isFetching: true,
         };
-      case FORM_SUCCESS:
+      case USER_SUCCESS:
         return {
           ...state,
-          form: action.form,
+          user: action.user,
           isFetching: false,
           error: ''
         };
-      case FORM_FAILURE:
+      case USER_FAILURE:
         return {
           ...state,
           isFetching: false,
