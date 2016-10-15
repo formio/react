@@ -2,8 +2,8 @@ import { USER_REQUEST, USER_SUCCESS, USER_FAILURE } from '../actions';
 
 export default () => {
   return (state = {
+    init: false,
     isFetching: false,
-    lastUpdated: 0,
     user: null,
     error: ''
   }, action) => {
@@ -12,6 +12,7 @@ export default () => {
       case USER_REQUEST:
         return {
           ...state,
+          init: true,
           isFetching: true,
         };
       case USER_SUCCESS:
@@ -25,8 +26,14 @@ export default () => {
         return {
           ...state,
           isFetching: false,
-          isInvalid: true,
           error: action.error
+        };
+      case USER_LOGOUT:
+        return {
+          ...state,
+          user: null,
+          isFetching: false,
+          error: ''
         };
       default:
         return state;

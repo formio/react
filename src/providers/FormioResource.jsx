@@ -49,7 +49,9 @@ export default class extends FormioProvider {
           title: formio[this.name].form.form.title
         };
       },
-      mapDispatchToProps: () => {
+      mapDispatchToProps: (dispatch) => {
+        dispatch(FormActions.fetch(this.name));
+        dispatch(SubmissionActions.fetch(this.name, params[this.name + 'Id']));
         return {};
       }
     });
@@ -183,11 +185,7 @@ export default class extends FormioProvider {
           submission: formio[this.name].submission,
         };
       },
-      mapDispatchToProps: (dispatch, { params }, router) => {
-        dispatch(FormActions.fetch(this.name));
-        dispatch(SubmissionActions.fetch(this.name, params[this.name + 'Id']));
-        return {};
-      }
+      mapDispatchToProps: () => null
     });
   };
 
@@ -214,16 +212,14 @@ export default class extends FormioProvider {
           );
         }
       },
-        mapStateToProps: ({ formio }, { params }) => {
-          return {
-            src: formio[this.name].form.src + '/submission/' + params[this.name + 'Id'],
-            form: formio[this.name].form,
-            submission: formio[this.name].submission,
-          };
+      mapStateToProps: ({ formio }, { params }) => {
+        return {
+          src: formio[this.name].form.src + '/submission/' + params[this.name + 'Id'],
+          form: formio[this.name].form,
+          submission: formio[this.name].submission,
+        };
       },
       mapDispatchToProps: (dispatch, { params }, router) => {
-        dispatch(FormActions.fetch(this.name));
-        dispatch(SubmissionActions.fetch(this.name, params[this.name + 'Id']));
         return {
           onFormSubmit: submission => {
             router.transitionTo(this.basePath() + '/' + submission._id);
@@ -262,8 +258,6 @@ export default class extends FormioProvider {
         };
       },
       mapDispatchToProps: (dispatch, { params }, router) => {
-        dispatch(FormActions.fetch(this.name));
-        dispatch(SubmissionActions.fetch(this.name, params[this.name + 'Id']));
         return {
           onYes: () => {
             SubmissionActions.delete(this.name, params[this.name + 'Id'])

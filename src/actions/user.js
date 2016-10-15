@@ -23,6 +23,13 @@ function failUser(err) {
   };
 }
 
+export const USER_LOGOUT = 'USER_LOGOUT';
+function logoutUser() {
+  return {
+    type: USER_LOGOUT
+  };
+}
+
 export const UserActions = {
   fetch: () => {
     return (dispatch) => {
@@ -38,6 +45,10 @@ export const UserActions = {
     };
   },
   logout: () => {
+    return (dispatch) => {
+      dispatch(logoutUser());
 
+      formiojs.logout();
+    }
   }
 };

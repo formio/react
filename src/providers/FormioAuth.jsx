@@ -1,5 +1,5 @@
 import React from 'react';
-import { Match, Link } from 'react-router';
+import { Match, Link, Redirect } from 'react-router';
 import FormioProvider from './FormioProvider';
 import { Formio } from '../components';
 import { UserActions } from '../actions';
@@ -39,45 +39,42 @@ export default class extends FormioProvider {
   Global = () => {
     return this.connectComponent({
       container: class extends React.Component {
-        constructor({ shouldRedirect, redirect }) {
-          super();
-          this.state = {
-            shouldRedirect,
-            redirect
+        render = () => {
+          const { shouldRedirect, to } = this.props;
+          if (shouldRedirect) {
+            return <Redirect to={to} />
+          }
+          else {
+            return null;
           }
         }
-        componentWillReceiveProps({ shouldRedirect }) {
-          if (this.props.shouldRedirect != shouldRedirect) {
-            this.setState({
-              shouldRedirect
-            });
-          }
-        }
-        componentWillUpdate () {
-          if (this.state.shouldRedirect) {
-            this.state.redirect();
-          }
-        }
-        render = () => null
       },
-      mapStateToProps: ({ formio }, { location }) => {
+      mapStateToProps: (state, { location }) => {
+        const { currentUser } = state.formio;
         return {
-          shouldRedirect: !formio.currentUser.isFetching && !formio.currentUser.user && !this.allowedStates.includes(location.pathname)
+          shouldRedirect:
+            this.forceAuth &&
+            this.allowedStates.length &&
+            currentUser.init && !currentUser.isFetching && !currentUser.user && !this.allowedStates.includes(location.pathname),
+          to: this.anonState
         }
       },
-      mapDispatchToProps: (dispatch, ownProps, router) => {
-        dispatch(UserActions.fetch());
-
-        let redirect = () => {}
-        // Set function to force authentication if set.
-        if (this.forceAuth && this.allowedStates.length) {
-          redirect = () => {
-            router.transitionTo(this.anonState);
-          }
-        }
-        return { redirect };
-      }
+      mapDispatchToProps: () => null
     })
+  }
+
+  Logout = () => {
+    return {
+      container: Redirect,
+      mapStateToProps: () => {
+        return {
+          to: this.anonState
+        }
+      },
+      mapDispatchToProps: (dispatch) => {
+        dispatch(UserActions.logout());
+      }
+    }
   }
 
   Auth = () => {
@@ -174,6 +171,7 @@ export default class extends FormioProvider {
     return (
       <div className="formio-auth">
         <Match pattern="/" component={this.Global()} />
+        <Match pattern="/logout" exactly component={this.Logout()} />
         <Match pattern={this.anonState} exactly component={this.Auth()} />
       </div>
     );
