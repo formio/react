@@ -9,12 +9,11 @@ module.exports = React.createClass({
     return {};
   },
   elementChange: function(component) {
-    var value = this.state.value;
-    value[component.props.component.key] = component.state.value;
-    this.setState({
-      value: value
-    });
-    this.props.onChange(this);
+    if (component.props.component.key) {
+      var value = this.state.value;
+      value[component.props.component.key] = component.state.value;
+      this.setValue(value);
+    }
   },
   getElements: function() {
     var classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
