@@ -59,12 +59,12 @@ export default class extends FormioProvider {
           to: this.anonState
         }
       },
-      mapDispatchToProps: () => null
+      mapDispatchToProps: () => { return {};}
     })
   }
 
   Logout = () => {
-    return {
+    return this.connectComponent({
       container: Redirect,
       mapStateToProps: () => {
         return {
@@ -73,8 +73,9 @@ export default class extends FormioProvider {
       },
       mapDispatchToProps: (dispatch) => {
         dispatch(UserActions.logout());
+        return {};
       }
-    }
+    });
   }
 
   Auth = () => {

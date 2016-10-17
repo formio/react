@@ -1,4 +1,4 @@
-import { USER_REQUEST, USER_SUCCESS, USER_FAILURE } from '../actions';
+import { USER_REQUEST, USER_SUCCESS, USER_FAILURE, USER_LOGOUT } from '../actions';
 
 export default () => {
   return (state = {
