@@ -46,9 +46,10 @@ export const UserActions = {
   },
   logout: () => {
     return (dispatch) => {
-      dispatch(logoutUser());
-
-      formiojs.logout();
+      formiojs.logout()
+        .then(() => {
+          dispatch(logoutUser());
+        });
     }
   }
 };

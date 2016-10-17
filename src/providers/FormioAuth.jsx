@@ -59,7 +59,10 @@ export default class extends FormioProvider {
           to: this.anonState
         }
       },
-      mapDispatchToProps: () => { return {};}
+      mapDispatchToProps: (dispatch) => {
+        dispatch(UserActions.fetch());
+        return {};
+      }
     })
   }
 

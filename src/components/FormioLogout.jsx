@@ -31,7 +31,7 @@ export default class extends React.Component {
       })
     )(
       ({ user, onClick }) => {
-        if (!user || user.user) {
+        if (!user || !user.user) {
           return null;
         }
         else {
