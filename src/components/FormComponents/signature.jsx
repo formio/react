@@ -6,10 +6,7 @@ module.exports = React.createClass({
   displayName: 'Signature',
   mixins: [valueMixin],
   onEnd: function(type, image) {
-    this.setState({
-      value: this.signature.toDataURL()
-    });
-    this.props.onChange(this);
+    this.setValue(this.signature.toDataURL());
   },
   componentDidMount: function() {
     this.signature = this.refs[this.props.component.key];
