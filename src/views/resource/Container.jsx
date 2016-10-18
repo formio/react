@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, Match } from 'react-router';
-import { Formio } from '../../components';
-import { FormioView } from '../../providers';
+import { FormioView } from '../../components';
 import { FormActions, SubmissionActions } from '../../actions';
 
 export default function (resource) {

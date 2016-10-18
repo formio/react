@@ -1,7 +1,6 @@
 import React from 'react';
-import { FormioConfirm } from '../../components';
+import { FormioConfirm, FormioView } from '../../components';
 import { SubmissionActions } from '../../actions';
-import { FormioView } from '../../providers';
 
 export default function (resource) {
   return class extends FormioView {

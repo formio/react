@@ -1,6 +1,5 @@
 import React from 'react';
-import { Formio } from '../../components';
-import { FormioView } from '../../providers';
+import { Formio, FormioView } from '../../components';
 import { FormActions } from '../../actions';
 
 export default function (resource) {

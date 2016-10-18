@@ -1,8 +1,5 @@
 import React from 'react';
 import { Match, Link, Redirect } from 'react-router';
-import FormioProvider from './FormioProvider';
-import { Formio } from '../components';
-import { UserActions } from '../actions';
 import { addReducer, addRoute } from '../factories';
 import { userReducer } from '../reducers';
 import { Auth, Global, Logout } from '../views/auth';
@@ -30,7 +27,7 @@ export default class {
   }
 
   /**
-   * This is a crazy workaround to force any state transitions to either be authenticated or in allowedStates.
+   * Global is used to enforce "forceAuth" and will redirect if not logged in.
    *
    * @returns {{contextTypes, new(*=, *=): {render}}}
    * @constructor

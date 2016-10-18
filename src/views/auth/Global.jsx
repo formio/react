@@ -1,7 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router';
-import { Formio } from '../../components';
-import { FormioView } from '../../providers';
+import { FormioView } from '../../components';
 import { UserActions } from '../../actions';
 
 export default function (auth) {
@@ -24,7 +23,6 @@ export default function (auth) {
 
     mapStateToProps = (state, { location }) => {
       const { currentUser } = state.formio;
-      console.log()
       return {
         shouldRedirect:
           auth.forceAuth &&

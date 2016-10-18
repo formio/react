@@ -1,7 +1,6 @@
 import React from 'react';
-import { FormioView } from '../../providers';
 import { Link } from 'react-router';
-import { FormioGrid } from '../../components';
+import { FormioGrid, FormioView } from '../../components';
 import { FormActions, SubmissionActions } from '../../actions';
 
 export default function (resource) {

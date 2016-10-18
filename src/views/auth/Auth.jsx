@@ -1,7 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router';
-import { Formio } from '../../components';
-import { FormioView } from '../../providers';
+import { Formio, FormioView } from '../../components';
 import { UserActions } from '../../actions';
 
 export default function (auth) {

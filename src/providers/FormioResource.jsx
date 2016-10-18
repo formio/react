@@ -1,11 +1,9 @@
 import React from 'react';
 import { Match, Link } from 'react-router';
 import { combineReducers } from 'redux';
-import { Formio, FormioConfirm, FormioGrid } from '../components';
 import { formReducer, submissionReducer, submissionsReducer } from '../reducers';
 import { addReducer, addRoute } from '../factories';
 import { Index, Create, Container, View, Edit, Delete } from '../views/resource';
-import { FormActions, SubmissionActions } from '../actions';
 
 export default class {
   constructor(name, src, options = {}) {
