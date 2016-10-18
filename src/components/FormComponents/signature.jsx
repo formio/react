@@ -1,42 +1,47 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
-import SignaturePad from 'react-signature-pad';
+import SignatureCanvas from 'react-signature-canvas';
 
 module.exports = React.createClass({
   displayName: 'Signature',
   mixins: [valueMixin],
-  onEnd: function(type, image) {
-    this.setValue(this.signature.toDataURL());
+  onEnd: function() {
+    this.setValue(this.signature.getCanvas().toDataURL());
   },
   componentDidMount: function() {
-    this.signature = this.refs[this.props.component.key];
     if (this.state.value) {
       this.signature.fromDataURL(this.state.value);
     }
   },
-  clearSignature: function(ref) {
-    var signature = this.refs[ref];
-    signature.clear();
+  clearSignature: function() {
+    this.signature.clear();
   },
   getElements: function() {
-    var footerStyle = {textAlign: 'center', color:'#C3C3C3'};
-    var footerClass = 'formio-signature-footer' + (this.props.component.validate.required ? ' required' : '');
-    var ref = this.props.component.key;
+    const { component } = this.props;
+    var footerClass = 'formio-signature-footer' + (component.validate.required ? ' required' : '');
+    var ref = component.key;
     var styles = {
-      height: 'auto',
-      width: this.props.component.width
+      height: component.height,
+      width: component.width
     };
+    console.log(component);
     return (
       <div>
-        <span className=" glyphicon glyphicon-refresh"  onClick={this.clearSignature.bind(null, ref)}/>
+        <span className=" glyphicon glyphicon-refresh"  onClick={this.clearSignature}/>
         <div style={styles}>
-          <SignaturePad
-            ref={this.props.component.key}
-            {...this.props.component}
+          <SignatureCanvas
+            ref={ (ref) => { this.signature = ref; } }
+            minWidth={Number(component.minWidth)}
+            maxWidth={Number(component.maxWidth)}
+            penColor={component.penColor}
+            backgroundColor={component.backgroundColor}
+            canvasProps={{
+              className: 'signature-canvas'
+            }}
             onEnd={this.onEnd}
           />
         </div>
-        <div className={footerClass} style={footerStyle}>{this.props.component.footer}</div>
+        <div className={footerClass}>{component.footer}</div>
       </div>
     );
   }

@@ -117,7 +117,14 @@ canvas {
 }
 
 .formio-signature-footer {
+    color: #C3C3C3;
     margin: 0 10px;
+    text-align: center;
+}
+
+.form-field-type-signature .signature-canvas {
+    width: 100%;
+    height: 100%;
 }
 
 .formio-content-centered {

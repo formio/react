@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import storeShape from 'react-redux/src/utils/storeShape';
+import { default as storeShape } from 'react-redux/lib/utils/storeShape';
 import { propTypes } from 'react-router';
 import { deepEqual } from '../util';
 
