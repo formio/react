@@ -12,6 +12,9 @@ module.exports = React.createClass({
     if (this.state.value) {
       this.signature.fromDataURL(this.state.value);
     }
+    else {
+      this.signature.clear();
+    }
   },
   clearSignature: function() {
     this.signature.clear();
