@@ -1,5 +1,6 @@
 import get from 'lodash/get';
 import has from 'lodash/has';
+import isEqual from 'lodash/isEqual';
 
 function defineTransformerOutsideStrictMode() {
   var safeGlobalName = '____formioSelectMixinGetTransformer';
@@ -108,3 +109,5 @@ export const nested = function({ rowData, column }) {
     [property]: get(rowData, property)
   };
 };
+
+export const deepEqual = isEqual;
