@@ -37,7 +37,7 @@ export default class extends FormioProvider {
    * @constructor
    */
   Global = () => {
-    return this.connectComponent({
+    return this.connectView({
       container: class extends React.Component {
         render = () => {
           const { shouldRedirect, to } = this.props;
@@ -67,7 +67,7 @@ export default class extends FormioProvider {
   }
 
   Logout = () => {
-    return this.connectComponent({
+    return this.connectView({
       container: Redirect,
       mapStateToProps: () => {
         return {
@@ -82,7 +82,7 @@ export default class extends FormioProvider {
   }
 
   Auth = () => {
-    return this.connectComponent({
+    return this.connectView({
       container: ({ onFormSubmit }) => {
         let loginForm = null;
         let registerForm = null;

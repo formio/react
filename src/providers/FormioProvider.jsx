@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import storeShape from 'react-redux/src/utils/storeShape';
 import { propTypes } from 'react-router';
+import { deepEqual } from '../util';
 
 export default class {
   /**
@@ -14,15 +16,30 @@ export default class {
    * @param component
    * @returns {{contextTypes, new(*=, *=): {render}}}
    */
-  connectComponent(component) {
+  connectView(component) {
     return class extends React.Component {
       constructor(props, context) {
         super(props, context);
         this.router = context.router;
+        this.store = context.store;
       }
 
       static contextTypes = {
-        router: propTypes.routerContext
+        router: propTypes.routerContext,
+        store: storeShape
+      }
+
+      componentWillMount = () => {
+        if (typeof component.init === 'function') {
+          component.init(this.props, this.store, this.router);
+        }
+      }
+
+      componentWillReceiveProps = ({ params }) => {
+        // If params have changed we are on a new page.
+        if (!deepEqual(params, this.props.params) && typeof component.init === 'function') {
+          component.init(this.props, this.store, this.router);
+        }
       }
 
       render = () => {

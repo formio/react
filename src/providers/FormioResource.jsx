@@ -22,7 +22,7 @@ export default class extends FormioProvider {
   basePath = () => this.options.base + '/' + this.name;
 
   Container = () => {
-    return this.connectComponent({
+    return this.connectView({
       container: ({ title, params }) => {
         return (
           <div className="form-container">
@@ -49,7 +49,7 @@ export default class extends FormioProvider {
           title: formio[this.name].form.form.title
         };
       },
-      mapDispatchToProps: (dispatch) => {
+      mapDispatchToProps: (dispatch, { params }) => {
         dispatch(FormActions.fetch(this.name));
         dispatch(SubmissionActions.fetch(this.name, params[this.name + 'Id']));
         return {};
@@ -58,7 +58,7 @@ export default class extends FormioProvider {
   };
   
   Index = () => {
-    return this.connectComponent({
+    return this.connectView({
       container: ({ form, submissions, pagination, limit, isFetching, onSortChange, onPageChange, onButtonClick }) => {
         if (isFetching) {
           return (
@@ -122,7 +122,7 @@ export default class extends FormioProvider {
   };
 
   Create = () => {
-    return this.connectComponent({
+    return this.connectView({
       container: ({ pageTitle, form, onFormSubmit }) => {
         let element = null;
         if (form.isFetching || !form.form) {
@@ -156,7 +156,7 @@ export default class extends FormioProvider {
   };
 
   View = () => {
-    return this.connectComponent({
+    return this.connectView({
       container: ({ src, form, submission }) => {
         if (form.isFetching || !form.form || submission.isFetching || !submission.submission) {
           return (
@@ -185,14 +185,14 @@ export default class extends FormioProvider {
           submission: formio[this.name].submission,
         };
       },
-      mapDispatchToProps: () => null
+      mapDispatchToProps: () => { return {};}
     });
   };
 
   Edit = () => {
-    return this.connectComponent({
-      container: ({ src, form, submission, onFormSubmit }) => {
-        if (form.isFetching || !form.form || submission.isFetching || !submission.submission) {
+    return this.connectView({
+      container: ({ src, form, submission, onFormSubmit, params }) => {
+        if (form.isFetching || !form.form || submission.isFetching || !submission.submission || params[this.name + 'Id'] !== submission.submission._id) {
           return (
             <div className="form-view">
               Loading...
@@ -230,7 +230,7 @@ export default class extends FormioProvider {
   };
 
   Delete = () => {
-    return this.connectComponent({
+    return this.connectView({
       container: ({ title, onYes, onNo }) => {
         return (
           <div className="form-delete">
