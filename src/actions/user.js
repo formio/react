@@ -50,6 +50,6 @@ export const UserActions = {
         .then(() => {
           dispatch(logoutUser());
         });
-    }
+    };
   }
 };

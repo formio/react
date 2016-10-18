@@ -79,7 +79,7 @@ export const SubmissionActions = {
       formio.deleteSubmission();
 
       // TODO: Clear the submission from the store.
-    }
+    };
   },
   index: (name, page = 1) => {
     return (dispatch, getState) => {
