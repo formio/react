@@ -16,6 +16,11 @@ module.exports = React.createClass({
       this.signature.clear();
     }
   },
+  willReceiveProps: function(nextProps) {
+    if (this.props.value !== nextProps.value) {
+      this.signature.fromDataURL(nextProps.value);
+    }
+  },
   clearSignature: function() {
     this.signature.clear();
   },
