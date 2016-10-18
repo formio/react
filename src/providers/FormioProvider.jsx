@@ -31,14 +31,14 @@ export default class {
 
       componentWillMount = () => {
         if (typeof component.init === 'function') {
-          component.init(this.props, this.store, this.router);
+          component.init(this.store, this.props, this.router);
         }
       }
 
       componentWillReceiveProps = ({ params }) => {
         // If params have changed we are on a new page.
         if (!deepEqual(params, this.props.params) && typeof component.init === 'function') {
-          component.init(this.props, this.store, this.router);
+          component.init(this.store, this.props, this.router);
         }
       }
 

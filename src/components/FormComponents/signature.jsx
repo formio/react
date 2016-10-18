@@ -24,7 +24,6 @@ module.exports = React.createClass({
       height: component.height,
       width: component.width
     };
-    console.log(component);
     return (
       <div>
         <span className=" glyphicon glyphicon-refresh"  onClick={this.clearSignature}/>

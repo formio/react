@@ -5,8 +5,9 @@ import { Formio } from '../components';
 import { UserActions } from '../actions';
 import { addReducer, addRoute } from '../factories';
 import { userReducer } from '../reducers';
+import { Auth, Global, Logout } from '../views/auth';
 
-export default class extends FormioProvider {
+export default class {
   constructor({
     appUrl,
     loginForm = 'user/login',
@@ -16,8 +17,6 @@ export default class extends FormioProvider {
     anonState = '/auth',
     allowedStates = ['/auth']
   }) {
-    super();
-
     this.appUrl = appUrl;
     this.loginForm = loginForm;
     this.registerForm = registerForm;
@@ -36,136 +35,11 @@ export default class extends FormioProvider {
    * @returns {{contextTypes, new(*=, *=): {render}}}
    * @constructor
    */
-  Global = () => {
-    return this.connectView({
-      container: class extends React.Component {
-        render = () => {
-          const { shouldRedirect, to } = this.props;
-          if (shouldRedirect) {
-            return <Redirect to={to} />
-          }
-          else {
-            return null;
-          }
-        }
-      },
-      mapStateToProps: (state, { location }) => {
-        const { currentUser } = state.formio;
-        return {
-          shouldRedirect:
-            this.forceAuth &&
-            this.allowedStates.length &&
-            currentUser.init && !currentUser.isFetching && !currentUser.user && !this.allowedStates.includes(location.pathname),
-          to: this.anonState
-        }
-      },
-      mapDispatchToProps: (dispatch) => {
-        dispatch(UserActions.fetch());
-        return {};
-      }
-    })
-  }
+  Global = Global
 
-  Logout = () => {
-    return this.connectView({
-      container: Redirect,
-      mapStateToProps: () => {
-        return {
-          to: this.anonState
-        }
-      },
-      mapDispatchToProps: (dispatch) => {
-        dispatch(UserActions.logout());
-        return {};
-      }
-    });
-  }
+  Logout = Logout
 
-  Auth = () => {
-    return this.connectView({
-      container: ({ onFormSubmit }) => {
-        let loginForm = null;
-        let registerForm = null;
-        if (this.loginForm) {
-          loginForm = (
-            <div className="panel panel-default">
-              <div className="panel-heading">
-                <h3 className="panel-title">Login</h3>
-              </div>
-              <div className="panel-body">
-                <div className="row">
-                  <div className="col-lg-12">
-                    <Formio src={this.appUrl + '/' + this.loginForm} onFormSubmit={onFormSubmit}></Formio>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        }
-        if (this.registerForm) {
-          registerForm = (
-            <div className="panel panel-default">
-              <div className="panel-heading">
-                <h3 className="panel-title">Register</h3>
-              </div>
-              <div className="panel-body">
-                <div className="row">
-                  <div className="col-lg-12">
-                    <Formio src={this.appUrl + '/' + this.registerForm} onFormSubmit={onFormSubmit}></Formio>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        }
-
-        if (loginForm && registerForm) {
-          loginForm = (
-            <div className="col-md-6">
-              {loginForm}
-            </div>
-          );
-          registerForm = (
-            <div className="col-md-6">
-              {registerForm}
-            </div>
-          );
-        }
-        else {
-          if (loginForm) {
-            loginForm = (
-              <div className="col-md-8 col-md-offset-2">
-                {loginForm}
-              </div>
-            );
-          }
-          if (registerForm) {
-            registerForm = (
-              <div className="col-md-8 col-md-offset-2">
-                {registerForm}
-              </div>
-            );
-          }
-        }
-
-        return (
-          <div className="formio-auth">
-            {loginForm}
-            {registerForm}
-          </div>
-        );
-      },
-      mapStateToProps: null,
-      mapDispatchToProps: (dispatch, ownProps, router) => {
-        return {
-          onFormSubmit: () => {
-            dispatch(UserActions.fetch());
-            router.transitionTo(this.authState);
-          }
-        };
-      }
-    });
-  }
+  Auth = Auth
 
   getReducers() {
     return userReducer();
@@ -174,9 +48,9 @@ export default class extends FormioProvider {
   getRoutes() {
     return (
       <div className="formio-auth">
-        <Match pattern="/" component={this.Global()} />
-        <Match pattern="/logout" exactly component={this.Logout()} />
-        <Match pattern={this.anonState} exactly component={this.Auth()} />
+        <Match pattern="/" component={this.Global(this)} />
+        <Match pattern="/logout" exactly component={this.Logout(this)} />
+        <Match pattern={this.anonState} exactly component={this.Auth(this)} />
       </div>
     );
   }
