@@ -17,15 +17,26 @@ export default class extends React.Component {
   }
 
   componentWillMount = () => {
-    if (typeof this.init === 'function') {
-      this.init(this.store, this.props, this.router);
+    if (typeof this.initialize === 'function') {
+      this.initialize(this.store, this.props, this.router);
     }
   }
 
-  componentWillReceiveProps = ({ params }) => {
-    // If params have changed we are on a new page.
-    if (!deepEqual(params, this.props.params) && typeof this.init === 'function') {
-      this.init(this.store, this.props, this.router);
+  componentWillReceiveProps = ({ params, location }) => {
+    // If params or location have changed we are on a new page.
+    if (!deepEqual(params, this.props.params) || location !== this.props.location) {
+      if(typeof this.terminate === 'function') {
+        this.terminate(this.store, this.props, this.router);
+      }
+      if(typeof this.initialize === 'function') {
+        this.initialize(this.store, this.props, this.router);
+      }
+    }
+  }
+
+  componentWillUnmount = () => {
+    if (typeof this.terminate === 'function') {
+      this.terminate(this.store, this.props, this.router);
     }
   }
 
@@ -33,7 +44,12 @@ export default class extends React.Component {
     const Component = connect(
       this.mapStateToProps,
       // Adds router to the end of mapDispatchToProps.
-      (...args) => this.mapDispatchToProps(...args, this.router)
+      (...args) => {
+        if (typeof this.mapDispatchToProps === 'function') {
+          return this.mapDispatchToProps(...args, this.router);
+        }
+        return {};
+      }
     )(this.container);
     return <Component { ...this.props }></Component>;
   }

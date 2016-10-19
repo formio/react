@@ -25,6 +25,10 @@ export default function (resource) {
       }
     }
 
+    terminate = () => {
+      console.log('terminate');
+    }
+
     mapStateToProps = ({ formio }, { params }) => {
       return {
         src: formio[resource.name].form.src + '/submission/' + params[resource.name + 'Id'],
@@ -33,6 +37,6 @@ export default function (resource) {
       };
     }
 
-    mapDispatchToProps = () => { return {};}
+    mapDispatchToProps = null
   };
 }

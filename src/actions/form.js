@@ -1,4 +1,5 @@
 import formiojs from 'formiojs';
+import { AlertActions } from './alerts';
 
 export const FORM_REQUEST = 'FORM_REQUEST';
 function requestForm(name) {
@@ -43,6 +44,10 @@ export const FormActions = {
           dispatch(receiveForm(name, result));
         })
         .catch((result) => {
+          dispatch(AlertActions.add({
+            type: 'danger',
+            message: result
+          }))
           dispatch(failForm(name, result));
         });
     };

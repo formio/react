@@ -20,11 +20,11 @@ export default function (resource) {
       );
     }
 
-    init = ({ dispatch }) => {
+    initialize = ({ dispatch }) => {
       dispatch(FormActions.fetch(resource.name));
     }
 
-    mapStateToProps = ({formio}) => {
+    mapStateToProps = ({ formio }) => {
       return {
         form: formio[resource.name].form,
         pageTitle: 'New ' + (formio[resource.name].form.form.title || '')

@@ -27,7 +27,7 @@ export default function (resource) {
       );
     }
 
-    init = ({ dispatch }, { params }) => {
+    initialize = ({ dispatch }, { params }) => {
       dispatch(FormActions.fetch(resource.name));
       dispatch(SubmissionActions.fetch(resource.name, params[resource.name + 'Id']));
     }
@@ -38,6 +38,6 @@ export default function (resource) {
       };
     }
 
-    mapDispatchToProps = () => {return {};}
+    mapDispatchToProps = null
   };
 }

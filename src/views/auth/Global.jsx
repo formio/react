@@ -14,7 +14,7 @@ export default function (auth) {
       }
     }
 
-    init = (store) => {
+    initialize = (store) => {
       const { formio } = store.getState();
       if (!formio.currentUser.init) {
         store.dispatch(UserActions.fetch());
@@ -35,6 +35,6 @@ export default function (auth) {
       }
     }
 
-    mapDispatchToProps = () => {return {};}
+    mapDispatchToProps = null
   };
 }

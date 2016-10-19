@@ -34,7 +34,7 @@ export default function (resource) {
       }
     }
 
-    init = ({ dispatch }) => {
+    initialize = ({ dispatch }) => {
       dispatch(FormActions.fetch(resource.name));
       dispatch(SubmissionActions.index(resource.name));
     }

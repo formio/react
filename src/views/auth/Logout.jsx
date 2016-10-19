@@ -7,7 +7,7 @@ export default function (resource) {
   return class extends FormioView {
     container = Redirect
 
-    init = ({ dispatch }) => {
+    initialize = ({ dispatch }) => {
       dispatch(UserActions.logout());
     }
 
@@ -17,6 +17,6 @@ export default function (resource) {
       }
     }
 
-    mapDispatchToProps = () => {return {};}
+    mapDispatchToProps = null
   };
 }
