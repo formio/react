@@ -47,7 +47,7 @@ export const FormActions = {
           dispatch(AlertActions.add({
             type: 'danger',
             message: result
-          }))
+          }));
           dispatch(failForm(name, result));
         });
     };
