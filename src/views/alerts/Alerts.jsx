@@ -1,9 +1,9 @@
 import React from 'react';
-import { FormioView } from '../../components';
+import ReduxView from 'redux-view';
 import { AlertActions } from '../../actions';
 
 export default function (alerts) {
-  return class extends FormioView {
+  return class extends ReduxView {
     container = ({ alerts }) => {
       if (!alerts) {
         return null;

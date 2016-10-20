@@ -1,9 +1,10 @@
 import React from 'react';
-import { FormioConfirm, FormioView } from '../../components';
+import ReduxView from 'redux-view';
+import { FormioConfirm } from '../../components';
 import { SubmissionActions } from '../../actions';
 
 export default function (resource) {
-  return class extends FormioView {
+  return class extends ReduxView {
     container = ({ title, onYes, onNo }) => {
       return (
         <div className="form-delete">

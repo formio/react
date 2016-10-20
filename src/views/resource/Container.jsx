@@ -1,10 +1,10 @@
 import React from 'react';
+import ReduxView from 'redux-view';
 import { Link, Match } from 'react-router';
-import { FormioView } from '../../components';
 import { FormActions, SubmissionActions } from '../../actions';
 
 export default function (resource) {
-  return class extends FormioView {
+  return class extends ReduxView {
     container = ({ title, params }) => {
       return (
         <div className="form-container">

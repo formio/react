@@ -1,10 +1,11 @@
 import React from 'react';
+import ReduxView from 'redux-view';
 import { Redirect } from 'react-router';
-import { Formio, FormioView } from '../../components';
+import { Formio } from '../../components';
 import { UserActions } from '../../actions';
 
 export default function (auth) {
-  return class extends FormioView {
+  return class extends ReduxView {
     container = ({ onFormSubmit }) => {
       let loginForm = null;
       let registerForm = null;

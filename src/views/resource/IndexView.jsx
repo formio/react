@@ -1,10 +1,11 @@
 import React from 'react';
+import ReduxView from 'redux-view';
 import { Link } from 'react-router';
-import { FormioGrid, FormioView } from '../../components';
+import { FormioGrid } from '../../components';
 import { FormActions, SubmissionActions } from '../../actions';
 
 export default function (resource) {
-  return class extends FormioView {
+  return class extends ReduxView {
     container = ({ form, submissions, pagination, limit, isFetching, onSortChange, onPageChange, onButtonClick }) => {
       if (isFetching) {
         return (

@@ -1,10 +1,10 @@
 import React from 'react';
+import ReduxView from 'redux-view';
 import { Redirect } from 'react-router';
-import { FormioView } from '../../components';
 import { UserActions } from '../../actions';
 
 export default function (auth) {
-  return class extends FormioView {
+  return class extends ReduxView {
     container = ({ shouldRedirect, to }) => {
       if (shouldRedirect) {
         return <Redirect to={to} />

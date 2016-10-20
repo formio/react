@@ -1,8 +1,9 @@
 import React from 'react';
-import { Formio, FormioView } from '../../components';
+import ReduxView from 'redux-view';
+import { Formio } from '../../components';
 
 export default function (resource) {
-  return class extends FormioView {
+  return class extends ReduxView {
     container = ({ src, form, submission, onFormSubmit, params }) => {
       if (form.isFetching || !form.form || submission.isFetching || !submission.submission || params[resource.name + 'Id'] !== submission.submission._id) {
         return (
