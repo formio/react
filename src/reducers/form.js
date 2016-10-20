@@ -4,6 +4,7 @@ export default (name, src) => {
   return (state = {
     src: src,
     name: name,
+    id: '',
     isFetching: false,
     lastUpdated: 0,
     form: {},
@@ -18,10 +19,13 @@ export default (name, src) => {
         return {
           ...state,
           isFetching: true,
+          id: action.id,
+          error: ''
         };
       case FORM_SUCCESS:
         return {
           ...state,
+          id: action.form._id,
           form: action.form,
           isFetching: false,
           error: ''

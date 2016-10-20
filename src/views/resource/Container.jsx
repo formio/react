@@ -1,6 +1,6 @@
 import React from 'react';
 import ReduxView from 'redux-view';
-import { Link, Match } from 'react-router';
+import { Link } from 'react-router';
 import { FormActions, SubmissionActions } from '../../actions';
 
 export default function (resource) {
@@ -20,9 +20,6 @@ export default function (resource) {
               <Link to={resource.basePath() + '/' + params[resource.name + 'Id'] + '/delete'}>Delete</Link>
             </li>
           </ul>
-          <Match pattern={resource.basePath() + '/:' + resource.name + 'Id'} exactly component={resource.View(resource)} />
-          <Match pattern={resource.basePath() + '/:' + resource.name + 'Id' + '/edit'} exactly component={resource.Edit(resource)} />
-          <Match pattern={resource.basePath() + '/:' + resource.name + 'Id' + '/delete'} exactly component={resource.Delete(resource)} />
         </div>
       );
     }
@@ -37,7 +34,5 @@ export default function (resource) {
         title: formio[resource.name].form.form.title
       };
     }
-
-    mapDispatchToProps = null
   };
 }

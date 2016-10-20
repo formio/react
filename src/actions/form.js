@@ -2,10 +2,11 @@ import formiojs from 'formiojs';
 import { AlertActions } from './alerts';
 
 export const FORM_REQUEST = 'FORM_REQUEST';
-function requestForm(name) {
+function requestForm(name, id) {
   return {
     type: FORM_REQUEST,
-    name
+    name,
+    id
   };
 }
 
@@ -27,19 +28,48 @@ function failForm(name, err) {
   };
 }
 
+export const FORMS_REQUEST = 'FORMS_REQUEST';
+function requestForms(name, tag) {
+  return {
+    type: FORMS_REQUEST,
+    name,
+    tag
+  };
+}
+
+export const FORMS_SUCCESS = 'FORMS_SUCCESS';
+function receiveForms(name, forms) {
+  return {
+    type: FORMS_SUCCESS,
+    forms,
+    name
+  };
+}
+
+export const FORMS_FAILURE = 'FORMS_FAILURE';
+function failForms(name, err) {
+  return {
+    type: FORMS_FAILURE,
+    error: err,
+    name
+  };
+}
+
 export const FormActions = {
-  fetch: (name) => {
+  fetch: (name, id = '') => {
     return (dispatch, getState) => {
       // Check to see if the form is already loaded.
-      if (getState().formio[name].form.form.components) {
+      const { formio } = getState();
+      if (formio[name].form.form.components && formio[name].form.id === id) {
         return;
       }
 
-      dispatch(requestForm(name));
+      dispatch(requestForm(name, id));
 
-      const formio = formiojs(getState().formio[name].form.src);
+      const path = formio[name].form.src + (id ? '/form/' + id : '');
+      const formioForm = formiojs(path);
 
-      formio.loadForm()
+      formioForm.loadForm()
         .then((result) => {
           dispatch(receiveForm(name, result));
         })
@@ -52,7 +82,31 @@ export const FormActions = {
         });
     };
   },
-  index: () => {
+  index: (name, tag, page = 1) => {
+    return (dispatch, getState) => {
+      dispatch(requestForms(name, tag, page));
+      const forms = getState().formio[name].forms;
 
+      let params = {};
+      if (tag) {
+        params.tags = tag;
+      }
+      if (parseInt(forms.limit) !== 10) {
+        params.limit = forms.limit;
+      }
+      if (page !== 1) {
+        params.skip = ((parseInt(page) - 1) * parseInt(forms.limit));
+        params.limit = parseInt(forms.limit);
+      }
+      const formio = formiojs(forms.src);
+
+      formio.loadForms({ params })
+        .then((result) => {
+          dispatch(receiveForms(name, result));
+        })
+        .catch((result) => {
+          dispatch(failForms(name. result));
+        });
+    };
   }
 };

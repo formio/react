@@ -36,6 +36,9 @@ export default class {
         <Match pattern={this.basePath()} exactly component={this.Index(this)} />
         <Match pattern={this.basePath() + 'Create'} exactly component={this.Create(this)} />
         <Match pattern={this.basePath() + '/:' + this.name + 'Id'} component={this.Container(this)} />
+        <Match pattern={this.basePath() + '/:' + this.name + 'Id'} exactly component={this.View(this)} />
+        <Match pattern={this.basePath() + '/:' + this.name + 'Id' + '/edit'} exactly component={this.Edit(this)} />
+        <Match pattern={this.basePath() + '/:' + this.name + 'Id' + '/delete'} exactly component={this.Delete(this)} />
       </div>
     );
   }
@@ -45,6 +48,6 @@ export default class {
       form: formReducer(name, src),
       submission: submissionReducer(name, src),
       submissions: submissionsReducer(name, src)
-    })
+    });
   }
 }
