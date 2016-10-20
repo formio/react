@@ -49,7 +49,7 @@ export default class {
     return (
       <div className="formio-builder">
         <Match pattern={ this.options.base + '/forms'} exactly component={this.Index(this)} />
-        <Match pattern={ this.options.base + '/form/create'} exactly component={this.Create(this)} />
+        <Match pattern={ this.options.base + '/forms/create'} exactly component={this.Create(this)} />
         <Match pattern={ this.options.base + '/form/:' + this.key + 'Id'} component={this.Form(this)} />
         <Match pattern={ this.options.base + '/form/:' + this.key + 'Id'} exactly component={this.View(this)} />
         <Match pattern={ this.options.base + '/form/:' + this.key + 'Id/edit'} exactly component={this.Edit(this)} />

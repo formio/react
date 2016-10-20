@@ -13,7 +13,7 @@ export default function (builder) {
       }
       return (
         <div className="formio-builder">
-          <Link to={builder.options.base + '/form/create'} className="btn btn-primary">
+          <Link to={builder.options.base + '/forms/create'} className="btn btn-primary">
             <span className="glyphicon glyphicon-plus"></span> Create Form
           </Link>
           <table className="table table-striped" style={{marginTop: '20px'}}>
