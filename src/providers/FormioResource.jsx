@@ -1,5 +1,5 @@
 import React from 'react';
-import { Match, Link } from 'react-router';
+import { Match } from 'react-router';
 import { combineReducers } from 'redux';
 import { formReducer, submissionReducer, submissionsReducer } from '../reducers';
 import { addReducer, addRoute } from '../factories';

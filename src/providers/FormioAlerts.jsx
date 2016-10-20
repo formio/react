@@ -1,5 +1,5 @@
 import React from 'react';
-import { Match, Link, Redirect } from 'react-router';
+import { Match } from 'react-router';
 import { addReducer, addRoute } from '../factories';
 import { alertsReducer } from '../reducers';
 import { Alerts } from '../views/alerts';

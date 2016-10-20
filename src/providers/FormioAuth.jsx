@@ -1,5 +1,5 @@
 import React from 'react';
-import { Match, Link, Redirect } from 'react-router';
+import { Match } from 'react-router';
 import { addReducer, addRoute } from '../factories';
 import { userReducer } from '../reducers';
 import { Auth, Global, Logout } from '../views/auth';
