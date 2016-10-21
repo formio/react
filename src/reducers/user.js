@@ -1,10 +1,14 @@
-import { USER_REQUEST, USER_SUCCESS, USER_FAILURE, USER_LOGOUT } from '../actions';
+import { USER_REQUEST, USER_SUCCESS, USER_FAILURE, USER_LOGOUT, USER_SUBMISSION_ACCESS, USER_FORM_ACCESS } from '../actions';
 
-export default () => {
+export default (appUrl) => {
   return (state = {
     init: false,
     isFetching: false,
     user: null,
+    formAccess: false,
+    submissionAccess: false,
+    roles: {},
+    appUrl: appUrl,
     error: ''
   }, action) => {
     // Only proceed for this user.
@@ -13,6 +17,7 @@ export default () => {
         return {
           ...state,
           init: true,
+          submissionAccess: false,
           isFetching: true,
         };
       case USER_SUCCESS:
@@ -22,6 +27,17 @@ export default () => {
           isFetching: false,
           error: ''
         };
+      case USER_SUBMISSION_ACCESS:
+        return {
+          ...state,
+          submissionAccess: action.submissionAccess,
+          roles: action.roles
+        }
+      case USER_FORM_ACCESS:
+        return {
+          ...state,
+          formAccess: action.formAccess
+        }
       case USER_FAILURE:
         return {
           ...state,

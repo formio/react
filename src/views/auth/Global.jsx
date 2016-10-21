@@ -3,7 +3,7 @@ import ReduxView from 'redux-view';
 import { Redirect } from 'react-router';
 import { UserActions } from '../../actions';
 
-export default function (auth) {
+export default function (authSettings) {
   return class extends ReduxView {
     container = ({ shouldRedirect, to }) => {
       if (shouldRedirect) {
@@ -16,22 +16,22 @@ export default function (auth) {
 
     initialize = (store) => {
       const { formio } = store.getState();
-      if (!formio.currentUser.init) {
+      if (!formio.auth.init) {
         store.dispatch(UserActions.fetch());
       }
     }
 
     mapStateToProps = (state, { location }) => {
-      const { currentUser } = state.formio;
+      const { auth } = state.formio;
       return {
         shouldRedirect:
-          auth.forceAuth &&
-          auth.allowedStates.length &&
-          currentUser.init &&
-          !currentUser.isFetching &&
-          !currentUser.user &&
-          !auth.allowedStates.includes(location.pathname),
-        to: auth.anonState
+          authSettings.forceAuth &&
+          authSettings.allowedStates.length &&
+          auth.init &&
+          !auth.isFetching &&
+          !auth.user &&
+          !authSettings.allowedStates.includes(location.pathname),
+        to: authSettings.anonState
       }
     }
 

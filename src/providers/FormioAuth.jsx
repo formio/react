@@ -22,7 +22,7 @@ export default class {
     this.anonState = anonState;
     this.allowedStates = !forceAuth || allowedStates;
 
-    addReducer('currentUser', this.getReducers());
+    addReducer('auth', this.getReducers(this.appUrl));
     addRoute(this.getRoutes());
   }
 
@@ -38,8 +38,8 @@ export default class {
 
   Auth = Auth
 
-  getReducers() {
-    return userReducer();
+  getReducers(appUrl) {
+    return userReducer(appUrl);
   }
 
   getRoutes() {

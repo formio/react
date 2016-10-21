@@ -16,7 +16,7 @@ export default class extends React.Component {
     const Logout = connect(
       ({ formio }) => {
         return {
-          user: formio.currentUser
+          auth: formio.auth
         };
       },
       ((dispatch) => {
@@ -30,8 +30,8 @@ export default class extends React.Component {
         };
       })
     )(
-      ({ user, onClick }) => {
-        if (!user || !user.user) {
+      ({ auth, onClick }) => {
+        if (!auth || !auth.user) {
           return null;
         }
         else {

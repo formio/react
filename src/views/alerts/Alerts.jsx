@@ -35,7 +35,5 @@ export default function (alerts) {
         alerts: formio.alerts.alerts
       };
     }
-
-    mapDispatchToProps = null
   };
 }
