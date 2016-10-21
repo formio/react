@@ -1,7 +1,7 @@
 import React from 'react';
 import { Match } from 'react-router';
 import { addReducer, addRoute } from '../factories';
-import { userReducer } from '../reducers';
+import { authReducer } from '../reducers';
 import { Auth, Global, Logout } from '../views/auth';
 
 export default class {
@@ -39,7 +39,7 @@ export default class {
   Auth = Auth
 
   getReducers(appUrl) {
-    return userReducer(appUrl);
+    return authReducer(appUrl);
   }
 
   getRoutes() {
