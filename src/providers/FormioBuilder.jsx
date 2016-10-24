@@ -3,7 +3,20 @@ import { Match } from 'react-router';
 import { combineReducers } from 'redux';
 import { formReducer, formsReducer, submissionReducer, submissionsReducer } from '../reducers';
 import { addReducer, addRoute } from '../factories';
-import { Index, Create, Form, View, Edit, Delete, SubmissionIndex, ActionsIndex, Access } from '../views/builder';
+import {
+  Index,
+  Create,
+  Form,
+  View,
+  Edit,
+  Delete,
+  SubmissionIndex,
+  SubmissionContainer,
+  SubmissionView,
+  SubmissionEdit,
+  ActionsIndex,
+  Access
+} from '../views/builder';
 
 export default class {
   constructor(name, appUrl, options = {}) {
@@ -32,6 +45,12 @@ export default class {
 
   SubmissionIndex = SubmissionIndex
 
+  SubmissionContainer = SubmissionContainer
+
+  SubmissionView = SubmissionView
+
+  SubmissionEdit = SubmissionEdit
+
   ActionsIndex = ActionsIndex
 
   Access = Access
@@ -55,6 +74,9 @@ export default class {
         <Match pattern={ this.options.base + '/form/:' + this.key + 'Id/edit'} exactly component={this.Edit(this)} />
         <Match pattern={ this.options.base + '/form/:' + this.key + 'Id/delete'} exactly component={this.Delete(this)} />
         <Match pattern={ this.options.base + '/form/:' + this.key + 'Id/submission'} exactly component={this.SubmissionIndex(this)} />
+        <Match pattern={ this.options.base + '/form/:' + this.key + 'Id/submission/:submissionId'} component={this.SubmissionContainer(this)} />
+        <Match pattern={ this.options.base + '/form/:' + this.key + 'Id/submission/:submissionId'} exactly component={this.SubmissionView(this)} />
+        <Match pattern={ this.options.base + '/form/:' + this.key + 'Id/submission/:submissionId/edit'} exactly component={this.SubmissionEdit(this)} />
         <Match pattern={ this.options.base + '/form/:' + this.key + 'Id/actions'} exactly component={this.ActionsIndex(this)} />
         <Match pattern={ this.options.base + '/form/:' + this.key + 'Id/access'} exactly component={this.Access(this)} />
       </div>

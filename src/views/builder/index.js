@@ -5,5 +5,8 @@ export { default as View } from './View';
 export { default as Edit } from './Edit';
 export { default as Delete } from './Delete';
 export { default as SubmissionIndex } from './SubmissionIndex';
+export { default as SubmissionContainer } from './SubmissionContainer';
+export { default as SubmissionView } from './SubmissionView';
+export { default as SubmissionEdit } from './SubmissionEdit';
 export { default as ActionsIndex } from './ActionsIndex';
 export { default as Access } from './Access';

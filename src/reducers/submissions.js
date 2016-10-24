@@ -4,6 +4,7 @@ export default (name, src) => {
   return (state = {
     src: src + '/submission',
     name: name,
+    formId: '',
     isFetching: false,
     lastUpdated: 0,
     submissions: [],
@@ -21,6 +22,7 @@ export default (name, src) => {
       case SUBMISSIONS_REQUEST:
         return {
           ...state,
+          formId: action.formId,
           limit: action.limit || state.limit,
           isFetching: true,
           submissions: [],

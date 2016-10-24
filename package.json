@@ -44,7 +44,7 @@
     "react-widgets": "^3.4.4",
     "reactabular": "^3.0.5",
     "redux": "^3.5.2",
-    "redux-view": "^0.0.1",
+    "redux-view": "^0.0.2",
     "segmentize": "^0.4.1"
   },
   "devDependencies": {

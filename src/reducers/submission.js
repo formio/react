@@ -3,6 +3,7 @@ import { SUBMISSION_REQUEST, SUBMISSION_SUCCESS, SUBMISSION_FAILURE } from '../a
 export default (name, src) => {
   return (state = {
     src: src,
+    formId: '',
     id: '',
     name: name,
     isFetching: false,
@@ -18,6 +19,7 @@ export default (name, src) => {
       case SUBMISSION_REQUEST:
         return {
           ...state,
+          formId: action.formId,
           id: action.id,
           submission: {},
           isFetching: true,

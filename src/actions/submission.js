@@ -26,11 +26,12 @@ function failSubmission(name, err) {
 }
 
 export const SUBMISSIONS_REQUEST = 'SUBMISSIONS_REQUEST';
-function requestSubmissions(name, page) {
+function requestSubmissions(name, page, formId) {
   return {
     type: SUBMISSIONS_REQUEST,
     name,
-    page
+    page,
+    formId
   };
 }
 
@@ -53,16 +54,17 @@ function failSubmissions(name, err) {
 }
 
 export const SubmissionActions = {
-  fetch: (name, id) => {
+  fetch: (name, id, formId = '') => {
     return (dispatch, getState) => {
       // Check to see if the submission is already loaded.
       if (getState().id === id) {
         return;
       }
 
-      dispatch(requestSubmission(name, id));
+      dispatch(requestSubmission(name, id, formId));
 
-      const formio = formiojs(getState().formio[name].form.src + '/submission/' + id);
+      const url = formId ? getState().formio[name].form.src + '/form/' + formId + '/submission/' + id : getState().formio[name].form.src + '/submission/' + id;
+      const formio = formiojs(url);
 
       formio.loadSubmission()
         .then((result) => {
@@ -73,17 +75,18 @@ export const SubmissionActions = {
         });
     };
   },
-  delete: (name, id) => {
+  delete: (name, id, formId) => {
     return (dispatch, getState) => {
-      const formio = formiojs(getState().formio[name].form.src + '/submission/' + id);
+      const url = formId ? getState().formio[name].form.src + '/form/' + formId + '/submission/' + id : getState().formio[name].form.src + '/submission/' + id;
+      const formio = formiojs(url);
       formio.deleteSubmission();
 
-      // TODO: Clear the submission from the store.
+      // TODO: Clear the submission from the store and dispatch an action.
     };
   },
-  index: (name, page = 1) => {
+  index: (name, page = 1, formId = '') => {
     return (dispatch, getState) => {
-      dispatch(requestSubmissions(name, page));
+      dispatch(requestSubmissions(name, page, formId));
       const submissions = getState().formio[name].submissions;
 
       let params = {};
@@ -94,7 +97,8 @@ export const SubmissionActions = {
         params.skip = ((parseInt(page) - 1) * parseInt(submissions.limit));
         params.limit = parseInt(submissions.limit);
       }
-      const formio = formiojs(submissions.src);
+      const url = submissions.formId ? submissions.src + '/form/' + submissions.formId : submissions.src;
+      const formio = formiojs(url);
 
       formio.loadSubmissions({ params })
         .then((result) => {
