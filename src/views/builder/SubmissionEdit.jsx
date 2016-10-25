@@ -37,7 +37,7 @@ export default function (builder) {
     mapDispatchToProps = (dispatch, { params }, router) => {
       return {
         onFormSubmit: submission => {
-          router.transitionTo(biulder.options.base + '/form/' + params[builder.key + 'Id'] + '/submission');
+          router.transitionTo(builder.options.base + '/form/' + params[builder.key + 'Id'] + '/submission');
         }
       };
     }
