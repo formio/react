@@ -28,6 +28,7 @@ module.exports = React.createClass({
             <td key={index} className=" formio-content-centered">
               <input
                 type="radio"
+                disabled={this.props.readOnly}
                 checked={this.state.value[questionsData.value] === answersData.value ? true : false}
                 onChange={this.onUpdateAnswer.bind(null, answersData.value, questionsData.value)}
               >

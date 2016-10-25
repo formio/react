@@ -32,6 +32,13 @@ module.exports = React.createClass({
       height: component.height,
       width: component.width
     };
+    if (this.props.readOnly) {
+      return (
+        <div>
+          <img alt="Signature" src={this.state.value} />
+        </div>
+      );
+    }
     return (
       <div>
         <span className=" glyphicon glyphicon-refresh"  onClick={this.clearSignature}/>

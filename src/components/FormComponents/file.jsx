@@ -71,8 +71,6 @@ const FormioImageList = React.createClass({
           );
         })
       }
-      <span ng-repeat="file in files track by $index" ng-if="file">
-      </span>
     </div>
   }
 });
@@ -274,11 +272,19 @@ module.exports = React.createClass({
       <div className='formio-dropzone-margin'>
         {inputLabel} {requiredInline}
         {this.fileList()}
-        {this.fileSelector()}
-        {this.props.component.storage ? null : this.noStorageError()}
-        {Object.keys(this.state.fileUploads).map((key) => {
-          return this.fileUpload(this.state.fileUploads[key], key);
-        })}
+        {(() => {
+          if (!this.props.readOnly) {
+            return (
+              <div>
+                {this.fileSelector()}
+                {this.props.component.storage ? null : this.noStorageError()}
+                {Object.keys(this.state.fileUploads).map((key) => {
+                  return this.fileUpload(this.state.fileUploads[key], key);
+                })}
+              </div>
+            );
+          }
+        })()}
       </div>
     );
   },

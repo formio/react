@@ -16,6 +16,9 @@ module.exports = React.createClass({
     }
   },
   addRow: function() {
+    if (this.props.readOnly) {
+      return;
+    }
     var rows = this.state.value;
     rows.push({});
     this.setState({
@@ -24,6 +27,9 @@ module.exports = React.createClass({
     this.props.onChange(this);
   },
   removeRow: function(id) {
+    if (this.props.readOnly) {
+      return;
+    }
     var rows = this.state.value;
     rows.splice(id, 1);
     this.setState({

@@ -24,7 +24,7 @@ module.exports = React.createClass({
       <div>
         {inputLabel} {requiredInline}
         <div className="selectbox">
-          {this.props.component.values.map(function(item, index) {
+          {this.props.component.values.map((item, index) => {
             var required = 'control-label' + (this.props.component.validate.required ? ' field-required' : '') + (this.state.value[item.value] ? ' checked' : ' not-checked');
             return (
               <div className={checkboxClass} key={index}>
@@ -33,13 +33,14 @@ module.exports = React.createClass({
                     type="checkbox"
                     key={this.props.component.key}
                     name={this.props.name}
+                    disabled={this.props.readOnly}
                     checked={this.state.value[item.value] || ''}
                     onChange={this.onChangeCheckbox.bind(null, item.value)}
                   />{item.label}
                 </label>
               </div>
             );
-          }.bind(this))}
+          })}
         </div>
       </div>
     );
