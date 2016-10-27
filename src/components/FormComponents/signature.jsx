@@ -34,8 +34,8 @@ module.exports = React.createClass({
     };
     if (this.props.readOnly) {
       return (
-        <div>
-          <img alt="Signature" src={this.state.value} />
+        <div style={styles}>
+          <img alt="Signature" className="signature-canvas" src={this.state.value} />
         </div>
       );
     }
