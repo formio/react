@@ -1,5 +1,6 @@
 import React from 'react';
 import Formiojs from 'formiojs';
+import FormioUtils from 'formio-utils';
 import { FormioComponentsList } from '../components';
 import _ from 'lodash';
 
@@ -120,7 +121,7 @@ export const Formio = React.createClass({
   checkConditional: function (component, subData = {}) {
     let data = Object.assign({}, this.data, subData);
     if (component.conditional && component.conditional.when) {
-      var value = (data.hasOwnProperty(component.conditional.when) ? data[component.conditional.when] : '');
+      let value = FormioUtils.getValue({data}, component.conditional.when) || '';
       return (value.toString() === component.conditional.eq.toString()) === (component.conditional.show.toString() === 'true');
     }
     else if (component.customConditional) {
