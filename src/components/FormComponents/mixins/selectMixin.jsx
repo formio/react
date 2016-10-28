@@ -81,19 +81,28 @@ module.exports = {
     }
   },
   itemComponent: function() {
-    var template = this.props.component.template;
-    if (!template) {
+    let { component } = this.props;
+    if (!component.template) {
       return null;
     }
 
     return React.createClass({
       render: function() {
-        if (this.props.item && typeof this.props.item === 'object') {
-          // Render the markup raw under this react element
-          return React.createElement('span', raw(interpolate(template, {item: this.props.item})));
+        let { item } = this.props;
+        if (component.dataSrc === 'values') {
+          component.data.values.forEach(function(option) {
+            if (option.value === item) {
+              item = option;
+            }
+          });
         }
 
-        return React.createElement('span', {}, this.props.item);
+        if (item && typeof item === 'object') {
+          // Render the markup raw under this react element
+          return React.createElement('span', raw(interpolate(component.template, { item })));
+        }
+
+        return React.createElement('span', {}, item);
       }
     });
   },
