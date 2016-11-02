@@ -1,5 +1,4 @@
 export * from './Formio';
-export { default as Access } from './Access';
 export { default as FormBuilder } from './FormBuilder';
 export { default as FormEdit } from './FormEdit';
 export { default as FormioComponentsList } from './FormioComponentsList';
