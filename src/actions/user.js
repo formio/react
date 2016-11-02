@@ -62,7 +62,7 @@ const getAccess = (dispatch, getState) => {
       dispatch(submissionAccessUser(submissionAccess, result.roles));
     })
     .catch(function(err) {
-      console.log(err)
+      //console.log(err);
     });
   formiojs.makeStaticRequest(appUrl)
     .then(function(project) {
@@ -73,7 +73,7 @@ const getAccess = (dispatch, getState) => {
       dispatch(formAccessUser(formAccess));
     })
     .catch(function(err) {
-      console.log(err)
+      //console.log(err);
     });
 };
 

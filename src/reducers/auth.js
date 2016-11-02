@@ -32,12 +32,12 @@ export default (appUrl) => {
           ...state,
           submissionAccess: action.submissionAccess,
           roles: action.roles
-        }
+        };
       case USER_FORM_ACCESS:
         return {
           ...state,
           formAccess: action.formAccess
-        }
+        };
       case USER_FAILURE:
         return {
           ...state,
