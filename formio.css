@@ -31,7 +31,6 @@
     border: 1px solid #e8e8e8;
     background-color: #F5F5EB;
     border-radius: 4px;
-    height: 150px;
 }
 
 .m-signature-pad--body {
@@ -42,36 +41,11 @@
     border: 1px solid #f4f4f4;
 }
 
-.m-signature-pad--body
-canvas {
+.m-signature-pad--body canvas {
     width: 100%;
     height: 100%;
     border-radius: 4px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.02) inset;
-}
-
-.m-signature-pad--footer {
-    position: absolute;
-    left: 20px;
-    right: 20px;
-    bottom: 20px;
-    height: 40px;
-}
-
-.m-signature-pad--footer
-.button {
-    position: absolute;
-    bottom: 0;
-}
-
-.m-signature-pad--footer
-.button.clear {
-    left: 0;
-}
-
-.m-signature-pad--footer
-.button.save {
-    right: 0;
 }
 
 @media screen and (max-width: 1024px) {
@@ -84,9 +58,6 @@ canvas {
         height: auto;
         min-width: 250px;
         min-height: 140px;
-    }
-    #github {
-        display: none;
     }
 }
 
@@ -103,28 +74,12 @@ canvas {
         top: 0;
         bottom: 32px;
     }
-    .m-signature-pad--footer {
-        left: 20px;
-        right: 20px;
-        bottom: 4px;
-        height: 28px;
-    }
-    .m-signature-pad--footer
-    .description {
-        font-size: 1em;
-        margin-top: 1em;
-    }
 }
 
 .formio-signature-footer {
     color: #C3C3C3;
     margin: 0 10px;
     text-align: center;
-}
-
-.form-field-type-signature .signature-canvas {
-    width: 100%;
-    height: 100%;
 }
 
 .formio-content-centered {

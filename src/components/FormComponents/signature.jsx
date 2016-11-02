@@ -34,7 +34,7 @@ module.exports = React.createClass({
     };
     if (this.props.readOnly) {
       return (
-        <div style={styles}>
+        <div className="m-signature-pad" style={styles}>
           <img alt="Signature" className="signature-canvas" src={this.state.value} />
         </div>
       );
@@ -42,18 +42,20 @@ module.exports = React.createClass({
     return (
       <div>
         <span className=" glyphicon glyphicon-refresh"  onClick={this.clearSignature}/>
-        <div style={styles}>
-          <SignatureCanvas
-            ref={ (ref) => { this.signature = ref; } }
-            minWidth={Number(component.minWidth)}
-            maxWidth={Number(component.maxWidth)}
-            penColor={component.penColor}
-            backgroundColor={component.backgroundColor}
-            canvasProps={{
-              className: 'signature-canvas'
-            }}
-            onEnd={this.onEnd}
-          />
+        <div className="m-signature-pad">
+          <div className="m-signature-pad--body" style={styles}>
+            <SignatureCanvas
+              ref={ (ref) => { this.signature = ref; } }
+              minWidth={Number(component.minWidth)}
+              maxWidth={Number(component.maxWidth)}
+              penColor={component.penColor}
+              backgroundColor={component.backgroundColor}
+              canvasProps={{
+                className: 'signature-canvas'
+              }}
+              onEnd={this.onEnd}
+            />
+          </div>
         </div>
         <div className={footerClass}>{component.footer}</div>
       </div>
