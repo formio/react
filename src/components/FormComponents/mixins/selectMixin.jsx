@@ -130,7 +130,7 @@ module.exports = {
         if (typeof value === 'object' && this.valueField()) {
           value = _.get(value, this.valueField());
         }
-        return this.state.value.indexOf(value) === -1;
+        return this.state.value !== value;
       }),
       placeholder: this.props.component.placeholder,
       textField: this.textField(),
