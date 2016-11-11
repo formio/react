@@ -13,6 +13,48 @@ module.exports = React.createClass({
 
     this.setValue(padLeft(date.day, 2) + '/' + padLeft(date.month, 2) + '/' + padLeft(date.year, 4));
   },
+  validateCustom: function(value) {
+    const required = this.props.component.fields.day.required || this.props.component.fields.month.required || this.props.component.fields.year.required;
+    let state = {
+      isValid: true,
+      errorMessage: ''
+    };
+    if (!required) {
+      return true;
+    }
+    if (!value && required) {
+      state = {
+        isValid: false,
+        errorMessage: (this.props.component.label || this.props.component.key) + ' must be a valid date.'
+      };
+    }
+    var parts = value.split('/');
+    if (this.props.component.fields.day.required) {
+      if (parts[(this.props.component.dayFirst ? 0 : 1)] === '00') {
+        state = {
+          isValid: false,
+          errorMessage: (this.props.component.label || this.props.component.key) + ' must be a valid date.'
+        };
+      }
+    }
+    if (this.props.component.fields.month.required) {
+      if (parts[(this.props.component.dayFirst ? 1 : 0)] === '00') {
+        state = {
+          isValid: false,
+          errorMessage: (this.props.component.label || this.props.component.key) + ' must be a valid date.'
+        };
+      }
+    }
+    if (this.props.component.fields.year.required) {
+      if (parts[2] === '0000') {
+        state = {
+          isValid: false,
+          errorMessage: (this.props.component.label || this.props.component.key) + ' must be a valid date.'
+        };
+      }
+    }
+    return state;
+  },
   customState: function(state) {
     state.date = {
       day: '',
