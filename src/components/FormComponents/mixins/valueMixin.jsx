@@ -23,14 +23,18 @@ module.exports = {
     return value;
   },
   getInitialState: function() {
-    var value = this.getDefaultValue(this.props.value);
-    var valid = this.validate(value);
-    return {
+    const value = this.getDefaultValue(this.props.value);
+    const valid = this.validate(value);
+    let state = {
       value: value,
       isValid: valid.isValid,
       errorMessage: valid.errorMessage,
       isPristine: true
     };
+    if (typeof this.customState === 'function') {
+      state = this.customState(state);
+    }
+    return state;
   },
   validate: function(value) {
     // Allow components to have custom validation.
