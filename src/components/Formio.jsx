@@ -120,6 +120,8 @@ export const Formio = React.createClass({
   },
   checkConditional: function (component, subData = {}) {
     let data = Object.assign({}, this.data, subData);
+    // Coming soon...
+    // return FormioUtils.checkConditional(component, data);
     if (component.conditional && component.conditional.when) {
       let value = FormioUtils.getValue({data}, component.conditional.when) || '';
       return (value.toString() === component.conditional.eq.toString()) === (component.conditional.show.toString() === 'true');

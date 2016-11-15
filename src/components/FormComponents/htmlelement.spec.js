@@ -17,7 +17,7 @@ describe('Htmlelement', function () {
           "value": ""
         }
       ],
-      "className": "htmlelement",
+      "customClass": "htmlelement",
       "content": "",
       "type": "htmlelement",
       "conditional": {
@@ -36,11 +36,7 @@ describe('Htmlelement', function () {
         ></Htmlelement>
       ).children().eq(0);
       expect(element).to.have.length(1);
-      expect(element.hasClass('form-group form-field-type-htmlelement form-group-undefined')).to.equal(true);
-      expect(element.attr('id')).to.equal('form-group-undefined');
-      expect(element.find('.formio-component-single').length).to.equal(1);
-      expect(element.find('.formio-component-single .input-group ').length).to.equal(1);
-      expect(element.find('.formio-component-single .input-group ' + component.tag).length).to.equal(1);
+      expect(element.find(component.tag).length).to.equal(1);
       done();
     });
 
@@ -52,7 +48,29 @@ describe('Htmlelement', function () {
           attachToForm={attachToForm}
         ></Htmlelement>
       ).children().eq(0);
-      expect(element.attr('class').split(' ')).to.contain('my-custom-class');
+      expect(element.find(component.tag).attr('class').split(' ')).to.contain('my-custom-class');
+      done();
+    });
+
+    it('assigns custom attributes', function(done) {
+      component.attrs = [
+        {
+          attr: 'id',
+          value: 'value'
+        },
+        {
+          attr: 'name',
+          value: 'bar'
+        }
+      ]
+      const element = render(
+        <Htmlelement
+          component={component}
+          attachToForm={attachToForm}
+        ></Htmlelement>
+      ).children().eq(0);
+      expect(element.find(component.tag).attr('id')).to.equal('value');
+      expect(element.find(component.tag).attr('name')).to.equal('bar');
       done();
     });
 
