@@ -109,7 +109,7 @@ module.exports = React.createClass({
     }
 
     return (
-      <div className={'form-group col-xs-' + config.columns}>
+      <div className={'form-group control-label col-xs-' + config.columns}>
         <label htmlFor={config.componentId} className={classes}>{config.title}</label>
         <input
           className='form-control'
@@ -150,7 +150,7 @@ module.exports = React.createClass({
       }, this.onChangeCustom);
     }
     return (
-      <div className='form-group col-xs-4'>
+      <div className='form-group control-label col-xs-4'>
         <label htmlFor={componentId + '-month'} className={classes}>Month</label>
         <select className='form-control'
           type='text'
