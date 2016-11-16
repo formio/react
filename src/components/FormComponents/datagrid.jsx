@@ -40,10 +40,7 @@ module.exports = React.createClass({
   elementChange: function(row, component) {
     var value = this.state.value;
     value[row][component.props.component.key] = component.state.value;
-    this.setState({
-      value: value
-    });
-    this.props.onChange(this);
+    this.setValue(value);
   },
   getElements: function() {
     let localKeys = this.props.component.components.map(component => component.key);

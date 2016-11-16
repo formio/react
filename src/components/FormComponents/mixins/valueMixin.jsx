@@ -159,6 +159,7 @@ module.exports = {
     this.props.attachToForm(this);
   },
   componentWillUnmount: function() {
+    this.setValue(null);
     this.props.detachFromForm(this);
   },
   onChange: function(event) {
@@ -174,7 +175,7 @@ module.exports = {
     if (index === undefined) {
       index = null;
     }
-    this.setState(function(previousState) {
+    this.setState(previousState => {
       if (index !== null && Array.isArray(previousState.value)) {
         previousState.value[index] = value;
       }
@@ -184,11 +185,11 @@ module.exports = {
       previousState.isPristine = !!pristine;
       Object.assign(previousState, this.validate(previousState.value));
       return previousState;
-    }.bind(this), function() {
+    }, () => {
       if (typeof this.props.onChange === 'function') {
         this.props.onChange(this);
       }
-    }.bind(this));
+    });
   },
   getComponent: function() {
     var id = 'form-group-' + this.props.component.key;

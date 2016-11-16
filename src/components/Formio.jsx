@@ -56,7 +56,6 @@ export const Formio = React.createClass({
   },
   detachFromForm: function (component) {
     delete this.inputs[component.props.name];
-    delete this.data[component.props.component.key];
   },
   onChange: function (component) {
     if (component.state.value === null) {
@@ -119,29 +118,8 @@ export const Formio = React.createClass({
     }
   },
   checkConditional: function (component, subData = {}) {
-    let data = Object.assign({}, this.data, subData);
-    // Coming soon...
-    // return FormioUtils.checkConditional(component, data);
-    if (component.conditional && component.conditional.when) {
-      let value = FormioUtils.getValue({data}, component.conditional.when) || '';
-      return (value.toString() === component.conditional.eq.toString()) === (component.conditional.show.toString() === 'true');
-    }
-    else if (component.customConditional) {
-      try {
-        // Create a child block, and expose the submission data.
-        let data = data; // eslint-disable-line no-unused-vars
-        // Eval the custom conditional and update the show value.
-        let show = eval('(function() { ' + component.customConditional.toString() + '; return show; })()');
-        // Show by default, if an invalid type is given.
-        return show.toString() === 'true';
-      }
-      catch (e) {
-        return true;
-      }
-    }
-    else {
-      return true;
-    }
+    const data = Object.assign({}, this.data, subData);
+    return FormioUtils.checkCondition(component, data);
   },
   showAlert: function (type, message, clear) {
     this.setState(function (previousState) {
