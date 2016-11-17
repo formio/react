@@ -12,6 +12,9 @@ module.exports = React.createClass({
     return {
       checkConditional: function() {
         return true;
+      },
+      isDisabled: function() {
+        return false;
       }
     }
   },
