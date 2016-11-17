@@ -14,6 +14,7 @@ export default class extends React.Component {
               return (
                 <FormioElement
                   {...this.props}
+                  readOnly={this.props.isDisabled(component)}
                   name={component.key}
                   key={key}
                   component={component}

@@ -121,6 +121,9 @@ export const Formio = React.createClass({
     const data = Object.assign({}, this.data, subData);
     return FormioUtils.checkCondition(component, data);
   },
+  isDisabled: function(component, data) {
+    return this.props.readOnly || (Array.isArray(this.props.disableComponents) && this.props.disableComponents.indexOf(component.key) !== -1);
+  },
   showAlert: function (type, message, clear) {
     this.setState(function (previousState) {
       if (clear) {
@@ -232,7 +235,6 @@ export const Formio = React.createClass({
         <FormioComponentsList
           components={components}
           values={this.state.submission.data}
-          readOnly={this.props.readOnly}
           options={this.props.options}
           attachToForm={this.attachToForm}
           detachFromForm={this.detachFromForm}
@@ -243,6 +245,7 @@ export const Formio = React.createClass({
           formio={this.formio}
           data={this.data}
           onChange={this.onChange}
+          isDisabled={this.isDisabled}
           checkConditional={this.checkConditional}
           showAlert={this.showAlert}
           formPristine={this.state.isPristine}

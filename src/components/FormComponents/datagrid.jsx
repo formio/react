@@ -47,7 +47,7 @@ module.exports = React.createClass({
     let classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
     let inputLabel = (this.props.component.label && !this.props.component.hideLabel ? <label htmlFor={this.props.component.key} className={classLabel}>{this.props.component.label}</label> : '');
     let headers = this.props.component.components.map(function(component, index) {
-      if (this.props.checkConditional(component) || localKeys.indexOf(component.conditional.when) !== -1) {
+      if (this.props.checkConditional(component) || localKeys.indexOf(component.conditional.when) !== -1 || !!component.customConditional) {
         return (
           <th key={index}>{component.label || ''}</th>
         );
@@ -85,6 +85,7 @@ module.exports = React.createClass({
                     <td key={key}>
                       <FormioElement
                         {...this.props}
+                        readOnly={this.props.isDisabled(component)}
                         name={component.key}
                         component={component}
                         onChange={this.elementChange.bind(null, rowIndex)}
