@@ -118,11 +118,17 @@ export const Formio = React.createClass({
     }
   },
   checkConditional: function (component, subData = {}) {
-    const data = Object.assign({}, this.data, subData);
+    let data;
+    if (subData) {
+      data = Object.assign({}, this.data, subData);
+    }
+    else {
+      data = data;
+    }
     return FormioUtils.checkCondition(component, data);
   },
   isDisabled: function(component, data) {
-    return this.props.readOnly || (Array.isArray(this.props.disableComponents) && this.props.disableComponents.indexOf(component.key) !== -1);
+    return this.props.readOnly || (Array.isArray(this.props.disableComponents) && this.props.disableComponents.indexOf(component.key) !== -1) || component.disabled;
   },
   showAlert: function (type, message, clear) {
     this.setState(function (previousState) {

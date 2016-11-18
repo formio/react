@@ -1,11 +1,25 @@
 import React from 'react';
+import { deepEqual } from '../../../util';
+import { clone } from 'lodash';
 
 module.exports = {
   getDefaultValue: function(value) {
+    const { component, data } = this.props;
     // Allow components to set different default values.
     if (value == null) {
-      if (this.props.component.defaultValue) {
-        value = this.props.component.defaultValue;
+      if (component.hasOwnProperty('customDefaultValue')) {
+        try {
+          value = eval('(function(data) { var value = "";' + component.customDefaultValue.toString() + '; return value; })(data)');
+        }
+        catch (e) {
+          /* eslint-disable no-console */
+          console.warn('An error occurrend in a custom default value in ' + component.key, e);
+          /* eslint-enable no-console */
+          value = '';
+        }
+      }
+      else if (component.hasOwnProperty('defaultValue')) {
+        value = component.defaultValue;
         if (typeof this.onChangeCustom === 'function') {
           value = this.onChangeCustom(value);
         }
@@ -17,7 +31,7 @@ module.exports = {
         value = '';
       }
     }
-    if ((this.props.component.type !== 'datagrid') && (this.props.component.type !== 'container')) {
+    if ((component.type !== 'datagrid') && (component.type !== 'container')) {
       value = this.safeSingleToMultiple(value);
     }
     return value;
@@ -34,6 +48,8 @@ module.exports = {
     if (typeof this.customState === 'function') {
       state = this.customState(state);
     }
+    // ComponentWillReceiveProps isn't working without this as the reference to the data already is updated.
+    this.data = {};
     return state;
   },
   validate: function(value) {
@@ -112,9 +128,16 @@ module.exports = {
         return this.props.data[$2];
       }.bind(this));
       var input = item;
-      /* jshint evil: true */
-      var valid = eval(custom);
-      state.isValid = (valid === true);
+      var valid;
+      try {
+        valid = eval(custom);
+        state.isValid = (valid === true);
+      }
+      catch (e) {
+        /* eslint-disable no-console */
+        console.warn('A syntax error occurred while computing custom values in ' + this.props.component.key, e);
+        /* eslint-enable no-console */
+      }
       if (!state.isValid) {
         state.errorMessage = valid || ((this.props.component.label || this.props.component.key) + 'is not a valid value.');
       }
@@ -122,8 +145,25 @@ module.exports = {
     return state;
   },
   componentWillReceiveProps: function(nextProps) {
+    const { component } = this.props;
+    let value;
+    if (component.hasOwnProperty('calculateValue') && component.calculateValue) {
+      if (!deepEqual(this.data, nextProps.data)) {
+        this.data = clone(nextProps.data);
+        try {
+          value = eval('(function(data) { var value = [];' + component.calculateValue.toString() + '; return value; })(this.data)');
+        }
+        catch (e) {
+          /* eslint-disable no-console */
+          console.warn('An error occurred calculating a value for ' + $scope.component.key, e);
+          /* eslint-enable no-console */
+        }
+      }
+    }
     if (this.props.value !== nextProps.value) {
-      var value = this.safeSingleToMultiple(nextProps.value);
+      value = this.safeSingleToMultiple(nextProps.value);
+    }
+    if (typeof value !== 'undefined') {
       var valid = this.validate(value);
       this.setState({
         value: value,
