@@ -199,7 +199,6 @@ module.exports = {
     this.props.attachToForm(this);
   },
   componentWillUnmount: function() {
-    this.setValue(null);
     this.props.detachFromForm(this);
   },
   onChange: function(event) {

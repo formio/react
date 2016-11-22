@@ -41,9 +41,17 @@ module.exports = React.createClass({
     this.props.onChange(this);
   },
   elementChange: function(row, component) {
-    var value = this.state.value;
+    let value = this.state.value;
     value[row][component.props.component.key] = component.state.value;
     this.setValue(value);
+  },
+  detachFromForm: function(row, component) {
+    let value = this.state.value;
+    if (component.props.component.key && value[row] && value[row].hasOwnProperty(component.props.component.key)) {
+      delete value[row][component.props.component.key];
+      this.setValue(value);
+    }
+    this.props.detachFromForm(component);
   },
   getElements: function() {
     let localKeys = this.props.component.components.map(component => component.key);
@@ -92,8 +100,9 @@ module.exports = React.createClass({
                         name={component.key}
                         component={component}
                         onChange={this.elementChange.bind(null, rowIndex)}
+                        detachFromForm={this.detachFromForm.bind(null, rowIndex)}
                         value={value}
-                        subData={{...row}}
+                        row={row}
                       />
                     </td>
                   );

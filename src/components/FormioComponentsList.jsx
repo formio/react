@@ -10,7 +10,7 @@ export default class extends React.Component {
             var key = component.key || component.type + index;
             var value = (this.props.values && this.props.values.hasOwnProperty(component.key) ? this.props.values[component.key] : null);
             var FormioElement = FormioComponents.getComponent(component.type);
-            if (this.props.checkConditional(component)) {
+            if (this.props.checkConditional(component, this.props.row)) {
               return (
                 <FormioElement
                   {...this.props}

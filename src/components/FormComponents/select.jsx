@@ -93,11 +93,12 @@ module.exports = React.createClass({
         };
 
         this.refreshItems = (input, newUrl, append) => {
-          let data = Object.assign({}, this.props.data, this.props.subData);
+          let { data, row } = this.props;
           newUrl = newUrl || this.url;
           // Allow templating the url.
           newUrl = interpolate(newUrl, {
             data,
+            row,
             formioBase: formiojs.getBaseUrl()
           });
           if (!newUrl) {

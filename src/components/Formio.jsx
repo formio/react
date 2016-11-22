@@ -56,6 +56,7 @@ export const Formio = React.createClass({
   },
   detachFromForm: function (component) {
     delete this.inputs[component.props.name];
+    delete this.data[component.props.component.key];
   },
   onChange: function (component) {
     if (component.state.value === null) {
@@ -117,15 +118,8 @@ export const Formio = React.createClass({
       this.validate();
     }
   },
-  checkConditional: function (component, subData = {}) {
-    let data;
-    if (subData) {
-      data = Object.assign({}, this.data, subData);
-    }
-    else {
-      data = data;
-    }
-    return FormioUtils.checkCondition(component, data);
+  checkConditional: function (component, row = {}) {
+    return FormioUtils.checkCondition(component, row, this.data);
   },
   isDisabled: function(component, data) {
     return this.props.readOnly || (Array.isArray(this.props.disableComponents) && this.props.disableComponents.indexOf(component.key) !== -1) || component.disabled;

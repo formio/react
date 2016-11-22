@@ -10,10 +10,19 @@ module.exports = React.createClass({
   },
   elementChange: function(component) {
     if (component.props.component.key) {
-      var value = this.state.value;
+      let value = this.state.value;
       value[component.props.component.key] = component.state.value;
       this.setValue(value);
     }
+  },
+  detachFromForm: function(component) {
+    let value = this.state.value;
+    console.log(value);
+    if (component.props.component.key && value && value.hasOwnProperty(component.props.component.key)) {
+      delete value[component.props.component.key];
+      this.setValue(value);
+    }
+    this.props.detachFromForm(component);
   },
   getElements: function() {
     var classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
@@ -26,6 +35,7 @@ module.exports = React.createClass({
           components={this.props.component.components}
           values={this.state.value}
           onChange={this.elementChange}
+          detachFromForm={this.detachFromForm}
         ></FormioComponentsList>
       </div>
     );
