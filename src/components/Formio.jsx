@@ -58,6 +58,11 @@ export const Formio = React.createClass({
     delete this.inputs[component.props.name];
     delete this.data[component.props.component.key];
   },
+  onEvent: function(event) {
+    if (typeof this.props.onEvent === 'function') {
+      this.props.onEvent(event, this.data);
+    }
+  },
   onChange: function (component) {
     if (component.state.value === null) {
       delete this.data[component.props.component.key];
@@ -245,6 +250,7 @@ export const Formio = React.createClass({
           formio={this.formio}
           data={this.data}
           onChange={this.onChange}
+          onEvent={this.onEvent}
           isDisabled={this.isDisabled}
           checkConditional={this.checkConditional}
           showAlert={this.showAlert}
