@@ -56,7 +56,13 @@ export const Formio = React.createClass({
   },
   detachFromForm: function (component) {
     delete this.inputs[component.props.name];
-    delete this.data[component.props.component.key];
+    if (this.data && this.data.hasOwnProperty(component.props.component.key)) {
+      delete this.data[component.props.component.key];
+      // Fire the onchange again as it may have fired before we remove the value.
+      if (typeof this.props.onChange === 'function' && !component.state.isPristine) {
+        this.props.onChange({data: this.data}, component.props.component.key, null);
+      }
+    }
   },
   onEvent: function(event) {
     if (typeof this.props.onEvent === 'function') {
