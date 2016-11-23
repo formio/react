@@ -54,13 +54,23 @@ module.exports = React.createClass({
     this.props.detachFromForm(component);
   },
   getElements: function() {
-    let localKeys = this.props.component.components.map(component => component.key);
-    let classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
-    let inputLabel = (this.props.component.label && !this.props.component.hideLabel ? <label htmlFor={this.props.component.key} className={classLabel}>{this.props.component.label}</label> : '');
-    let headers = this.props.component.components.map(function(component, index) {
-      if (this.props.checkConditional(component) || localKeys.indexOf(component.conditional.when) !== -1 || !!component.customConditional) {
+    const { value } = this.state;
+    const { component, checkConditional } = this.props;
+    let visibleCols = component.components.reduce((prev, col) => {
+      prev[col.key] = value.reduce(
+        (prev, row) => {
+          return prev || checkConditional(col, row);
+        }
+        , false);
+      return prev;
+    }, {});
+    let classLabel = 'control-label' + ( this.props.component.validate && component.validate.required ? ' field-required' : '');
+    let inputLabel = (component.label && !component.hideLabel ? <label htmlFor={component.key} className={classLabel}>{component.label}</label> : '');
+    let headers = component.components.map(function(col, index) {
+      if (visibleCols[col.key]) {
+      //if (this.props.checkConditional(col) || localKeys.indexOf(col.conditional.when) !== -1 || !!col.customConditional) {
         return (
-          <th key={index}>{component.label || ''}</th>
+          <th key={index}>{col.label || ''}</th>
         );
       }
       else {
@@ -68,10 +78,10 @@ module.exports = React.createClass({
       }
     }.bind(this));
     var tableClasses = 'table datagrid-table';
-    tableClasses += (this.props.component.striped) ? ' table-striped' : '';
-    tableClasses += (this.props.component.bordered) ? ' table-bordered' : '';
-    tableClasses += (this.props.component.hover) ? ' table-hover' : '';
-    tableClasses += (this.props.component.condensed) ? ' table-condensed' : '';
+    tableClasses += (component.striped) ? ' table-striped' : '';
+    tableClasses += (component.bordered) ? ' table-bordered' : '';
+    tableClasses += (component.hover) ? ' table-hover' : '';
+    tableClasses += (component.condensed) ? ' table-condensed' : '';
 
     return (
     <div className='formio-data-grid'>
@@ -87,18 +97,18 @@ module.exports = React.createClass({
           this.state.value.map(function(row, rowIndex) {
           return (
             <tr key={rowIndex}>
-              {this.props.component.components.map(function(component, index) {
-                var key = component.key || component.type + index;
-                var value = (row.hasOwnProperty(component.key) ? row[component.key] : component.defaultValue || '');
-                var FormioElement = FormioComponents.getComponent(component.type);
-                if (this.props.checkConditional(component, row)) {
+              {component.components.map(function(col, index) {
+                var key = col.key || col.type + index;
+                var value = (row.hasOwnProperty(col.key) ? row[col.key] : col.defaultValue || '');
+                var FormioElement = FormioComponents.getComponent(col.type);
+                if (checkConditional(col, row)) {
                   return (
                     <td key={key}>
                       <FormioElement
                         {...this.props}
-                        readOnly={this.props.isDisabled(component)}
-                        name={component.key}
-                        component={component}
+                        readOnly={this.props.isDisabled(col)}
+                        name={col.key}
+                        component={col}
                         onChange={this.elementChange.bind(null, rowIndex)}
                         detachFromForm={this.detachFromForm.bind(null, rowIndex)}
                         value={value}
@@ -107,7 +117,7 @@ module.exports = React.createClass({
                     </td>
                   );
                 }
-                else if (localKeys.indexOf(component.key)) {
+                else if (visibleCols[col.key]) {
                   return (
                     <td key={key}>
 
@@ -130,7 +140,7 @@ module.exports = React.createClass({
       </table>
       <div className='datagrid-add'>
         <a onClick={this.addRow} className='btn btn-primary'>
-          <span><i className='glyphicon glyphicon-plus' aria-hidden='true'/> { this.props.component.addAnother || 'Add Another'}</span>
+          <span><i className='glyphicon glyphicon-plus' aria-hidden='true'/> { component.addAnother || 'Add Another'}</span>
         </a>
       </div>
     </div>
