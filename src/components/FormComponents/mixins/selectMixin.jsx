@@ -126,7 +126,7 @@ module.exports = {
   getElements: function() {
     var Element;
     var properties = {
-      data: this.state.selectItems.filter((value) =>{
+      data: this.state.selectItems.filter(value => {
         if (typeof value === 'object' && this.valueField()) {
           value = _.get(value, this.valueField());
         }

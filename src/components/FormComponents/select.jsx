@@ -12,7 +12,7 @@ module.exports = React.createClass({
   displayName: 'Select',
   mixins: [valueMixin, selectMixin],
   getValueField: function() {
-    if (this.props.component.dataSrc === 'custom') {
+    if (this.props.component.dataSrc === 'custom' || this.props.component.dataSrc === 'json') {
       return false;
     }
     if (this.props.component.dataSrc === 'resource' && this.props.component.valueProperty === '') {
