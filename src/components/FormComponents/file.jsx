@@ -44,7 +44,7 @@ const FormioFileList = React.createClass({
         </tr>
         </thead>
         <tbody>
-          { this.props.files.map(this.fileRow) }
+          { this.props.files ? this.props.files.map(this.fileRow) : '' }
         </tbody>
       </table>
     );
@@ -56,7 +56,7 @@ const FormioImageList = React.createClass({
   render: function() {
     return <div>
       {
-        this.props.files.map((file, index) => {
+        this.props.files ? this.props.files.map((file, index) => {
           return (
             <span key={index}>
               <FormioImage file={file} formio={this.props.formio} width={this.props.width} />
@@ -69,7 +69,7 @@ const FormioImageList = React.createClass({
               })()}
             </span>
           );
-        })
+        }) : ''
       }
     </div>
   }
