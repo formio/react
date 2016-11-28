@@ -44,7 +44,7 @@ const FormioFileList = React.createClass({
         </tr>
         </thead>
         <tbody>
-          { this.props.files ? this.props.files.map(this.fileRow) : '' }
+          { this.props.files ? this.props.files.map(this.fileRow) : null }
         </tbody>
       </table>
     );
@@ -69,7 +69,7 @@ const FormioImageList = React.createClass({
               })()}
             </span>
           );
-        }) : ''
+        }) : null
       }
     </div>
   }
