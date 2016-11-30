@@ -50,7 +50,9 @@ module.exports = {
     }
     // ComponentWillReceiveProps isn't working without this as the reference to the data already is updated.
     this.data = {};
-    this.onChangeDebounced = debounce(this.props.onChange, 250);
+    if (typeof this.props.onChange === 'function') {
+      this.onChangeDebounced = debounce(this.props.onChange, 250);
+    }
     return state;
   },
   validate: function(value) {
