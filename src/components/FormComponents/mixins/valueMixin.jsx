@@ -1,6 +1,6 @@
 import React from 'react';
 import { deepEqual } from '../../../util';
-import { clone } from 'lodash';
+import { clone, debounce } from 'lodash';
 
 module.exports = {
   getDefaultValue: function(value) {
@@ -50,6 +50,7 @@ module.exports = {
     }
     // ComponentWillReceiveProps isn't working without this as the reference to the data already is updated.
     this.data = {};
+    this.onChangeDebounced = debounce(this.props.onChange, 250);
     return state;
   },
   validate: function(value) {
@@ -201,16 +202,16 @@ module.exports = {
   componentWillUnmount: function() {
     this.props.detachFromForm(this);
   },
-  onChange: function(event) {
+  onChange: function(event, debounce = false) {
     var value = event.target.value;
     // Allow components to respond to onChange event.
     if (typeof this.onChangeCustom === 'function') {
       value = this.onChangeCustom(value);
     }
     var index = (this.props.component.multiple ? event.target.getAttribute('data-index') : null);
-    this.setValue(value, index);
+    this.setValue(value, index, false, debounce);
   },
-  setValue: function(value, index, pristine) {
+  setValue: function(value, index, pristine, debounce = false) {
     if (index === undefined) {
       index = null;
     }
@@ -226,7 +227,12 @@ module.exports = {
       return previousState;
     }, () => {
       if (typeof this.props.onChange === 'function') {
-        this.props.onChange(this);
+        if (!debounce) {
+          this.props.onChange(this);
+        }
+        else {
+          this.onChangeDebounced(this);
+        }
       }
     });
   },
