@@ -1,10 +1,11 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
+import componentMixin from './mixins/componentMixin';
 import SignatureCanvas from 'react-signature-canvas';
 
 module.exports = React.createClass({
   displayName: 'Signature',
-  mixins: [valueMixin],
+  mixins: [valueMixin, componentMixin],
   onEnd: function() {
     this.setValue(this.signature.getCanvas().toDataURL());
   },

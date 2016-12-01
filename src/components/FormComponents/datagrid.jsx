@@ -1,10 +1,12 @@
 import React from 'react';
+import { clone } from 'lodash';
 import valueMixin from './mixins/valueMixin';
+import componentMixin from './mixins/componentMixin';
 import { FormioComponents } from '../../factories';
 
 module.exports = React.createClass({
   displayName: 'Datagrid',
-  mixins: [valueMixin],
+  mixins: [valueMixin, componentMixin],
   getInitialValue: function() {
     return [{}];
   },
@@ -22,7 +24,7 @@ module.exports = React.createClass({
     if (this.props.readOnly) {
       return;
     }
-    var rows = this.state.value;
+    var rows = clone(this.state.value);
     rows.push({});
     this.setState({
       value: rows
@@ -33,7 +35,7 @@ module.exports = React.createClass({
     if (this.props.readOnly) {
       return;
     }
-    var rows = this.state.value;
+    var rows = clone(this.state.value);
     rows.splice(id, 1);
     this.setState({
       value: rows
@@ -41,12 +43,12 @@ module.exports = React.createClass({
     this.props.onChange(this);
   },
   elementChange: function(row, component) {
-    let value = this.state.value;
+    let value = clone(this.state.value);
     value[row][component.props.component.key] = component.state.value;
     this.setValue(value);
   },
   detachFromForm: function(row, component) {
-    let value = this.state.value;
+    let value = clone(this.state.value);
     if (component.props.component.key && value[row] && value[row].hasOwnProperty(component.props.component.key)) {
       delete value[row][component.props.component.key];
       this.setValue(value);

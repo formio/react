@@ -1,10 +1,11 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import multiMixin from './mixins/multiMixin';
+import componentMixin from './mixins/componentMixin';
 
 module.exports = React.createClass({
   displayName: 'Number',
-  mixins: [valueMixin, multiMixin],
+  mixins: [valueMixin, multiMixin, componentMixin],
   getInitialValue: function() {
     return 0;
   },

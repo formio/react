@@ -1,10 +1,11 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import multiMixin from './mixins/multiMixin';
+import componentMixin from './mixins/componentMixin';
 
 module.exports = React.createClass({
   displayName: 'Checkbox',
-  mixins: [valueMixin, multiMixin],
+  mixins: [valueMixin, multiMixin, componentMixin],
   onChangeCheckbox: function(event) {
     var value = event.target.checked;
     var index = (this.props.component.multiple ? event.target.getAttribute('data-index') : null);

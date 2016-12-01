@@ -1,8 +1,10 @@
 import React from 'react';
+import componentMixin from './mixins/componentMixin';
 
 // TODO: Support other button actions like reset.
 module.exports = React.createClass({
   displayName: 'Button',
+  mixins: [componentMixin],
   getButtonType: function() {
     switch (this.props.component.action) {
       case 'submit':

@@ -1,12 +1,13 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import selectMixin from './mixins/selectMixin';
+import componentMixin from './mixins/componentMixin';
 import { raw, interpolate } from '../../util';
 import Formiojs from 'formiojs';
 
 module.exports = React.createClass({
   displayName: 'Resource',
-  mixins: [valueMixin, selectMixin],
+  mixins: [valueMixin, selectMixin, componentMixin],
   componentWillMount: function() {
     this.formio = new Formiojs(Formiojs.getBaseUrl() + '/project/' + this.props.component.project + '/form/' + this.props.component.resource);
     this.refreshItems();

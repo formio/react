@@ -1,8 +1,9 @@
 import React from 'react';
+import { clone } from 'lodash';
 
 module.exports = {
   addFieldValue: function() {
-    var values = this.state.value;
+    var values = clone(this.state.value);
     values.push(this.props.component.defaultValue);
     this.setState({
       value: values
@@ -12,7 +13,7 @@ module.exports = {
     }
   },
   removeFieldValue: function(id) {
-    var values = this.state.value;
+    var values = clone(this.state.value);
     values.splice(id, 1);
     this.setState({
       value: values

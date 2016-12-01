@@ -50,9 +50,6 @@ module.exports = {
     }
     // ComponentWillReceiveProps isn't working without this as the reference to the data already is updated.
     this.data = {};
-    if (typeof this.props.onChange === 'function') {
-      this.onChangeDebounced = debounce(this.props.onChange, 250);
-    }
     return state;
   },
   validate: function(value) {
@@ -204,22 +201,25 @@ module.exports = {
   componentWillUnmount: function() {
     this.props.detachFromForm(this);
   },
-  onChange: function(event, debounce = false) {
+  onChange: function(event) {
     var value = event.target.value;
     // Allow components to respond to onChange event.
     if (typeof this.onChangeCustom === 'function') {
       value = this.onChangeCustom(value);
     }
     var index = (this.props.component.multiple ? event.target.getAttribute('data-index') : null);
-    this.setValue(value, index, false, debounce);
+    this.setValue(value, index);
   },
-  setValue: function(value, index, pristine, debounce = false) {
+  setValue: function(value, index, pristine) {
     if (index === undefined) {
       index = null;
     }
     this.setState(previousState => {
       if (index !== null && Array.isArray(previousState.value)) {
-        previousState.value[index] = value;
+        // Clone so we keep state immutable.
+        const newValue = clone(previousState.value);
+        newValue[index] = value
+        previousState.value = newValue;
       }
       else {
         previousState.value = value;
@@ -229,12 +229,7 @@ module.exports = {
       return previousState;
     }, () => {
       if (typeof this.props.onChange === 'function') {
-        if (!debounce) {
-          this.props.onChange(this);
-        }
-        else {
-          this.onChangeDebounced(this);
-        }
+        this.props.onChange(this);
       }
     });
   },

@@ -2,9 +2,6 @@ import React from 'react';
 import Input from 'react-input-mask';
 
 module.exports = {
-  onChangeInput: function(event) {
-    this.onChange(event, true);
-  },
   getSingleElement: function(value, index) {
     index = index || 0;
     var mask = this.props.component.inputMask || '';
@@ -20,7 +17,7 @@ module.exports = {
         disabled={this.props.readOnly}
         placeholder={this.props.component.placeholder}
         mask={mask}
-        onChange={this.onChangeInput}
+        onChange={this.onChange}
         >
       </Input>
     );

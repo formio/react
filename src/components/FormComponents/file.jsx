@@ -1,6 +1,7 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
 import valueMixin from './mixins/valueMixin';
+import componentMixin from './mixins/componentMixin';
 import { fileSize } from '../../util';
 
 const FormioFileList = React.createClass({
@@ -119,7 +120,7 @@ const FormioImage = React.createClass({
 
 module.exports = React.createClass({
   displayName: 'File',
-  mixins: [valueMixin],
+  mixins: [valueMixin, componentMixin],
   getInitialValue: function() {
     return [];
   },

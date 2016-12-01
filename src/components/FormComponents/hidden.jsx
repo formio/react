@@ -1,8 +1,9 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
+import componentMixin from './mixins/componentMixin';
 
 module.exports = React.createClass({
-  mixins: [valueMixin],
+  mixins: [valueMixin, componentMixin],
   displayName: 'Hidden',
   getElements: function() {
     var value = (this.state && this.state.hasOwnProperty('value')) ? this.state.value : '';

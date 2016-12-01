@@ -1,6 +1,7 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import selectMixin from './mixins/selectMixin';
+import componentMixin from './mixins/componentMixin';
 import formiojs from 'formiojs';
 import { interpolate, serialize, raw } from '../../util';
 import get from 'lodash/get';
@@ -10,7 +11,7 @@ module.exports = React.createClass({
   options: {},
   lastInput: '',
   displayName: 'Select',
-  mixins: [valueMixin, selectMixin],
+  mixins: [valueMixin, selectMixin, componentMixin],
   getValueField: function() {
     if (this.props.component.dataSrc === 'custom' || this.props.component.dataSrc === 'json') {
       return false;

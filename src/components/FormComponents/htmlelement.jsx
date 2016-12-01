@@ -1,7 +1,9 @@
 import React from 'react';
+import componentMixin from './mixins/componentMixin';
 
 module.exports = React.createClass({
   displayName: 'HtmlElement',
+  mixins: [componentMixin],
   render: function (value, index) {
     const { component } = this.props;
     const attrs = component.attrs.reduce((prev, item) => {
