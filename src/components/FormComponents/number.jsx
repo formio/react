@@ -11,7 +11,6 @@ module.exports = React.createClass({
   },
   getSingleElement: function(value, index) {
     index = index || 0;
-    value = value || 0;
     return (
       <input
         type={this.props.component.inputType}
