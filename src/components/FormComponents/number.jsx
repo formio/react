@@ -7,7 +7,7 @@ module.exports = React.createClass({
   displayName: 'Number',
   mixins: [valueMixin, multiMixin, componentMixin],
   getInitialValue: function() {
-    return 0;
+    return '';
   },
   getSingleElement: function(value, index) {
     index = index || 0;
