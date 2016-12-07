@@ -4,12 +4,12 @@ import { clone, debounce } from 'lodash';
 
 module.exports = {
   getDefaultValue: function(value) {
-    const { component, data } = this.props;
+    const { component, data, row } = this.props;
     // Allow components to set different default values.
     if (value == null) {
       if (component.hasOwnProperty('customDefaultValue')) {
         try {
-          value = eval('(function(data) { var value = "";' + component.customDefaultValue.toString() + '; return value; })(data)');
+          value = eval('(function(data, row) { var value = "";' + component.customDefaultValue.toString() + '; return value; })(data, row)');
         }
         catch (e) {
           /* eslint-disable no-console */
@@ -130,6 +130,7 @@ module.exports = {
       var input = item;
       var valid;
       try {
+        const { data, row } = this.props;
         valid = eval(custom);
         state.isValid = (valid === true);
       }
@@ -151,7 +152,7 @@ module.exports = {
       if (!deepEqual(this.data, nextProps.data)) {
         this.data = clone(nextProps.data);
         try {
-          const result = eval('(function(data) { var value = [];' + component.calculateValue.toString() + '; return value; })(this.data)');
+          const result = eval('(function(data, row) { var value = [];' + component.calculateValue.toString() + '; return value; })(this.data, nextProps.row)');
           this.setValue(result);
         }
         catch (e) {

@@ -46,10 +46,10 @@ module.exports = React.createClass({
         this.refreshItems = () => {
           try {
             /* eslint-disable no-unused-vars */
-            var data = {...this.props.data};
+            const { data, row } = this.props;
             /* eslint-enable no-unused-vars */
             this.setState({
-              selectItems: eval('(function(data) { var values = [];' + this.props.component.data.custom.toString() + '; return values; })(data)')
+              selectItems: eval('(function(data, row) { var values = [];' + this.props.component.data.custom.toString() + '; return values; })(data, row)')
             });
           }
           catch (error) {
