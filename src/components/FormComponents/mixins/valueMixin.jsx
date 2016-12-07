@@ -151,7 +151,8 @@ module.exports = {
       if (!deepEqual(this.data, nextProps.data)) {
         this.data = clone(nextProps.data);
         try {
-          value = eval('(function(data) { var value = [];' + component.calculateValue.toString() + '; return value; })(this.data)');
+          const result = eval('(function(data) { var value = [];' + component.calculateValue.toString() + '; return value; })(this.data)');
+          this.setValue(result);
         }
         catch (e) {
           /* eslint-disable no-console */
