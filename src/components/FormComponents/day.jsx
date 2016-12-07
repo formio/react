@@ -12,7 +12,12 @@ module.exports = React.createClass({
     };
     const { date } = this.state;
 
-    this.setValue(padLeft(date.day, 2) + '/' + padLeft(date.month, 2) + '/' + padLeft(date.year, 4));
+    if (this.props.component.dayFirst) {
+      this.setValue(padLeft(date.day, 2) + '/' + padLeft(date.month, 2) + '/' + padLeft(date.year, 4));
+    }
+    else {
+      this.setValue(padLeft(date.month, 2) + '/' + padLeft(date.day, 2) + '/' + padLeft(date.year, 4));
+    }
   },
   validateCustom: function(value) {
     const required = this.props.component.fields.day.required || this.props.component.fields.month.required || this.props.component.fields.year.required;
