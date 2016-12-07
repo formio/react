@@ -155,3 +155,8 @@
 .rw-list-option {
     height: 1.8em;
 }
+
+.field-required:after {
+    color: red;
+    content: " *";
+}
