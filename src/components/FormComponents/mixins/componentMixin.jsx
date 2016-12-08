@@ -9,6 +9,11 @@ module.exports = {
       return true;
     }
 
+    // If the pristineness changes without a value change, re-render.
+    if (this.state && this.state.hasOwnProperty('isPristine') && this.state.isPristine !== nextState.isPristine) {
+      return true;
+    }
+    
     // If a new value is passed in, re-render.
     if (this.props.value !== nextProps.value) {
       return true;
