@@ -24,6 +24,11 @@ module.exports = {
       return true;
     }
 
+    // If component has a custom data source, always recalculate
+    if (this.props.component.hasOwnProperty('refreshOn') && this.props.component.refreshOn) {
+      return true;
+    }
+
     return false;
   }
 };

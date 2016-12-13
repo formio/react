@@ -1,12 +1,11 @@
 import React from 'react';
 import { clone } from 'lodash';
 import valueMixin from './mixins/valueMixin';
-import componentMixin from './mixins/componentMixin';
 import { FormioComponents } from '../../factories';
 
 module.exports = React.createClass({
   displayName: 'Datagrid',
-  mixins: [valueMixin, componentMixin],
+  mixins: [valueMixin],
   getInitialValue: function() {
     return [{}];
   },
@@ -44,6 +43,7 @@ module.exports = React.createClass({
   },
   elementChange: function(row, component) {
     let value = clone(this.state.value);
+    value[row] = clone(value[row]);
     value[row][component.props.component.key] = component.state.value;
     this.setValue(value);
   },
