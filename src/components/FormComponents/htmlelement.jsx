@@ -14,8 +14,11 @@ module.exports = React.createClass({
     }, {});
     return (
       <div className="formio-field-type-htmlelement">
-        <component.tag className={component.customClass} {...attrs}>
-          {component.content}
+        <component.tag
+          className={component.customClass}
+          {...attrs}
+          dangerouslySetInnerHTML={{__html: component.content}}
+        >
         </component.tag>
       </div>
     );
