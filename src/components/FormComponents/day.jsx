@@ -131,6 +131,9 @@ module.exports = React.createClass({
     )
   },
   getDay: function(componentId, field) {
+    if (field.hide) {
+      return null;
+    }
     return this.getDatePart({
       key: 'day',
       componentId: componentId + '-day',
@@ -144,6 +147,9 @@ module.exports = React.createClass({
     });
   },
   getMonth: function(componentId, field) {
+    if (field.hide) {
+      return null;
+    }
     const classes = (field.required ? 'field-required' : '');
     const options = [field.placeholder, 'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'];
@@ -175,6 +181,9 @@ module.exports = React.createClass({
     );
   },
   getYear: function(componentId, field) {
+    if (field.hide) {
+      return null;
+    }
     return this.getDatePart({
       key: 'year',
       componentId: componentId + '-year',
