@@ -160,3 +160,8 @@
     color: red;
     content: " *";
 }
+
+.field-required-inline {
+    color:red;
+    z-index: 5;
+}
