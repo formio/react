@@ -27,7 +27,7 @@ module.exports = React.createClass({
             disabled={this.props.readOnly}
             onChange={this.onChangeCheckbox}
           />
-          { !(component.hideLabel && !component.datagridLabel) ? component.label : '' }
+          { !(component.hideLabel && component.datagridLabel === false) ? component.label : '' }
         </label>
       </div>
     );

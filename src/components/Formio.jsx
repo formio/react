@@ -144,15 +144,21 @@ export const Formio = React.createClass({
       return previousState;
     });
   },
-  onSubmit: function (event) {
-    event.preventDefault();
-
+  setPristine: function(isPristine) {
     // Mark all inputs as dirty so errors show.
     Object.keys(this.inputs).forEach(function (name) {
       this.inputs[name].setState({
-        isPristine: false
+        isPristine
       });
     }.bind(this));
+    this.setState({
+      isPristine
+    });
+  },
+  onSubmit: function (event) {
+    event.preventDefault();
+
+    this.setPristine(false);
 
     if (!this.state.isValid) {
       this.showAlert('danger', 'Please fix the following errors before submitting.', true);
