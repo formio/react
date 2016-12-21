@@ -71,8 +71,9 @@ module.exports = React.createClass({
     let headers = component.components.map(function(col, index) {
       if (visibleCols[col.key]) {
       //if (this.props.checkConditional(col) || localKeys.indexOf(col.conditional.when) !== -1 || !!col.customConditional) {
+        let colLabel = 'control-label' + ( col.validate && col.validate.required ? ' field-required' : '');
         return (
-          <th key={index}>{col.label || ''}</th>
+          <th key={index}><label className={colLabel}>{col.label || ''}</label></th>
         );
       }
       else {
