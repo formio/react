@@ -30,17 +30,33 @@ module.exports = React.createClass({
         });
         break;
       case 'json':
-        this.internalFilter = true;
         try {
-          this.setState({
-            selectItems: JSON.parse(this.props.component.data.json)
-          });
+          this.items = JSON.parse(this.props.component.data.json);
         }
         catch (error) {
-          this.setState({
-            selectItems: []
-          });
+          this.items = [];
         }
+        this.options.params = {
+          limit: 20,
+          skip: 0
+        };
+        this.refreshItems = (input, url, append) => {
+          // If they typed in a search, reset skip.
+          if (this.lastInput !== input) {
+            this.lastInput = input;
+            this.options.params.skip = 0;
+          }
+          let items = this.items;
+          if (input) {
+            items = items.filter(item => {
+              // This is a bit of a hack to search the whole object.
+              return JSON.stringify(item).toLowerCase().includes(input.toLowerCase());
+            });
+          }
+          items = items.slice(this.options.params.skip, this.options.params.skip + this.options.params.limit);
+          this.setResult(items, append);
+        };
+        this.refreshItems();
         break;
       case 'custom':
         this.refreshItems = () => {
@@ -142,7 +158,7 @@ module.exports = React.createClass({
               this.setResult(data.data, append);
             }
             else if (data.hasOwnProperty('items')) {
-              this. setResult(data.items, append);
+              this.setResult(data.items, append);
             }
             // Use the data itself.
             else {

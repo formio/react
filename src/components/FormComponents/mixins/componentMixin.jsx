@@ -29,6 +29,14 @@ module.exports = {
       return true;
     }
 
+    if (this.state && this.state.hasOwnProperty('searchTerm') && this.state.searchTerm !== nextState.searchTerm) {
+      return true;
+    }
+
+    if (this.state && this.state.hasOwnProperty('selectItems') && !deepEqual(this.state.selectItems, nextState.selectItems)) {
+      return true;
+    }
+
     return false;
   }
 };
