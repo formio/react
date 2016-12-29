@@ -179,6 +179,14 @@ module.exports = {
     }
   },
   safeSingleToMultiple: function(value) {
+    if (this.props.component.multiple) {
+      if(value === '' && this.props.component.type === 'select') {
+        value = [];
+      }
+      else {
+        value = [value];
+      }
+    }
     // If this was a single but is not a multivalue.
     if (this.props.component.multiple && !Array.isArray(value)) {
       value = [value];
