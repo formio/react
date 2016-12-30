@@ -179,17 +179,14 @@ module.exports = {
     }
   },
   safeSingleToMultiple: function(value) {
-    if (this.props.component.multiple) {
+    // If this was a single but is not a multivalue.
+    if (this.props.component.multiple && !Array.isArray(value)) {
       if(this.props.component.type === 'select' && !value) {
         value = [];
       }
       else {
         value = [value];
       }
-    }
-    // If this was a single but is not a multivalue.
-    if (this.props.component.multiple && !Array.isArray(value)) {
-      value = [value];
     }
     // If this was a multivalue but is now single value.
     // RE-60 :-Need to return the value as array of object instead of object while converting  a multivalue to single value for datagrid component
