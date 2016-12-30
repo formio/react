@@ -180,7 +180,7 @@ module.exports = {
   },
   safeSingleToMultiple: function(value) {
     if (this.props.component.multiple) {
-      if(value === '' && this.props.component.type === 'select') {
+      if(this.props.component.type === 'select' && !value) {
         value = [];
       }
       else {
