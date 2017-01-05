@@ -130,7 +130,15 @@ export const Formio = React.createClass({
     }
   },
   checkConditional: function (component, row = {}) {
-    return FormioUtils.checkCondition(component, row, this.data);
+    const show = FormioUtils.checkCondition(component, row, this.data);
+    // If element is hidden, remove any values already on the form (this can happen when data is loaded into the form
+    // and the field is initially hidden.
+    if (!show) {
+      if (this.data.hasOwnProperty(component.key)) {
+        delete this.data[component.key];
+      }
+    }
+    return show;
   },
   isDisabled: function(component, data) {
     return this.props.readOnly || (Array.isArray(this.props.disableComponents) && this.props.disableComponents.indexOf(component.key) !== -1) || component.disabled;
@@ -251,7 +259,7 @@ export const Formio = React.createClass({
         {alerts}
         <FormioComponentsList
           components={components}
-          values={this.state.submission.data}
+          values={this.data}
           options={this.props.options}
           attachToForm={this.attachToForm}
           detachFromForm={this.detachFromForm}
