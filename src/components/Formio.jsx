@@ -10,6 +10,7 @@ import '../components/FormComponents';
 export const Formio = React.createClass({
   displayName: 'Formio',
   getInitialState: function () {
+    this.unmounting = false;
     if (this.props.submission && this.props.submission.data) {
       this.data = _.clone(this.props.submission.data);
     }
@@ -35,6 +36,9 @@ export const Formio = React.createClass({
     this.data = this.data || {};
     this.inputs = {};
   },
+  componentWillUnmount: function() {
+    this.unmounting = true;
+  },
   componentWillReceiveProps: function (nextProps) {
     if (nextProps.form !== this.props.form) {
       this.setState({
@@ -55,6 +59,10 @@ export const Formio = React.createClass({
     this.validate(component);
   },
   detachFromForm: function (component) {
+    // Don't detach when the whole form is unmounting.
+    if (this.unmounting) {
+      return;
+    }
     delete this.inputs[component.props.name];
     if (this.data && this.data.hasOwnProperty(component.props.component.key)) {
       delete this.data[component.props.component.key];
