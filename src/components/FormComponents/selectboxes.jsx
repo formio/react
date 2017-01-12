@@ -1,14 +1,16 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
+import componentMixin from './mixins/componentMixin';
+import { clone } from 'lodash';
 
 module.exports = React.createClass({
   displayName: 'SelectBox',
-  mixins: [valueMixin],
+  mixins: [valueMixin, componentMixin],
   getInitialValue: function() {
     return {};
   },
   onChangeCheckbox: function(key, e) {
-    var value = this.state.value;
+    var value = clone(this.state.value);
     value[key] = e.target.checked;
     this.setValue(value);
   },

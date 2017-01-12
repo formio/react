@@ -1,6 +1,7 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import multiMixin from './mixins/multiMixin';
+import componentMixin from './mixins/componentMixin';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import momentLocalizer from 'react-widgets/lib/localizers/moment';
 import moment from 'moment';
@@ -8,7 +9,7 @@ momentLocalizer(moment);
 
 module.exports = React.createClass({
   displayName: 'Datetime',
-  mixins: [valueMixin, multiMixin],
+  mixins: [valueMixin, multiMixin, componentMixin],
   getInitialValue: function() {
     return null;
   },

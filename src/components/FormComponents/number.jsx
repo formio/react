@@ -1,16 +1,16 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import multiMixin from './mixins/multiMixin';
+import componentMixin from './mixins/componentMixin';
 
 module.exports = React.createClass({
   displayName: 'Number',
-  mixins: [valueMixin, multiMixin],
+  mixins: [valueMixin, multiMixin, componentMixin],
   getInitialValue: function() {
-    return 0;
+    return '';
   },
   getSingleElement: function(value, index) {
     index = index || 0;
-    value = value || 0;
     return (
       <input
         type={this.props.component.inputType}

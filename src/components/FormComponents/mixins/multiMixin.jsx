@@ -1,8 +1,9 @@
 import React from 'react';
+import { clone } from 'lodash';
 
 module.exports = {
   addFieldValue: function() {
-    var values = this.state.value;
+    var values = clone(this.state.value);
     values.push(this.props.component.defaultValue);
     this.setState({
       value: values
@@ -12,7 +13,7 @@ module.exports = {
     }
   },
   removeFieldValue: function(id) {
-    var values = this.state.value;
+    var values = clone(this.state.value);
     values.splice(id, 1);
     this.setState({
       value: values
@@ -22,21 +23,22 @@ module.exports = {
     }
   },
   getElements: function() {
+    const { component } = this.props;
     var Component;
-    var classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
-    var inputLabel = (this.props.component.label && !this.props.component.hideLabel ? <label htmlFor={this.props.component.key} className={classLabel}>{this.props.component.label}</label> : '');
-    var requiredInline = (!this.props.component.label && this.props.component.validate && this.props.component.validate.required ? <span className='glyphicon glyphicon-asterisk form-control-feedback field-required-inline' aria-hidden='true'></span> : '');
-    var prefix = (this.props.component.prefix ? <div className='input-group-addon'>{this.props.component.prefix}</div> : '');
-    var suffix = (this.props.component.suffix ? <div className='input-group-addon'>{this.props.component.suffix}</div> : '');
+    var classLabel = 'control-label' + ( component.validate && component.validate.required ? ' field-required' : '');
+    var inputLabel = (component.label && !component.hideLabel ? <label htmlFor={component.key} className={classLabel}>{component.label}</label> : '');
+    var requiredInline = ((component.hideLabel === true || component.label === '' || !component.label) && component.validate && component.validate.required ? <span className='glyphicon glyphicon-asterisk form-control-feedback field-required-inline' aria-hidden='true'></span> : '');
+    var prefix = (component.prefix ? <div className='input-group-addon'>{component.prefix}</div> : '');
+    var suffix = (component.suffix ? <div className='input-group-addon'>{component.suffix}</div> : '');
     var data = this.state.value;
-    if (this.props.component.multiple) {
+    if (component.multiple) {
       var rows = data.map(function(value, id) {
         var Element = this.getSingleElement(value, id);
         return (
           <tr key={id}>
-            <td>{requiredInline}
+            <td>
               <div className='input-group'>
-                {prefix} {Element} {suffix}
+                {prefix} {Element} {requiredInline} {suffix}
               </div>
             </td>
             <td><a onClick={this.removeFieldValue.bind(null, id)} className={'btn btn-danger remove-row remove-row-' + id}>
@@ -64,9 +66,9 @@ module.exports = {
       var Element = this.getSingleElement(data);
       Component =
         <div className='formio-component-single'>
-          {inputLabel} {requiredInline}
+          {inputLabel}
           <div className='input-group'>
-            {prefix} {Element} {suffix}
+            {prefix} {Element} {requiredInline} {suffix}
           </div>
         </div>;
     }

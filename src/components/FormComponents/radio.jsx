@@ -1,10 +1,11 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import multiMixin from './mixins/multiMixin';
+import componentMixin from './mixins/componentMixin';
 
 module.exports = React.createClass({
   displayName: 'Radio',
-  mixins: [valueMixin, multiMixin],
+  mixins: [valueMixin, multiMixin, componentMixin],
   onChangeRadio: function(event) {
     const value = event.target.id;
     this.setValue(value);

@@ -10,6 +10,7 @@ import '../components/FormComponents';
 export const Formio = React.createClass({
   displayName: 'Formio',
   getInitialState: function () {
+    this.unmounting = false;
     if (this.props.submission && this.props.submission.data) {
       this.data = _.clone(this.props.submission.data);
     }
@@ -35,6 +36,9 @@ export const Formio = React.createClass({
     this.data = this.data || {};
     this.inputs = {};
   },
+  componentWillUnmount: function() {
+    this.unmounting = true;
+  },
   componentWillReceiveProps: function (nextProps) {
     if (nextProps.form !== this.props.form) {
       this.setState({
@@ -55,8 +59,23 @@ export const Formio = React.createClass({
     this.validate(component);
   },
   detachFromForm: function (component) {
+    // Don't detach when the whole form is unmounting.
+    if (this.unmounting) {
+      return;
+    }
     delete this.inputs[component.props.name];
-    delete this.data[component.props.component.key];
+    if (this.data && this.data.hasOwnProperty(component.props.component.key)) {
+      delete this.data[component.props.component.key];
+      // Fire the onchange again as it may have fired before we remove the value.
+      if (typeof this.props.onChange === 'function' && !component.state.isPristine) {
+        this.props.onChange({data: this.data}, component.props.component.key, null);
+      }
+    }
+  },
+  onEvent: function(event) {
+    if (typeof this.props.onEvent === 'function') {
+      this.props.onEvent(event, this.data);
+    }
   },
   onChange: function (component) {
     if (component.state.value === null) {
@@ -118,28 +137,19 @@ export const Formio = React.createClass({
       this.validate();
     }
   },
-  checkConditional: function (component, subData = {}) {
-    let data = Object.assign({}, this.data, subData);
-    if (component.conditional && component.conditional.when) {
-      let value = FormioUtils.getValue({data}, component.conditional.when) || '';
-      return (value.toString() === component.conditional.eq.toString()) === (component.conditional.show.toString() === 'true');
-    }
-    else if (component.customConditional) {
-      try {
-        // Create a child block, and expose the submission data.
-        let data = data; // eslint-disable-line no-unused-vars
-        // Eval the custom conditional and update the show value.
-        let show = eval('(function() { ' + component.customConditional.toString() + '; return show; })()');
-        // Show by default, if an invalid type is given.
-        return show.toString() === 'true';
-      }
-      catch (e) {
-        return true;
+  checkConditional: function (component, row = {}) {
+    const show = FormioUtils.checkCondition(component, row, this.data);
+    // If element is hidden, remove any values already on the form (this can happen when data is loaded into the form
+    // and the field is initially hidden.
+    if (!show) {
+      if (this.data.hasOwnProperty(component.key)) {
+        delete this.data[component.key];
       }
     }
-    else {
-      return true;
-    }
+    return show;
+  },
+  isDisabled: function(component, data) {
+    return this.props.readOnly || (Array.isArray(this.props.disableComponents) && this.props.disableComponents.indexOf(component.key) !== -1) || component.disabled;
   },
   showAlert: function (type, message, clear) {
     this.setState(function (previousState) {
@@ -150,15 +160,21 @@ export const Formio = React.createClass({
       return previousState;
     });
   },
-  onSubmit: function (event) {
-    event.preventDefault();
-
+  setPristine: function(isPristine) {
     // Mark all inputs as dirty so errors show.
     Object.keys(this.inputs).forEach(function (name) {
       this.inputs[name].setState({
-        isPristine: false
+        isPristine
       });
     }.bind(this));
+    this.setState({
+      isPristine
+    });
+  },
+  onSubmit: function (event) {
+    event.preventDefault();
+
+    this.setPristine(false);
 
     if (!this.state.isValid) {
       this.showAlert('danger', 'Please fix the following errors before submitting.', true);
@@ -251,8 +267,7 @@ export const Formio = React.createClass({
         {alerts}
         <FormioComponentsList
           components={components}
-          values={this.state.submission.data}
-          readOnly={this.props.readOnly}
+          values={this.data}
           options={this.props.options}
           attachToForm={this.attachToForm}
           detachFromForm={this.detachFromForm}
@@ -263,6 +278,8 @@ export const Formio = React.createClass({
           formio={this.formio}
           data={this.data}
           onChange={this.onChange}
+          onEvent={this.onEvent}
+          isDisabled={this.isDisabled}
           checkConditional={this.checkConditional}
           showAlert={this.showAlert}
           formPristine={this.state.isPristine}

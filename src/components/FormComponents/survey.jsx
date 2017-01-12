@@ -1,9 +1,10 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
+import componentMixin from './mixins/componentMixin';
 
 module.exports = React.createClass({
   displayName: 'Survey',
-  mixins: [valueMixin],
+  mixins: [valueMixin, componentMixin],
   getInitialValue: function() {
     return {};
   },

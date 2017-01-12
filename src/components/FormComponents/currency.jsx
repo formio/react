@@ -2,10 +2,11 @@ import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import multiMixin from './mixins/multiMixin';
 import inputMixin from './mixins/inputMixin';
+import componentMixin from './mixins/componentMixin';
 
 module.exports = React.createClass({
   displayName: 'Currency',
-  mixins: [inputMixin, valueMixin, multiMixin],
+  mixins: [inputMixin, valueMixin, multiMixin, componentMixin],
   onChangeCustom: function(value) {
     // May be better way than adding to prototype.
     var splice = function(string, idx, rem, s) {

@@ -60,7 +60,7 @@ describe('Number @number', function () {
       expect(element.find('.formio-component-single .input-group input').attr('class')).to.equal('form-control');
       expect(element.find('.formio-component-single .input-group input').attr('id')).to.equal('number');
       expect(element.find('.formio-component-single .input-group input').attr('data-index')).to.equal('0');
-      expect(element.find('.formio-component-single .input-group input').attr('value')).to.equal('0');
+      expect(element.find('.formio-component-single .input-group input').attr('value')).to.equal('');
       expect(element.find('.formio-component-single .input-group input').attr('placeholder')).to.equal('');
       done();
     });
@@ -131,12 +131,12 @@ describe('Number @number', function () {
       const element = render(
         <Number
           name="number"
-          value="My Value"
+          value={50}
           component={component}
           attachToForm={attachToForm}
         ></Number>
       ).find('input');
-      expect(element.attr('value')).to.equal('My Value');
+      expect(element.attr('value')).to.equal('50');
       done();
     });
 
@@ -318,7 +318,7 @@ describe('Number @number', function () {
       expect(table.find('tr td div.input-group').length).to.equal(1);
       expect(table.find('tr td div.input-group input').attr('type')).to.equal('text');
       expect(table.find('tr td div.input-group input').attr('placeholder')).to.equal('');
-      expect(table.find('tr td div.input-group input').attr('value')).to.equal('0');
+      expect(table.find('tr td div.input-group input').attr('value')).to.equal('');
       expect(table.find('tr td div.input-group input').attr('id')).to.equal('number');
       expect(table.find('tr td div.input-group input').attr('name')).to.equal('number');
       expect(table.find('tr td div.input-group input').attr('class')).to.equal('form-control');
@@ -393,20 +393,35 @@ describe('Number @number', function () {
     });
 
     it('Sets a default value', function (done) {
+      component.defaultValue = 100;
       const element = render(
         <Number
           name="number"
-          value="My Value"
           component={component}
           attachToForm={attachToForm}
         ></Number>
       ).find('input');
-      expect(element.attr('value')).to.equal('My Value');
+      expect(element.attr('value')).to.equal('100');
+      component.defaultValue = '';
+      done();
+    });
+
+    it('Keeps value over default value', function (done) {
+      component.defaultValue = 100;
+      const element = render(
+        <Number
+          name="number"
+          value={50}
+          component={component}
+          attachToForm={attachToForm}
+        ></Number>
+      ).find('input');
+      expect(element.attr('value')).to.equal('50');
+      component.defaultValue = '';
       done();
     });
 
     it('Adds and removes rows', function (done) {
-      component.defaultValue = 'My Value';
       const element = mount(
         <Number
           name="number"

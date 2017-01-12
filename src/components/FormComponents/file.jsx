@@ -1,6 +1,7 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
 import valueMixin from './mixins/valueMixin';
+import componentMixin from './mixins/componentMixin';
 import { fileSize } from '../../util';
 
 const FormioFileList = React.createClass({
@@ -44,7 +45,7 @@ const FormioFileList = React.createClass({
         </tr>
         </thead>
         <tbody>
-          { this.props.files.map(this.fileRow) }
+          { this.props.files ? this.props.files.map(this.fileRow) : null }
         </tbody>
       </table>
     );
@@ -56,7 +57,7 @@ const FormioImageList = React.createClass({
   render: function() {
     return <div>
       {
-        this.props.files.map((file, index) => {
+        this.props.files ? this.props.files.map((file, index) => {
           return (
             <span key={index}>
               <FormioImage file={file} formio={this.props.formio} width={this.props.width} />
@@ -69,7 +70,7 @@ const FormioImageList = React.createClass({
               })()}
             </span>
           );
-        })
+        }) : null
       }
     </div>
   }
@@ -119,7 +120,7 @@ const FormioImage = React.createClass({
 
 module.exports = React.createClass({
   displayName: 'File',
-  mixins: [valueMixin],
+  mixins: [valueMixin, componentMixin],
   getInitialValue: function() {
     return [];
   },

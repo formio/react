@@ -1,11 +1,25 @@
 import React from 'react';
+import { deepEqual } from '../../../util';
+import { clone, debounce } from 'lodash';
 
 module.exports = {
   getDefaultValue: function(value) {
+    const { component, data, row } = this.props;
     // Allow components to set different default values.
     if (value == null) {
-      if (this.props.component.defaultValue) {
-        value = this.props.component.defaultValue;
+      if (component.hasOwnProperty('customDefaultValue')) {
+        try {
+          value = eval('(function(data, row) { var value = "";' + component.customDefaultValue.toString() + '; return value; })(data, row)');
+        }
+        catch (e) {
+          /* eslint-disable no-console */
+          console.warn('An error occurrend in a custom default value in ' + component.key, e);
+          /* eslint-enable no-console */
+          value = '';
+        }
+      }
+      else if (component.hasOwnProperty('defaultValue')) {
+        value = component.defaultValue;
         if (typeof this.onChangeCustom === 'function') {
           value = this.onChangeCustom(value);
         }
@@ -17,20 +31,26 @@ module.exports = {
         value = '';
       }
     }
-    if ((this.props.component.type !== 'datagrid') && (this.props.component.type !== 'container')) {
+    if ((component.type !== 'datagrid') && (component.type !== 'container')) {
       value = this.safeSingleToMultiple(value);
     }
     return value;
   },
   getInitialState: function() {
-    var value = this.getDefaultValue(this.props.value);
-    var valid = this.validate(value);
-    return {
+    const value = this.getDefaultValue(this.props.value);
+    const valid = this.validate(value);
+    let state = {
       value: value,
       isValid: valid.isValid,
       errorMessage: valid.errorMessage,
       isPristine: true
     };
+    if (typeof this.customState === 'function') {
+      state = this.customState(state);
+    }
+    // ComponentWillReceiveProps isn't working without this as the reference to the data already is updated.
+    this.data = {};
+    return state;
   },
   validate: function(value) {
     // Allow components to have custom validation.
@@ -108,9 +128,17 @@ module.exports = {
         return this.props.data[$2];
       }.bind(this));
       var input = item;
-      /* jshint evil: true */
-      var valid = eval(custom);
-      state.isValid = (valid === true);
+      var valid;
+      try {
+        const { data, row } = this.props;
+        valid = eval(custom);
+        state.isValid = (valid === true);
+      }
+      catch (e) {
+        /* eslint-disable no-console */
+        console.warn('A syntax error occurred while computing custom values in ' + this.props.component.key, e);
+        /* eslint-enable no-console */
+      }
       if (!state.isValid) {
         state.errorMessage = valid || ((this.props.component.label || this.props.component.key) + 'is not a valid value.');
       }
@@ -118,8 +146,26 @@ module.exports = {
     return state;
   },
   componentWillReceiveProps: function(nextProps) {
+    const { component } = this.props;
+    let value;
+    if (component.hasOwnProperty('calculateValue') && component.calculateValue) {
+      if (!deepEqual(this.data, nextProps.data)) {
+        this.data = clone(nextProps.data);
+        try {
+          const result = eval('(function(data, row) { var value = [];' + component.calculateValue.toString() + '; return value; })(this.data, nextProps.row)');
+          this.setValue(result);
+        }
+        catch (e) {
+          /* eslint-disable no-console */
+          console.warn('An error occurred calculating a value for ' + $scope.component.key, e);
+          /* eslint-enable no-console */
+        }
+      }
+    }
     if (this.props.value !== nextProps.value) {
-      var value = this.safeSingleToMultiple(nextProps.value);
+      value = this.safeSingleToMultiple(nextProps.value);
+    }
+    if (typeof value !== 'undefined') {
       var valid = this.validate(value);
       this.setState({
         value: value,
@@ -135,7 +181,12 @@ module.exports = {
   safeSingleToMultiple: function(value) {
     // If this was a single but is not a multivalue.
     if (this.props.component.multiple && !Array.isArray(value)) {
-      value = [value];
+      if(this.props.component.type === 'select' && !value) {
+        value = [];
+      }
+      else {
+        value = [value];
+      }
     }
     // If this was a multivalue but is now single value.
     // RE-60 :-Need to return the value as array of object instead of object while converting  a multivalue to single value for datagrid component
@@ -170,9 +221,12 @@ module.exports = {
     if (index === undefined) {
       index = null;
     }
-    this.setState(function(previousState) {
+    this.setState(previousState => {
       if (index !== null && Array.isArray(previousState.value)) {
-        previousState.value[index] = value;
+        // Clone so we keep state immutable.
+        const newValue = clone(previousState.value);
+        newValue[index] = value
+        previousState.value = newValue;
       }
       else {
         previousState.value = value;
@@ -180,11 +234,11 @@ module.exports = {
       previousState.isPristine = !!pristine;
       Object.assign(previousState, this.validate(previousState.value));
       return previousState;
-    }.bind(this), function() {
+    }, () => {
       if (typeof this.props.onChange === 'function') {
         this.props.onChange(this);
       }
-    }.bind(this));
+    });
   },
   getComponent: function() {
     var id = 'form-group-' + this.props.component.key;

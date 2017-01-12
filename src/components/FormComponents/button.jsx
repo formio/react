@@ -1,8 +1,22 @@
 import React from 'react';
+import componentMixin from './mixins/componentMixin';
 
 // TODO: Support other button actions like reset.
 module.exports = React.createClass({
   displayName: 'Button',
+  mixins: [componentMixin],
+  getButtonType: function() {
+    switch (this.props.component.action) {
+      case 'submit':
+        return 'submit';
+      case 'reset':
+        return 'reset';
+      case 'event':
+      case 'oauth':
+      default:
+        return 'button';
+    }
+  },
   onClick: function(event) {
     if (this.props.readOnly) {
       event.preventDefault();
@@ -12,6 +26,14 @@ module.exports = React.createClass({
     switch (this.props.component.action) {
       case 'submit':
         // Allow default submit to continue.
+        break;
+      case 'event':
+        this.props.onEvent(this.props.component.event);
+        break;
+      case 'oauth':
+        /* eslint-disable no-console */
+        console.warning('OAuth not yet implemented. Please contact support.');
+        /* eslint-enable no-console */
         break;
       case 'reset':
         event.preventDefault();
@@ -29,8 +51,8 @@ module.exports = React.createClass({
     var submitting = (this.props.isSubmitting && this.props.component.action === 'submit' ? <i className='glyphicon glyphicon-refresh glyphicon-spin'></i> : '');
     return (
       <button
-        className = {classNames}
-        type={this.props.component.action === 'submit' ? 'submit' : 'button'}
+        className={classNames}
+        type={this.getButtonType()}
         disabled={disabled}
         onClick={this.onClick}
       >

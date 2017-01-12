@@ -50,6 +50,65 @@ describe('Checkbox', function () {
       done();
     });
 
+    it('Renders a checkbox field without a label', function (done) {
+      component.hideLabel = true;
+      component.datagridLabel = false;
+      const element = render(
+        <Checkbox
+      component={component}
+      attachToForm={attachToForm}
+        ></Checkbox>
+      ).children().eq(0);
+      expect(element.find('.formio-component-single .input-group .checkbox label').html()).to.equal('<input type="checkbox" id="checkbox" data-index="0">');
+      delete component.datagridLabel;
+      done();
+    });
+
+    it('Renders a checkbox field with a label when variables set', function (done) {
+      component.hideLabel = false;
+      component.datagridLabel = false;
+      const element = render(
+        <Checkbox
+      component={component}
+      attachToForm={attachToForm}
+        ></Checkbox>
+      ).children().eq(0);
+      expect(element.find('.formio-component-single .input-group .checkbox label').html()).to.equal('<input type="checkbox" id="checkbox" data-index="0">Checkbox');
+      delete component.datagridLabel;
+      component.hideLabel = true;
+      done();
+    });
+
+    it('Renders a checkbox field with a label when variables set', function (done) {
+      component.hideLabel = true;
+      component.datagridLabel = true;
+      const element = render(
+        <Checkbox
+      component={component}
+      attachToForm={attachToForm}
+        ></Checkbox>
+      ).children().eq(0);
+      expect(element.find('.formio-component-single .input-group .checkbox label').html()).to.equal('<input type="checkbox" id="checkbox" data-index="0">Checkbox');
+      delete component.datagridLabel;
+      component.hideLabel = true;
+      done();
+    });
+
+    it('Renders a checkbox field with a label when variables set', function (done) {
+      component.hideLabel = false;
+      component.datagridLabel = true;
+      const element = render(
+        <Checkbox
+      component={component}
+      attachToForm={attachToForm}
+        ></Checkbox>
+      ).children().eq(0);
+      expect(element.find('.formio-component-single .input-group .checkbox label').html()).to.equal('<input type="checkbox" id="checkbox" data-index="0">Checkbox');
+      delete component.datagridLabel;
+      component.hideLabel = true;
+      done();
+    });
+
     it('Sets a default value as a ture', function(done) {
       component.defaultValue = true;
       const element = render(

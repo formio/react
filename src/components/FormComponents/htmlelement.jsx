@@ -1,16 +1,26 @@
 import React from 'react';
-import valueMixin from './mixins/valueMixin';
-import multiMixin from './mixins/multiMixin';
+import componentMixin from './mixins/componentMixin';
 
 module.exports = React.createClass({
-    displayName: 'HtmlElement',
-    mixins: [valueMixin, multiMixin],
-    getSingleElement: function(value, index) {
-        return (<this.props.component.tag
-            className={this.props.component.className}
-            >
-            {this.props.component.content}
-        </this.props.component.tag>
-        );
-    }
+  displayName: 'HtmlElement',
+  mixins: [componentMixin],
+  render: function (value, index) {
+    const { component } = this.props;
+    const attrs = component.attrs.reduce((prev, item) => {
+      if (item.attr) {
+        prev[item.attr] = item.value;
+      }
+      return prev;
+    }, {});
+    return (
+      <div className="formio-field-type-htmlelement">
+        <component.tag
+          className={component.customClass}
+          {...attrs}
+          dangerouslySetInnerHTML={{__html: component.content}}
+        >
+        </component.tag>
+      </div>
+    );
+  }
 });

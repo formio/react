@@ -1,6 +1,7 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import selectMixin from './mixins/selectMixin';
+import componentMixin from './mixins/componentMixin';
 import formiojs from 'formiojs';
 import { interpolate, serialize, raw } from '../../util';
 import get from 'lodash/get';
@@ -10,9 +11,9 @@ module.exports = React.createClass({
   options: {},
   lastInput: '',
   displayName: 'Select',
-  mixins: [valueMixin, selectMixin],
+  mixins: [valueMixin, selectMixin, componentMixin],
   getValueField: function() {
-    if (this.props.component.dataSrc === 'custom') {
+    if (this.props.component.dataSrc === 'custom' || this.props.component.dataSrc === 'json') {
       return false;
     }
     if (this.props.component.dataSrc === 'resource' && this.props.component.valueProperty === '') {
@@ -29,26 +30,42 @@ module.exports = React.createClass({
         });
         break;
       case 'json':
-        this.internalFilter = true;
         try {
-          this.setState({
-            selectItems: JSON.parse(this.props.component.data.json)
-          });
+          this.items = JSON.parse(this.props.component.data.json);
         }
         catch (error) {
-          this.setState({
-            selectItems: []
-          });
+          this.items = [];
         }
+        this.options.params = {
+          limit: 20,
+          skip: 0
+        };
+        this.refreshItems = (input, url, append) => {
+          // If they typed in a search, reset skip.
+          if (this.lastInput !== input) {
+            this.lastInput = input;
+            this.options.params.skip = 0;
+          }
+          let items = this.items;
+          if (input) {
+            items = items.filter(item => {
+              // This is a bit of a hack to search the whole object.
+              return JSON.stringify(item).toLowerCase().includes(input.toLowerCase());
+            });
+          }
+          items = items.slice(this.options.params.skip, this.options.params.skip + this.options.params.limit);
+          this.setResult(items, append);
+        };
+        this.refreshItems();
         break;
       case 'custom':
         this.refreshItems = () => {
           try {
             /* eslint-disable no-unused-vars */
-            var data = {...this.props.data};
+            const { data, row } = this.props;
             /* eslint-enable no-unused-vars */
             this.setState({
-              selectItems: eval('(function(data) { var values = [];' + this.props.component.data.custom.toString() + '; return values; })(data)')
+              selectItems: eval('(function(data, row) { var values = [];' + this.props.component.data.custom.toString() + '; return values; })(data, row)')
             });
           }
           catch (error) {
@@ -93,11 +110,12 @@ module.exports = React.createClass({
         };
 
         this.refreshItems = (input, newUrl, append) => {
-          let data = Object.assign({}, this.props.data, this.props.subData);
+          let { data, row } = this.props;
           newUrl = newUrl || this.url;
           // Allow templating the url.
           newUrl = interpolate(newUrl, {
             data,
+            row,
             formioBase: formiojs.getBaseUrl()
           });
           if (!newUrl) {
@@ -140,7 +158,7 @@ module.exports = React.createClass({
               this.setResult(data.data, append);
             }
             else if (data.hasOwnProperty('items')) {
-              this. setResult(data.items, append);
+              this.setResult(data.items, append);
             }
             // Use the data itself.
             else {
