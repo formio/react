@@ -1,4 +1,4 @@
-//export * from './FormioAlerts';
+export * from './FormioAlerts';
 export * from './FormioAuth';
+export * from './FormioResource';
 //export * from './FormioBuilder';
-//export * from './FormioResource';

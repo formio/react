@@ -1,7 +1,7 @@
 import React from 'react';
 import ReduxView from 'redux-view';
 import { Link } from 'react-router';
-import { FormActions, SubmissionActions } from '../../actions';
+import { FormActions, SubmissionActions } from '../../Formio/actions';
 
 export default function (resource) {
   return class extends ReduxView {

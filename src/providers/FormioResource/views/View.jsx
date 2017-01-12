@@ -1,6 +1,6 @@
 import React from 'react';
 import ReduxView from 'redux-view';
-import { Formio } from '../../components';
+import { Formio } from '../../../components';
 
 export default function (resource) {
   return class extends ReduxView {

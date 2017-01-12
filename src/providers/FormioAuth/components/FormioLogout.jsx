@@ -16,7 +16,7 @@ export class FormioLogout extends React.Component {
     const Logout = connect(
       (state) => {
         return {
-          auth: state.get('formio').get('auth').get('user') || false
+          auth: state.formio.auth.user || false
         };
       },
       ((dispatch) => {

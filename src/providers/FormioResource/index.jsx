@@ -2,11 +2,11 @@ import React from 'react';
 import { Match } from 'react-router';
 import { injectReducer } from 'redux-injector';
 import { combineReducers } from 'redux';
-import { formReducer, submissionReducer, submissionsReducer } from '../reducers';
-import { addReducer, addRoute } from '../factories';
-import { Index, Create, Container, View, Edit, Delete } from '../views/resource';
+import { formReducer, submissionReducer, submissionsReducer } from '../Formio/reducers';
+import { addReducer, addRoute } from '../../factories';
+import { Index, Create, Container, View, Edit, Delete } from './views';
 
-export default class {
+export class FormioResource {
   constructor(name, src, options = {}) {
     this.name = name;
     this.src = src;

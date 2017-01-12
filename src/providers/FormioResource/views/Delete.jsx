@@ -1,7 +1,7 @@
 import React from 'react';
 import ReduxView from 'redux-view';
-import { FormioConfirm } from '../../components';
-import { SubmissionActions } from '../../actions';
+import { FormioConfirm } from '../../../components';
+import { SubmissionActions } from '../../Formio/actions';
 
 export default function (resource) {
   return class extends ReduxView {

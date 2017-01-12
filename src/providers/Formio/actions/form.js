@@ -1,5 +1,5 @@
 import formiojs from 'formiojs';
-import { AlertActions } from '../providers/FormioAlerts/actions';
+import { AlertActions } from '../../FormioAlerts/actions';
 
 export const FORM_REQUEST = 'FORM_REQUEST';
 function requestForm(name, id) {

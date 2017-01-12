@@ -1,4 +1,4 @@
-import { ALERT_ADD, ALERT_RESET } from '../actions';
+import { ALERT_ADD, ALERT_RESET } from './actions';
 
 export const alertsReducer = () => {
   return (state = {

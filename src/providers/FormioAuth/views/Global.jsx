@@ -15,14 +15,14 @@ export default function (authSettings) {
     }
 
     initialize = (store) => {
-      const init = store.getState().get('formio').get('auth').get('init');
+      const init = store.getState().formio.auth.init;
       if (!init) {
         store.dispatch(UserActions.fetch());
       }
     }
 
     mapStateToProps = (state, { location }) => {
-      const auth = state.get('formio').get('auth');
+      const auth = state.formio.auth;
       console.log(auth, authSettings);
       return {
         shouldRedirect:

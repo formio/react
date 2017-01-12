@@ -1,6 +1,6 @@
 import React from 'react';
 import ReduxView from 'redux-view';
-import { AlertActions } from '../../actions';
+import { AlertActions } from '../actions';
 
 export default function (alerts) {
   return class extends ReduxView {

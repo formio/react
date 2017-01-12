@@ -1,11 +1,11 @@
 import React from 'react';
 import { Match } from 'react-router';
 import { injectReducer } from 'redux-injector';
-import { addReducer, addRoute } from '../factories';
-import { alertsReducer } from '../reducers';
-import { Alerts } from '../views/alerts';
+import { addReducer, addRoute } from '../../factories';
+import { alertsReducer } from './reducers';
+import { Alerts } from './views';
 
-export default class {
+export class FormioAlerts {
   constructor({
     appUrl,
     loginForm = 'user/login',
