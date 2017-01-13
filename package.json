@@ -45,7 +45,7 @@
     "react-widgets": "^3.4.4",
     "reactabular": "^3.0.5",
     "redux": "^3.5.2",
-    "redux-injector": "0.0.2",
+    "redux-injector": "0.1.0",
     "redux-view": "^0.1.5",
     "reselect": "^2.5.4",
     "segmentize": "^0.4.1"
