@@ -33,6 +33,7 @@
   "dependencies": {
     "formio-utils": "^0.3.0",
     "formiojs": "^1.3.5",
+    "immutable": "^3.8.1",
     "lodash": "^4.15.0",
     "moment": "^2.10.6",
     "react-dropzone": "^3.5.3",
@@ -44,7 +45,9 @@
     "react-widgets": "^3.4.4",
     "reactabular": "^3.0.5",
     "redux": "^3.5.2",
+    "redux-injector": "0.0.2",
     "redux-view": "^0.1.5",
+    "reselect": "^2.5.4",
     "segmentize": "^0.4.1"
   },
   "devDependencies": {
