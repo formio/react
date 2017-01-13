@@ -28,31 +28,31 @@ export const authReducer = (appUrl) => {
           user: action.user,
           isFetching: false,
           error: ''
-        }
+        };
       case USER_SUBMISSION_ACCESS:
         return {
           ...state,
           submissionAccess: action.submissionAccess,
           roles: action.roles
-        }
+        };
       case USER_FORM_ACCESS:
         return {
           ...state,
           formAccess: action.formAccess
-        }
+        };
       case USER_FAILURE:
         return {
           ...state,
           isFetching: false,
           error: action.error
-        }
+        };
       case USER_LOGOUT:
         return {
           ...state,
           user: null,
           isFetching: false,
           error: ''
-        }
+        };
       default:
         return state;
     }
