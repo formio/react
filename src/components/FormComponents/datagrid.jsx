@@ -119,6 +119,7 @@ module.exports = React.createClass({
                         detachFromForm={this.detachFromForm.bind(null, rowIndex)}
                         value={value}
                         row={row}
+                        values={row}
                       />
                     </td>
                   );
