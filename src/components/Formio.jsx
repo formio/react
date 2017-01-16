@@ -283,6 +283,7 @@ export const Formio = React.createClass({
           checkConditional={this.checkConditional}
           showAlert={this.showAlert}
           formPristine={this.state.isPristine}
+          unmounting={this.unmounting}
         />
       </form>
     );
