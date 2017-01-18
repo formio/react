@@ -9,7 +9,7 @@ import Paginator from './Paginator';
 import { nested } from '../util';
 import { FormioComponents } from '../factories';
 
-export default class extends React.Component {
+export default class FormioGrid extends React.Component {
   static defaultProps = {
     form: {},
     submissions: [],
@@ -36,7 +36,7 @@ export default class extends React.Component {
     this.state = {
       columns: this.columnsFromForm(props.form),
       submissions: this.props.submissions || [],
-      pagination: this.props.pagination
+      pagination: { ...FormioGrid.defaultProps.pagination, ...this.props.pagination }
     };
   };
 
@@ -114,25 +114,13 @@ export default class extends React.Component {
       });
     }
     if (nextProps.pagination.page !== this.state.pagination.page) {
-      this.setState({
-        pagination: {
-          page: nextProps.pagination.page
-        }
-      });
+      this.setState(curState => curState.pagination.page = nextProps.pagination.page);
     }
     if (nextProps.pagination.numPage !== this.state.pagination.numPage) {
-      this.setState({
-        pagination: {
-          numPage: nextProps.pagination.numPage
-        }
-      });
+      this.setState(curState => curState.pagination.numPage = nextProps.pagination.numPage);
     }
     if (nextProps.pagination.size !== this.state.pagination.size) {
-      this.setState({
-        pagination: {
-          size: nextProps.pagination.size
-        }
-      });
+      this.setState(curState => curState.pagination.size = nextProps.pagination.size);
     }
   };
 
@@ -160,12 +148,11 @@ export default class extends React.Component {
         skip: (this.state.pagination.page - 1) * this.state.pagination.size
       }
     }).then(submissions => {
-      this.setState({
-        submissions,
-        pagination: {
-          numPages: Math.ceil(submissions.serverCount / this.state.pagination.size)
-        }
-      })
+      this.setState(curState => {
+        curState.submissions = submissions;
+        curState.pagination.numPages = Math.ceil(submissions.serverCount / this.state.pagination.size);
+        return curState;
+      });
     });
   }
 
@@ -192,11 +179,7 @@ export default class extends React.Component {
       this.props.onPageChange(page);
     }
     else {
-      this.setState({
-        pagination: {
-          page: page
-        }
-      }, this.loadSubmissions);
+      this.setState(curState => curState.pagination.page = page, this.loadSubmissions);
     }
   }
 

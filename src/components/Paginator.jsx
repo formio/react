@@ -32,7 +32,7 @@ export default class extends React.Component {
   }
 
   render() {
-    const pagination = this.state.pagination;
+    const { pagination } = this.state;
     const bootstrapStyles = {
       className: 'pagination',
       tags: {
@@ -62,7 +62,9 @@ export default class extends React.Component {
       sidePages: 2
     }));
     // Fixes a bug in Pagify.Segment or segmentize.
-    segments.centerPage[0] = segments.centerPage[0] || 0;
+    if (!segments.centerPage[0]) {
+      segments.centerPage = [];
+    }
     return <div className="paging">
       <Pagify.Context
         {...bootstrapStyles}
