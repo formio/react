@@ -75,55 +75,62 @@ module.exports = {
     return state;
   },
   validateItem: function(item) {
+    const { component } = this.props;
+
     var state = {
       isValid: true,
       errorMessage: ''
     };
     // Check for no validation criteria
-    if (!this.props.component.validate) {
+    if (!component.validate) {
       return state;
     }
     // Required
-    if (!item && this.props.component.validate.required) {
+    if (!item && component.validate.required) {
       state.isValid = false;
-      state.errorMessage = (this.props.component.label || this.props.component.key) + ' is required.';
+      state.errorMessage = (component.label || component.key) + ' is required.';
     }
     // Email
-    if (state.isValid && this.props.component.type === 'email' && !item.match(/\S+@\S+/)) {
+    if (state.isValid && component.type === 'email' && !item.match(/\S+@\S+/)) {
       state.isValid = false;
-      state.errorMessage = (this.props.component.label || this.props.component.key) + ' must be a valid email.';
+      state.errorMessage = (component.label || component.key) + ' must be a valid email.';
     }
     // MaxLength
-    if (state.isValid && this.props.component.validate.maxLength && item.length > this.props.component.validate.maxLength) {
+    if (state.isValid && component.validate.maxLength && item.length > component.validate.maxLength) {
       state.isValid = false;
-      state.errorMessage = (this.props.component.label || this.props.component.key) + ' cannot be longer than ' + (this.props.component.validate.maxLength) + ' characters.';
+      state.errorMessage = (component.label || component.key) + ' cannot be longer than ' + (component.validate.maxLength) + ' characters.';
     }
     // MinLength
-    if (state.isValid && this.props.component.validate.minLength && item.length < this.props.component.validate.minLength) {
+    if (state.isValid && component.validate.minLength && item.length < component.validate.minLength) {
       state.isValid = false;
-      state.errorMessage = (this.props.component.label || this.props.component.key) + ' cannot be shorter than ' + (this.props.component.validate.minLength) + ' characters.';
+      state.errorMessage = (component.label || component.key) + ' cannot be shorter than ' + (component.validate.minLength) + ' characters.';
     }
     // MaxValue
-    if (state.isValid && this.props.component.validate.max && item > this.props.component.validate.max) {
+    if (state.isValid && component.validate.max && item > component.validate.max) {
       state.isValid = false;
-      state.errorMessage = (this.props.component.label || this.props.component.key) + ' cannot be greater than ' + this.props.component.validate.max;
+      state.errorMessage = (component.label || component.key) + ' cannot be greater than ' + component.validate.max;
     }
     // MinValue
-    if (state.isValid && this.props.component.validate.min && item < this.props.component.validate.min) {
+    if (state.isValid && component.validate.min && item < component.validate.min) {
       state.isValid = false;
-      state.errorMessage = (this.props.component.label || this.props.component.key) + ' cannot be less than ' + this.props.component.validate.min;
+      state.errorMessage = (component.label || component.key) + ' cannot be less than ' + component.validate.min;
     }
     // Regex
-    if (state.isValid && this.props.component.validate.pattern) {
-      var re = new RegExp(this.props.component.validate.pattern, 'g');
+    if (state.isValid && component.validate.pattern) {
+      var re = new RegExp(component.validate.pattern, 'g');
       state.isValid = item.match(re);
       if (!state.isValid) {
-        state.errorMessage = (this.props.component.label || this.props.component.key) + ' must match the expression: ' + this.props.component.validate.pattern;
+        state.errorMessage = (component.label || component.key) + ' must match the expression: ' + component.validate.pattern;
       }
     }
+    // Input Mask
+    if (this.element && component.inputMask && !this.element.isFilled()) {
+      state.isValid = false;
+      state.errorMessage = (component.label || component.key) + ' must use the format ' + component.inputMask;
+    }
     // Custom
-    if (state.isValid && this.props.component.validate.custom) {
-      var custom = this.props.component.validate.custom;
+    if (state.isValid && component.validate.custom) {
+      var custom = component.validate.custom;
       custom = custom.replace(/({{\s+(.*)\s+}})/, function(match, $1, $2) {
         return this.props.data[$2];
       }.bind(this));
@@ -136,11 +143,11 @@ module.exports = {
       }
       catch (e) {
         /* eslint-disable no-console */
-        console.warn('A syntax error occurred while computing custom values in ' + this.props.component.key, e);
+        console.warn('A syntax error occurred while computing custom values in ' + component.key, e);
         /* eslint-enable no-console */
       }
       if (!state.isValid) {
-        state.errorMessage = valid || ((this.props.component.label || this.props.component.key) + 'is not a valid value.');
+        state.errorMessage = valid || ((component.label || component.key) + 'is not a valid value.');
       }
     }
     return state;

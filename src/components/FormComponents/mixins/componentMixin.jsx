@@ -1,5 +1,4 @@
 import React from 'react';
-import Input from 'react-input-mask';
 import { deepEqual } from '../../../util';
 
 module.exports = {

@@ -18,6 +18,7 @@ module.exports = {
         placeholder={this.props.component.placeholder}
         mask={mask}
         onChange={this.onChange}
+        ref={ input => this.element = input }
         >
       </Input>
     );
