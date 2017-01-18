@@ -31,13 +31,22 @@ module.exports = React.createClass({
         break;
       case 'json':
         try {
-          this.items = JSON.parse(this.props.component.data.json);
+          if (typeof this.props.component.data.json === 'string') {
+            this.items = JSON.parse(this.props.component.data.json);
+          }
+          else if (typeof this.props.component.data.json === 'object') {
+            this.items = this.props.component.data.json;
+          }
+          else {
+            this.items = [];
+          }
         }
         catch (error) {
+          console.warn('Error parsing JSON in ' + this.props.component.key, error);
           this.items = [];
         }
         this.options.params = {
-          limit: 20,
+          limit: this.props.component.limit || 20,
           skip: 0
         };
         this.refreshItems = (input, url, append) => {
@@ -49,8 +58,17 @@ module.exports = React.createClass({
           let items = this.items;
           if (input) {
             items = items.filter(item => {
-              // This is a bit of a hack to search the whole object.
-              return JSON.stringify(item).toLowerCase().includes(input.toLowerCase());
+              // Get the visible string from the interpolated item.
+              const value = interpolate(this.props.component.template, {item}).replace(/<(?:.|\n)*?>/gm, '');
+              switch (this.props.component.filter) {
+                case 'startsWith':
+                  return value.toLowerCase().indexOf(input.toLowerCase()) !== -1;
+                  break;
+                case 'contains':
+                default:
+                  return value.toLowerCase().lastIndexOf(input.toLowerCase(), 0) === 0;
+                  break;
+              }
             });
           }
           items = items.slice(this.options.params.skip, this.options.params.skip + this.options.params.limit);
@@ -105,7 +123,7 @@ module.exports = React.createClass({
         }
 
         this.options.params = {
-          limit: 100,
+          limit: this.props.component.limit || 100,
           skip: 0
         };
 
