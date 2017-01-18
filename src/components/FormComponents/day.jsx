@@ -26,7 +26,7 @@ module.exports = React.createClass({
       errorMessage: ''
     };
     if (!required) {
-      return true;
+      return state;
     }
     if (!value && required) {
       state = {
