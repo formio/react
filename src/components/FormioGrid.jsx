@@ -76,12 +76,7 @@ export default class FormioGrid extends React.Component {
             component: component,
             property: 'data.' + component.key,
             header: {
-              label: component.label || component.key,
-              props: {
-                style: {
-                  width: 100
-                }
-              }
+              label: component.label || component.key
             },
             cell: {
               format: this.formatCell
