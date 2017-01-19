@@ -27,7 +27,7 @@ module.exports = React.createClass({
         {inputLabel} {requiredInline}
         <div className="selectbox">
           {this.props.component.values.map((item, index) => {
-            var required = 'control-label' + (this.props.component.validate.required ? ' field-required' : '') + (this.state.value[item.value] ? ' checked' : ' not-checked');
+            var required = 'control-label' + (this.state.value[item.value] ? ' checked' : ' not-checked');
             return (
               <div className={checkboxClass} key={index}>
                 <label className={required}>

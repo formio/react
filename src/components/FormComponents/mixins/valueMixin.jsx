@@ -53,6 +53,7 @@ module.exports = {
     return state;
   },
   validate: function(value) {
+    const { component } = this.props;
     // Allow components to have custom validation.
     if (typeof this.validateCustom === 'function') {
       return this.validateCustom(value);
@@ -62,12 +63,17 @@ module.exports = {
       errorMessage: ''
     };
     // Validate each item if multiple.
-    if (this.props.component.multiple) {
+    if (component.multiple) {
       value.forEach(function(item) {
         if (state.isValid) {
           state = this.validateItem(item);
         }
       }.bind(this));
+      /* eslint-disable no-console */
+      if (component.validate && component.validate.required && (!value instanceof Array || value.length === 0)) {
+        state.isValid = false;
+        state.errorMessage = (component.label || component.key) + ' is required.';
+      }
     }
     else {
       state = this.validateItem(value);
@@ -86,9 +92,16 @@ module.exports = {
       return state;
     }
     // Required
-    if (!item && component.validate.required) {
-      state.isValid = false;
-      state.errorMessage = (component.label || component.key) + ' is required.';
+    if (component.validate.required) {
+      // Multivalue and selectboxes are exceptions since !![] === true and !!{} === true.
+      if (component.type === 'selectboxes' && !Object.keys(item).reduce(function(prev, cur) {  return prev || item[cur];}, false)) {
+        state.isValid = false;
+        state.errorMessage = (component.label || component.key) + ' is required.';
+      }
+      else if (!item) {
+        state.isValid = false;
+        state.errorMessage = (component.label || component.key) + ' is required.';
+      }
     }
     // Email
     if (state.isValid && component.type === 'email' && !item.match(/\S+@\S+/)) {
