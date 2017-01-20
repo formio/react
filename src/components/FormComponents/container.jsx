@@ -16,7 +16,7 @@ module.exports = React.createClass({
       value[component.props.component.key] = component.state.value;
       this.setValue(value);
     }
-    this.props.onChange(component);
+    this.props.onChange(component, { container: component.key });
   },
   detachFromForm: function(component) {
     if (this.props.unmounting) {

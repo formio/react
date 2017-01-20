@@ -77,7 +77,7 @@ export const Formio = React.createClass({
       this.props.onEvent(event, this.data);
     }
   },
-  onChange: function (component) {
+  onChange: function (component, context) {
     if (component.state.value === null) {
       delete this.data[component.props.component.key];
     }
@@ -86,7 +86,7 @@ export const Formio = React.createClass({
     }
     this.validate();
     if (typeof this.props.onChange === 'function' && !component.state.isPristine) {
-      this.props.onChange({data: this.data}, component.props.component.key, component.state.value);
+      this.props.onChange({data: this.data}, component.props.component.key, component.state.value, { ...context, component });
     }
     // If a field is no longer pristine, the form is no longer pristine.
     if (!component.state.isPristine && this.state.isPristine) {

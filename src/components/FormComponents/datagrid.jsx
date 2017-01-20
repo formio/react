@@ -46,7 +46,7 @@ module.exports = React.createClass({
     value[row] = clone(value[row]);
     value[row][component.props.component.key] = component.state.value;
     this.setValue(value);
-    this.props.onChange(component);
+    this.props.onChange(component, { row, datagrid: component.key });
   },
   detachFromForm: function(row, component) {
     if (this.props.unmounting) {
