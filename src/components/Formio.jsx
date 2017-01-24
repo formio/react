@@ -77,12 +77,15 @@ export const Formio = React.createClass({
       this.props.onEvent(event, this.data);
     }
   },
-  onChange: function (component, context) {
-    if (component.state.value === null) {
-      delete this.data[component.props.component.key];
-    }
-    else {
-      this.data[component.props.component.key] = component.state.value;
+  onChange: function (component, context = {}) {
+    // If this is a change within a datagrid or container, don't modify the root data object.
+    if (!context.hasOwnProperty('datagrid') && !context.hasOwnProperty('container')) {
+      if (component.state.value === null) {
+        delete this.data[component.props.component.key];
+      }
+      else {
+        this.data[component.props.component.key] = component.state.value;
+      }
     }
     this.validate();
     if (typeof this.props.onChange === 'function' && !component.state.isPristine) {
