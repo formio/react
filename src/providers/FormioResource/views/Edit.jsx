@@ -1,6 +1,7 @@
 import React from 'react';
 import ReduxView from 'redux-view';
 import { Formio } from '../../../components';
+import { Navigate } from '../../Formio/actions';
 
 export default function (resource) {
   return class extends ReduxView {
@@ -34,10 +35,10 @@ export default function (resource) {
       };
     }
 
-    mapDispatchToProps = (dispatch, { params }, router) => {
+    mapDispatchToProps = (dispatch) => {
       return {
         onFormSubmit: submission => {
-          router.transitionTo(resource.basePath() + '/' + submission._id);
+          dispatch(Navigate.to(resource.basePath() + '/' + submission._id));
         }
       };
     }

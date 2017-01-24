@@ -1,7 +1,8 @@
 import React from 'react';
 import ReduxView from 'redux-view';
 import { FormioConfirm } from '../../../components';
-import { SubmissionActions } from '../../Formio/actions';
+import { SubmissionActions, Navigate } from '../../Formio/actions';
+import { AlertActions } from '../../FormioAlerts/actions';
 
 export default function (resource) {
   return class extends ReduxView {
@@ -33,19 +34,20 @@ export default function (resource) {
       };
     }
 
-    mapDispatchToProps = (dispatch, { params }, router) => {
+    mapDispatchToProps = (dispatch, { params }) => {
       return {
         onYes: () => {
           SubmissionActions.delete(resource.name, params[resource.name + 'Id'])
             .then(() => {
-              router.transitionTo(resource.basePath());
+              dispatch(Navigate.to(resource.basePath()));
             })
             .catch((error) => {
-
+              dispatch(AlertActions.add('Error deleting submission ' + error));
+              dispatch(Navigate.to(resource.basePath()));
             })
         },
         onNo: () => {
-          router.transitionTo(resource.basePath());
+          dispatch(Navigate.to(resource.basePath()));
         }
       };
     }

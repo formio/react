@@ -1,7 +1,7 @@
 import React from 'react';
 import ReduxView from 'redux-view';
 import { Formio } from '../../../components';
-import { FormActions } from '../../Formio/actions';
+import { FormActions, Navigate } from '../../Formio/actions';
 
 export default function (resource) {
   return class extends ReduxView {
@@ -11,11 +11,11 @@ export default function (resource) {
         element = 'Loading...';
       }
       else {
-        element = <Formio src={form.src} form={form.form} onFormSubmit={onFormSubmit}/>;
+        element = <Formio src={form.src} form={form.form} submission={submission.submission} onFormSubmit={onFormSubmit}/>;
       }
       return (
         <div className="form-create">
-          <h3>{pageTitle}</h3>
+          { (pageTitle) ? <div><h3>{pageTitle}</h3><hr /></div> : ''}
           { element }
         </div>
       );
@@ -32,10 +32,10 @@ export default function (resource) {
       };
     }
 
-    mapDispatchToProps = (dispatch, ownProps, router) => {
+    mapDispatchToProps = (dispatch) => {
       return {
         onFormSubmit: submission => {
-          router.transitionTo(resource.basePath() + '/' + submission._id);
+          dispatch(Navigate.to(resource.basePath() + '/' + submission._id));
         }
       };
     }

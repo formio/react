@@ -18,9 +18,11 @@ export default function (resource) {
         return (
           <div className="form-index">
             <h3>{form.title}s</h3>
-            <Link className="btn btn-success" to={resource.basePath() + 'Create'}><i className="glyphicon glyphicon-plus"
-                                                                                     aria-hidden="true"></i>
-              New {form.title}</Link>
+            <Link className="btn btn-success" to={resource.basePath() + 'Create'}>
+              <i className="glyphicon glyphicon-plus" aria-hidden="true"></i>
+              New {form.title}
+            </Link>
+            <br />
             <FormioGrid
               submissions={submissions}
               form={form}
