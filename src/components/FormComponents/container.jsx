@@ -12,11 +12,18 @@ module.exports = React.createClass({
   },
   elementChange: function(component) {
     if (component.props.component.key) {
-      let value = clone(this.state.value);
-      value[component.props.component.key] = component.state.value;
-      this.setValue(value);
+      this.setState(previousState => {
+        // Clone to keep state immutable.
+        let value = clone(previousState.value);
+        value[component.props.component.key] = component.state.value;
+        previousState.value = value;
+        // If a component isn't pristing, the container isn't pristine.
+        if (!component.state.isPristine && previousState.isPristine) {
+          previousState.isPristine = false;
+        }
+        return previousState;
+      }, () => this.props.onChange(component, { container: this }));
     }
-    this.props.onChange(component, { container: component.key });
   },
   detachFromForm: function(component) {
     if (this.props.unmounting) {

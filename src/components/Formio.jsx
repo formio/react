@@ -78,17 +78,27 @@ export const Formio = React.createClass({
     }
   },
   onChange: function (component, context = {}) {
-    // If this is a change within a datagrid or container, don't modify the root data object.
-    if (!context.hasOwnProperty('datagrid') && !context.hasOwnProperty('container')) {
+    let pristine;
+    // Datagrids and containers are different.
+    if (context.hasOwnProperty('datagrid')) {
+      this.data[context.datagrid.props.component.key] = context.datagrid.state.value;
+      pristine = context.datagrid.state.isPristine || component.state.isPristine;
+    }
+    else if (context.hasOwnProperty('container')) {
+      this.data[context.container.props.component.key] = context.container.state.value;
+      pristine = context.container.state.isPristine || component.state.isPristine;
+    }
+    else {
       if (component.state.value === null) {
         delete this.data[component.props.component.key];
       }
       else {
         this.data[component.props.component.key] = component.state.value;
       }
+      pristine = component.state.isPristine;
     }
     this.validate();
-    if (typeof this.props.onChange === 'function' && !component.state.isPristine) {
+    if (typeof this.props.onChange === 'function' && !pristine) {
       this.props.onChange({data: this.data}, component.props.component.key, component.state.value, { ...context, component });
     }
     // If a field is no longer pristine, the form is no longer pristine.

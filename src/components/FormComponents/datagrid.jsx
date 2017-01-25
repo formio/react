@@ -25,10 +25,13 @@ module.exports = React.createClass({
     }
     var rows = clone(this.state.value);
     rows.push({});
-    this.setState({
-      value: rows
+    this.setState(previousState => {
+      previousState.value = rows;
+      previousState.isPristine = false;
+      return previousState;
+    }, () => {
+      this.props.onChange(this);
     });
-    this.props.onChange(this);
   },
   removeRow: function(id) {
     if (this.props.readOnly) {
@@ -37,16 +40,25 @@ module.exports = React.createClass({
     var rows = clone(this.state.value);
     rows.splice(id, 1);
     this.setState({
-      value: rows
+      value: rows,
+      isPristine: false
+    }, () => {
+      this.props.onChange(this);
     });
-    this.props.onChange(this);
   },
   elementChange: function(row, component) {
-    let value = clone(this.state.value);
-    value[row] = clone(value[row]);
-    value[row][component.props.component.key] = component.state.value;
-    this.setValue(value);
-    this.props.onChange(component, { row, datagrid: component.key });
+    this.setState(previousState => {
+      // Clone to keep state immutable.
+      let value = clone(previousState.value);
+      value[row] = clone(value[row]);
+      value[row][component.props.component.key] = component.state.value;
+      previousState.value = value;
+      // If a component isn't pristing, the datagrid isn't pristine.
+      if (!component.state.isPristine && previousState.isPristine) {
+        previousState.isPristine = false;
+      }
+      return previousState;
+    }, () => this.props.onChange(component, { row, datagrid: this }));
   },
   detachFromForm: function(row, component) {
     if (this.props.unmounting) {

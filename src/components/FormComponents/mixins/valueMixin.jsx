@@ -191,7 +191,7 @@ module.exports = {
         value: value,
         isValid: valid.isValid,
         errorMessage: valid.errorMessage,
-        isPristine: true
+        //isPristine: true
       });
     }
     if (typeof this.willReceiveProps === 'function') {
