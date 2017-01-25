@@ -62,11 +62,11 @@ module.exports = React.createClass({
               const value = interpolate(this.props.component.template, {item}).replace(/<(?:.|\n)*?>/gm, '');
               switch (this.props.component.filter) {
                 case 'startsWith':
-                  return value.toLowerCase().indexOf(input.toLowerCase()) !== -1;
+                  return value.toLowerCase().lastIndexOf(input.toLowerCase(), 0) === 0;
                   break;
                 case 'contains':
                 default:
-                  return value.toLowerCase().lastIndexOf(input.toLowerCase(), 0) === 0;
+                  return value.toLowerCase().indexOf(input.toLowerCase()) !== -1;
                   break;
               }
             });
