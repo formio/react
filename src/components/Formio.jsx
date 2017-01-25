@@ -56,7 +56,7 @@ export const Formio = React.createClass({
   },
   attachToForm: function (component) {
     this.inputs[component.props.component.key] = component;
-    this.validate(component);
+    this.validate();
   },
   detachFromForm: function (component) {
     // Don't detach when the whole form is unmounting.
@@ -71,6 +71,7 @@ export const Formio = React.createClass({
         this.props.onChange({data: this.data}, component.props.component.key, null);
       }
     }
+    this.validate();
   },
   onEvent: function(event) {
     if (typeof this.props.onEvent === 'function') {
