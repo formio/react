@@ -26,7 +26,7 @@ module.exports = React.createClass({
     }
   },
   detachFromForm: function(component) {
-    if (this.props.unmounting) {
+    if (this.unmounting) {
       return;
     }
     let value = clone(this.state.value);

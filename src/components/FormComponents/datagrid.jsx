@@ -61,7 +61,7 @@ module.exports = React.createClass({
     }, () => this.props.onChange(component, { row, datagrid: this }));
   },
   detachFromForm: function(row, component) {
-    if (this.props.unmounting) {
+    if (this.unmounting) {
       return;
     }
     let value = clone(this.state.value);

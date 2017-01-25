@@ -190,8 +190,7 @@ module.exports = {
       this.setState({
         value: value,
         isValid: valid.isValid,
-        errorMessage: valid.errorMessage,
-        //isPristine: true
+        errorMessage: valid.errorMessage
       });
     }
     if (typeof this.willReceiveProps === 'function') {
@@ -220,12 +219,14 @@ module.exports = {
     return value;
   },
   componentWillMount: function() {
+    this.unmounting = false;
     if (!this.props.options || !this.props.options.hasOwnProperty('skipInit') || !this.props.options.skipInit) {
       this.setValue(this.state.value, null, true);
     }
     this.props.attachToForm(this);
   },
   componentWillUnmount: function() {
+    this.unmounting = true;
     this.props.detachFromForm(this);
   },
   onChange: function(event) {
