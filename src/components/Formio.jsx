@@ -63,15 +63,15 @@ export const Formio = React.createClass({
     if (this.unmounting) {
       return;
     }
-    delete this.inputs[component.props.name];
+    delete this.inputs[component.props.component.key];
     if (this.data && this.data.hasOwnProperty(component.props.component.key)) {
       delete this.data[component.props.component.key];
-      // Fire the onchange again as it may have fired before we remove the value.
-      if (typeof this.props.onChange === 'function' && !component.state.isPristine) {
-        this.props.onChange({data: this.data}, component.props.component.key, null);
-      }
+      this.validate(() => {
+        if (typeof this.props.onChange === 'function') {
+          this.props.onChange({data: this.data}, component.props.component.key, null);
+        }
+      });
     }
-    this.validate();
   },
   onEvent: function(event) {
     if (typeof this.props.onEvent === 'function') {
@@ -79,15 +79,12 @@ export const Formio = React.createClass({
     }
   },
   onChange: function (component, context = {}) {
-    let pristine;
     // Datagrids and containers are different.
     if (context.hasOwnProperty('datagrid')) {
       this.data[context.datagrid.props.component.key] = context.datagrid.state.value;
-      pristine = context.datagrid.state.isPristine || component.state.isPristine;
     }
     else if (context.hasOwnProperty('container')) {
       this.data[context.container.props.component.key] = context.container.state.value;
-      pristine = context.container.state.isPristine || component.state.isPristine;
     }
     else {
       if (component.state.value === null) {
@@ -96,12 +93,12 @@ export const Formio = React.createClass({
       else {
         this.data[component.props.component.key] = component.state.value;
       }
-      pristine = component.state.isPristine;
     }
-    this.validate();
-    if (typeof this.props.onChange === 'function' && !pristine) {
-      this.props.onChange({data: this.data}, component.props.component.key, component.state.value, { ...context, component });
-    }
+    this.validate(() => {
+      if (typeof this.props.onChange === 'function') {
+        this.props.onChange({data: this.data}, component, context);
+      }
+    });
     // If a field is no longer pristine, the form is no longer pristine.
     if (!component.state.isPristine && this.state.isPristine) {
       this.setState({
@@ -109,7 +106,7 @@ export const Formio = React.createClass({
       });
     }
   },
-  validate: function () {
+  validate: function (next) {
     var allIsValid = true;
 
     var inputs = this.inputs;
@@ -119,9 +116,9 @@ export const Formio = React.createClass({
       }
     });
 
-    this.setState({
-      isValid: allIsValid
-    });
+    this.setState(previousState => previousState.isValid = allIsValid, next);
+
+    return allIsValid;
   },
   componentDidMount: function () {
     if (this.props.src) {

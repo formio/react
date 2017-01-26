@@ -11,19 +11,25 @@ module.exports = React.createClass({
     return {};
   },
   elementChange: function(component) {
+    const isValid = this.validateCustom();
     if (component.props.component.key) {
       this.setState(previousState => {
         // Clone to keep state immutable.
         let value = clone(previousState.value);
         value[component.props.component.key] = component.state.value;
         previousState.value = value;
-        // If a component isn't pristing, the container isn't pristine.
+        previousState.isValid = isValid.isValid;
+        // If a component isn't pristine, the container isn't pristine.
         if (!component.state.isPristine && previousState.isPristine) {
           previousState.isPristine = false;
         }
         return previousState;
       }, () => this.props.onChange(component, { container: this }));
     }
+  },
+  attachToForm(component) {
+    this.inputs = this.inputs || {};
+    this.inputs[component.props.component.key] = component;
   },
   detachFromForm: function(component) {
     if (this.unmounting) {
@@ -34,7 +40,22 @@ module.exports = React.createClass({
       delete value[component.props.component.key];
       this.setValue(value);
     }
-    this.props.detachFromForm(component);
+    delete this.inputs[component.props.component.key];
+  },
+  validateCustom: function() {
+    let isValid = true;
+    // If any inputs are false, the datagrid is false.
+    if (this.inputs) {
+      Object.keys(this.inputs).forEach(key => {
+        if (this.inputs[key].state.isValid === false) {
+          isValid = false;
+        }
+      });
+    }
+    return {
+      isValid,
+      errorMessage: ''
+    };
   },
   getElements: function() {
     var classLabel = 'control-label' + ( this.props.component.validate && this.props.component.validate.required ? ' field-required' : '');
@@ -47,6 +68,7 @@ module.exports = React.createClass({
           components={this.props.component.components}
           values={this.state.value}
           onChange={this.elementChange}
+          attachToForm={this.attachToForm}
           detachFromForm={this.detachFromForm}
         ></FormioComponentsList>
       </div>

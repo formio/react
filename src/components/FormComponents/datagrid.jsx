@@ -39,26 +39,34 @@ module.exports = React.createClass({
     }
     var rows = clone(this.state.value);
     rows.splice(id, 1);
-    this.setState({
-      value: rows,
-      isPristine: false
+    this.setState(previousState => {
+      previousState.value = rows;
+      previousState.isPristine = false;
+      return previousState;
     }, () => {
       this.props.onChange(this);
     });
   },
   elementChange: function(row, component) {
+    const isValid = this.validateCustom();
     this.setState(previousState => {
       // Clone to keep state immutable.
       let value = clone(previousState.value);
       value[row] = clone(value[row]);
       value[row][component.props.component.key] = component.state.value;
       previousState.value = value;
-      // If a component isn't pristing, the datagrid isn't pristine.
+      previousState.isValid = isValid.isValid;
+      // If a component isn't pristine, the datagrid isn't pristine.
       if (!component.state.isPristine && previousState.isPristine) {
         previousState.isPristine = false;
       }
       return previousState;
     }, () => this.props.onChange(component, { row, datagrid: this }));
+  },
+  attachToForm(row, component) {
+    this.inputs = this.inputs || [];
+    this.inputs[row] = this.inputs[row] || {};
+    this.inputs[row][component.props.component.key] = component;
   },
   detachFromForm: function(row, component) {
     if (this.unmounting) {
@@ -69,7 +77,27 @@ module.exports = React.createClass({
       delete value[row][component.props.component.key];
       this.setValue(value);
     }
-    this.props.detachFromForm(component);
+    delete this.inputs[row][component.props.component.key];
+    if (Object.keys(this.inputs[row]).length === 0) {
+      delete this.inputs[row];
+    }
+  },
+  validateCustom: function() {
+    let isValid = true;
+    // If any inputs are false, the datagrid is false.
+    if (this.inputs) {
+      this.inputs.forEach(row => {
+        Object.keys(row).forEach(key => {
+          if (row[key].state.isValid === false) {
+            isValid = false;
+          }
+        });
+      });
+    }
+    return {
+      isValid,
+      errorMessage: ''
+    };
   },
   getElements: function() {
     const { value } = this.state;
@@ -129,6 +157,7 @@ module.exports = React.createClass({
                         name={col.key}
                         component={col}
                         onChange={this.elementChange.bind(null, rowIndex)}
+                        attachToForm={this.attachToForm.bind(null, rowIndex)}
                         detachFromForm={this.detachFromForm.bind(null, rowIndex)}
                         value={value}
                         row={row}
