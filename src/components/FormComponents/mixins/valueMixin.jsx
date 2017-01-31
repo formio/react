@@ -223,11 +223,15 @@ module.exports = {
     if (!this.props.options || !this.props.options.hasOwnProperty('skipInit') || !this.props.options.skipInit) {
       this.setValue(this.state.value, null, true);
     }
-    this.props.attachToForm(this);
+    if (typeof this.props.attachToForm === 'function') {
+      this.props.attachToForm(this);
+    }
   },
   componentWillUnmount: function() {
     this.unmounting = true;
-    this.props.detachFromForm(this);
+    if (typeof this.props.attachToForm === 'function') {
+      this.props.detachFromForm(this);
+    }
   },
   onChange: function(event) {
     var value = event.target.value;

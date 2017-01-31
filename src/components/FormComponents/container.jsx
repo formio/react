@@ -30,6 +30,7 @@ module.exports = React.createClass({
   attachToForm(component) {
     this.inputs = this.inputs || {};
     this.inputs[component.props.component.key] = component;
+    this.props.onChange(this);
   },
   detachFromForm: function(component) {
     if (this.unmounting) {
@@ -41,6 +42,7 @@ module.exports = React.createClass({
       this.setValue(value);
     }
     delete this.inputs[component.props.component.key];
+    this.props.onChange(this);
   },
   validateCustom: function() {
     let isValid = true;

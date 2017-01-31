@@ -67,6 +67,7 @@ module.exports = React.createClass({
     this.inputs = this.inputs || [];
     this.inputs[row] = this.inputs[row] || {};
     this.inputs[row][component.props.component.key] = component;
+    this.props.onChange(this);
   },
   detachFromForm: function(row, component) {
     if (this.unmounting) {
@@ -81,6 +82,7 @@ module.exports = React.createClass({
     if (Object.keys(this.inputs[row]).length === 0) {
       delete this.inputs[row];
     }
+    this.props.onChange(this);
   },
   validateCustom: function() {
     let isValid = true;

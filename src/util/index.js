@@ -22,7 +22,7 @@ function defineTransformerOutsideStrictMode() {
    * }
    */
 
-  //This escapes strict mode.
+  // This escapes strict mode.
   try {
     (1,eval)('function '+safeGlobalName+' (props) { return function (_, exp) { with(props) { return eval(exp); } } }');
   }
@@ -32,8 +32,11 @@ function defineTransformerOutsideStrictMode() {
 
   var ret = eval(safeGlobalName);
 
-  //cleanup
-  delete globalObject[safeGlobalName];
+  // Cleanup
+  // This can throw errors in some versions of IE for unknown reasons at this time.
+  if (globalObject[safeGlobalName]) {
+    delete globalObject[safeGlobalName];
+  }
 
   return ret;
 }
