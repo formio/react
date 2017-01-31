@@ -1,15 +1,10 @@
 import React from 'react';
-import { propTypes } from 'react-router';
 import { connect } from 'react-redux';
 import { UserActions } from '../actions';
 
 export class FormioLogout extends React.Component {
   static propTypes = {
     onLogout: React.PropTypes.func
-  };
-
-  static contextTypes = {
-    router: propTypes.routerContext
   };
 
   render() {
