@@ -3,24 +3,26 @@ import { clone } from 'lodash';
 
 module.exports = {
   addFieldValue: function() {
-    var values = clone(this.state.value);
-    values.push(this.props.component.defaultValue);
-    this.setState({
-      value: values
+    let value = clone(this.state.value);
+    value.push(this.props.component.defaultValue);
+    this.setState(previousState => {
+      return previousState.value = value;
+    }, () => {
+      if (typeof this.props.onChange === 'function') {
+        this.props.onChange(this);
+      }
     });
-    if (typeof this.props.onChange === 'function') {
-      this.props.onChange(this);
-    }
   },
   removeFieldValue: function(id) {
-    var values = clone(this.state.value);
-    values.splice(id, 1);
-    this.setState({
-      value: values
+    let value = clone(this.state.value);
+    value.splice(id, 1);
+    this.setState(previousState => {
+      return previousState.value = value;
+    }, () => {
+      if (typeof this.props.onChange === 'function') {
+        this.props.onChange(this);
+      }
     });
-    if (typeof this.props.onChange === 'function') {
-      this.props.onChange(this);
-    }
   },
   getElements: function() {
     const { component } = this.props;
