@@ -9,6 +9,17 @@ module.exports = React.createClass({
   getInitialValue: function() {
     return [{}];
   },
+  setPristine: function(isPristine) {
+    if (this.inputs) {
+      this.inputs.forEach(row => {
+        Object.keys(row).forEach(key => {
+          row[key].setState({
+            isPristine
+          });
+        });
+      });
+    }
+  },
   getDefaultProps: function() {
     return {
       checkConditional: function() {

@@ -10,6 +10,15 @@ module.exports = React.createClass({
   getInitialValue: function() {
     return {};
   },
+  setPristine: function(isPristine) {
+    if (this.inputs) {
+      Object.keys(this.inputs).forEach(key => {
+        this.inputs[key].setState({
+          isPristine
+        });
+      });
+    }
+  },
   elementChange: function(component) {
     const isValid = this.validateCustom();
     if (component.props.component.key) {

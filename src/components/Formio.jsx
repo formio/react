@@ -177,6 +177,9 @@ export const Formio = React.createClass({
       this.inputs[name].setState({
         isPristine
       });
+      if (typeof this.inputs[name].setPristine === 'function') {
+        this.inputs[name].setPristine(isPristine);
+      }
     }.bind(this));
     this.setState({
       isPristine
