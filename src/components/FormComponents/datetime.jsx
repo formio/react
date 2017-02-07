@@ -27,7 +27,7 @@ module.exports = React.createClass({
   getSingleElement: function(value, index) {
     const { component, name, readOnly } = this.props;
     return (
-    <span>
+    [
       <DateTimePicker
         data-index={index}
         viewMode={component.datepickerMode + 's'}
@@ -45,13 +45,13 @@ module.exports = React.createClass({
         closeOnSelect={true}
         value={value}
         onChange={this.onChangeDatetime.bind(null, index)}
-      />
+      />,
       <span className="input-group-btn">
         <button type="button" className="btn btn-default" onClick={this.open}>
           { component.enableDate ? <i className="glyphicon glyphicon-calendar" /> : <i className="glyphicon glyphicon-time" /> }
         </button>
       </span>
-    </span>
+    ]
     );
   },
   getValueDisplay: function(component, data) {
