@@ -63,10 +63,10 @@ describe('Datetime', function () {
       expect(element.attr('id')).to.equal('form-group-testDate');
       expect(element.find('.formio-component-single').length).to.equal(1);
       expect(element.find('.formio-component-single .input-group').length).to.equal(1);
-      expect(element.find('.formio-component-single .input-group .rw-datetimepicker input').attr('type')).to.equal('text');
-      expect(element.find('.formio-component-single .input-group .rw-datetimepicker input').length).to.equal(1);
-      expect(element.find('.formio-component-single .input-group .rw-datetimepicker input').attr('class')).to.equal('rw-input');
-      expect(element.find('.formio-component-single .input-group .rw-datetimepicker input').attr('id')).to.equal('testDate_input');
+      expect(element.find('.formio-component-single .input-group .rdt input').attr('type')).to.equal('text');
+      expect(element.find('.formio-component-single .input-group .rdt input').length).to.equal(1);
+      expect(element.find('.formio-component-single .input-group .rdt input').attr('class')).to.equal('form-control');
+      expect(element.find('.formio-component-single .input-group .rdt input').attr('id')).to.equal('testDate');
       done();
     });
 
@@ -103,30 +103,30 @@ describe('Datetime', function () {
           attachToForm={attachToForm}
         ></DateTimePicker>
       );
-      element.find('.rw-btn-calendar').simulate('click');
-      expect(element.find('.rw-open')).to.have.length(1);
-      expect(element.find('.rw-calendar-popup')).to.have.length(1);
-      element.find('.rw-btn-calendar').simulate('click');
-      expect(element.find('.rw-open')).to.have.length(0);
-      expect(element.find('.rw-list')).to.have.length(0);
+      element.find('.input-group-btn .btn').simulate('click');
+      expect(element.find('.rdtOpen')).to.have.length(1);
+      expect(element.find('.rdtPicker')).to.have.length(1);
+      element.find('.rdtPicker .rdtDay').first().simulate('click');
+      expect(element.find('.rdOpen')).to.have.length(0);
       done();
     });
 
-      it('Check time popup window of date and time component', function(done) {
-      const element = mount(
-        <DateTimePicker
-          component={component}
-          attachToForm={attachToForm}
-        ></DateTimePicker>
-      );
-      element.find('.rw-btn-time').simulate('click');
-      expect(element.find('.rw-open')).to.have.length(1);
-      expect(element.find('.rw-list')).to.have.length(1);
-      element.find('.rw-btn-time').simulate('click');
-      expect(element.find('.rw-open')).to.have.length(0);
-      expect(element.find('.rw-list')).to.have.length(0);
-      done();
-    });
+    // NEW DATETIMEPICKER DOESN'T HAVE A TIME BUTTON
+    //  it('Check time popup window of date and time component', function(done) {
+    //  const element = mount(
+    //    <DateTimePicker
+    //      component={component}
+    //      attachToForm={attachToForm}
+    //    ></DateTimePicker>
+    //  );
+    //  element.find('.rw-btn-time').simulate('click');
+    //  expect(element.find('.rw-open')).to.have.length(1);
+    //  expect(element.find('.rw-list')).to.have.length(1);
+    //  element.find('.rw-btn-time').simulate('click');
+    //  expect(element.find('.rw-open')).to.have.length(0);
+    //  expect(element.find('.rw-list')).to.have.length(0);
+    //  done();
+    //});
 
   });
 

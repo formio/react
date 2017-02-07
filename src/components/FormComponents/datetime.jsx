@@ -2,10 +2,8 @@ import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import multiMixin from './mixins/multiMixin';
 import componentMixin from './mixins/componentMixin';
-import DateTimePicker from 'react-widgets/lib/DateTimePicker';
-import momentLocalizer from 'react-widgets/lib/localizers/moment';
+import DateTimePicker from 'react-datetime';
 import moment from 'moment';
-momentLocalizer(moment);
 
 module.exports = React.createClass({
   displayName: 'Datetime',
@@ -13,22 +11,47 @@ module.exports = React.createClass({
   getInitialValue: function() {
     return null;
   },
-  onChangeDatetime: function(index, value, str) {
-    this.setValue(value, index);
+  onChangeDatetime: function(index, value) {
+    // If this is a string it is an invalid datetime.
+    if (value instanceof moment) {
+      this.setValue(value.format(), index);
+    }
+  },
+  isValidDate: function(currentDate, selectedDate) {
+    // TODO: implement minDate and maxDate and other options.
+    return true;
+  },
+  open: function() {
+    this.datepicker.openCalendar();
   },
   getSingleElement: function(value, index) {
+    const { component, name, readOnly } = this.props;
     return (
+    <span>
       <DateTimePicker
-        id={this.props.component.key}
         data-index={index}
-        name={this.props.name}
-        disabled={this.props.readOnly}
-        calendar={this.props.component.enableDate}
-        time={this.props.component.enableTime}
-        placeholder={this.props.component.placeholder}
+        viewMode={component.datepickerMode + 's'}
+        ref={(ref) => this.datepicker = ref}
+        inputProps={{
+          id: component.key,
+          name: name,
+          disabled: readOnly,
+          placeholder: component.placeholder,
+          className: "form-control"
+        }}
+        isValidDate={this.isValidDate}
+        dateFormat={component.enableDate}
+        timeFormat={component.enableTime}
+        closeOnSelect={true}
         value={value}
         onChange={this.onChangeDatetime.bind(null, index)}
-        />
+      />
+      <span className="input-group-btn">
+        <button type="button" className="btn btn-default" onClick={this.open}>
+          { component.enableDate ? <i className="glyphicon glyphicon-calendar" /> : <i className="glyphicon glyphicon-time" /> }
+        </button>
+      </span>
+    </span>
     );
   },
   getValueDisplay: function(component, data) {
