@@ -145,7 +145,6 @@ module.exports = React.createClass({
     let inputLabel = (component.label && !component.hideLabel ? <label htmlFor={component.key} className={classLabel}>{component.label}</label> : '');
     let headers = component.components.map(function(col, index) {
       if (visibleCols[col.key]) {
-      //if (this.props.checkConditional(col) || localKeys.indexOf(col.conditional.when) !== -1 || !!col.customConditional) {
         let colLabel = 'control-label' + ( col.validate && col.validate.required ? ' field-required' : '');
         return (
           <th key={index}><label className={colLabel}>{col.label || ''}</label></th>
@@ -177,7 +176,7 @@ module.exports = React.createClass({
             <tr key={rowIndex}>
               {component.components.map(function(col, index) {
                 var key = col.key || col.type + index;
-                var value = (row.hasOwnProperty(col.key) ? row[col.key] : col.defaultValue || '');
+                var value = (row.hasOwnProperty(col.key) ? row[col.key] : col.defaultValue || null);
                 var FormioElement = FormioComponents.getComponent(col.type);
                 if (checkConditional(col, row)) {
                   return (
@@ -232,7 +231,7 @@ module.exports = React.createClass({
   },
   getValueDisplay: function(component, data) {
     var renderComponent = (component, row) => {
-      return FormioComponents.getComponent(component.type).prototype.getDisplay(component, row[component.key] || '');
+      return FormioComponents.getComponent(component.type).prototype.getDisplay(component, row[component.key] || null);
     }
     return (
       <table className="table table-striped table-bordered">
