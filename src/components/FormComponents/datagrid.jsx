@@ -9,6 +9,22 @@ module.exports = React.createClass({
   getInitialValue: function() {
     return [{}];
   },
+  customState: function(state) {
+    const { component } = this.props;
+    let rows = state.value;
+    if (component.validate && component.validate.hasOwnProperty('minLength') && rows.length < component.validate.minLength) {
+      var toAdd = component.validate.minLength - rows.length;
+      for (var i = 0; i < toAdd; i++) {
+        rows.push({});
+      }
+    }
+    // If more than maxLength, remove extra rows.
+    if (component.validate && component.validate.hasOwnProperty('maxLength') && rows.length < component.validate.maxLength) {
+      rows = rows.slice(0, component.validate.maxLength);
+    }
+    state.value = rows;
+    return state;
+  },
   setPristine: function(isPristine) {
     if (this.inputs) {
       this.inputs.forEach(row => {
@@ -154,7 +170,7 @@ module.exports = React.createClass({
         </thead>
         <tbody>
         {
-          this.state.value.map(function(row, rowIndex) {
+          value.map(function(row, rowIndex) {
           return (
             <tr key={rowIndex}>
               {component.components.map(function(col, index) {
@@ -190,21 +206,25 @@ module.exports = React.createClass({
                   return null;
                 }
               }.bind(this))}
-              <td>
-                <a onClick={this.removeRow.bind(this, rowIndex)} className='btn btn-default'>
-                  <span className='glyphicon glyphicon-remove-circle'></span>
-                </a>
-              </td>
+              { (!component.hasOwnProperty('validate') || !component.validate.hasOwnProperty('minLength') || value.length > component.validate.minLength) ?
+                <td>
+                  <a onClick={this.removeRow.bind(this, rowIndex)} className='btn btn-default'>
+                    <span className='glyphicon glyphicon-remove-circle'></span>
+                  </a>
+                </td>
+              : null}
             </tr>
           );
         }.bind(this))}
         </tbody>
       </table>
-      <div className='datagrid-add'>
-        <a onClick={this.addRow} className='btn btn-primary'>
-          <span><i className='glyphicon glyphicon-plus' aria-hidden='true'/> { component.addAnother || 'Add Another'}</span>
-        </a>
-      </div>
+      { (!component.hasOwnProperty('validate') || !component.validate.hasOwnProperty('maxLength') || value.length < component.validate.maxLength) ?
+        <div className='datagrid-add'>
+          <a onClick={this.addRow} className='btn btn-primary'>
+            <span><i className='glyphicon glyphicon-plus' aria-hidden='true'/> { component.addAnother || 'Add Another'}</span>
+          </a>
+        </div>
+      : null}
     </div>
     );
   },
