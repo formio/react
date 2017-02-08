@@ -63,15 +63,17 @@ export const Formio = React.createClass({
     if (this.unmounting) {
       return;
     }
-    delete this.inputs[component.props.component.key];
-    if (this.data && this.data.hasOwnProperty(component.props.component.key)) {
-      delete this.data[component.props.component.key];
-      this.validate(() => {
-        if (typeof this.props.onChange === 'function') {
-          this.props.onChange({data: this.data}, component.props.component.key, null);
-        }
-      });
+    if (!component.props.component.hasOwnProperty('clearOnHide') || component.props.component.clearOnHide !== false) {
+      if (this.data && this.data.hasOwnProperty(component.props.component.key)) {
+        delete this.data[component.props.component.key];
+        this.validate(() => {
+          if (typeof this.props.onChange === 'function') {
+            this.props.onChange({data: this.data}, component.props.component.key, null);
+          }
+        });
+      }
     }
+    delete this.inputs[component.props.component.key];
   },
   onEvent: function(event) {
     if (typeof this.props.onEvent === 'function') {
@@ -150,13 +152,16 @@ export const Formio = React.createClass({
   },
   checkConditional: function (component, row = {}) {
     const show = FormioUtils.checkCondition(component, row, this.data);
+
+    // The following has been removed since deleting values should be done on detachFromForm method.
+
     // If element is hidden, remove any values already on the form (this can happen when data is loaded into the form
     // and the field is initially hidden.
-    if (!show) {
-      if (this.data.hasOwnProperty(component.key)) {
-        delete this.data[component.key];
-      }
-    }
+    //if (!show) {
+    //  if (this.data.hasOwnProperty(component.key)) {
+    //    delete this.data[component.key];
+    //  }
+    //}
     return show;
   },
   isDisabled: function(component, data) {

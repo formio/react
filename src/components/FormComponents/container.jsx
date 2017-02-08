@@ -46,9 +46,11 @@ module.exports = React.createClass({
       return;
     }
     let value = clone(this.state.value);
-    if (component.props.component.key && value && value.hasOwnProperty(component.props.component.key)) {
-      delete value[component.props.component.key];
-      this.setValue(value);
+    if (!component.props.component.hasOwnProperty('clearOnHide') || component.props.component.clearOnHide !== false) {
+      if (component.props.component.key && value && value.hasOwnProperty(component.props.component.key)) {
+        delete value[component.props.component.key];
+        this.setValue(value);
+      }
     }
     delete this.inputs[component.props.component.key];
     this.props.onChange(this);

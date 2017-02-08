@@ -101,9 +101,11 @@ module.exports = React.createClass({
       return;
     }
     let value = clone(this.state.value);
-    if (component.props.component.key && value[row] && value[row].hasOwnProperty(component.props.component.key)) {
-      delete value[row][component.props.component.key];
-      this.setValue(value);
+    if (!component.props.component.hasOwnProperty('clearOnHide') || component.props.component.clearOnHide !== false) {
+      if (component.props.component.key && value[row] && value[row].hasOwnProperty(component.props.component.key)) {
+        delete value[row][component.props.component.key];
+        this.setValue(value);
+      }
     }
     delete this.inputs[row][component.props.component.key];
     if (Object.keys(this.inputs[row]).length === 0) {
