@@ -68,7 +68,7 @@ export const Formio = React.createClass({
         delete this.data[component.props.component.key];
         this.validate(() => {
           if (typeof this.props.onChange === 'function') {
-            this.props.onChange({data: this.data}, component.props.component.key, null);
+            this.props.onChange({data: this.data}, component);
           }
         });
       }
