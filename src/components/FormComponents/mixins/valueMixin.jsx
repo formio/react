@@ -31,9 +31,7 @@ module.exports = {
         value = '';
       }
     }
-    if ((component.type !== 'datagrid') && (component.type !== 'container')) {
-      value = this.safeSingleToMultiple(value);
-    }
+    value = this.safeSingleToMultiple(value);
     return value;
   },
   getInitialState: function() {
@@ -185,7 +183,7 @@ module.exports = {
     if (this.props.value !== nextProps.value) {
       value = this.safeSingleToMultiple(nextProps.value);
     }
-    if (typeof value !== 'undefined') {
+    if (typeof value !== 'undefined' && value !== null) {
       var valid = this.validate(value);
       this.setState({
         value: value,
@@ -198,9 +196,14 @@ module.exports = {
     }
   },
   safeSingleToMultiple: function(value) {
+    const { component } = this.props;
+    // Don't do anything to datagrid or containers.
+    if ((component.type === 'datagrid') || (component.type === 'container')) {
+      return value;
+    }
     // If this was a single but is not a multivalue.
-    if (this.props.component.multiple && !Array.isArray(value)) {
-      if(this.props.component.type === 'select' && !value) {
+    if (component.multiple && !Array.isArray(value)) {
+      if(component.type === 'select' && !value) {
         value = [];
       }
       else {
@@ -209,11 +212,11 @@ module.exports = {
     }
     // If this was a multivalue but is now single value.
     // RE-60 :-Need to return the value as array of object instead of object while converting  a multivalue to single value for datagrid component
-    else if (!this.props.component.multiple && Array.isArray(value) && !this.props.component.type === 'datagrid') {
+    else if (!component.multiple && Array.isArray(value)) {
       value = value[0];
     }
     // Set dates to Date object.
-    if (this.props.component.type === 'datetime' && value && !(value instanceof Date)) {
+    if (component.type === 'datetime' && value && !(value instanceof Date)) {
       value = new Date(value);
     }
     return value;
