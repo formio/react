@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import React from 'react';
 import Formiojs from 'formiojs';
 import FormioUtils from 'formio-utils';
