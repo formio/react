@@ -39,14 +39,12 @@ describe('Checkbox', function () {
       expect(element).to.have.length(1);
       expect(element.hasClass('form-group form-field-type-checkbox form-group-checkbox')).to.equal(true);
       expect(element.attr('id')).to.equal('form-group-checkbox');
-      expect(element.find('.formio-component-single').length).to.equal(1);
-      expect(element.find('.formio-component-single .input-group .checkbox label').length).to.equal(1);
-      expect(element.find('.formio-component-single .input-group .checkbox label').html()).to.equal('<input type="checkbox" id="checkbox" data-index="0">Checkbox');
-      expect(element.find('.formio-component-single .input-group .checkbox input').length).to.equal(1);
-      expect(element.find('.formio-component-single .input-group .checkbox').attr('class')).to.equal('checkbox');
-      expect(element.find('.formio-component-single .input-group .checkbox input').attr('type')).to.equal('checkbox');
-      expect(element.find('.formio-component-single .input-group .checkbox input').attr('id')).to.equal('checkbox');
-      expect(element.find('.formio-component-single .input-group .checkbox input').attr('data-index')).to.equal('0');
+      expect(element.find('.checkbox label').length).to.equal(1);
+      expect(element.find('.checkbox label').html()).to.equal('<input type="checkbox" id="checkbox">Checkbox');
+      expect(element.find('.checkbox input').length).to.equal(1);
+      expect(element.find('.checkbox').attr('class')).to.equal('checkbox');
+      expect(element.find('.checkbox input').attr('type')).to.equal('checkbox');
+      expect(element.find('.checkbox input').attr('id')).to.equal('checkbox');
       done();
     });
 
@@ -59,7 +57,7 @@ describe('Checkbox', function () {
       attachToForm={attachToForm}
         ></Checkbox>
       ).children().eq(0);
-      expect(element.find('.formio-component-single .input-group .checkbox label').html()).to.equal('<input type="checkbox" id="checkbox" data-index="0">');
+      expect(element.find('.checkbox label').html()).to.equal('<input type="checkbox" id="checkbox">');
       delete component.datagridLabel;
       done();
     });
@@ -73,7 +71,7 @@ describe('Checkbox', function () {
       attachToForm={attachToForm}
         ></Checkbox>
       ).children().eq(0);
-      expect(element.find('.formio-component-single .input-group .checkbox label').html()).to.equal('<input type="checkbox" id="checkbox" data-index="0">Checkbox');
+      expect(element.find('.checkbox label').html()).to.equal('<input type="checkbox" id="checkbox">Checkbox');
       delete component.datagridLabel;
       component.hideLabel = true;
       done();
@@ -88,7 +86,7 @@ describe('Checkbox', function () {
       attachToForm={attachToForm}
         ></Checkbox>
       ).children().eq(0);
-      expect(element.find('.formio-component-single .input-group .checkbox label').html()).to.equal('<input type="checkbox" id="checkbox" data-index="0">Checkbox');
+      expect(element.find('.checkbox label').html()).to.equal('<input type="checkbox" id="checkbox">Checkbox');
       delete component.datagridLabel;
       component.hideLabel = true;
       done();
@@ -103,13 +101,13 @@ describe('Checkbox', function () {
       attachToForm={attachToForm}
         ></Checkbox>
       ).children().eq(0);
-      expect(element.find('.formio-component-single .input-group .checkbox label').html()).to.equal('<input type="checkbox" id="checkbox" data-index="0">Checkbox');
+      expect(element.find('.checkbox label').html()).to.equal('<input type="checkbox" id="checkbox">Checkbox');
       delete component.datagridLabel;
       component.hideLabel = true;
       done();
     });
 
-    it('Sets a default value as a ture', function(done) {
+    it('Sets a default value as true', function(done) {
       component.defaultValue = true;
       const element = render(
         <Checkbox
@@ -131,7 +129,7 @@ describe('Checkbox', function () {
       attachToForm={attachToForm}
         ></Checkbox>
       );
-      expect(element.find('.formio-component-single .input-group .checkbox label').attr('class')).to.equal('control-label field-required not-checked');
+      expect(element.find('.checkbox label').attr('class')).to.equal('control-label field-required not-checked');
       done();
     });
 
