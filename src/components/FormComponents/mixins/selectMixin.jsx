@@ -73,7 +73,7 @@ module.exports = {
     this.setState({
       searchTerm: text
     });
-    if (typeof this.refreshItems === 'function' && text) {
+    if (typeof this.refreshItems === 'function') {
       this.refreshItems(text);
     }
   },
