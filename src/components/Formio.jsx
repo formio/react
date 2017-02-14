@@ -153,15 +153,13 @@ export const Formio = React.createClass({
   checkConditional: function (component, row = {}) {
     const show = FormioUtils.checkCondition(component, row, this.data);
 
-    // The following has been removed since deleting values should be done on detachFromForm method.
-
     // If element is hidden, remove any values already on the form (this can happen when data is loaded into the form
     // and the field is initially hidden.
-    //if (!show) {
-    //  if (this.data.hasOwnProperty(component.key)) {
-    //    delete this.data[component.key];
-    //  }
-    //}
+    if (!show && (!component.hasOwnProperty('clearOnHide') || component.clearOnHide !== false)) {
+      if (this.data.hasOwnProperty(component.key)) {
+        delete this.data[component.key];
+      }
+    }
     return show;
   },
   isDisabled: function(component, data) {
