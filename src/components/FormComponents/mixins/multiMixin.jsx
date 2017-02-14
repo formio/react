@@ -6,7 +6,9 @@ module.exports = {
     let value = clone(this.state.value);
     value.push(this.props.component.defaultValue);
     this.setState(previousState => {
-      return previousState.value = value;
+      previousState.isPristine = false;
+      previousState.value = value;
+      return previousState;
     }, () => {
       if (typeof this.props.onChange === 'function') {
         this.props.onChange(this);
@@ -17,7 +19,9 @@ module.exports = {
     let value = clone(this.state.value);
     value.splice(id, 1);
     this.setState(previousState => {
-      return previousState.value = value;
+      previousState.isPristine = false;
+      previousState.value = value;
+      return previousState;
     }, () => {
       if (typeof this.props.onChange === 'function') {
         this.props.onChange(this);
