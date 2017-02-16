@@ -171,11 +171,13 @@ module.exports = {
         this.data = clone(nextProps.data);
         try {
           const result = eval('(function(data, row) { var value = [];' + component.calculateValue.toString() + '; return value; })(this.data, nextProps.row)');
-          this.setValue(result);
+          if (this.state.value != result) {
+            this.setValue(result);
+          }
         }
         catch (e) {
           /* eslint-disable no-console */
-          console.warn('An error occurred calculating a value for ' + $scope.component.key, e);
+          console.warn('An error occurred calculating a value for ' + component.key, e);
           /* eslint-enable no-console */
         }
       }
