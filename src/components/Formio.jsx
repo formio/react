@@ -68,7 +68,7 @@ export const Formio = React.createClass({
     if (!component.props.component.hasOwnProperty('clearOnHide') || component.props.component.clearOnHide !== false) {
       if (this.data && this.data.hasOwnProperty(component.props.component.key)) {
         delete this.data[component.props.component.key];
-        let sendChange = true;
+        sendChange = true;
       }
     }
     this.validate(() => {
