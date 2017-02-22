@@ -59,21 +59,23 @@ export const Formio = React.createClass({
     this.validate();
   },
   detachFromForm: function (component) {
+    let sendChange = false;
     // Don't detach when the whole form is unmounting.
     if (this.unmounting) {
       return;
     }
+    delete this.inputs[component.props.component.key];
     if (!component.props.component.hasOwnProperty('clearOnHide') || component.props.component.clearOnHide !== false) {
       if (this.data && this.data.hasOwnProperty(component.props.component.key)) {
         delete this.data[component.props.component.key];
-        this.validate(() => {
-          if (typeof this.props.onChange === 'function') {
-            this.props.onChange({data: this.data}, component);
-          }
-        });
+        let sendChange = true;
       }
     }
-    delete this.inputs[component.props.component.key];
+    this.validate(() => {
+      if (sendChange && typeof this.props.onChange === 'function') {
+        this.props.onChange({data: this.data}, component);
+      }
+    });
   },
   onEvent: function(event) {
     if (typeof this.props.onEvent === 'function') {
