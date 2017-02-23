@@ -534,6 +534,7 @@ describe('Textfield @textfield', function () {
       table.find('a.btn.add-row').simulate('click');
       expect(table.find('tr').length).to.equal(2);
       expect(table.find('tr').at(0).find('input').prop('data-index')).to.equal(0);
+      component.defaultValue = '';
       done();
     })
 

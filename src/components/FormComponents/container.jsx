@@ -36,10 +36,14 @@ module.exports = React.createClass({
       }, () => this.props.onChange(component, { container: this }));
     }
   },
-  attachToForm(component) {
+  attachToForm: function(component) {
     this.inputs = this.inputs || {};
     this.inputs[component.props.component.key] = component;
-    this.props.onChange(this);
+    this.setState(previousState => {
+      return Object.assign(previousState, this.validate());
+    }, () => {
+      this.props.onChange(this);
+    });
   },
   detachFromForm: function(component) {
     if (this.unmounting) {
@@ -53,7 +57,11 @@ module.exports = React.createClass({
       }
     }
     delete this.inputs[component.props.component.key];
-    this.props.onChange(this);
+    this.setState(previousState => {
+      return Object.assign(previousState, this.validate());
+    }, () => {
+      this.props.onChange(this);
+    });
   },
   validateCustom: function() {
     let isValid = true;
@@ -67,6 +75,7 @@ module.exports = React.createClass({
     }
     return {
       isValid,
+      errorType: '',
       errorMessage: ''
     };
   },

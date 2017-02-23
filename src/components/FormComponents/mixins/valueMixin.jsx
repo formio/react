@@ -58,6 +58,7 @@ module.exports = {
     }
     var state = {
       isValid: true,
+      errorType: '',
       errorMessage: ''
     };
     // Validate each item if multiple.
@@ -70,6 +71,7 @@ module.exports = {
       /* eslint-disable no-console */
       if (component.validate && component.validate.required && (!value instanceof Array || value.length === 0)) {
         state.isValid = false;
+        state.errorType = 'required';
         state.errorMessage = (component.label || component.key) + ' is required.';
       }
     }
@@ -83,6 +85,7 @@ module.exports = {
 
     var state = {
       isValid: true,
+      errorType: '',
       errorMessage: ''
     };
     // Check for no validation criteria
@@ -94,36 +97,43 @@ module.exports = {
       // Multivalue and selectboxes are exceptions since !![] === true and !!{} === true.
       if (component.type === 'selectboxes' && !Object.keys(item).reduce(function(prev, cur) {  return prev || item[cur];}, false)) {
         state.isValid = false;
+        state.errorType = 'required';
         state.errorMessage = (component.label || component.key) + ' is required.';
       }
       else if (!item) {
         state.isValid = false;
+        state.errorType = 'required';
         state.errorMessage = (component.label || component.key) + ' is required.';
       }
     }
     // Email
     if (state.isValid && component.type === 'email' && !item.match(/\S+@\S+/)) {
       state.isValid = false;
+      state.errorType = 'email';
       state.errorMessage = (component.label || component.key) + ' must be a valid email.';
     }
     // MaxLength
     if (state.isValid && component.validate.maxLength && item.length > component.validate.maxLength) {
       state.isValid = false;
+      state.errorType = 'maxlength';
       state.errorMessage = (component.label || component.key) + ' cannot be longer than ' + (component.validate.maxLength) + ' characters.';
     }
     // MinLength
     if (state.isValid && component.validate.minLength && item.length < component.validate.minLength) {
       state.isValid = false;
+      state.errorType = 'minlength';
       state.errorMessage = (component.label || component.key) + ' cannot be shorter than ' + (component.validate.minLength) + ' characters.';
     }
     // MaxValue
     if (state.isValid && component.validate.max && item > component.validate.max) {
       state.isValid = false;
+      state.errorType = 'max';
       state.errorMessage = (component.label || component.key) + ' cannot be greater than ' + component.validate.max;
     }
     // MinValue
     if (state.isValid && component.validate.min && item < component.validate.min) {
       state.isValid = false;
+      state.errorType = 'min';
       state.errorMessage = (component.label || component.key) + ' cannot be less than ' + component.validate.min;
     }
     // Regex
@@ -131,12 +141,14 @@ module.exports = {
       var re = new RegExp(component.validate.pattern, 'g');
       state.isValid = item.match(re);
       if (!state.isValid) {
+        state.errorType = 'regex';
         state.errorMessage = (component.label || component.key) + ' must match the expression: ' + component.validate.pattern;
       }
     }
     // Input Mask
     if (this.element && component.inputMask && this.state.value && this.state.value.includes(this.element.maskChar)) {
       state.isValid = false;
+      state.errorType = 'mask';
       state.errorMessage = (component.label || component.key) + ' must use the format ' + component.inputMask;
     }
     // Custom
@@ -158,6 +170,7 @@ module.exports = {
         /* eslint-enable no-console */
       }
       if (!state.isValid) {
+        state.errorType = 'custom';
         state.errorMessage = valid || ((component.label || component.key) + 'is not a valid value.');
       }
     }
@@ -276,7 +289,7 @@ module.exports = {
     var id = 'form-group-' + this.props.component.key;
     var classNames = 'form-group form-field-type-' + this.props.component.type + ' ' + id + (this.state.errorMessage !== '' && !this.state.isPristine ? ' has-error': '') + (this.props.component.customClass ? ' ' + this.props.component.customClass : '');
     var Elements = this.getElements();
-    var Error = (this.state.errorMessage && !this.state.isPristine ? <p className='help-block'>{this.state.errorMessage}</p> : '');
+    var Error = (this.state.errorMessage && !this.state.isPristine ? <p className={'help-block error-' + this.state.errorType }>{this.state.errorMessage}</p> : '');
     return (
       <div className={classNames} id={id}>
         {Elements}

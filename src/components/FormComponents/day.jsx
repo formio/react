@@ -23,6 +23,7 @@ module.exports = React.createClass({
     const required = this.props.component.fields.day.required || this.props.component.fields.month.required || this.props.component.fields.year.required;
     let state = {
       isValid: true,
+      errorType: '',
       errorMessage: ''
     };
     if (!required) {
@@ -39,6 +40,7 @@ module.exports = React.createClass({
       if (parts[(this.props.component.dayFirst ? 0 : 1)] === '00') {
         state = {
           isValid: false,
+          errorType: 'day',
           errorMessage: (this.props.component.label || this.props.component.key) + ' must be a valid date.'
         };
       }
@@ -47,6 +49,7 @@ module.exports = React.createClass({
       if (parts[(this.props.component.dayFirst ? 1 : 0)] === '00') {
         state = {
           isValid: false,
+          errorType: 'day',
           errorMessage: (this.props.component.label || this.props.component.key) + ' must be a valid date.'
         };
       }
@@ -55,6 +58,7 @@ module.exports = React.createClass({
       if (parts[2] === '0000') {
         state = {
           isValid: false,
+          errorType: 'day',
           errorMessage: (this.props.component.label || this.props.component.key) + ' must be a valid date.'
         };
       }

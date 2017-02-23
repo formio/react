@@ -157,12 +157,8 @@ export const Formio = React.createClass({
       this.validate();
     }
   },
-  checkConditional: function (component, row = {}) {
-    const show = FormioUtils.checkCondition(component, row, this.data);
-
-    // If element is hidden, remove any values already on the form (this can happen when data is loaded into the form
-    // and the field is initially hidden.
-    if (!show && (!component.hasOwnProperty('clearOnHide') || component.clearOnHide !== false)) {
+  clearHiddenData: function(component) {
+    if (!component.hasOwnProperty('clearOnHide') || component.clearOnHide !== false) {
       if (this.data.hasOwnProperty(component.key)) {
         delete this.data[component.key];
         if (typeof this.props.onChange === 'function') {
@@ -170,6 +166,36 @@ export const Formio = React.createClass({
         }
       }
     }
+    if (component.hasOwnProperty('components')) {
+      component.components.forEach(component => {
+        this.clearHiddenData(component)
+      });
+    }
+    if (component.hasOwnProperty('columns')) {
+      component.columns.forEach(column => {
+        column.components.forEach(component => {
+          this.clearHiddenData(component)
+        });
+      });
+    }
+    if (component.hasOwnProperty('rows')) {
+      component.rows.forEach(column => {
+        column.components.forEach(component => {
+          this.clearHiddenData(component)
+        });
+      });
+    }
+  },
+  checkConditional: function (component, row = {}) {
+    const show = FormioUtils.checkCondition(component, row, this.data);
+
+    // If element is hidden, remove any values already on the form (this can happen when data is loaded into the form
+    // and the field is initially hidden.
+    if (!show) {
+      // Recursively delete data for all components under this component.
+      this.clearHiddenData(component)
+    }
+
     return show;
   },
   isDisabled: function(component, data) {

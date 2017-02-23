@@ -514,4 +514,215 @@ describe('Change Events @change', function () {
     expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
     done();
   });
+
+  it('fires events when data is hidden in a layout component', function(done) {
+    const onChange = sinon.spy();
+    const element = mount(
+      <Formio
+        form={{
+          "components": [
+            {
+              "conditional": {
+                "eq": "",
+                "when": null,
+                "show": ""
+              },
+              "tags": [],
+              "type": "checkbox",
+              "validate": {
+                "required": false
+              },
+              "clearOnHide": true,
+              "persistent": true,
+              "protected": false,
+              "defaultValue": false,
+              "key": "visible",
+              "datagridLabel": true,
+              "label": "Visible",
+              "hideLabel": true,
+              "tableView": true,
+              "inputType": "checkbox",
+              "input": true,
+              "lockKey": true
+            },
+            {
+              "key": "fieldset1",
+              "input": false,
+              "tableView": true,
+              "legend": "fieldset",
+              "components": [
+                {
+                  "input": true,
+                  "tableView": true,
+                  "inputType": "text",
+                  "inputMask": "",
+                  "label": "Textfield",
+                  "key": "textfield",
+                  "placeholder": "",
+                  "prefix": "",
+                  "suffix": "",
+                  "multiple": false,
+                  "defaultValue": "",
+                  "protected": false,
+                  "unique": false,
+                  "persistent": true,
+                  "clearOnHide": true,
+                  "validate": {
+                    "required": false,
+                    "minLength": "",
+                    "maxLength": "",
+                    "pattern": "",
+                    "custom": "",
+                    "customPrivate": false
+                  },
+                  "conditional": {
+                    "show": "",
+                    "when": null,
+                    "eq": ""
+                  },
+                  "type": "textfield",
+                  "tags": []
+                }
+              ],
+              "type": "fieldset",
+              "tags": [],
+              "conditional": {
+                "show": "true",
+                "when": "visible",
+                "eq": "true"
+              }
+            }
+          ]
+        }}
+        onChange={onChange}
+        submission={{data: {visible: false, textfield: 'Test'}}}
+      />
+    );
+    expect(onChange.callCount).to.equal(1);
+    expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
+    const checkbox = element.find('input[type="checkbox"]');
+    checkbox.simulate('change', {target: {"checked": true}});
+    expect(onChange.callCount).to.equal(3);
+    expect(onChange.calledWith({data: {visible: true, textfield: ''}})).to.equal(true);
+    checkbox.simulate('change', {target: {"checked": false}});
+    expect(onChange.callCount).to.equal(5);
+    expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
+    checkbox.simulate('change', {target: {"checked": true}});
+    element.find('input[type="text"]').simulate('change', {target: {value: 'My Value'}});
+    expect(onChange.callCount).to.equal(8);
+    expect(onChange.calledWith({data: {visible: true, textfield: 'My Value'}})).to.equal(true);
+    checkbox.simulate('change', {target: {"checked": false}});
+    expect(onChange.callCount).to.equal(10);
+    expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
+    done();
+  });
+
+  it('fires events when data is hidden in a column component @wip', function(done) {
+    const onChange = sinon.spy();
+    const element = mount(
+      <Formio
+        form={{
+          "components": [
+            {
+              "lockKey": true,
+              "input": true,
+              "inputType": "checkbox",
+              "tableView": true,
+              "hideLabel": true,
+              "label": "Visible",
+              "datagridLabel": true,
+              "key": "visible",
+              "defaultValue": false,
+              "protected": false,
+              "persistent": true,
+              "clearOnHide": true,
+              "validate": {
+                "required": false
+              },
+              "type": "checkbox",
+              "tags": [],
+              "conditional": {
+                "show": "",
+                "when": null,
+                "eq": ""
+              }
+            },
+            {
+              "lockKey": true,
+              "conditional": {
+                "eq": "true",
+                "when": "visible",
+                "show": "true"
+              },
+              "tags": [],
+              "type": "columns",
+              "columns": [
+                {
+                  "components": [
+                    {
+                      "isNew": false,
+                      "tags": [],
+                      "type": "textfield",
+                      "conditional": {
+                        "eq": "",
+                        "when": null,
+                        "show": ""
+                      },
+                      "validate": {
+                        "customPrivate": false,
+                        "custom": "",
+                        "pattern": "",
+                        "maxLength": "",
+                        "minLength": "",
+                        "required": true
+                      },
+                      "clearOnHide": true,
+                      "persistent": true,
+                      "unique": false,
+                      "protected": false,
+                      "defaultValue": "",
+                      "multiple": false,
+                      "suffix": "",
+                      "prefix": "",
+                      "placeholder": "",
+                      "key": "textfield",
+                      "label": "Textfield",
+                      "inputMask": "",
+                      "inputType": "text",
+                      "tableView": true,
+                      "input": true
+                    }
+                  ]
+                },
+                {
+                  "components": []
+                }
+              ],
+              "key": "columns1",
+              "input": false
+            }
+          ]
+        }}
+        onChange={onChange}
+        submission={{data: {visible: false, textfield: 'Test'}}}
+      />
+    );
+    expect(onChange.callCount).to.equal(1);
+    expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
+    const checkbox = element.find('input[type="checkbox"]');
+    //checkbox.simulate('change', {target: {"checked": true}});
+    //expect(onChange.callCount).to.equal(3);
+    //expect(onChange.calledWith({data: {visible: true, textfield: ''}})).to.equal(true);
+    //checkbox.simulate('change', {target: {"checked": false}});
+    //expect(onChange.callCount).to.equal(5);
+    //expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
+    //checkbox.simulate('change', {target: {"checked": true}});
+    //element.find('input[type="text"]').simulate('change', {target: {value: 'My Value'}});
+    //expect(onChange.callCount).to.equal(8);
+    //expect(onChange.calledWith({data: {visible: true, textfield: 'My Value'}})).to.equal(true);
+    //checkbox.simulate('change', {target: {"checked": false}});
+    //expect(onChange.callCount).to.equal(10);
+    //expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
+    done();
+  });
 });
