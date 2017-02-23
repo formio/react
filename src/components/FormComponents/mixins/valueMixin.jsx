@@ -266,7 +266,9 @@ module.exports = {
       return previousState;
     }, () => {
       if (typeof this.props.onChange === 'function') {
-        this.props.onChange(this);
+        if (!this.state.isPristine || this.props.value !== this.state.value) {
+          this.props.onChange(this);
+        }
       }
     });
   },

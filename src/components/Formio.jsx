@@ -33,7 +33,12 @@ export const Formio = React.createClass({
     };
   },
   componentWillMount: function () {
-    this.data = this.data || {};
+    if (this.props.submission && this.props.submission.data) {
+      this.data = _.clone(this.props.submission.data);
+    }
+    else {
+      this.data = {};
+    }
     this.inputs = {};
   },
   componentWillUnmount: function() {
@@ -160,6 +165,9 @@ export const Formio = React.createClass({
     if (!show && (!component.hasOwnProperty('clearOnHide') || component.clearOnHide !== false)) {
       if (this.data.hasOwnProperty(component.key)) {
         delete this.data[component.key];
+        if (typeof this.props.onChange === 'function') {
+          this.props.onChange({data: this.data}, component);
+        }
       }
     }
     return show;

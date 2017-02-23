@@ -307,6 +307,45 @@ describe('Textfield @textfield', function () {
         ></Textfield>
       ).children().eq(0);
       expect(element.attr('class').split(' ')).to.contain('my-custom-class');
+      component.customClass = '';
+      done();
+    });
+
+    it('fires a change event @change', function(done) {
+      const onChange = sinon.spy();
+      const element = mount(
+        <Textfield
+          component={component}
+          onChange={onChange}
+        ></Textfield>
+      );
+      expect(element.state('value')).to.equal('');
+      expect(onChange.callCount).to.equal(1);
+      element.find('input[type="text"]').simulate('change', {target: {value: 'My Value'}});
+      expect(element.state('value')).to.equal('My Value');
+      expect(onChange.callCount).to.equal(2);
+      element.find('input[type="text"]').simulate('change', {target: {value: ''}});
+      expect(element.state('value')).to.equal('');
+      expect(onChange.callCount).to.equal(3);
+      done();
+    });
+
+    it('fires a change event with skipInit @change', function(done) {
+      const onChange = sinon.spy();
+      const element = mount(
+        <Textfield
+          options={{ skipInit: true }}
+          component={component}
+          onChange={onChange}
+        ></Textfield>
+      );
+      expect(element.state('value')).to.equal('');
+      element.find('input[type="text"]').simulate('change', {target: {value: 'My Value'}});
+      expect(element.state('value')).to.equal('My Value');
+      expect(onChange.callCount).to.equal(1);
+      element.find('input[type="text"]').simulate('change', {target: {value: ''}});
+      expect(element.state('value')).to.equal('');
+      expect(onChange.callCount).to.equal(2);
       done();
     });
   });
@@ -497,6 +536,50 @@ describe('Textfield @textfield', function () {
       expect(table.find('tr').at(0).find('input').prop('data-index')).to.equal(0);
       done();
     })
+
+
+    it('fires a change event @change', function(done) {
+      const onChange = sinon.spy();
+      const element = mount(
+        <Textfield
+          component={component}
+          onChange={onChange}
+        ></Textfield>
+      );
+      expect(element.state('value').length).to.equal(1);
+      expect(element.state('value')[0]).to.equal('');
+      expect(onChange.callCount).to.equal(1);
+      const table = element.find('table');
+      table.find('tr').at(0).find('input').simulate('change', {target: {value: 'My Value', getAttribute: () => 0}});
+      expect(onChange.callCount).to.equal(2);
+      table.find('a.btn.add-row').simulate('click');
+      expect(onChange.callCount).to.equal(3);
+      table.find('tr').at(0).find('input').simulate('change', {target: {value: '', getAttribute: () => 0}});
+      expect(onChange.callCount).to.equal(4);
+      done();
+    });
+
+    it('fires a change event with skipInit @change', function(done) {
+      const onChange = sinon.spy();
+      const element = mount(
+        <Textfield
+          options={{ skipInit: true }}
+          component={component}
+          onChange={onChange}
+        ></Textfield>
+      );
+      expect(element.state('value').length).to.equal(1);
+      expect(element.state('value')[0]).to.equal('');
+      expect(onChange.callCount).to.equal(0);
+      const table = element.find('table');
+      table.find('tr').at(0).find('input').simulate('change', {target: {value: 'My Value', getAttribute: () => 0}});
+      expect(onChange.callCount).to.equal(1);
+      table.find('a.btn.add-row').simulate('click');
+      expect(onChange.callCount).to.equal(2);
+      table.find('tr').at(0).find('input').simulate('change', {target: {value: '', getAttribute: () => 0}});
+      expect(onChange.callCount).to.equal(3);
+      done();
+    });
   });
 
   // Check with and without labels/required
