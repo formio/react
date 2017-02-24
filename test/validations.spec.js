@@ -704,7 +704,6 @@ describe('Validations @validations', function () {
     );
     expect(element.state('isValid')).to.equal(true);
     element.find('.rw-i-caret-down').simulate('click');
-    console.log(element.html());
     element.find('.rw-list li').at(0).simulate('click');
     expect(element.state('isValid')).to.equal(false);
     element.find('input[type="text"]').simulate('change', {target: {value: 'My Value'}});
