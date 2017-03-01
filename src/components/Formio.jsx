@@ -179,7 +179,7 @@ export const Formio = React.createClass({
         });
       });
     }
-    if (component.hasOwnProperty('rows')) {
+    if (component.hasOwnProperty('rows') && Array.isArray(component.rows)) {
       component.rows.forEach(column => {
         column.forEach(component => {
           this.clearHiddenData(component)
