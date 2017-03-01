@@ -162,7 +162,8 @@ export const Formio = React.createClass({
       if (this.data.hasOwnProperty(component.key)) {
         delete this.data[component.key];
         if (typeof this.props.onChange === 'function') {
-          this.props.onChange({data: this.data}, component);
+          // Since this component isn't mounted, we need to fake the component's props and state.
+          this.props.onChange({data: this.data}, { props: { component }, state: { isPristine: true, value: null }});
         }
       }
     }
@@ -180,7 +181,7 @@ export const Formio = React.createClass({
     }
     if (component.hasOwnProperty('rows')) {
       component.rows.forEach(column => {
-        column.components.forEach(component => {
+        column.forEach(component => {
           this.clearHiddenData(component)
         });
       });
