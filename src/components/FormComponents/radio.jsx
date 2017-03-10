@@ -12,6 +12,7 @@ module.exports = React.createClass({
   },
   getSingleElement: function(value, index) {
     index = index || 0;
+    const key = this.props.component.key + (this.props.rowIndex) ? '-' + this.props.rowIndex : '';
     const radioClass = (this.props.component.inline ? 'radio-inline' : 'radio');
     return (
       <div className="radio-wrapper">
@@ -24,7 +25,7 @@ module.exports = React.createClass({
                   type={this.props.component.inputType}
                   id={v.value}
                   data-index={index}
-                  name={this.props.component.key}
+                  name={key}
                   checked={v.value===this.state.value}
                   disabled={this.props.readOnly}
                   onChange={this.onChangeRadio}
