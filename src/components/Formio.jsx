@@ -40,6 +40,32 @@ export const Formio = React.createClass({
       this.data = {};
     }
     this.inputs = {};
+    if (this.props.src) {
+      this.formio = new Formiojs(this.props.src);
+      this.formio.loadForm().then(function (form) {
+        if (typeof this.props.onFormLoad === 'function') {
+          this.props.onFormLoad(form);
+        }
+        this.setState({
+          form: form,
+          isLoading: false
+        }, this.validate);
+      }.bind(this));
+      if (this.formio.submissionId) {
+        this.formio.loadSubmission().then(function (submission) {
+          if (typeof this.props.onSubmissionLoad === 'function') {
+            this.props.onSubmissionLoad(submission);
+          }
+          this.data = _.clone(submission.data);
+          this.setState({
+            submission: submission
+          }, this.validate);
+        }.bind(this));
+      }
+    }
+    else if (this.props.form) {
+      this.validate();
+    }
   },
   componentWillUnmount: function() {
     this.unmounting = true;
@@ -128,34 +154,6 @@ export const Formio = React.createClass({
     this.setState(previousState => previousState.isValid = allIsValid, next);
 
     return allIsValid;
-  },
-  componentDidMount: function () {
-    if (this.props.src) {
-      this.formio = new Formiojs(this.props.src);
-      this.formio.loadForm().then(function (form) {
-        if (typeof this.props.onFormLoad === 'function') {
-          this.props.onFormLoad(form);
-        }
-        this.setState({
-          form: form,
-          isLoading: false
-        }, this.validate);
-      }.bind(this));
-      if (this.formio.submissionId) {
-        this.formio.loadSubmission().then(function (submission) {
-          if (typeof this.props.onSubmissionLoad === 'function') {
-            this.props.onSubmissionLoad(submission);
-          }
-          this.data = _.clone(submission.data);
-          this.setState({
-            submission: submission
-          }, this.validate);
-        }.bind(this));
-      }
-    }
-    else if (this.props.form) {
-      this.validate();
-    }
   },
   clearHiddenData: function(component) {
     if (!component.hasOwnProperty('clearOnHide') || component.clearOnHide !== false) {

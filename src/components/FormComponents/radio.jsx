@@ -12,7 +12,10 @@ module.exports = React.createClass({
   },
   getSingleElement: function(value, index) {
     index = index || 0;
-    const key = this.props.component.key + (this.props.rowIndex) ? '-' + this.props.rowIndex : '';
+    let key = this.props.component.key;
+    if (this.props.hasOwnProperty('rowIndex')) {
+      key += '-' + this.props.rowIndex;
+    }
     const radioClass = (this.props.component.inline ? 'radio-inline' : 'radio');
     return (
       <div className="radio-wrapper">
