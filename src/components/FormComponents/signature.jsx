@@ -24,6 +24,7 @@ module.exports = React.createClass({
   },
   clearSignature: function() {
     this.signature.clear();
+    this.setValue(null);
   },
   getElements: function() {
     const { component } = this.props;
