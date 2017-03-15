@@ -28,7 +28,7 @@ module.exports = React.createClass({
   },
   getElements: function() {
     const { component } = this.props;
-    var footerClass = 'formio-signature-footer' + (component.validate.required ? ' required' : '');
+    var footerClass = 'formio-signature-footer' + (component.validate.required ? ' field-required' : '');
     var ref = component.key;
     var styles = {
       height: component.height,
