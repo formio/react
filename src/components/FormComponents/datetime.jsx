@@ -2,8 +2,8 @@ import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import multiMixin from './mixins/multiMixin';
 import componentMixin from './mixins/componentMixin';
-import DateTimePicker from 'react-datetime';
-import moment from 'moment';
+import DateTimePicker from 'react-flatpickr';
+import _get from 'lodash/get';
 
 module.exports = React.createClass({
   displayName: 'Datetime',
@@ -11,18 +11,63 @@ module.exports = React.createClass({
   getInitialValue: function() {
     return null;
   },
+  convertFormat(format) {
+    // Year conversion.
+    format = format.replace(/y/g, 'Y');
+    format = format.replace('YYYY', 'Y');
+    format = format.replace('YY', 'y');
+
+    // Month conversion.
+    format = format.replace('MMMM', 'F');
+    format = format.replace(/M/g, 'n');
+    format = format.replace('nnn', 'M');
+    format = format.replace('nn', 'm');
+
+    // Day in month.
+    format = format.replace(/d/g, 'j');
+    format = format.replace('jj', 'd');
+
+    // Day in week.
+    format = format.replace('EEEE', 'l');
+    format = format.replace('EEE', 'D');
+
+    // Hours, minutes, seconds
+    format = format.replace('HH', 'H');
+    format = format.replace('hh', 'h');
+    format = format.replace('mm', 'i');
+    format = format.replace('ss', 'S');
+    format = format.replace(/a/g, 'K');
+    format = format.replace(/A/g, 'K');
+    return format;
+  },
+  getConfig() {
+    return {
+      altInput: !this.props.readOnly,
+      allowInput: true,
+      clickOpens: true,
+      enableDate: true,
+      mode: this.props.component.multiple ? 'multiple' : 'single',
+      enableTime: _get(this.props.component, 'enableTime', true),
+      noCalendar: !_get(this.props.component, 'enableDate', true),
+      altFormat: this.convertFormat(_get(this.props.component, 'format', '')),
+      dateFormat: 'U',
+      defaultDate: _get(this.props.component, 'defaultDate', ''),
+      hourIncrement: _get(this.props.component, 'timePicker.hourStep', 1),
+      minuteIncrement: _get(this.props.component, 'timePicker.minuteStep', 5),
+    };
+  },
   onChangeDatetime: function(index, value) {
     // If this is a string it is an invalid datetime.
-    if (value instanceof moment) {
-      this.setValue(value.format(), index);
+    if (value.length) {
+      this.setValue(value[0].toISOString(), index);
     }
   },
-  isValidDate: function(currentDate, selectedDate) {
-    // TODO: implement minDate and maxDate and other options.
-    return true;
-  },
   open: function() {
-    this.datepicker.openCalendar();
+    // Flatpickr will automatically close when an external element is clicked such as the open button. Here we set
+    // the open event on the next tick to go after the close event.
+    setTimeout(() => {
+      this.datepicker.flatpickr.open();
+    }, 0);
   },
   getSingleElement: function(value, index) {
     const { component, name, readOnly } = this.props;
@@ -30,20 +75,13 @@ module.exports = React.createClass({
     [
       <DateTimePicker
         key="component"
+        options={this.getConfig()}
         data-index={index}
-        viewMode={component.datepickerMode + 's'}
+        className="form-control"
+        name = {name}
+        disabled = {readOnly}
+        placeholder = {component.placeholder}
         ref={(ref) => this.datepicker = ref}
-        inputProps={{
-          id: component.key,
-          name: name,
-          disabled: readOnly,
-          placeholder: component.placeholder,
-          className: "form-control"
-        }}
-        isValidDate={this.isValidDate}
-        dateFormat={component.enableDate}
-        timeFormat={component.enableTime}
-        closeOnSelect={true}
         value={value}
         onChange={this.onChangeDatetime.bind(null, index)}
       />,
@@ -54,9 +92,5 @@ module.exports = React.createClass({
       </span>
     ]
     );
-  },
-  getValueDisplay: function(component, data) {
-    // TODO: use the date formatter in component.format
-    return data;
   }
 });
