@@ -54,6 +54,14 @@ module.exports = React.createClass({
       defaultDate: _get(this.props.component, 'defaultDate', ''),
       hourIncrement: _get(this.props.component, 'timePicker.hourStep', 1),
       minuteIncrement: _get(this.props.component, 'timePicker.minuteStep', 5),
+      parseDate: date => {
+        // On mobile with time only we will have a time string here and need to fix it.
+        if (date.matches(/^[0-1]?[0-9]:[0-5][0-9]$/)) {
+          const parts = date.split(':');
+          return new Date().sethours(parts[0], parts[1]);
+        }
+        return new Date(date);
+      }
     };
   },
   onChangeDatetime: function(index, value) {
