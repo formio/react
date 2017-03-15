@@ -42,7 +42,7 @@ module.exports = React.createClass({
   },
   getConfig() {
     return {
-      altInput: true,
+      altInput: !this.props.readOnly,
       allowInput: true,
       clickOpens: true,
       enableDate: true,
@@ -77,7 +77,7 @@ module.exports = React.createClass({
         key="component"
         options={this.getConfig()}
         data-index={index}
-        id = {component.key}
+        className="form-control"
         name = {name}
         disabled = {readOnly}
         placeholder = {component.placeholder}
