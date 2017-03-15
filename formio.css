@@ -171,3 +171,8 @@
     color:red;
     z-index: 5;
 }
+
+.quill {
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 5px #ddd;
+}
