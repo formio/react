@@ -58,7 +58,7 @@ module.exports = React.createClass({
         // On mobile with time only we will have a time string here and need to fix it.
         if (date.match(/^[0-1]?[0-9]:[0-5][0-9]$/)) {
           const parts = date.split(':');
-          return new Date(new Date().setHours(parts[0], parts[1]));
+          return new Date(new Date().setHours(parts[0], parts[1], 0, 0));
         }
         return new Date(date);
       }
