@@ -40,6 +40,7 @@ module.exports = {
     let state = {
       value: value,
       isValid: valid.isValid,
+      errorType: valid.errorType,
       errorMessage: valid.errorMessage,
       isPristine: true
     };
@@ -63,12 +64,12 @@ module.exports = {
     };
     // Validate each item if multiple.
     if (component.multiple) {
-      value.forEach(function(item) {
+      value.forEach(item => {
         if (state.isValid) {
           state = this.validateItem(item);
         }
-      }.bind(this));
-      /* eslint-disable no-console */
+      });
+
       if (component.validate && component.validate.required && (!value instanceof Array || value.length === 0)) {
         state.isValid = false;
         state.errorType = 'required';
@@ -203,6 +204,7 @@ module.exports = {
       this.setState({
         value: value,
         isValid: valid.isValid,
+        errorType: valid.errorType,
         errorMessage: valid.errorMessage
       });
     }
