@@ -46,12 +46,12 @@ module.exports = React.createClass({
           this.items = [];
         }
         this.options.params = {
-          limit: this.props.component.limit || 20,
+          limit: parseInt(this.props.component.limit) || 20,
           skip: 0
         };
         this.refreshItems = (input, url, append) => {
           // If they typed in a search, reset skip.
-          if (this.lastInput !== input) {
+          if ((this.lastInput || input) && this.lastInput !== input) {
             this.lastInput = input;
             this.options.params.skip = 0;
           }
