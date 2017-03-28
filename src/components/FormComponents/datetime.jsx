@@ -56,7 +56,7 @@ module.exports = React.createClass({
       minuteIncrement: _get(this.props.component, 'timePicker.minuteStep', 5),
       parseDate: date => {
         // On mobile with time only we will have a time string here and need to fix it.
-        if (date.match(/^[0-1]?[0-9]:[0-5][0-9]$/)) {
+        if (date.match(/^[0-2]?[0-9]:[0-5][0-9]/)) {
           const parts = date.split(':');
           return new Date(new Date().setHours(parts[0], parts[1], 0, 0));
         }
