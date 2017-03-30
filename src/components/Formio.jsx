@@ -161,7 +161,7 @@ export const Formio = React.createClass({
         delete this.data[component.key];
         if (typeof this.props.onChange === 'function') {
           // Since this component isn't mounted, we need to fake the component's props and state.
-          this.props.onChange({data: this.data}, { props: { component }, state: { isPristine: false, value: null }});
+          this.props.onChange({data: this.data}, { props: { component }, state: { isPristine: true, value: null }});
         }
       }
     }
