@@ -3,8 +3,9 @@ import DropdownList from 'react-widgets/lib/DropdownList';
 import Multiselect from 'react-widgets/lib/Multiselect';
 import List from 'react-widgets/lib/List';
 import { interpolate, raw } from '../../../util';
-import _ from 'lodash';
-
+import get from 'lodash/get';
+import isEqual from 'lodash/isEqual'
+  
 module.exports = {
   data: {},
   getInitialState: function() {
@@ -20,7 +21,7 @@ module.exports = {
       const refreshOn = this.props.component.refreshOn;
       this.refresh = false;
       if (refreshOn === 'data') {
-        if (!_.isEqual(this.data, nextProps.data)) {
+        if (!isEqual(this.data, nextProps.data)) {
           this.refresh = true;
         }
       }
@@ -61,11 +62,11 @@ module.exports = {
   onChangeSelect: function(value) {
     if (Array.isArray(value) && this.valueField()) {
       value.forEach(function(val, index) {
-        value[index] = (typeof val === 'object' ? _.get(val, this.valueField()) : val);
+        value[index] = (typeof val === 'object' ? get(val, this.valueField()) : val);
       }.bind(this));
     }
     else if (typeof value === 'object' && this.valueField()) {
-      value = _.get(value, this.valueField());
+      value = get(value, this.valueField());
     }
     this.setValue(value);
   },
@@ -129,7 +130,7 @@ module.exports = {
     var properties = {
       data: this.state.selectItems.filter(value => {
         if (typeof value === 'object' && this.valueField()) {
-          value = _.get(value, this.valueField());
+          value = get(value, this.valueField());
         }
         return this.state.value !== value;
       }),

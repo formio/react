@@ -1,6 +1,7 @@
 import React from 'react';
 import { deepEqual } from '../../../util';
-import { clone, debounce } from 'lodash';
+import clone from 'lodash/clone';
+import debounce from 'lodash/debounce';
 
 module.exports = {
   getDefaultValue: function(value) {
