@@ -12,3 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 ### Removed
+
+## 1.3.0
+### Changed
+ - Swapped react-input-mask for react-text-mask for input masks.
+ - Improved performance of input masks.
