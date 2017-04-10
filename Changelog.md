@@ -5,14 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-### Added
 
-### Changed
-
+## 1.3.1
 ### Fixed
  - Fixed tests dealing with input mask change and missing onChange events. 
 
 ### Removed
+ - Removing tests that don't work with current libraries.
 
 ## 1.3.0
 ### Changed
