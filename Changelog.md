@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 ### Fixed
+ - Fixed tests dealing with input mask change and missing onChange events. 
 
 ### Removed
 

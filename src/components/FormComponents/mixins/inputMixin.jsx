@@ -1,5 +1,5 @@
 import React from 'react';
-import Input from 'react-text-mask';
+import MaskedInput from 'react-text-mask';
 
 module.exports = {
   /**
@@ -39,25 +39,30 @@ module.exports = {
   },
   getSingleElement: function(value, index) {
     index = index || 0;
-    var mask = this.props.component.inputMask || '';
-    return (
-      <Input
-        type={this.props.component.inputType}
-        key={index}
-        className='form-control'
-        id={this.props.component.key}
-        data-index={index}
-        name={this.props.name}
-        value={value}
-        disabled={this.props.readOnly}
-        placeholder={this.props.component.placeholder}
-        mask={this.getInputMask(mask)}
-        placeholderChar="_"
-        guide={true}
-        onChange={this.onChange}
-        ref={ input => this.element = input }
-        >
-      </Input>
-    );
+    const { component, name, readOnly } = this.props;
+    const mask = component.inputMask || '';
+    const properties = {
+      type: component.inputType,
+      key: index,
+      className: 'form-control',
+      id: component.key,
+      'data-index': index,
+      name: name,
+      value: value,
+      disabled: readOnly,
+      placeholder: component.placeholder,
+      onChange: this.onChange,
+      ref:  input => this.element = input
+    };
+
+    if (mask || component.type === 'currency') {
+      properties.mask = this.getInputMask(mask);
+      properties.placeholderChar = "_";
+      properties.guide = true;
+      return React.createElement(MaskedInput, properties);
+    }
+    else {
+      return React.createElement('input', properties);
+    }
   }
 };
