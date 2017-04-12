@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## 1.3.2
 Changed
  - Text inputs will fire change events on blur now instead of on change. Change events were too slow in redux.
 
