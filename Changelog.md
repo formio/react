@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## 1.3.3
+### Added
+ - Expose mixins as exports to ease creation of custom components.
 
 ## 1.3.2
 Changed
