@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## 1.3.4
+### Added
+ - Onchange event will fire for input fields after 500ms of no typing instead of only on blur.
+
 ## 1.3.3
 ### Added
  - Expose mixins as exports to ease creation of custom components.

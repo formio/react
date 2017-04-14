@@ -3,9 +3,19 @@ import MaskedInput from 'react-text-mask';
 import { clone } from 'lodash';
 
 module.exports = {
+  timeout: null,
   customState: function(state) {
     state.hasChanges = false;
     return state;
+  },
+  triggerChange: function() {
+    if (typeof this.props.onChange === 'function' && this.state.hasChanges) {
+      this.props.onChange(this);
+      this.setState(state => {
+        state.hasChanges = false;
+        return false;
+      }, () => this.props.onChange(this));
+    }
   },
   onChangeInput: function(event) {
     var value = event.target.value;
@@ -14,11 +24,15 @@ module.exports = {
       value = this.onChangeCustom(value);
     }
     var index = (this.props.component.multiple ? event.target.getAttribute('data-index') : null);
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      this.triggerChange();
+    }, 500);
     this.setState(previousState => {
       if (index !== null && Array.isArray(previousState.value)) {
         // Clone so we keep state immutable.
         const newValue = clone(previousState.value);
-        newValue[index] = value
+        newValue[index] = value;
         previousState.value = newValue;
       }
       else {
@@ -31,12 +45,7 @@ module.exports = {
     });
   },
   onBlur: function(event) {
-    if (typeof this.props.onChange === 'function' && this.state.hasChanges) {
-      this.props.onChange(this);
-      this.setState({
-        hasChanges: false
-      });
-    }
+    this.triggerChange();
   },
   /**
    * Returns an input mask that is compatible with the input mask library.
