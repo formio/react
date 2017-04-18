@@ -1,7 +1,66 @@
 import React from 'react';
-import { clone } from 'lodash';
+import { clone, isEqual } from 'lodash';
 import valueMixin from './mixins/valueMixin';
 import { FormioComponents } from '../../factories';
+
+class DataGridRow extends React.Component {
+  shouldComponentUpdate = (nextProps) => {
+    if (!isEqual(this.props.row, nextProps.row)) {
+      return true;
+    }
+
+    return false;
+  };
+
+  render = () => {
+    const { component, rowIndex, row, checkConditional, visibleCols } = this.props;
+
+    return (<tr key={rowIndex}>
+      {component.components.map((col, index) => {
+        let key = col.key || col.type + index;
+        let value = (row.hasOwnProperty(col.key) ? row[col.key] : col.defaultValue || null);
+        let FormioElement = FormioComponents.getComponent(col.type);
+        if (checkConditional(col, row)) {
+          return (
+            <td key={key}>
+              <FormioElement
+                {...this.props}
+                readOnly={this.props.isDisabled(col)}
+                name={col.key}
+                component={col}
+                onChange={this.props.elementChange.bind(null, rowIndex)}
+                attachToForm={this.props.attachToDatarid.bind(null, rowIndex)}
+                detachFromForm={this.props.detachFromDatagrid.bind(null, rowIndex)}
+                value={value}
+                row={row}
+                rowIndex={rowIndex}
+                values={row}
+              />
+            </td>
+          );
+        }
+        else if (visibleCols[col.key]) {
+          return (
+            <td key={key}>
+
+            </td>
+          );
+        }
+        else {
+          return null;
+        }
+      })}
+      { (!component.hasOwnProperty('validate') || !component.validate.hasOwnProperty('minLength') || value.length > component.validate.minLength) ?
+        <td>
+          <a onClick={this.props.removeRow.bind(null, rowIndex)} className='btn btn-default'>
+            <span className='glyphicon glyphicon-remove-circle'></span>
+          </a>
+        </td>
+        : null}
+      </tr>
+    );
+  }
+}
 
 module.exports = React.createClass({
   displayName: 'Datagrid',
@@ -90,7 +149,7 @@ module.exports = React.createClass({
       return previousState;
     }, () => this.props.onChange(component, { row, datagrid: this }));
   },
-  attachToForm(row, component) {
+  attachToDatarid(row, component) {
     this.inputs = this.inputs || [];
     this.inputs[row] = this.inputs[row] || {};
     this.inputs[row][component.props.component.key] = component;
@@ -100,7 +159,7 @@ module.exports = React.createClass({
       this.props.onChange(this);
     });
   },
-  detachFromForm: function(row, component) {
+  detachFromDatagrid: function(row, component) {
     if (this.unmounting) {
       return;
     }
@@ -152,7 +211,7 @@ module.exports = React.createClass({
     }, {});
     let classLabel = 'control-label' + ( this.props.component.validate && component.validate.required ? ' field-required' : '');
     let inputLabel = (component.label && !component.hideLabel ? <label htmlFor={component.key} className={classLabel}>{component.label}</label> : '');
-    let headers = component.components.map(function(col, index) {
+    let headers = component.components.map((col, index) => {
       if (visibleCols[col.key]) {
         let colLabel = 'control-label' + ( col.validate && col.validate.required ? ' field-required' : '');
         return (
@@ -162,7 +221,7 @@ module.exports = React.createClass({
       else {
         return null;
       }
-    }.bind(this));
+    });
     var tableClasses = 'table datagrid-table';
     tableClasses += (component.striped) ? ' table-striped' : '';
     tableClasses += (component.bordered) ? ' table-bordered' : '';
@@ -180,53 +239,21 @@ module.exports = React.createClass({
         </thead>
         <tbody>
         {
-          value.map(function(row, rowIndex) {
+          value.map((row, rowIndex) => {
           return (
-            <tr key={rowIndex}>
-              {component.components.map(function(col, index) {
-                var key = col.key || col.type + index;
-                var value = (row.hasOwnProperty(col.key) ? row[col.key] : col.defaultValue || null);
-                var FormioElement = FormioComponents.getComponent(col.type);
-                if (checkConditional(col, row)) {
-                  return (
-                    <td key={key}>
-                      <FormioElement
-                        {...this.props}
-                        readOnly={this.props.isDisabled(col)}
-                        name={col.key}
-                        component={col}
-                        onChange={this.elementChange.bind(null, rowIndex)}
-                        attachToForm={this.attachToForm.bind(null, rowIndex)}
-                        detachFromForm={this.detachFromForm.bind(null, rowIndex)}
-                        value={value}
-                        row={row}
-                        rowIndex={rowIndex}
-                        values={row}
-                      />
-                    </td>
-                  );
-                }
-                else if (visibleCols[col.key]) {
-                  return (
-                    <td key={key}>
-
-                    </td>
-                  );
-                }
-                else {
-                  return null;
-                }
-              }.bind(this))}
-              { (!component.hasOwnProperty('validate') || !component.validate.hasOwnProperty('minLength') || value.length > component.validate.minLength) ?
-                <td>
-                  <a onClick={this.removeRow.bind(this, rowIndex)} className='btn btn-default'>
-                    <span className='glyphicon glyphicon-remove-circle'></span>
-                  </a>
-                </td>
-              : null}
-            </tr>
-          );
-        }.bind(this))}
+            <DataGridRow
+              elementChange={this.elementChange}
+              attachToDatarid={this.attachToDatarid}
+              detachFromDatagrid={this.detachFromDatagrid}
+              removeRow={this.removeRow}
+              visibleCols={visibleCols}
+              row={row}
+              rowIndex={rowIndex}
+              key={rowIndex}
+              {...this.props}
+            />
+         );
+        })}
         </tbody>
       </table>
       { (!component.hasOwnProperty('validate') || !component.validate.hasOwnProperty('maxLength') || value.length < component.validate.maxLength) ?
