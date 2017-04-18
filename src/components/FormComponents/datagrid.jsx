@@ -15,7 +15,8 @@ class DataGridRow extends React.Component {
   render = () => {
     const { component, rowIndex, row, checkConditional, visibleCols } = this.props;
 
-    return (<tr key={rowIndex}>
+    return (
+      <tr>
       {component.components.map((col, index) => {
         let key = col.key || col.type + index;
         let value = (row.hasOwnProperty(col.key) ? row[col.key] : col.defaultValue || null);
@@ -240,20 +241,21 @@ module.exports = React.createClass({
         <tbody>
         {
           value.map((row, rowIndex) => {
-          return (
-            <DataGridRow
-              elementChange={this.elementChange}
-              attachToDatarid={this.attachToDatarid}
-              detachFromDatagrid={this.detachFromDatagrid}
-              removeRow={this.removeRow}
-              visibleCols={visibleCols}
-              row={row}
-              rowIndex={rowIndex}
-              key={rowIndex}
-              {...this.props}
-            />
-         );
-        })}
+            return (
+              <DataGridRow
+                elementChange={this.elementChange}
+                attachToDatarid={this.attachToDatarid}
+                detachFromDatagrid={this.detachFromDatagrid}
+                removeRow={this.removeRow}
+                visibleCols={visibleCols}
+                row={row}
+                rowIndex={rowIndex}
+                key={rowIndex}
+                {...this.props}
+              />
+            );
+          })
+        }
         </tbody>
       </table>
       { (!component.hasOwnProperty('validate') || !component.validate.hasOwnProperty('maxLength') || value.length < component.validate.maxLength) ?

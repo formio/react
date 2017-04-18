@@ -199,6 +199,13 @@ module.exports = {
     if (this.props.value !== nextProps.value) {
       value = this.safeSingleToMultiple(nextProps.value);
     }
+    // This occurs when a datagrid row is deleted.
+    if (value === null) {
+      value = this.getDefaultValue(value);
+      this.setState({
+        isPristine: true
+      });
+    }
     if (typeof value !== 'undefined' && value !== null) {
       var valid = this.validate(value);
       this.setState({
