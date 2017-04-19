@@ -5,6 +5,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## 1.3.7
+### Changed
+ - Datagrid headers won't render if there are no labels.
+
+## 1.3.6
+### Fixed
+ - Deleting rows in datagrids didn't clear components properly.
+
+## 1.3.5
+### Fixed
+ - Fix performance of datagrids with large data.
+
 ## 1.3.4
 ### Added
  - Onchange event will fire for input fields after 500ms of no typing instead of only on blur.

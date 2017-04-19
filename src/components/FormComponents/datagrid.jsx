@@ -212,9 +212,13 @@ module.exports = React.createClass({
     }, {});
     let classLabel = 'control-label' + ( this.props.component.validate && component.validate.required ? ' field-required' : '');
     let inputLabel = (component.label && !component.hideLabel ? <label htmlFor={component.key} className={classLabel}>{component.label}</label> : '');
+    let headerVisible = false;
     let headers = component.components.map((col, index) => {
       if (visibleCols[col.key]) {
         let colLabel = 'control-label' + ( col.validate && col.validate.required ? ' field-required' : '');
+        if (col.label) {
+          headerVisible = true;
+        }
         return (
           <th key={index}><label className={colLabel}>{col.label || ''}</label></th>
         );
@@ -233,11 +237,16 @@ module.exports = React.createClass({
     <div className='formio-data-grid'>
       <label className={classLabel}>{inputLabel}</label>
       <table className={tableClasses}>
-        <thead>
-          <tr>
-            {headers}
-          </tr>
-        </thead>
+        { headerVisible ?
+          (
+            <thead>
+              <tr>
+                {headers}
+              </tr>
+            </thead>
+          )
+          : null
+        }
         <tbody>
         {
           value.map((row, rowIndex) => {
