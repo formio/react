@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## 1.3.8
+### Fixed
+ - Datagrids with select components dependent on external data weren't updating when the data updated.
+
 ## 1.3.7
 ### Changed
  - Datagrid headers won't render if there are no labels.

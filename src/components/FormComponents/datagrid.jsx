@@ -2,14 +2,41 @@ import React from 'react';
 import { clone, isEqual } from 'lodash';
 import valueMixin from './mixins/valueMixin';
 import { FormioComponents } from '../../factories';
+import FormioUtils from 'formio-utils';
 
 class DataGridRow extends React.Component {
+  constructor(props) {
+    super(props);
+    this.data = {...props.data};
+    this.refresh = false;
+  };
+
+  componentWillReceiveProps = (nextProps) => {
+    const { components } = this.props;
+    // If one of the fields is set to refresh on a value outside the datagrid, check it as well.
+    this.refresh = false;
+    FormioUtils.eachComponent(components, (component) => {
+      if ('refreshOn' in component && component.refreshOn) {
+        const { refreshOn } = component;
+        if (refreshOn === 'data') {
+          this.refresh = true;
+        }
+        if ((!this.data.hasOwnProperty(refreshOn) && nextProps.hasOwnProperty(refreshOn)) || this.data[refreshOn] !== nextProps.data[refreshOn]) {
+          this.refresh = true;
+        }
+      }
+    });
+    this.data = {...nextProps.data};
+  };
+
   shouldComponentUpdate = (nextProps) => {
-    if (!isEqual(this.props.row, nextProps.row)) {
+    const { row } = this.props;
+
+    if (!isEqual(row, nextProps.row)) {
       return true;
     }
 
-    return false;
+    return this.refresh;
   };
 
   render = () => {
