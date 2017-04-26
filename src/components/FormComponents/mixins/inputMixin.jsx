@@ -1,26 +1,120 @@
 import React from 'react';
-import Input from 'react-input-mask';
+import MaskedInput from 'react-text-mask';
+import { clone } from 'lodash';
 
 module.exports = {
+  timeout: null,
+  customState: function(state) {
+    state.hasChanges = false;
+    return state;
+  },
+  triggerChange: function() {
+    if (typeof this.props.onChange === 'function' && this.state.hasChanges) {
+      this.props.onChange(this);
+      this.setState(state => {
+        state.hasChanges = false;
+        return false;
+      }, () => this.props.onChange(this));
+    }
+  },
+  onChangeInput: function(event) {
+    var value = event.target.value;
+    // Allow components to respond to onChange event.
+    if (typeof this.onChangeCustom === 'function') {
+      value = this.onChangeCustom(value);
+    }
+    var index = (this.props.component.multiple ? event.target.getAttribute('data-index') : null);
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      this.triggerChange();
+    }, 500);
+    this.setState(previousState => {
+      if (index !== null && Array.isArray(previousState.value)) {
+        // Clone so we keep state immutable.
+        const newValue = clone(previousState.value);
+        newValue[index] = value;
+        previousState.value = newValue;
+      }
+      else {
+        previousState.value = value;
+      }
+      previousState.isPristine = false;
+      previousState.hasChanges = true;
+      Object.assign(previousState, this.validate(previousState.value));
+      return previousState;
+    });
+  },
+  onBlur: function(event) {
+    this.triggerChange();
+  },
+  /**
+   * Returns an input mask that is compatible with the input mask library.
+   * @param {string} mask - The Form.io input mask.
+   * @returns {Array} - The input mask for the mask library.
+   */
+  getInputMask: function(mask) {
+    if (typeof this.customMask === 'function') {
+      return this.customMask;
+    }
+    if (!mask) {
+      return false;
+    }
+    if (mask instanceof Array) {
+      return mask;
+    }
+    let maskArray = [];
+    for (let i=0; i < mask.length; i++) {
+      switch (mask[i]) {
+        case '9':
+          maskArray.push(/\d/);
+          break;
+        case 'a':
+        case 'A':
+          maskArray.push(/[a-zA-Z]/);
+          break;
+        case '*':
+          maskArray.push(/[a-zA-Z0-9]/);
+          break;
+        default:
+          maskArray.push(mask[i]);
+          break;
+      }
+    }
+    return maskArray;
+  },
   getSingleElement: function(value, index) {
     index = index || 0;
-    var mask = this.props.component.inputMask || '';
-    return (
-      <Input
-        type={this.props.component.inputType}
-        key={index}
-        className='form-control'
-        id={this.props.component.key}
-        data-index={index}
-        name={this.props.name}
-        value={value}
-        disabled={this.props.readOnly}
-        placeholder={this.props.component.placeholder}
-        mask={mask}
-        onChange={this.onChange}
-        ref={ input => this.element = input }
-        >
-      </Input>
-    );
+    const { component, name, readOnly } = this.props;
+    const mask = component.inputMask || '';
+    const properties = {
+      type: component.inputType,
+      key: index,
+      className: 'form-control',
+      id: component.key,
+      'data-index': index,
+      name: name,
+      value: value,
+      disabled: readOnly,
+      placeholder: component.placeholder,
+      onChange: this.onChangeInput,
+      onBlur: this.onBlur,
+      ref:  input => this.element = input
+    };
+
+    if (component.type === 'number') {
+      properties.min = this.props.component.validate.min;
+      properties.max = this.props.component.validate.max;
+      properties.step = this.props.component.validate.step;
+    }
+
+    if (mask || component.type === 'currency') {
+      properties.mask = this.getInputMask(mask);
+      properties.placeholderChar = "_";
+      properties.guide = true;
+      return React.createElement(MaskedInput, properties);
+    }
+    else {
+      return React.createElement('input', properties);
+    }
   }
 };

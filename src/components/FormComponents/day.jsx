@@ -2,22 +2,33 @@ import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import multiMixin from './mixins/multiMixin';
 import componentMixin from './mixins/componentMixin';
+import Input from 'react-text-mask';
 
 module.exports = React.createClass({
   displayName: 'Textfield',
   mixins: [valueMixin, multiMixin, componentMixin],
-  onChangeCustom: function() {
-    const padLeft = function padLeft(nr, n, str) {
-      return Array(n - String(nr.toString()).length + 1).join(str || '0') + nr.toString();
-    };
-    const { date } = this.state;
+  onChangeCustom: function(config, event) {
+    const { value } = event.target;
+    // Don't fire a change if the value didn't change.
+    if (value === this.state.date[config.key]) {
+      return;
+    }
+    this.setState(state => {
+      state.date[config.key] = value;
+      return state;
+    }, () => {
+      const padLeft = function padLeft(nr, n, str) {
+        return Array(n - String(nr.toString()).length + 1).join(str || '0') + nr.toString();
+      };
+      const { date } = this.state;
 
-    if (this.props.component.dayFirst) {
-      this.setValue(padLeft(date.day, 2) + '/' + padLeft(date.month, 2) + '/' + padLeft(date.year, 4));
-    }
-    else {
-      this.setValue(padLeft(date.month, 2) + '/' + padLeft(date.day, 2) + '/' + padLeft(date.year, 4));
-    }
+      if (this.props.component.dayFirst) {
+        this.setValue(padLeft(date.day, 2) + '/' + padLeft(date.month, 2) + '/' + padLeft(date.year, 4));
+      }
+      else {
+        this.setValue(padLeft(date.month, 2) + '/' + padLeft(date.day, 2) + '/' + padLeft(date.year, 4));
+      }
+    });
   },
   validateCustom: function(value) {
     const required = this.props.component.fields.day.required || this.props.component.fields.month.required || this.props.component.fields.year.required;
@@ -97,38 +108,32 @@ module.exports = React.createClass({
   getDatePart: function(config) {
     const classes = (config.required ? 'field-required' : '');
 
-    const constrainValue = (event) => {
-      let { value } = event.target;
-      if (value.length > config.characters) {
-        value = value.substring(0, config.characters);
-      }
-      if (isNaN(value)) {
-        value = value.replace(/\D/g,'');
-      }
+    const mask = Array(config.characters).fill(/\d/);
+
+    const pipe = (value) => {
       if (
         parseInt(value) < parseInt(config.min) ||
         parseInt(value) > parseInt(config.max)
       ) {
-        value = value.substring(0, config.characters - 1)
+        return false;
       }
-
-      this.setState(state => {
-        state.date[config.key] = value;
-        return state;
-      }, this.onChangeCustom);
-    }
+      return value;
+    };
 
     return (
       <div className={'form-group control-label col-xs-' + config.columns}>
         <label htmlFor={config.componentId} className={classes}>{config.title}</label>
-        <input
+        <Input
           className='form-control'
           type='text'
           id={config.componentId}
           style={{paddingRight: '10px'}}
           placeholder={config.placeholder}
           value={this.state.date[config.key]}
-          onChange={constrainValue}
+          onChange={this.onChangeCustom.bind(null, config)}
+          mask={mask}
+          pipe={pipe}
+          guide={false}
           disabled={this.props.readOnly}
         />
       </div>
@@ -158,13 +163,6 @@ module.exports = React.createClass({
     const options = [field.placeholder, 'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'];
 
-    const onChangeMonth = (event) => {
-      let { value } = event.target;
-      this.setState(state => {
-        state.date['month'] = value;
-        return state;
-      }, this.onChangeCustom);
-    }
     return (
       <div className='form-group control-label col-xs-4'>
         <label htmlFor={componentId + '-month'} className={classes}>Month</label>
@@ -173,7 +171,7 @@ module.exports = React.createClass({
           id={componentId + '-month'}
           disabled={this.props.readOnly}
           value={this.state.date.month}
-          onChange={onChangeMonth}
+          onChange={this.onChangeCustom.bind(null, {key: 'month'})}
         >
           {options.map((month, index) => {
             return (

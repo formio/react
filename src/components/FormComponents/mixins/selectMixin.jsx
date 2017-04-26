@@ -37,6 +37,10 @@ module.exports = {
         this.setValue(this.getDefaultValue());
       }
     }
+    if (this.refresh) {
+      this.refreshItems();
+      this.refresh = false;
+    }
     this.data = {...nextProps.data};
   },
   valueField: function() {
@@ -122,10 +126,6 @@ module.exports = {
     };
   },
   getElements: function() {
-    if (this.refresh) {
-      this.refreshItems();
-      this.refresh = false;
-    }
     var Element;
     var properties = {
       data: this.state.selectItems.filter(value => {

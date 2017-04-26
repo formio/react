@@ -1,7 +1,96 @@
 import React from 'react';
 import clone from 'lodash/clone';
+import isEqual from 'lodash/isEqual';
 import valueMixin from './mixins/valueMixin';
 import { FormioComponents } from '../../factories';
+import FormioUtils from 'formio-utils';
+
+class DataGridRow extends React.Component {
+  constructor(props) {
+    super(props);
+    this.data = {...props.data};
+    this.refresh = false;
+  };
+
+  componentWillReceiveProps = (nextProps) => {
+    const { components } = this.props;
+    // If one of the fields is set to refresh on a value outside the datagrid, check it as well.
+    this.refresh = false;
+    FormioUtils.eachComponent(components, (component) => {
+      if ('refreshOn' in component && component.refreshOn) {
+        const { refreshOn } = component;
+        if (refreshOn === 'data') {
+          this.refresh = true;
+        }
+        if ((!this.data.hasOwnProperty(refreshOn) && nextProps.hasOwnProperty(refreshOn)) || this.data[refreshOn] !== nextProps.data[refreshOn]) {
+          this.refresh = true;
+        }
+      }
+    });
+    this.data = {...nextProps.data};
+  };
+
+  shouldComponentUpdate = (nextProps) => {
+    const { row } = this.props;
+
+    if (!isEqual(row, nextProps.row)) {
+      return true;
+    }
+
+    return this.refresh;
+  };
+
+  render = () => {
+    const { component, rowIndex, row, checkConditional, visibleCols } = this.props;
+    const datagridValue = (this.state && ('value' in this.state)) ? this.state.value : [];
+
+    return (
+      <tr>
+      {component.components.map((col, index) => {
+        let key = col.key || col.type + index;
+        let value = (row.hasOwnProperty(col.key) ? row[col.key] : col.defaultValue || null);
+        let FormioElement = FormioComponents.getComponent(col.type);
+        if (checkConditional(col, row)) {
+          return (
+            <td key={key}>
+              <FormioElement
+                {...this.props}
+                readOnly={this.props.isDisabled(col)}
+                name={col.key}
+                component={col}
+                onChange={this.props.elementChange.bind(null, rowIndex)}
+                attachToForm={this.props.attachToDatarid.bind(null, rowIndex)}
+                detachFromForm={this.props.detachFromDatagrid.bind(null, rowIndex)}
+                value={value}
+                row={row}
+                rowIndex={rowIndex}
+                values={row}
+              />
+            </td>
+          );
+        }
+        else if (visibleCols[col.key]) {
+          return (
+            <td key={key}>
+
+            </td>
+          );
+        }
+        else {
+          return null;
+        }
+      })}
+      { (!component.hasOwnProperty('validate') || !component.validate.hasOwnProperty('minLength') || datagridValue.length > component.validate.minLength) ?
+        <td>
+          <a onClick={this.props.removeRow.bind(null, rowIndex)} className='btn btn-default'>
+            <span className='glyphicon glyphicon-remove-circle'></span>
+          </a>
+        </td>
+        : null}
+      </tr>
+    );
+  }
+}
 
 module.exports = React.createClass({
   displayName: 'Datagrid',
@@ -90,7 +179,7 @@ module.exports = React.createClass({
       return previousState;
     }, () => this.props.onChange(component, { row, datagrid: this }));
   },
-  attachToForm(row, component) {
+  attachToDatarid(row, component) {
     this.inputs = this.inputs || [];
     this.inputs[row] = this.inputs[row] || {};
     this.inputs[row][component.props.component.key] = component;
@@ -100,7 +189,7 @@ module.exports = React.createClass({
       this.props.onChange(this);
     });
   },
-  detachFromForm: function(row, component) {
+  detachFromDatagrid: function(row, component) {
     if (this.unmounting) {
       return;
     }
@@ -152,9 +241,13 @@ module.exports = React.createClass({
     }, {});
     let classLabel = 'control-label' + ( this.props.component.validate && component.validate.required ? ' field-required' : '');
     let inputLabel = (component.label && !component.hideLabel ? <label htmlFor={component.key} className={classLabel}>{component.label}</label> : '');
-    let headers = component.components.map(function(col, index) {
+    let headerVisible = false;
+    let headers = component.components.map((col, index) => {
       if (visibleCols[col.key]) {
         let colLabel = 'control-label' + ( col.validate && col.validate.required ? ' field-required' : '');
+        if (col.label) {
+          headerVisible = true;
+        }
         return (
           <th key={index}><label className={colLabel}>{col.label || ''}</label></th>
         );
@@ -162,7 +255,7 @@ module.exports = React.createClass({
       else {
         return null;
       }
-    }.bind(this));
+    });
     var tableClasses = 'table datagrid-table';
     tableClasses += (component.striped) ? ' table-striped' : '';
     tableClasses += (component.bordered) ? ' table-bordered' : '';
@@ -173,60 +266,34 @@ module.exports = React.createClass({
     <div className='formio-data-grid'>
       <label className={classLabel}>{inputLabel}</label>
       <table className={tableClasses}>
-        <thead>
-          <tr>
-            {headers}
-          </tr>
-        </thead>
+        { headerVisible ?
+          (
+            <thead>
+              <tr>
+                {headers}
+              </tr>
+            </thead>
+          )
+          : null
+        }
         <tbody>
         {
-          value.map(function(row, rowIndex) {
-          return (
-            <tr key={rowIndex}>
-              {component.components.map(function(col, index) {
-                var key = col.key || col.type + index;
-                var value = (row.hasOwnProperty(col.key) ? row[col.key] : col.defaultValue || null);
-                var FormioElement = FormioComponents.getComponent(col.type);
-                if (checkConditional(col, row)) {
-                  return (
-                    <td key={key}>
-                      <FormioElement
-                        {...this.props}
-                        readOnly={this.props.isDisabled(col)}
-                        name={col.key}
-                        component={col}
-                        onChange={this.elementChange.bind(null, rowIndex)}
-                        attachToForm={this.attachToForm.bind(null, rowIndex)}
-                        detachFromForm={this.detachFromForm.bind(null, rowIndex)}
-                        value={value}
-                        row={row}
-                        rowIndex={rowIndex}
-                        values={row}
-                      />
-                    </td>
-                  );
-                }
-                else if (visibleCols[col.key]) {
-                  return (
-                    <td key={key}>
-
-                    </td>
-                  );
-                }
-                else {
-                  return null;
-                }
-              }.bind(this))}
-              { (!component.hasOwnProperty('validate') || !component.validate.hasOwnProperty('minLength') || value.length > component.validate.minLength) ?
-                <td>
-                  <a onClick={this.removeRow.bind(this, rowIndex)} className='btn btn-default'>
-                    <span className='glyphicon glyphicon-remove-circle'></span>
-                  </a>
-                </td>
-              : null}
-            </tr>
-          );
-        }.bind(this))}
+          value.map((row, rowIndex) => {
+            return (
+              <DataGridRow
+                elementChange={this.elementChange}
+                attachToDatarid={this.attachToDatarid}
+                detachFromDatagrid={this.detachFromDatagrid}
+                removeRow={this.removeRow}
+                visibleCols={visibleCols}
+                row={row}
+                rowIndex={rowIndex}
+                key={rowIndex}
+                {...this.props}
+              />
+            );
+          })
+        }
         </tbody>
       </table>
       { (!component.hasOwnProperty('validate') || !component.validate.hasOwnProperty('maxLength') || value.length < component.validate.maxLength) ?
