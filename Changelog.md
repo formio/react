@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+ - Fix MinLength calculation for datagrids.
+ - Fixed error about setState in select component.s
+
 ## 1.3.8
 ### Fixed
  - Datagrids with select components dependent on external data weren't updating when the data updated.

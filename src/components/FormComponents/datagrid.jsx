@@ -41,6 +41,7 @@ class DataGridRow extends React.Component {
 
   render = () => {
     const { component, rowIndex, row, checkConditional, visibleCols } = this.props;
+    const datagridValue = (this.state && ('value' in this.state)) ? this.state.value : [];
 
     return (
       <tr>
@@ -78,7 +79,7 @@ class DataGridRow extends React.Component {
           return null;
         }
       })}
-      { (!component.hasOwnProperty('validate') || !component.validate.hasOwnProperty('minLength') || value.length > component.validate.minLength) ?
+      { (!component.hasOwnProperty('validate') || !component.validate.hasOwnProperty('minLength') || datagridValue.length > component.validate.minLength) ?
         <td>
           <a onClick={this.props.removeRow.bind(null, rowIndex)} className='btn btn-default'>
             <span className='glyphicon glyphicon-remove-circle'></span>
