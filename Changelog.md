@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
  - Fix MinLength calculation for datagrids.
- - Fixed error about setState in select component.s
+ - Fixed error about setState in select component.
+ - Scenario where updating a form doesn't always set the values.
+ 
+### Changed
+ - Replace full lodash with individual functions.
 
 ## 1.3.8
 ### Fixed

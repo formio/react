@@ -201,8 +201,9 @@ module.exports = {
       value = this.safeSingleToMultiple(nextProps.value);
     }
     // This occurs when a datagrid row is deleted.
-    if (value === null) {
-      value = this.getDefaultValue(value);
+    let defaultValue = this.getDefaultValue(value);
+    if (value === null && this.state.value !== defaultValue) {
+      value = defaultValue;
       this.setState({
         isPristine: true
       });
