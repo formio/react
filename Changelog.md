@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## 1.3.10
+### Reverted
+ - Reverted change to setting values that attempted to fix deleting rows in datagrids issue that had a lot of side effects.
+
+## 1.3.9
 ### Fixed
  - Fix MinLength calculation for datagrids.
  - Fixed error about setState in select component.
