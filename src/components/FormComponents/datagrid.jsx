@@ -1,5 +1,6 @@
 import React from 'react';
-import { clone, isEqual } from 'lodash';
+import clone from 'lodash/clone';
+import isEqual from 'lodash/isEqual';
 import valueMixin from './mixins/valueMixin';
 import { FormioComponents } from '../../factories';
 import FormioUtils from 'formio-utils';

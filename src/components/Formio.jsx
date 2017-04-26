@@ -2,7 +2,7 @@ import React from 'react';
 import Formiojs from 'formiojs';
 import FormioUtils from 'formio-utils';
 import { FormioComponentsList } from '../components';
-import _ from 'lodash';
+import clone from 'lodash/clone';
 
 // TODO: We should have a better way of initializing form components.
 import '../components/FormComponents';
@@ -12,7 +12,7 @@ export const Formio = React.createClass({
   getInitialState: function () {
     this.unmounting = false;
     if (this.props.submission && this.props.submission.data) {
-      this.data = _.clone(this.props.submission.data);
+      this.data = clone(this.props.submission.data);
     }
     return {
       form: this.props.form || {},
@@ -34,7 +34,7 @@ export const Formio = React.createClass({
   },
   componentWillMount: function () {
     if (this.props.submission && this.props.submission.data) {
-      this.data = _.clone(this.props.submission.data);
+      this.data = clone(this.props.submission.data);
     }
     else {
       this.data = {};
@@ -56,7 +56,7 @@ export const Formio = React.createClass({
           if (typeof this.props.onSubmissionLoad === 'function') {
             this.props.onSubmissionLoad(submission);
           }
-          this.data = _.clone(submission.data);
+          this.data = clone(submission.data);
           this.setState({
             submission: submission
           }, this.validate);
@@ -78,7 +78,7 @@ export const Formio = React.createClass({
     }
     if (nextProps.submission !== this.props.submission) {
       if (nextProps.submission && nextProps.submission.data) {
-        this.data = _.clone(nextProps.submission.data);
+        this.data = clone(nextProps.submission.data);
       }
       this.setState({
         submission: nextProps.submission
@@ -238,7 +238,7 @@ export const Formio = React.createClass({
       isSubmitting: true
     });
     var sub = this.state.submission;
-    sub.data = _.clone(this.data);
+    sub.data = clone(this.data);
 
     var request;
     var method;
