@@ -82,11 +82,16 @@ module.exports = React.createClass({
             /* eslint-disable no-unused-vars */
             const { data, row } = this.props;
             /* eslint-enable no-unused-vars */
+            let selectItems = eval('(function(data, row) { var values = [];' + this.props.component.data.custom.toString() + '; return values; })(data, row)');
+            if (!Array.isArray(selectItems)) {
+              throw 'Didn\'t return an array.';
+            }
             this.setState({
-              selectItems: eval('(function(data, row) { var values = [];' + this.props.component.data.custom.toString() + '; return values; })(data, row)')
+              selectItems
             });
           }
           catch (error) {
+            console.warn('Error calculating select components in ' + this.props.component.key, error);
             this.setState({
               selectItems: []
             });
