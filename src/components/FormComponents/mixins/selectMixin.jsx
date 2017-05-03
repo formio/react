@@ -13,7 +13,8 @@ module.exports = {
     return {
       selectItems: [],
       searchTerm: '',
-      hasNextPage: false
+      hasNextPage: false,
+      open: false
     };
   },
   willReceiveProps: function(nextProps) {
@@ -82,6 +83,13 @@ module.exports = {
       this.refreshItems(text);
     }
   },
+  onToggle: function(isOpen) {
+    this.props.onEvent('selectToggle', this, isOpen);
+    this.setState(prevState => {
+      prevState.open = isOpen;
+      return prevState;
+    });
+  },
   itemComponent: function() {
     let { component } = this.props;
     if (!component.template) {
@@ -140,7 +148,9 @@ module.exports = {
       disabled: this.props.readOnly,
       onChange: this.onChangeSelect,
       itemComponent: this.itemComponent(),
-      listComponent: this.listComponent()
+      listComponent: this.listComponent(),
+      open: this.state.open,
+      onToggle: this.onToggle
     };
     if (this.valueField()) {
       properties.valueField = this.valueField();

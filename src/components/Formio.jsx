@@ -110,7 +110,7 @@ export const Formio = React.createClass({
   },
   onEvent: function(event) {
     if (typeof this.props.onEvent === 'function') {
-      this.props.onEvent(event, this.data);
+      this.props.onEvent.apply(null, [event, this.data, ...Array.prototype.slice.call(arguments, 1, arguments.length)]);
     }
   },
   onChange: function (component, context = {}) {

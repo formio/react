@@ -140,6 +140,7 @@ module.exports = React.createClass({
       return;
     }
     var rows = clone(this.state.value);
+    this.props.onEvent('addDatagridRow', this);
     rows.push({});
     this.setState(previousState => {
       previousState.value = rows;
@@ -154,6 +155,7 @@ module.exports = React.createClass({
       return;
     }
     var rows = clone(this.state.value);
+    this.props.onEvent('removeDatagridRow', this, id);
     rows.splice(id, 1);
     this.setState(previousState => {
       previousState.value = rows;

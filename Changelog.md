@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## 1.13.12
+### Added
+ - Events that fire when select lists open or close.
+ - Event that fires on add/remove from datagrid.
+ - Event that fires on loadMore for selects.
+
 ## 1.3.11
 ### Reverted
  - Reverted revert of change to datagrids delete value.

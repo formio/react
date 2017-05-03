@@ -36,6 +36,10 @@ module.exports = {
       return true;
     }
 
+    if (this.state && this.state.hasOwnProperty('open') && this.state.open !== nextState.open) {
+      return true;
+    }
+
     return false;
   }
 };

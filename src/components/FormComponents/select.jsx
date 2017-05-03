@@ -203,6 +203,7 @@ module.exports = React.createClass({
   loadMoreItems: function(event) {
     event.stopPropagation();
     event.preventDefault();
+    this.props.onEvent('loadMore', this);
     this.options.params.skip += this.options.params.limit;
     this.refreshItems(null, null, true);
   },
