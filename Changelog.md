@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## 1.13.12
+## 1.3.12
 ### Added
  - Events that fire when select lists open or close.
  - Event that fires on add/remove from datagrid.
