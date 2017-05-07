@@ -1,6 +1,6 @@
 import React from 'react';
 import MaskedInput from 'react-text-mask';
-import { clone } from 'lodash';
+import clone from 'lodash/clone';
 
 module.exports = {
   timeout: null,
