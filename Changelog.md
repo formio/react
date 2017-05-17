@@ -6,8 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.3.13
 ### Fixed
  - Disable datagrid buttons when form is read only.
+ - Don't fire change events for readOnly forms.
 
 ## 1.3.12
 ### Added

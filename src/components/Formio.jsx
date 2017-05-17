@@ -103,14 +103,19 @@ export const Formio = React.createClass({
       }
     }
     this.validate(() => {
-      if (sendChange && typeof this.props.onChange === 'function') {
-        this.props.onChange({data: this.data}, component);
+      if (sendChange) {
+        this.externalChange(component);
       }
     });
   },
   onEvent: function(event) {
     if (typeof this.props.onEvent === 'function') {
       this.props.onEvent.apply(null, [event, this.data, ...Array.prototype.slice.call(arguments, 1, arguments.length)]);
+    }
+  },
+  externalChange: function(component, context) {
+    if (typeof this.props.onChange === 'function' && !this.props.readOnly) {
+      this.props.onChange({data: this.data}, component, context);
     }
   },
   onChange: function (component, context = {}) {
@@ -130,9 +135,7 @@ export const Formio = React.createClass({
       }
     }
     this.validate(() => {
-      if (typeof this.props.onChange === 'function') {
-        this.props.onChange({data: this.data}, component, context);
-      }
+      this.externalChange(component, context);
     });
     // If a field is no longer pristine, the form is no longer pristine.
     if (!component.state.isPristine && this.state.isPristine) {
@@ -159,10 +162,7 @@ export const Formio = React.createClass({
     if (!component.hasOwnProperty('clearOnHide') || component.clearOnHide !== false) {
       if (this.data.hasOwnProperty(component.key)) {
         delete this.data[component.key];
-        if (typeof this.props.onChange === 'function') {
-          // Since this component isn't mounted, we need to fake the component's props and state.
-          this.props.onChange({data: this.data}, { props: { component }, state: { isPristine: true, value: null }});
-        }
+        this.externalChange({ props: { component }, state: { isPristine: true, value: null }});
       }
     }
     if (component.hasOwnProperty('components')) {
