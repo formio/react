@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+ - Disable datagrid buttons when form is read only.
+
 ## 1.3.12
 ### Added
  - Events that fire when select lists open or close.

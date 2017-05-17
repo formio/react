@@ -43,6 +43,7 @@ class DataGridRow extends React.Component {
   render = () => {
     const { component, rowIndex, row, checkConditional, visibleCols } = this.props;
     const datagridValue = (this.state && ('value' in this.state)) ? this.state.value : [];
+    let btnClassNames = 'btn btn-default' + (this.props.readOnly ? ' disabled' : '');
 
     return (
       <tr>
@@ -82,7 +83,7 @@ class DataGridRow extends React.Component {
       })}
       { (!component.hasOwnProperty('validate') || !component.validate.hasOwnProperty('minLength') || datagridValue.length > component.validate.minLength) ?
         <td>
-          <a onClick={this.props.removeRow.bind(null, rowIndex)} className='btn btn-default'>
+          <a onClick={this.props.removeRow.bind(null, rowIndex)} className={btnClassNames}>
             <span className='glyphicon glyphicon-remove-circle'></span>
           </a>
         </td>
@@ -263,6 +264,7 @@ module.exports = React.createClass({
     tableClasses += (component.bordered) ? ' table-bordered' : '';
     tableClasses += (component.hover) ? ' table-hover' : '';
     tableClasses += (component.condensed) ? ' table-condensed' : '';
+    let btnClassNames = 'btn btn-primary' + (this.props.readOnly ? ' disabled' : '');
 
     return (
     <div className='formio-data-grid'>
@@ -300,7 +302,7 @@ module.exports = React.createClass({
       </table>
       { (!component.hasOwnProperty('validate') || !component.validate.hasOwnProperty('maxLength') || value.length < component.validate.maxLength) ?
         <div className='datagrid-add'>
-          <a onClick={this.addRow} className='btn btn-primary'>
+          <a onClick={this.addRow} className={btnClassNames}>
             <span><i className='glyphicon glyphicon-plus' aria-hidden='true'/> { component.addAnother || 'Add Another'}</span>
           </a>
         </div>
