@@ -173,7 +173,7 @@ module.exports = {
       }
       if (!state.isValid) {
         state.errorType = 'custom';
-        state.errorMessage = valid || ((component.label || component.key) + 'is not a valid value.');
+        state.errorMessage = valid;
       }
     }
     return state;
