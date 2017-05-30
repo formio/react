@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+ - Renderer now based on formio.js Core Renderer.
+ 
+### Removed
+ - All helper libraries.
 
 ## 1.3.1
 ### Fixed
