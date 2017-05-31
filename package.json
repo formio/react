@@ -29,7 +29,7 @@
   "homepage": "https://github.com/formio/react-formio#readme",
   "dependencies": {
     "babel-polyfill": "^6.23.0",
-    "formiojs": "^2.8.6",
+    "formiojs": "^2.8.7",
     "prop-types": "^15.5.7"
   },
   "devDependencies": {
