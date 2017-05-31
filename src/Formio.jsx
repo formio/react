@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Formiojs from 'formiojs';
 import { FormioFactory } from 'formiojs/factory';
 
 export class Formio extends React.Component {
@@ -28,16 +27,8 @@ export class Formio extends React.Component {
     onRender: PropTypes.func
   };
 
-  constructor(props) {
-    super(props);
-
-    //this.state = {
-    //};
-  }
-
   componentDidMount = () => {
-    const { options, src, form, submission } = this.props;
-    this.createPromise;
+    const { options, src, form } = this.props;
 
     if (src) {
       this.createPromise = FormioFactory.createForm(this.element, src, options).then(formio => this.formio = formio);
@@ -45,36 +36,43 @@ export class Formio extends React.Component {
     if (form) {
       this.createPromise = FormioFactory.createForm(this.element, form, options).then(formio => this.formio = formio);
     }
-    if (submission) {
-      this.createPromise.then(() => {
-        this.formio.submission = submission;
-      });
-    }
+
+    this.initializeFormio();
+  };
+
+  initializeFormio = () => {
+    const { submission } = this.props;
 
     if (this.createPromise) {
       this.createPromise.then(() => {
-        console.log(this.element, this.formio);
-        this.formio.on('prevPage', this.callEvent('onPrevPage'));
-        this.formio.on('nextPage', this.callEvent('onNextPage'));
-        this.formio.on('change', this.callEvent('onChange'));
-        this.formio.on('customEvent', this.callEvent('onCustomEvent'));
-        this.formio.on('submit', this.callEvent('onSubmit'));
-        this.formio.on('submitDone', this.callEvent('onSubmitDone'));
-        this.formio.on('error', this.callEvent('onError'));
-        this.formio.on('render', this.callEvent('onRender'));
+        if (submission) {
+          this.formio.submission = submission;
+        }
+        this.formio.on('prevPage', this.emit('onPrevPage'));
+        this.formio.on('nextPage', this.emit('onNextPage'));
+        this.formio.on('change', this.emit('onChange'));
+        this.formio.on('customEvent', this.emit('onCustomEvent'));
+        this.formio.on('submit', this.emit('onSubmit'));
+        this.formio.on('submitDone', this.emit('onSubmitDone'));
+        this.formio.on('error', this.emit('onError'));
+        this.formio.on('render', this.emit('onRender'));
       });
     }
   };
 
   componentWillReceiveProps = (nextProps) => {
-    if (this.props.src !== nextProps.src) {
-      this.formio = new FormioForm(this.element, options);
-      this.formio.src = nextProps.src;
+    const { options, src, form, submission } = this.props;
+
+    if (src !== nextProps.src) {
+      this.createPromise = FormioFactory.createForm(this.element, nextProps.src, options).then(formio => this.formio = formio);
+      this.initializeFormio();
     }
-    if (this.props.form !== nextProps.form) {
-      this.formio.form = nextProps.form;
+    if (form !== nextProps.form) {
+      this.createPromise = FormioFactory.createForm(this.element, nextProps.form, options).then(formio => this.formio = formio);
+      this.initializeFormio();
     }
-    if (this.props.submission !== nextProps.submission) {
+
+    if (submission !== nextProps.submission) {
       this.formio.submission = nextProps.submission;
     }
   };
@@ -83,7 +81,7 @@ export class Formio extends React.Component {
     return <div ref={element => this.element = element} />;
   };
 
-  callEvent = (funcName) => {
+  emit = (funcName) => {
     return (...args) => {
       if (this.props.hasOwnProperty(funcName) && typeof (this.props[funcName]) === 'function') {
         this.props[funcName](...args);
