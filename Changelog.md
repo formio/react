@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## 2.0.0-alpha2
+### Changed
+ - Upgrade formio.js to 2.9.3 and fix core interface.
+
+## 2.0.0-alpha1
 ### Changed
  - Renderer now based on formio.js Core Renderer.
  

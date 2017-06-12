@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormioFactory } from 'formiojs/factory';
+import { Formio as FormioCore } from 'formiojs/full';
 
 export class Formio extends React.Component {
   static defaultProps = {
@@ -31,10 +31,10 @@ export class Formio extends React.Component {
     const { options, src, form } = this.props;
 
     if (src) {
-      this.createPromise = FormioFactory.createForm(this.element, src, options).then(formio => this.formio = formio);
+      this.createPromise = FormioCore.createForm(this.element, src, options).then(formio => this.formio = formio);
     }
     if (form) {
-      this.createPromise = FormioFactory.createForm(this.element, form, options).then(formio => this.formio = formio);
+      this.createPromise = FormioCore.createForm(this.element, form, options).then(formio => this.formio = formio);
     }
 
     this.initializeFormio();
@@ -48,6 +48,7 @@ export class Formio extends React.Component {
         if (submission) {
           this.formio.submission = submission;
         }
+        //this.formio.hideComponents([]); (From Components.js)
         this.formio.on('prevPage', this.emit('onPrevPage'));
         this.formio.on('nextPage', this.emit('onNextPage'));
         this.formio.on('change', this.emit('onChange'));
