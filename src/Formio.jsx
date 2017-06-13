@@ -65,11 +65,11 @@ export class Formio extends React.Component {
     const { options, src, form, submission } = this.props;
 
     if (src !== nextProps.src) {
-      this.createPromise = FormioFactory.createForm(this.element, nextProps.src, options).then(formio => this.formio = formio);
+      this.createPromise = FormioCore.createForm(this.element, nextProps.src, options).then(formio => this.formio = formio);
       this.initializeFormio();
     }
     if (form !== nextProps.form) {
-      this.createPromise = FormioFactory.createForm(this.element, nextProps.form, options).then(formio => this.formio = formio);
+      this.createPromise = FormioCore.createForm(this.element, nextProps.form, options).then(formio => this.formio = formio);
       this.initializeFormio();
     }
 
