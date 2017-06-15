@@ -29,6 +29,7 @@ import signature from './signature';
 import table from './table';
 import textarea from './textarea';
 import textfield from './textfield';
+import time from './time';
 import well from './well';
 
 FormioComponents.register('address', address);
