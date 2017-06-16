@@ -5,7 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-
+## Added
+ - Time component
+ 
+## 1.3.14
+ - Fix default formatting of empty custom error validation.
+ 
 ## 1.3.13
 ### Fixed
  - Disable datagrid buttons when form is read only.
