@@ -1,5 +1,5 @@
 import {Component} from 'react';
-import {connect} from 'react-redux';
+import formioConnect from '../../../formioConnect';
 
 class ProtectAnon extends Component {
   componentDidMount() {
@@ -20,10 +20,6 @@ class ProtectAnon extends Component {
   }
 }
 
-// Grab a reference to the current URL. If this is a web app and you are
-// using React Router, you can use `ownProps` to find the URL. Other
-// platforms (Native) or routing libraries have similar ways to find
-// the current position in the app.
 function mapStateToProps(state, ownProps) {
   return {
     isLoggedIn: false,
@@ -31,4 +27,11 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-export default connect(mapStateToProps)(ProtectAnon)
+function mapDispatchToProps(dispatch, ownProps) {
+  return {};
+}
+
+export default formioConnect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProtectAnon)

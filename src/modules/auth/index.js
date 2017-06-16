@@ -23,6 +23,6 @@ export default class {
     this.config = Object.assign(defaultConfig, config);
 
     this.selectors = selectors(this.config);
-    this.routes = routes(this.config);
+    this.getRoutes = (store, allRoutes, anonRoutes, authRoutes) => routes(this.config, store, allRoutes, anonRoutes, authRoutes);
   }
 };
