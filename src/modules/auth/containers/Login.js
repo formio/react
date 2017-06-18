@@ -1,24 +1,33 @@
 import React, {Component} from 'react';
-import formioConnect from '../../../formioConnect';
+import {Formio} from '../../../Formio';
+import FormioView from '../../../FormioView';
 
-class Login extends Component {
-  render() {
-    return <div>Login Form</div>
+export default class LoginView extends FormioView {
+  component = props => {
+    return (
+      <div className="panel panel-primary login-container">
+        <div className="panel-heading">
+          Login
+        </div>
+        <div className="panel-body">
+          <Formio {...props} />
+        </div>
+      </div>
+    );
+  }
+
+  mapStateToProps = (state, ownProps) => {
+    return {
+      src: this.formio.config.projectUrl + '/' + this.formio.auth.config.login.form
+    };
+  }
+
+  mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+      onSubmitDone: () => {
+        /* eslint-disable no-console */
+        console.log('login');
+      }
+    };
   }
 }
-
-function mapStateToProps(state, ownProps) {
-  return {
-    isLoggedIn: true,
-    history: ownProps.history
-  }
-}
-
-function mapDispatchToProps(dispatch, ownProps) {
-  return {};
-}
-
-export default formioConnect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login)

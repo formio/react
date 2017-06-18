@@ -10,5 +10,5 @@ export default function formioConnect(...args) {
     getContext({formio: PropTypes.object}),
     getContext({router: PropTypes.object}),
     connect(...args)
-  )
+  );
 }

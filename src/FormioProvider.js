@@ -1,5 +1,5 @@
-import { Component, Children } from 'react'
-import PropTypes from 'prop-types'
+import {Component, Children} from 'react';
+import PropTypes from 'prop-types';
 
 export default class FormioProvider extends Component {
   static PropTypes = {
@@ -14,15 +14,15 @@ export default class FormioProvider extends Component {
   static displayName = 'Provider';
 
   getChildContext() {
-    return { formio: this.formio }
+    return {formio: this.formio};
   }
 
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.formio = props.formio;
   }
 
   render() {
-    return Children.only(this.props.children)
+    return Children.only(this.props.children);
   }
 }

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Formio as FormioCore } from 'formiojs/full';
+import {Formio as FormioCore} from 'formiojs/full';
 
-export class Formio extends React.Component {
+export class Formio extends Component {
   static defaultProps = {
     options: {}
   };
@@ -28,20 +28,26 @@ export class Formio extends React.Component {
   };
 
   componentDidMount = () => {
-    const { options, src, form } = this.props;
+    const {options, src, form} = this.props;
 
     if (src) {
-      this.createPromise = FormioCore.createForm(this.element, src, options).then(formio => this.formio = formio);
+      this.createPromise = FormioCore.createForm(this.element, src, options).then(formio => {
+        this.formio = formio;
+        this.formio.src = src;
+      });
     }
     if (form) {
-      this.createPromise = FormioCore.createForm(this.element, form, options).then(formio => this.formio = formio);
+      this.createPromise = FormioCore.createForm(this.element, form, options).then(formio => {
+        this.formio = formio;
+        this.formio.form = form;
+      });
     }
 
     this.initializeFormio();
   };
 
   initializeFormio = () => {
-    const { submission } = this.props;
+    const {submission} = this.props;
 
     if (this.createPromise) {
       this.createPromise.then(() => {
@@ -62,14 +68,20 @@ export class Formio extends React.Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    const { options, src, form, submission } = this.props;
+    const {options, src, form, submission} = this.props;
 
     if (src !== nextProps.src) {
-      this.createPromise = FormioCore.createForm(this.element, nextProps.src, options).then(formio => this.formio = formio);
+      this.createPromise = FormioCore.createForm(this.element, nextProps.src, options).then(formio => {
+        this.formio = formio;
+        this.formio.src = nextProps.src;
+      });
       this.initializeFormio();
     }
     if (form !== nextProps.form) {
-      this.createPromise = FormioCore.createForm(this.element, nextProps.form, options).then(formio => this.formio = formio);
+      this.createPromise = FormioCore.createForm(this.element, nextProps.form, options).then(formio => {
+        this.formio = formio;
+        this.formio.form = form;
+      });
       this.initializeFormio();
     }
 
@@ -87,6 +99,6 @@ export class Formio extends React.Component {
       if (this.props.hasOwnProperty(funcName) && typeof (this.props[funcName]) === 'function') {
         this.props[funcName](...args);
       }
-    }
+    };
   };
 }

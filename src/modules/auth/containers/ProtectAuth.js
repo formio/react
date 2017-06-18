@@ -3,18 +3,18 @@ import formioConnect from '../../../formioConnect';
 
 class ProtectAuth extends Component {
   componentDidMount() {
-    const { isLoggedIn, history } = this.props;
+    const {authenticated, goToState} = this.props;
 
-    if (!isLoggedIn) {
-      console.log('going to login');
-      history.replace("/auth/login");
+    if (authenticated) {
+      goToState();
     }
   }
 
   render() {
-    if (this.props.isLoggedIn) {
+    if (this.props.authenticated) {
       return this.props.children;
-    } else {
+    }
+    else {
       return null;
     }
   }
@@ -22,16 +22,17 @@ class ProtectAuth extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    isLoggedIn: true,
-    history: ownProps.history
-  }
+    authenticated: ownProps.formio.auth.selectors.getAuthenticated(state)
+  };
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
-  return {};
+  return {
+    goToState: () => ownProps.router.go('/' + ownProps.formio.auth.config.anonState)
+  };
 }
 
 export default formioConnect(
   mapStateToProps,
   mapDispatchToProps
-)(ProtectAuth)
+)(ProtectAuth);

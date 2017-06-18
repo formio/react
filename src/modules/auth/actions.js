@@ -1,37 +1,37 @@
 import formiojs from 'formiojs';
 import * as types from './constants';
 
-const requestUser = () => {
+const requestUser = () => ({
   type: types.USER_REQUEST
-};
+});
 
-const receiveUser = user => {
+const receiveUser = user => ({
   type: types.USER_REQUEST_SUCCESS,
   user
-};
+});
 
-const failUser = err => {
+const failUser = err => ({
   type: types.USER_REQUEST_FAILURE,
   err
-};
+});
 
-const logoutUser = () => {
+const logoutUser = () => ({
   type: types.USER_LOGOUT
-};
+});
 
-const submissionAccessUser = (submissionAccess, roles) => {
+const submissionAccessUser = (submissionAccess, roles) => ({
   type: types.USER_SUBMISSION_ACCESS,
   submissionAccess,
   roles
-};
+});
 
-const formAccessUser = formAccess => {
+const formAccessUser = formAccess => ({
   type: types.USER_FORM_ACCESS,
   formAccess
-};
+});
 
 const getAccess = (dispatch) => {
-  const { projectUrl } = formiojs.getProjectUrl();
+  const {projectUrl} = formiojs.getProjectUrl();
   formiojs.makeStaticRequest(projectUrl + '/access')
     .then(function(result) {
       let submissionAccess = {};
@@ -73,14 +73,14 @@ export const init = () => {
         dispatch(failUser(result));
       });
   };
-}
+};
 
 export const setUser = (user) => {
   return (dispatch) => {
     dispatch(receiveUser(user));
     getAccess(dispatch);
-  }
-}
+  };
+};
 
 export const logout = () => {
   return (dispatch, getState) => {
@@ -90,4 +90,4 @@ export const logout = () => {
         getAccess(dispatch, getState);
       });
   };
-}
+};

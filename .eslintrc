@@ -6,8 +6,7 @@
     "max-len": 0,
     "max-depth": [1, 5],
     "max-statements": 0,
-    "no-unused-vars": 0,
-    "object-curly-spacing": [1, "always"]
+    "no-unused-vars": 0
   },
   "globals": {
     "window": true,

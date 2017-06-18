@@ -1,7 +1,11 @@
 export default function(authConfig) {
+  const getAuth = state => state[authConfig.storeKey];
+  const getUser = state => getAuth(state).user;
+  const getAuthenticated = state => getAuth(state).authenticated;
+
   return {
-    getAuth: state => state[authConfig.storeKey],
-    getUser: state => getAuth(state).user,
-    getAuthenticated: state => getAuth(state).authenticated
-  }
+    getAuth,
+    getUser,
+    getAuthenticated
+  };
 }

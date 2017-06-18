@@ -13,6 +13,8 @@ export default class {
     const defaultConfig = {
       storeKey: 'auth',
       path: 'auth',
+      anonState: 'auth/login',
+      authState: '',
       login: {
         form: 'user/login'
       },
@@ -25,4 +27,4 @@ export default class {
     this.selectors = selectors(this.config);
     this.getRoutes = (store, allRoutes, anonRoutes, authRoutes) => routes(this.config, store, allRoutes, anonRoutes, authRoutes);
   }
-};
+}
