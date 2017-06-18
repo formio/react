@@ -24,9 +24,9 @@ export default class RegisterView extends FormioView {
 
   mapDispatchToProps = (dispatch, ownProps) => {
     return {
-      onSubmitDone: () => {
-        /* eslint-disable no-console */
-        console.log('submit');
+      onSubmitDone: (submission) => {
+        dispatch(this.formio.auth.actions.setUser(submission));
+        this.router.push('/' + this.formio.auth.config.authState);
       }
     };
   }

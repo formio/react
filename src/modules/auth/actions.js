@@ -31,7 +31,7 @@ const formAccessUser = formAccess => ({
 });
 
 const getAccess = (dispatch) => {
-  const {projectUrl} = formiojs.getProjectUrl();
+  const projectUrl = formiojs.getProjectUrl();
   formiojs.makeStaticRequest(projectUrl + '/access')
     .then(function(result) {
       let submissionAccess = {};
@@ -66,8 +66,10 @@ export const init = () => {
 
     formiojs.currentUser()
       .then(user => {
-        dispatch(receiveUser(user));
-        getAccess(dispatch);
+        if (user) {
+          dispatch(receiveUser(user));
+          getAccess(dispatch);
+        }
       })
       .catch(result => {
         dispatch(failUser(result));
@@ -76,6 +78,7 @@ export const init = () => {
 };
 
 export const setUser = (user) => {
+  formiojs.setUser(user);
   return (dispatch) => {
     dispatch(receiveUser(user));
     getAccess(dispatch);
