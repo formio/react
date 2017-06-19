@@ -46,6 +46,10 @@ export class Formio extends Component {
     this.initializeFormio();
   };
 
+  componentWillUnmount = () => {
+    this.formio.destroy(true);
+  };
+
   initializeFormio = () => {
     const {submission} = this.props;
 

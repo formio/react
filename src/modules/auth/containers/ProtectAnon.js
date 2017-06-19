@@ -1,22 +1,17 @@
-import {Component} from 'react';
+import React, {Component} from 'react';
 import formioConnect from '../../../formioConnect';
 
 class ProtectAnon extends Component {
-  componentDidMount() {
+  render() {
     const {authenticated, goToState} = this.props;
 
-    if (authenticated) {
-      goToState();
-    }
-  }
-
-  render() {
-    if (!this.props.authenticated) {
+    //if (authenticated) {
+    //  return <div>Unauthorized</div>;
+    //  //goToState();
+    //}
+    //else {
       return this.props.children;
-    }
-    else {
-      return null;
-    }
+    //}
   }
 }
 

@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
 import FormioView from '../../../FormioView';
-import Login from './Login';
-import Register from './Register';
+import {default as LoginView} from './Login';
+import {default as RegisterView} from './Register';
 
 export default class AuthView extends FormioView {
   component = class Auth extends Component {
     render() {
-      const {location} = this.props;
+      const {location, Login, Register} = this.props;
       const {config} = this.props.formio.auth;
       return (location.pathname === '/' + config.path) ?
           <div className="container">
@@ -39,6 +39,13 @@ export default class AuthView extends FormioView {
               </div>
             </div>
           </div>;
+    }
+  }
+
+  mapStateToProps = () => {
+    return {
+      Login: this.formio.auth.config.Login || LoginView,
+      Register: this.formio.auth.config.Register || RegisterView
     }
   }
 }

@@ -1,22 +1,17 @@
-import {Component} from 'react';
+import React, {Component} from 'react';
 import formioConnect from '../../../formioConnect';
 
 class ProtectAuth extends Component {
-  componentDidMount() {
+  render() {
     const {authenticated, goToState} = this.props;
 
-    if (authenticated) {
-      goToState();
-    }
-  }
-
-  render() {
-    if (this.props.authenticated) {
+    //if (authenticated) {
       return this.props.children;
-    }
-    else {
-      return null;
-    }
+    //}
+    //else {
+    //  return <div>Unauthorized</div>;
+    //  //goToState();
+    //}
   }
 }
 
@@ -28,7 +23,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
   return {
-    goToState: () => ownProps.router.go('/' + ownProps.formio.auth.config.anonState)
+    goToState: () => dispatch(ownProps.router.go('/' + ownProps.formio.auth.config.anonState))
   };
 }
 

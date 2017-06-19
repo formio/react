@@ -4,7 +4,7 @@ import Register from './containers/Register';
 import ProtectAnon from './containers/ProtectAnon';
 import ProtectAuth from './containers/ProtectAuth';
 
-export default (config, store, allRoutes = [], anonRoutes = [], authRoutes = []) => [
+export default (config, allRoutes = [], anonRoutes = [], authRoutes = []) => [
   ...allRoutes,
   {
     component: ProtectAnon,
@@ -12,18 +12,18 @@ export default (config, store, allRoutes = [], anonRoutes = [], authRoutes = [])
       ...anonRoutes,
       {
         path: config.path,
-        component: Auth,
+        component: config.Auth || Auth,
         indexRoute: {
           component: Login
         },
         childRoutes: [
           {
             path: 'login',
-            component: Login
+            component: config.Login || Login
           },
           {
             path: 'register',
-            component: Register
+            component: config.Register || Register
           }
         ]
       }

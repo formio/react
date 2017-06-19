@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Formio} from '../../../Formio';
 import FormioView from '../../../FormioView';
 
@@ -16,13 +16,13 @@ export default class LoginView extends FormioView {
     );
   }
 
-  mapStateToProps = (state, ownProps) => {
+  mapStateToProps = () => {
     return {
       src: this.formio.config.projectUrl + '/' + this.formio.auth.config.login.form
     };
   }
 
-  mapDispatchToProps = (dispatch, ownProps) => {
+  mapDispatchToProps = (dispatch) => {
     return {
       onSubmitDone: (submission) => {
         dispatch(this.formio.auth.actions.setUser(submission));

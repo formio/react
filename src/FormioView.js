@@ -11,7 +11,8 @@ export default class FormioView extends ReduxView {
 
   static contextTypes = {
     router: PropTypes.object,
-    formio: PropTypes.object
+    formio: PropTypes.object,
+    store: PropTypes.object
   }
 
   connect = formioConnect

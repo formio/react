@@ -40,6 +40,10 @@ export const authReducer = () => {
       case types.USER_SUBMISSION_ACCESS:
         return {
           ...state,
+          is: Object.keys(action.roles).reduce((prev, roleName) => ({
+            ...prev,
+            [roleName]: state.user.roles.indexOf(action.roles[roleName]._id) !== -1
+          }), {}),
           submissionAccess: action.submissionAccess,
           roles: action.roles
         };
