@@ -5,14 +5,7 @@ import FormioView from '../../../FormioView';
 export default class LoginView extends FormioView {
   component = props => {
     return (
-      <div className="panel panel-primary login-container">
-        <div className="panel-heading">
-          Login
-        </div>
-        <div className="panel-body">
-          <Formio {...props} />
-        </div>
-      </div>
+      <Formio {...props} />
     );
   }
 

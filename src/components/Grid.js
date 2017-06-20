@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import FormioUtils from 'formiojs/utils';
 import _get from 'lodash/get';
+import {Pagination} from 'react-bootstrap';
 
 export default class extends Component {
   static propTypes = {
@@ -16,6 +17,9 @@ export default class extends Component {
   static defaultProps = {
     onSort: () => {},
     onClick: () => {},
+    firstItem: 1,
+    lastItem: 1,
+    total: 0,
     Cell: props => {
       const {row, column} = props;
       return (
@@ -25,7 +29,7 @@ export default class extends Component {
   };
 
   render = () => {
-    const {submissions, columns, columnWidths, sortOrder, onSort, onClick, Cell} = this.props;
+    const {submissions, columns, columnWidths, sortOrder, onSort, onClick, Cell, firstItem, lastItem, total} = this.props;
     return (
       <div>
         { submissions.length ?
@@ -41,9 +45,8 @@ export default class extends Component {
                     sortClass = 'caret';
                   }
                   return (
-                    <div key={index} className={'col col-md-' + columnWidths[index]}
-                         onClick={() => onSort(column.key)}>
-                      <h4>{ column.title } <span className={sortClass}/></h4>
+                    <div key={index} className={'col col-md-' + columnWidths[index]}>
+                      <a onClick={() => onSort(column.key)}><strong>{ column.title } <span className={sortClass}/></strong></a>
                     </div>
                   );
                 })}
@@ -65,6 +68,17 @@ export default class extends Component {
                 </li>
               );
             })}
+            <li className="list-group-item">
+              <Pagination
+                prev="Previous"
+                next="Next"
+                items={11}
+                activePage={1}
+                maxButtons={5}
+                onSelect={() => {}}
+              />
+              <span className="pull-right item-counter"><span className="page-num">{ firstItem } - { lastItem }</span> / { total } total</span>
+            </li>
           </ul> :
           <div>No data found</div>
         }

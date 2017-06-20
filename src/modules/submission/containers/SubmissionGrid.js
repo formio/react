@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import FormioUtils from 'formiojs/utils';
 import Components from 'formiojs/build/components';
 import _get from 'lodash/get';
-import FormioGrid from '../../../components/FormioGrid';
+import Grid from '../../../components/Grid';
 
 export default class extends Component {
   static propTypes = {
@@ -74,7 +74,7 @@ export default class extends Component {
     const columnWidths = this.calculateWidths(columns.length);
 
     return (
-      <FormioGrid
+      <Grid
         submissions={submissions}
         columns={columns}
         columnWidths={columnWidths}

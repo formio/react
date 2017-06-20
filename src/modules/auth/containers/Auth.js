@@ -3,6 +3,7 @@ import {Link} from 'react-router';
 import FormioView from '../../../FormioView';
 import {default as LoginView} from './Login';
 import {default as RegisterView} from './Register';
+import NavLink from '../../../components/NavLink';
 
 export default class AuthView extends FormioView {
   component = class Auth extends Component {
@@ -13,10 +14,24 @@ export default class AuthView extends FormioView {
           <div className="container">
             <div className="row">
               <div className="col-lg-5 col-md-5 col-md-offset-1">
-                <Login />
+                <div className="panel panel-default login-container">
+                  <div className="panel-heading">
+                    Login
+                  </div>
+                  <div className="panel-body">
+                    <Login />
+                  </div>
+                </div>
               </div>
               <div className="col-lg-5 col-md-5">
-                <Register />
+                <div className="panel panel-default register-container">
+                  <div className="panel-heading">
+                    Register
+                  </div>
+                  <div className="panel-body">
+                    <Register />
+                  </div>
+                </div>
               </div>
             </div>
           </div> :
@@ -25,8 +40,8 @@ export default class AuthView extends FormioView {
               <div className="panel panel-default">
                 <div className="panel-heading" style={{paddingBottom: 0, borderBottom: 'none'}}>
                   <ul className="nav nav-tabs" style={{borderBottom: 'none'}}>
-                    <li role="presentation"><Link to={'/' + config.path + '/login'}>Login</Link></li>
-                    <li role="presentation"><Link to={'/' + config.path + '/register'}>Register</Link></li>
+                    <NavLink to={'/' + config.path + '/login'}>Login</NavLink>
+                    <NavLink to={'/' + config.path + '/register'}>Register</NavLink>
                   </ul>
                 </div>
                 <div className="panel-body">

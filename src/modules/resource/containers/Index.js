@@ -15,12 +15,6 @@ export default config => class extends FormioView {
     else {
       return (
         <div className="form-index">
-          <h3>{form.title}s</h3>
-          <Link className="btn btn-success" to={'/' + config.name + '/new'}>
-            <i className="glyphicon glyphicon-plus" aria-hidden="true"></i>
-            New {form.title}
-          </Link>
-          <br />
           <SubmissionGrid
             submissions={submissions}
             form={form}
@@ -30,6 +24,10 @@ export default config => class extends FormioView {
             limit={limit}
             onRowClick={onRowClick}
           />
+          <Link className="btn btn-primary" to={'/' + config.name + '/new'}>
+            <i className="glyphicon glyphicon-plus" aria-hidden="true"></i>
+            New {form.title}
+          </Link>
         </div>
       );
     }
