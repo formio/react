@@ -46,6 +46,6 @@ export default class AuthView extends FormioView {
     return {
       Login: this.formio.auth.config.Login || LoginView,
       Register: this.formio.auth.config.Register || RegisterView
-    }
+    };
   }
 }

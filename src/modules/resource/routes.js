@@ -1,37 +1,37 @@
-import Resource from './containers/Resource';
-import Index from './containers/Index';
-import Create from './containers/Create';
-import View from './containers/View';
-import Edit from './containers/Edit';
-import Delete from './containers/Delete';
+import wrapper from './containers/Wrapper';
+import resource from './containers/Resource';
+import index from './containers/Index';
+import create from './containers/Create';
+import view from './containers/View';
+import edit from './containers/Edit';
+import deleteView from './containers/Delete';
 
 export default (config, childRoutes = []) => [
   {
     path: config.name,
-    component: config.Resource || Resource,
+    component: config.Wrapper || wrapper(config),
     indexRoute: {
-      component: config.Index || Index(config)
+      component: config.Index || index(config)
     },
     childRoutes: [
       {
         path: 'new',
-        component: config.Create || Create
+        component: config.Create || create(config)
       },
       {
         path: ':' + config.name + 'Id',
-        indexRoute: config.View || View,
+        component: config.Resource || resource(config),
+        indexRoute: {
+          component: config.View || view(config)
+        },
         childRoutes: [
           {
-            path: 'view',
-            component: config.View || View
-          },
-          {
             path: 'edit',
-            component: config.Edit || Edit
+            component: config.Edit || edit(config)
           },
           {
             path: 'delete',
-            component: config.Delete || Delete
+            component: config.Delete || deleteView(config)
           },
           ...childRoutes
         ]

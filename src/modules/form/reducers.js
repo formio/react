@@ -39,7 +39,7 @@ export function formReducer(config) {
         return state;
     }
   };
-};
+}
 
 export function formsReducer(config) {
   return (state = {
@@ -92,4 +92,4 @@ export function formsReducer(config) {
         return state;
     }
   };
-};
+}

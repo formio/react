@@ -69,7 +69,6 @@ export function formActions(form) {
             dispatch(receiveForm(form.config.name, result));
           })
           .catch((result) => {
-            console.log(result);
             //dispatch(AlertActions.add({
             //  type: 'danger',
             //  message: result
@@ -94,9 +93,9 @@ export function formActions(form) {
           params.skip = ((parseInt(page) - 1) * parseInt(forms.limit));
           params.limit = parseInt(forms.limit);
         }
-        const formio = Formiojs(form.config.projectUrl + '/form');
+        const formio = new Formiojs(form.config.projectUrl + '/form');
 
-        formio.loadForms({ params })
+        formio.loadForms({params})
           .then((result) => {
             dispatch(receiveForms(form.config.name, result));
           })
@@ -105,5 +104,5 @@ export function formActions(form) {
           });
       };
     }
-  }
+  };
 }

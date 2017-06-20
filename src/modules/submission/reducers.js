@@ -22,6 +22,14 @@ export function submissionReducer(config) {
           submission: {},
           isFetching: true,
         };
+      case types.SUBMISSION_SAVE:
+        return {
+          ...state,
+          formId: action.formId,
+          id: action.id,
+          submission: {},
+          isFetching: true,
+        };
       case types.SUBMISSION_SUCCESS:
         return {
           ...state,
@@ -37,11 +45,20 @@ export function submissionReducer(config) {
           isInvalid: true,
           error: action.error
         };
+      case types.SUBMISSION_RESET:
+        return {
+          ...state,
+          id: '',
+          isFetching: false,
+          lastUpdated: 0,
+          submission: {},
+          error: ''
+        };
       default:
         return state;
     }
   };
-};
+}
 
 export function submissionsReducer(config) {
   return (state = {
@@ -94,4 +111,4 @@ export function submissionsReducer(config) {
         return state;
     }
   };
-};
+}

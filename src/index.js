@@ -1,2 +1,1 @@
-export * from './Formio';
-export {default as formioConnect} from './formioConnect';
+export * from './components/Formio';

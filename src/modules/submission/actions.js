@@ -1,9 +1,17 @@
-import formiojs from 'formiojs';
+import Formiojs from 'formiojs';
 import * as types from './constants';
 
-function requestSubmission(name, src) {
+function requestSubmission(name) {
   return {
+    name,
     type: types.SUBMISSION_REQUEST
+  };
+}
+
+function saveSubmission(name, data) {
+  return {
+    name,
+    type: types.SUBMISSION_SAVE
   };
 }
 
@@ -20,6 +28,13 @@ function failSubmission(name, err) {
     type: types.SUBMISSION_FAILURE,
     name,
     error: err
+  };
+}
+
+function resetSubmission(name) {
+  return {
+    type: types.SUBMISSION_RESET,
+    name
   };
 }
 
@@ -48,7 +63,7 @@ function failSubmissions(name, err) {
   };
 }
 
-export function submissionActions(config) {
+export function submissionActions(form) {
   return {
     get: (id, formId = '') => {
       return (dispatch, getState) => {
@@ -57,53 +72,70 @@ export function submissionActions(config) {
           return;
         }
 
-        dispatch(requestSubmission(config.name, id, formId));
+        dispatch(requestSubmission(form.config.name, id, formId));
 
-        const url = formId ? getState().formio[config.name].form.src + '/form/' + formId + '/submission/' + id : getState().formio[name].form.src + '/submission/' + id;
-        const formio = formiojs(url);
+        const formio = new Formiojs(form.config.projectUrl + '/' + form.config.form + '/submission/' + id);
 
         formio.loadSubmission()
           .then((result) => {
-            dispatch(receiveSubmission(config.name, result));
+            dispatch(receiveSubmission(form.config.name, result));
           })
           .catch((result) => {
-            dispatch(failSubmission(config.name, result));
+            dispatch(failSubmission(form.config.name, result));
           });
       };
     },
-    delete: (name, id, formId) => {
-      return (dispatch, getState) => {
-        const url = formId ? getState().formio[config.name].form.src + '/form/' + formId + '/submission/' + id : getState().formio[name].form.src + '/submission/' + id;
-        const formio = formiojs(url);
-        formio.deleteSubmission();
+    save: (data) => {
+      return (dispatch) => {
+        dispatch(saveSubmission(form.config.name, data));
 
-        // TODO: Clear the submission from the store and dispatch an action.
+        const formio = new Formiojs(form.config.projectUrl + '/' + form.config.form + '/submission');
+
+        formio.saveSubmission(data)
+          .then((result) => {
+            dispatch(receiveSubmission(form.config.name, result));
+          })
+          .catch((result) => {
+            dispatch(failSubmission(form.config.name, result));
+          });
       };
     },
-    index: (page = 1, formId = '') => {
+    delete: (id, formId) => {
       return (dispatch, getState) => {
-        dispatch(requestSubmissions(config.name, page, formId));
-        const submissions = getState().formio[config.name].submissions;
+        const formio = new Formiojs(form.config.projectUrl + '/' + form.config.form + '/submission/' + id);
+        formio.deleteSubmission()
+          .then(() => {
+            dispatch(resetSubmission(form.config.name));
+          })
+          .catch((result) => {
+            dispatch(failSubmission(form.config.name, result));
+          });
+
+      };
+    },
+    index: (page = 0, formId = '') => {
+      return (dispatch, getState) => {
+        dispatch(requestSubmissions(form.config.name, page, formId));
+        const submissions = form.selectors.getSubmissions(getState());
 
         let params = {};
         if (parseInt(submissions.limit) !== 10) {
           params.limit = submissions.limit;
         }
-        if (page !== 1) {
-          params.skip = ((parseInt(page) - 1) * parseInt(submissions.limit));
+        if (page !== 0) {
+          params.skip = ((parseInt(page)) * parseInt(submissions.limit));
           params.limit = parseInt(submissions.limit);
         }
-        const url = submissions.formId ? submissions.src + '/form/' + submissions.formId : submissions.src;
-        const formio = formiojs(url);
+        const formio = new Formiojs(form.config.projectUrl + '/' + form.config.form + '/submission');
 
         formio.loadSubmissions({params})
           .then((result) => {
-            dispatch(receiveSubmissions(config.name, result));
+            dispatch(receiveSubmissions(form.config.name, result));
           })
           .catch((result) => {
-            dispatch(failSubmissions(config.name.result));
+            dispatch(failSubmissions(form.config.name, result));
           });
       };
     }
-  }
+  };
 }

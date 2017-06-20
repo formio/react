@@ -9,6 +9,7 @@ export default class {
 
   constructor(config) {
     const defaultConfig = {
+      parents: [],
       rootSelector: state => state
     };
 
