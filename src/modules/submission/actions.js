@@ -110,7 +110,6 @@ export function submissionActions(form) {
           .catch((result) => {
             dispatch(failSubmission(form.config.name, result));
           });
-
       };
     },
     index: (page = 0, formId = '') => {
