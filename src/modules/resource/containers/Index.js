@@ -70,14 +70,13 @@ export default config => class extends FormioView {
     if (currentSort !== field) {
       this.query.sort = field;
     }
-    else if (this.query.sort[0] !== '-'){
+    else if (this.query.sort[0] !== '-') {
       this.query.sort = '-' + field;
     }
     else {
       delete this.query.sort;
     }
   };
-
 
   mapDispatchToProps = (dispatch, ownProps) => {
     return {
