@@ -11,15 +11,24 @@ export default class extends Component {
     columnWidths: PropTypes.object.isRequired,
     onSort: PropTypes.func,
     onClick: PropTypes.func,
+    onPage: PropTypes.func,
+    firstItem: PropTypes.number,
+    lastItem: PropTypes.number,
+    total: PropTypes.number,
+    pages: PropTypes.number,
+    activePage: PropTypes.number,
     Cell: PropTypes.func
   };
 
   static defaultProps = {
     onSort: () => {},
     onClick: () => {},
+    onPage: () => {},
     firstItem: 1,
     lastItem: 1,
-    total: 0,
+    total: 1,
+    pages: 1,
+    activePage: 1,
     Cell: props => {
       const {row, column} = props;
       return (
@@ -29,7 +38,8 @@ export default class extends Component {
   };
 
   render = () => {
-    const {submissions, columns, columnWidths, sortOrder, onSort, onClick, Cell, firstItem, lastItem, total} = this.props;
+    const {submissions, columns, columnWidths, sortOrder, onSort, onClick, Cell} = this.props;
+    const {firstItem, lastItem, total, activePage, onPage, pages} = this.props;
     return (
       <div>
         { submissions.length ?
@@ -39,10 +49,10 @@ export default class extends Component {
                 { columns.map((column, index) => {
                   let sortClass = '';
                   if (sortOrder === column.key) {
-                    sortClass = 'caret-invert';
+                    sortClass = 'glyphicon glyphicon-triangle-top';
                   }
                   else if (sortOrder === ('-' + column.key)) {
-                    sortClass = 'caret';
+                    sortClass = 'glyphicon glyphicon-triangle-bottom';
                   }
                   return (
                     <div key={index} className={'col col-md-' + columnWidths[index]}>
@@ -70,12 +80,13 @@ export default class extends Component {
             })}
             <li className="list-group-item">
               <Pagination
+                className="pagination-sm"
                 prev="Previous"
                 next="Next"
-                items={11}
-                activePage={1}
+                items={pages}
+                activePage={activePage}
                 maxButtons={5}
-                onSelect={() => {}}
+                onSelect={onPage}
               />
               <span className="pull-right item-counter"><span className="page-num">{ firstItem } - { lastItem }</span> / { total } total</span>
             </li>

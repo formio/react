@@ -67,9 +67,7 @@ export function submissionsReducer(config) {
     lastUpdated: 0,
     submissions: [],
     limit: 10,
-    pagination: {
-      page: 1
-    },
+    page: 0,
     error: ''
   }, action) => {
     // Only proceed for this form.
@@ -84,20 +82,13 @@ export function submissionsReducer(config) {
           limit: action.limit || state.limit,
           isFetching: true,
           submissions: [],
-          pagination: {
-            page: action.page || state.pagination.page
-          },
+          page: action.page,
           error: ''
         };
       case types.SUBMISSIONS_SUCCESS:
         return {
           ...state,
           submissions: action.submissions,
-          pagination: {
-            page: state.pagination.page,
-            numPages: Math.ceil(action.submissions.serverCount / state.limit),
-            total: action.submissions.serverCount
-          },
           isFetching: false,
           error: ''
         };

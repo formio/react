@@ -112,18 +112,20 @@ export function submissionActions(form) {
           });
       };
     },
-    index: (page = 0, formId = '') => {
+    index: (page = 0, params = {}, formId = '') => {
       return (dispatch, getState) => {
         dispatch(requestSubmissions(form.config.name, page, formId));
         const submissions = form.selectors.getSubmissions(getState());
 
-        let params = {};
         if (parseInt(submissions.limit) !== 10) {
           params.limit = submissions.limit;
         }
         if (page !== 0) {
           params.skip = ((parseInt(page)) * parseInt(submissions.limit));
           params.limit = parseInt(submissions.limit);
+        }
+        else {
+          delete params.skip;
         }
         const formio = new Formiojs(form.config.projectUrl + '/' + form.config.form + '/submission');
 

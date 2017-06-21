@@ -45,31 +45,24 @@ export default class extends Component {
     return result;
   };
 
-  toggleSort = (field) => {
-    let {sortOrder} = this.props;
-    if (sortOrder === field) {
-      sortOrder = '-' + field;
-    }
-    else {
-      sortOrder = field;
-    }
-  };
-
   Cell = props => {
     const {row, column} = props;
-    let cellValue = _get(row, column.key);
-    const getMarkup = value => ({__html: column.component.asString(value)});
-    if (cellValue) {
-      // TODO: If this is a simple string we shouldn't set innerHTML but currently no way to know.
-      return <div dangerouslySetInnerHTML={getMarkup(cellValue)} />;
+    const cellValue = _get(row, column.key);
+
+    if (cellValue === null) {
+      return null;
+    }
+    const rendered = column.component.asString(cellValue);
+    if (cellValue !== rendered) {
+      return <div dangerouslySetInnerHTML={{__html: rendered}} />;
     }
     else {
-      return null;
+      return <span>{cellValue}</span>;
     }
   }
 
   render = () => {
-    const {submissions, onRowClick} = this.props;
+    const {submissions, onRowClick, onSort, onPage, page, limit, sortOrder} = this.props;
     const columns = this.getColumns();
     const columnWidths = this.calculateWidths(columns.length);
 
@@ -78,8 +71,15 @@ export default class extends Component {
         submissions={submissions}
         columns={columns}
         columnWidths={columnWidths}
-        onSort={() => {}}
+        onSort={onSort}
         onClick={onRowClick}
+        onPage={onPage}
+        sortOrder={sortOrder}
+        activePage={page + 1}
+        firstItem={parseInt(submissions.skip) + 1}
+        lastItem={parseInt(submissions.skip) + parseInt(submissions.limit)}
+        total={parseInt(submissions.serverCount)}
+        pages={Math.ceil(submissions.serverCount / limit)}
         Cell={this.Cell}
       />
     );
