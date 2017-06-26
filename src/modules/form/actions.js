@@ -62,7 +62,9 @@ export function formActions(form) {
 
         dispatch(requestForm(form.config.name, id));
 
-        const formioForm = new Formiojs(form.config.projectUrl + '/' + form.config.form);
+        const formPath = form.config.form || 'form/' + id;
+
+        const formioForm = new Formiojs(form.config.projectUrl + '/' + formPath);
 
         formioForm.loadForm()
           .then((result) => {
