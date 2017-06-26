@@ -16,8 +16,9 @@ export default config => class View extends FormioView {
   }
 
   mapStateToProps = (state, ownProps) => {
-    const form = this.formio.resources[config.name].selectors.getForm(state);
-    const submission = this.formio.resources[config.name].selectors.getSubmission(state);
+    const resource = this.formio.resources[config.name];
+    const form = resource.selectors.getForm(state);
+    const submission = resource.selectors.getSubmission(state);
     return {
       form: form.form,
       submission: submission.submission,

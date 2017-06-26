@@ -3,11 +3,7 @@ import FormioView from '../../../FormioView';
 
 export default config => class Create extends FormioView {
   component = props => {
-    return (
-      <div className="container">
-        {this.props.children}
-      </div>
-    );
+    return this.props.children;
   }
 
   initialize = ({dispatch}) => {

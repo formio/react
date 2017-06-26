@@ -20,4 +20,14 @@ export default class {
     this.reducers = reducers(this.config);
     this.getRoutes = (childRoutes) => routes(this.config, childRoutes);
   }
+
+  getBasePath(params) {
+    let path = '/';
+
+    this.config.parents.forEach(parent => {
+      path += parent + '/' + params[parent + 'Id'] + '/';
+    });
+
+    return path;
+  }
 }

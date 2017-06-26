@@ -15,10 +15,11 @@ export default config => class Delete extends FormioView {
   }
 
   mapDispatchToProps = (dispatch, ownProps) => {
+    const resource = this.formio.resources[config.name];
     return {
       onYes: () => {
-        dispatch(this.formio.resources[config.name].actions.submission.delete(ownProps.params[config.name + 'Id']));
-        this.router.push('/' + config.name);
+        dispatch(resource.actions.submission.delete(ownProps.params[config.name + 'Id']));
+        this.router.push(resource.getBasePath(ownProps.params) + config.name);
       },
       onNo: this.router.goBack
     };

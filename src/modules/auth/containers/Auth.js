@@ -11,49 +11,47 @@ export default class AuthView extends FormioView {
       const {location, Login, Register} = this.props;
       const {config} = this.props.formio.auth;
       return (location.pathname === '/' + config.path) ?
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-5 col-md-5 col-md-offset-1">
-                <div className="panel panel-default login-container">
-                  <div className="panel-heading">
-                    Login
-                  </div>
-                  <div className="panel-body">
-                    <Login />
-                  </div>
-                </div>
+        <div className="row">
+          <div className="col-lg-6 col-md-6">
+            <div className="panel panel-default login-container">
+              <div className="panel-heading">
+                Login
               </div>
-              <div className="col-lg-5 col-md-5">
-                <div className="panel panel-default register-container">
-                  <div className="panel-heading">
-                    Register
-                  </div>
-                  <div className="panel-body">
-                    <Register />
+              <div className="panel-body">
+                <Login />
+              </div>
+            </div>
+          </div>
+          <div className="col-lg-6 col-md-6">
+            <div className="panel panel-default register-container">
+              <div className="panel-heading">
+                Register
+              </div>
+              <div className="panel-body">
+                <Register />
+              </div>
+            </div>
+          </div>
+        </div> :
+        <div className="row">
+          <div className="col-md-4 col-md-offset-4">
+            <div className="panel panel-default">
+              <div className="panel-heading" style={{paddingBottom: 0, borderBottom: 'none'}}>
+                <ul className="nav nav-tabs" style={{borderBottom: 'none'}}>
+                  <NavLink to={'/' + config.path + '/login'}>Login</NavLink>
+                  <NavLink to={'/' + config.path + '/register'}>Register</NavLink>
+                </ul>
+              </div>
+              <div className="panel-body">
+                <div className="row">
+                  <div className="col-lg-12">
+                    {this.props.children}
                   </div>
                 </div>
               </div>
             </div>
-          </div> :
-          <div className="row">
-            <div className="col-md-4 col-md-offset-4">
-              <div className="panel panel-default">
-                <div className="panel-heading" style={{paddingBottom: 0, borderBottom: 'none'}}>
-                  <ul className="nav nav-tabs" style={{borderBottom: 'none'}}>
-                    <NavLink to={'/' + config.path + '/login'}>Login</NavLink>
-                    <NavLink to={'/' + config.path + '/register'}>Register</NavLink>
-                  </ul>
-                </div>
-                <div className="panel-body">
-                  <div className="row">
-                    <div className="col-lg-12">
-                      {this.props.children}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>;
+          </div>
+        </div>;
     }
   }
 

@@ -20,7 +20,7 @@ export default (config, childRoutes = []) => [
       },
       {
         path: ':' + config.name + 'Id',
-        component: config.Resource || resource(config),
+        component: (config.Resource || resource)(config),
         indexRoute: {
           component: config.View || view(config)
         },

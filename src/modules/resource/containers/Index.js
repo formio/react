@@ -7,7 +7,7 @@ export default config => class extends FormioView {
   query = {};
   page = 0;
 
-  component = ({form, submissions, limit, page, sortOrder, isLoading, onSort, onPage, onRowClick}) => {
+  component = ({basePath, form, submissions, limit, page, sortOrder, isLoading, onSort, onPage, onRowClick}) => {
     if (isLoading) {
       return (
         <div className="form-index">
@@ -28,7 +28,7 @@ export default config => class extends FormioView {
             onPage={onPage}
             onRowClick={onRowClick}
           />
-          <Link className="btn btn-primary" to={'/' + config.name + '/new'}>
+          <Link className="btn btn-primary" to={basePath + config.name + '/new'}>
             <i className="glyphicon glyphicon-plus" aria-hidden="true"></i>
             New {form.title}
           </Link>
@@ -41,18 +41,20 @@ export default config => class extends FormioView {
     if (config.parents.length) {
       config.parents.forEach(parent => {
         if (params[parent + 'Id']) {
-          this.query['data.' + parent] = params[parent + 'Id'];
+          this.query['data.' + parent + '._id'] = params[parent + 'Id'];
         }
       });
     }
     dispatch(this.formio.resources[config.name].actions.submission.index(0, this.query));
   };
 
-  mapStateToProps = (state) => {
-    const form = this.formio.resources[config.name].selectors.getForm(state);
-    const submissions = this.formio.resources[config.name].selectors.getSubmissions(state);
+  mapStateToProps = (state, ownProps) => {
+    const resource = this.formio.resources[config.name];
+    const form = resource.selectors.getForm(state);
+    const submissions = resource.selectors.getSubmissions(state);
 
     return {
+      basePath: resource.getBasePath(ownProps.params),
       form: form.form,
       submissions: submissions.submissions,
       page: submissions.page,
@@ -79,6 +81,7 @@ export default config => class extends FormioView {
   };
 
   mapDispatchToProps = (dispatch, ownProps) => {
+    const resource = this.formio.resources[config.name];
     return {
       onSort: (col) => {
         this.toggleSort(col);
@@ -89,7 +92,7 @@ export default config => class extends FormioView {
         dispatch(this.formio.resources[config.name].actions.submission.index(this.page, this.query));
       },
       onRowClick: (submission) => {
-        this.router.push('/' + config.name + '/' + submission._id);
+        this.router.push(resource.getBasePath(ownProps.params) + config.name + '/' + submission._id);
       }
     };
   };

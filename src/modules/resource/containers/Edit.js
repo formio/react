@@ -16,8 +16,9 @@ export default config => class Edit extends FormioView {
   }
 
   mapStateToProps = (state, ownProps) => {
-    const form = this.formio.resources[config.name].selectors.getForm(state);
-    const submission = this.formio.resources[config.name].selectors.getSubmission(state);
+    const resource = this.formio.resources[config.name];
+    const form = resource.selectors.getForm(state);
+    const submission = resource.selectors.getSubmission(state);
     return {
       form: form.form,
       submission: submission.submission,
@@ -26,11 +27,12 @@ export default config => class Edit extends FormioView {
     };
   }
 
-  mapDispatchToProps = (dispatch) => {
+  mapDispatchToProps = (dispatch, ownProps) => {
+    const resource = this.formio.resources[config.name];
     return {
       onSubmit: (submission) => {
-        dispatch(this.formio.resources[config.name].actions.submission.save(submission));
-        this.router.push('/' + config.name + '/' + submission._id);
+        dispatch(resource.actions.submission.save(submission));
+        this.router.push(resource.getBasePath(ownProps.params) + config.name + '/' + submission._id);
       }
     };
   }
