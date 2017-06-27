@@ -87,18 +87,15 @@ export function submissionActions(form) {
     },
     save: (data) => {
       return (dispatch) => {
-        console.log('start dispatch');
         dispatch(saveSubmission(form.config.name, data));
 
         const formio = new Formiojs(form.config.projectUrl + '/' + form.config.form + '/submission');
 
         formio.saveSubmission(data)
           .then((result) => {
-            console.log('dispatch then');
             dispatch(receiveSubmission(form.config.name, result));
           })
           .catch((result) => {
-            console.log('dispatch catch');
             dispatch(failSubmission(form.config.name, result));
           });
       };
