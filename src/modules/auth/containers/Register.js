@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Formio} from '../../../Formio';
+import {Formio} from '../../../components/Formio';
 import FormioView from '../../../FormioView';
 
 export default class RegisterView extends FormioView {
