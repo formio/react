@@ -66,7 +66,7 @@ export function formActions(form) {
 
         const formioForm = new Formiojs(form.config.projectUrl + '/' + formPath);
 
-        formioForm.loadForm()
+        return formioForm.loadForm()
           .then((result) => {
             dispatch(receiveForm(form.config.name, result));
           })
@@ -97,7 +97,7 @@ export function formActions(form) {
         }
         const formio = new Formiojs(form.config.projectUrl + '/form');
 
-        formio.loadForms({params})
+        return formio.loadForms({params})
           .then((result) => {
             dispatch(receiveForms(form.config.name, result));
           })

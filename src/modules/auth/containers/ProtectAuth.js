@@ -5,13 +5,13 @@ class ProtectAuth extends Component {
   render() {
     const {authenticated, goToState} = this.props;
 
-    //if (authenticated) {
+    if (authenticated) {
       return this.props.children;
-    //}
-    //else {
-    //  return <div>Unauthorized</div>;
-    //  //goToState();
-    //}
+    }
+    else {
+      //return <div>Unauthorized</div>;
+      goToState();
+    }
   }
 }
 

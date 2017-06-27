@@ -87,15 +87,18 @@ export function submissionActions(form) {
     },
     save: (data) => {
       return (dispatch) => {
+        console.log('start dispatch');
         dispatch(saveSubmission(form.config.name, data));
 
         const formio = new Formiojs(form.config.projectUrl + '/' + form.config.form + '/submission');
 
         formio.saveSubmission(data)
           .then((result) => {
+            console.log('dispatch then');
             dispatch(receiveSubmission(form.config.name, result));
           })
           .catch((result) => {
+            console.log('dispatch catch');
             dispatch(failSubmission(form.config.name, result));
           });
       };
@@ -103,7 +106,7 @@ export function submissionActions(form) {
     delete: (id, formId) => {
       return (dispatch, getState) => {
         const formio = new Formiojs(form.config.projectUrl + '/' + form.config.form + '/submission/' + id);
-        formio.deleteSubmission()
+        return formio.deleteSubmission()
           .then(() => {
             dispatch(resetSubmission(form.config.name));
           })
@@ -129,7 +132,7 @@ export function submissionActions(form) {
         }
         const formio = new Formiojs(form.config.projectUrl + '/' + form.config.form + '/submission');
 
-        formio.loadSubmissions({params})
+        return formio.loadSubmissions({params})
           .then((result) => {
             dispatch(receiveSubmissions(form.config.name, result));
           })

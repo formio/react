@@ -5,13 +5,13 @@ class ProtectAnon extends Component {
   render() {
     const {authenticated, goToState} = this.props;
 
-    //if (authenticated) {
-    //  return <div>Unauthorized</div>;
-    //  //goToState();
-    //}
-    //else {
+    if (authenticated) {
+      //return <div>Unauthorized</div>;
+      goToState();
+    }
+    else {
       return this.props.children;
-    //}
+    }
   }
 }
 

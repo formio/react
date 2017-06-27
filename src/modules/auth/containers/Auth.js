@@ -34,7 +34,7 @@ export default class AuthView extends FormioView {
           </div>
         </div> :
         <div className="row">
-          <div className="col-md-4 col-md-offset-4">
+          <div className="col-md-6 col-md-offset-3">
             <div className="panel panel-default">
               <div className="panel-heading" style={{paddingBottom: 0, borderBottom: 'none'}}>
                 <ul className="nav nav-tabs" style={{borderBottom: 'none'}}>

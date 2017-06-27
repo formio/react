@@ -18,8 +18,8 @@ export default class LoginView extends FormioView {
   mapDispatchToProps = (dispatch) => {
     return {
       onSubmitDone: (submission) => {
-        dispatch(this.formio.auth.actions.setUser(submission));
         this.router.push('/' + this.formio.auth.config.authState);
+        dispatch(this.formio.auth.actions.setUser(submission));
       }
     };
   }

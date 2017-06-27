@@ -18,8 +18,8 @@ export default class RegisterView extends FormioView {
   mapDispatchToProps = (dispatch, ownProps) => {
     return {
       onSubmitDone: (submission) => {
-        dispatch(this.formio.auth.actions.setUser(submission));
         this.router.push('/' + this.formio.auth.config.authState);
+        dispatch(this.formio.auth.actions.setUser(submission));
       }
     };
   }
