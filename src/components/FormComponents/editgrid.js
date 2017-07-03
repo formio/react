@@ -159,7 +159,6 @@ class RowEdit extends React.Component {
         }
         return previousState;
       });
-      //}, () => console.log(this.state));
     }
   };
 
@@ -197,31 +196,26 @@ class RowEdit extends React.Component {
   render = () => {
     const { component, rowIndex } = this.props;
     return (
-      <div>
-        <div id="medModal" className="modal MedicationDialog" role="dialog" style={{display: 'block'}}>
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="scroll-modal-body modal-body">
-                <FormioComponentsList
-                  {...this.props}
-                  components={component.components}
-                  values={this.state.value}
-                  row={this.state.value}
-                  rowIndex={rowIndex}
-                  onChange={this.elementChange}
-                  attachToForm={this.attachToForm}
-                  detachFromForm={this.detachFromForm}
-                />
-                <div className="modalActions">
-                  <div onClick={this.editDone} className="btn btn-primary btn-lg pull-right">Save & Close</div>
-                  <div onClick={this.props.editDone.bind(null, null, rowIndex)} className="btn btn-danger btn-lg pull-right">{ rowIndex !== null ? 'Remove' : 'Cancel'}</div>
-                  <div className="clearfix"></div>
-                </div>
-              </div>
-            </div>
+      <div className="editgrid-edit">
+        <div className="editgrid-body">
+          <FormioComponentsList
+            {...this.props}
+            components={component.components}
+            values={this.state.value}
+            row={this.state.value}
+            rowIndex={rowIndex}
+            onChange={this.elementChange}
+            attachToForm={this.attachToForm}
+            detachFromForm={this.detachFromForm}
+          />
+          <div className="editgrid-actions">
+            <div onClick={this.editDone} className="btn btn-primary btn-lg pull-right">{ component.saveRow || 'Save' }</div>
+            { component.removeRow ?
+              <div onClick={this.props.editDone.bind(null, null, rowIndex)} className="btn btn-danger btn-lg pull-right">{ component.removeRow || 'Cancel' }</div> :
+              null
+            }
           </div>
         </div>
-        <div className="modal-backdrop"></div>
       </div>
     );
   };
@@ -289,18 +283,23 @@ export default React.createClass({
     rows.push({});
     this.setState(previousState => {
       previousState.value = rows;
-      previousState.isPristine = false;
+      previousState.isPristine = true;
       previousState.openRows.push(index);
+      previousState.isValid = false;
+      previousState.errorMessage = 'Please save all rows before proceeding.';
       return previousState;
     }, () => {
       this.props.onChange(this);
     });
   },
   editRow: function(id) {
-    console.log('editRow', id);
     this.setState(previousState => {
       previousState.openRows.push(id);
+      previousState.isValid = false;
+      previousState.errorMessage = 'Please save all rows before proceeding.';
       return previousState;
+    }, () => {
+      this.props.onChange(this);
     })
   },
   editDone: function(row, id) {
@@ -320,7 +319,8 @@ export default React.createClass({
     this.setState(previousState => {
       previousState.value = value;
       previousState.isPristine = false;
-      previousState.openRows.splice(previousState.openRows.indexOf(id));
+      previousState.openRows.splice(previousState.openRows.indexOf(id), 1);
+      previousState.isValid = previousState.openRows.length === 0;
       return previousState;
     }, () => {
       this.props.onChange(this);
@@ -400,6 +400,13 @@ export default React.createClass({
         });
       });
     }
+    if (this.state && this.state.openRows.length) {
+      return {
+        isValid: false,
+        errorType: 'editgrid',
+        errorMessage: ''
+      }
+    }
     return {
       isValid,
       errorType: '',
@@ -407,7 +414,7 @@ export default React.createClass({
     };
   },
   getElements: function() {
-    const { value, openEdit } = this.state;
+    const { value, openRows } = this.state;
     const { component, checkConditional } = this.props;
     const Header = renderTemplate(component.templates.header, {
       components: component.components,
@@ -426,7 +433,7 @@ export default React.createClass({
     let classLabel = 'control-label' + ( this.props.component.validate && component.validate.required ? ' field-required' : '');
     let inputLabel = (component.label && !component.hideLabel ? <label htmlFor={component.key} className={classLabel}>{component.label}</label> : '');
 
-    var tableClasses = 'table datagrid-table';
+    var tableClasses = 'editgrid-listgroup list-group';
     tableClasses += (component.striped) ? ' table-striped' : '';
     tableClasses += (component.bordered) ? ' table-bordered' : '';
     tableClasses += (component.hover) ? ' table-hover' : '';
@@ -434,43 +441,43 @@ export default React.createClass({
     let btnClassNames = 'btn btn-primary' + (this.props.readOnly ? ' disabled' : '');
 
     return (
-      <div className='formio-data-grid'>
+      <div className='formio-edit-grid'>
         <label className={classLabel}>{inputLabel}</label>
-        <div className={tableClasses}>
+        <ul className={tableClasses}>
           <Header
             value={value}
             component={component}
             checkConditional={checkConditional}
             visibleCols={visibleCols}
           />
-          <div className="medListContainer">
+          <li className="editgrid-rows list-group-items">
             {
               value.map((row, rowIndex) => {
                 return (
                   <EditGridRow
                     {...this.props}
+                    key={rowIndex}
                     component={component}
                     row={row}
                     rowIndex={rowIndex}
                     removeRow={this.removeRow}
                     editRow={this.editRow}
                     editDone={this.editDone}
-                    isOpen={this.state.openRows.indexOf(rowIndex) !== -1}
+                    isOpen={openRows.indexOf(rowIndex) !== -1}
                   />
                 );
               })
             }
-          </div>
-        </div>
+          </li>
+        </ul>
         { (!component.hasOwnProperty('validate') || !component.validate.hasOwnProperty('maxLength') || value.length < component.validate.maxLength) ?
-          <div className='datagrid-add'>
+          <div className='editgrid-add'>
             <a onClick={this.addRow} className={btnClassNames}>
               <span><i className='glyphicon glyphicon-plus' aria-hidden='true'/> { component.addAnother || 'Add Another'}</span>
             </a>
           </div>
           : null
         }
-
       </div>
     );
   }
