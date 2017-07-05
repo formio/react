@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import clone from 'lodash/clone';
 import isEqual from 'lodash/isEqual';
 import valueMixin from 'react-formio/lib/components/FormComponents/mixins/valueMixin';
@@ -10,21 +10,21 @@ const renderTemplate = (template, data, actions = []) => {
     createMarkup = () => {
       return {
         __html: FormioUtils.interpolate(template, data)
-      }
+      };
     }
     componentDidMount = () => {
       actions.forEach(action => {
         const elements = this.element.getElementsByClassName(action.class);
         Array.prototype.forEach.call(elements, element => {
-          element.addEventListener(action.event, action.action)
+          element.addEventListener(action.event, action.action);
         });
       });
     }
 
     render = () => {
-      return <div dangerouslySetInnerHTML={this.createMarkup()} ref={element => this.element = element} />
+      return <div dangerouslySetInnerHTML={this.createMarkup()} ref={element => this.element = element} />;
     }
-  }
+  };
 };
 
 class EditGridRow extends Component {
@@ -32,7 +32,7 @@ class EditGridRow extends Component {
     super(props);
     this.data = Object.assign({}, props.data);
     this.refresh = false;
-  };
+  }
 
   componentWillReceiveProps = (nextProps) => {
     const { components } = this.props;
@@ -148,7 +148,7 @@ class RowEdit extends React.Component {
         this.setState(previousState => {
           delete previousState[component.props.component.key];
           return previousState;
-        })
+        });
       }
     }
     delete this.inputs[component.props.component.key];
@@ -171,14 +171,14 @@ class RowEdit extends React.Component {
 
   setPristine = isPristine => {
     // Mark all inputs as dirty so errors show.
-    Object.keys(this.inputs).forEach(function (name) {
+    Object.keys(this.inputs).forEach(name => {
       this.inputs[name].setState({
         isPristine
       });
       if (typeof this.inputs[name].setPristine === 'function') {
         this.inputs[name].setPristine(isPristine);
       }
-    }.bind(this));
+    });
     this.setState({
       isPristine
     });
@@ -269,7 +269,7 @@ export default React.createClass({
       isDisabled: function() {
         return false;
       }
-    }
+    };
   },
   addRow: function() {
     if (this.props.readOnly) {
@@ -306,7 +306,7 @@ export default React.createClass({
       return previousState;
     }, () => {
       this.props.onChange(this);
-    })
+    });
   },
   editDone: function(row, id) {
     var value = clone(this.state.value);
@@ -391,7 +391,7 @@ export default React.createClass({
         state.isValid = (valid === true);
       }
       catch (e) {
-        /* eslint-disable no-console */
+        /* eslint-disable no-console, no-undef */
         console.warn('A syntax error occurred while computing custom values in ' + component.key, e);
         /* eslint-enable no-console */
       }

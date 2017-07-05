@@ -8,12 +8,12 @@ module.exports = React.createClass({
   displayName: 'Time',
   mixins: [valueMixin, multiMixin, componentMixin],
   customState: function(state) {
-    state.hourTime = moment(state.value, this.props.component.format).format("HH:mm:ss");
+    state.hourTime = moment(state.value, this.props.component.format).format('HH:mm:ss');
     return state;
   },
   willReceiveProps: function(nextProps) {
     this.setState(state => {
-      state.hourTime = nextProps.value ? moment(nextProps.value, this.props.component.format).format("HH:mm:ss") : nextProps.value;
+      state.hourTime = nextProps.value ? moment(nextProps.value, this.props.component.format).format('HH:mm:ss') : nextProps.value;
       return state;
     });
   },
@@ -23,7 +23,7 @@ module.exports = React.createClass({
     this.setState(state => {
       state.hourTime = value;
       return state;
-    }, this.setValue(value ? moment(value, "HH:mm:ss").format(this.props.component.format) : value, index));
+    }, this.setValue(value ? moment(value, 'HH:mm:ss').format(this.props.component.format) : value, index));
   },
   getSingleElement: function(value, index) {
     index = index || 0;
