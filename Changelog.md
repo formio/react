@@ -5,8 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-## Added
+
+## 1.4.0
+### Added
  - Time component
+ - EditGrid component 
  
 ## 1.3.14
  - Fix default formatting of empty custom error validation.
