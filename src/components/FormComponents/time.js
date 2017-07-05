@@ -1,7 +1,7 @@
 import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import multiMixin from './mixins/multiMixin';
-import inputMixin from './mixins/inputMixin';
+import componentMixin from './mixins/componentMixin';
 import moment from 'moment';
 
 module.exports = React.createClass({
@@ -13,7 +13,7 @@ module.exports = React.createClass({
   },
   willReceiveProps: function(nextProps) {
     this.setState(state => {
-      state.hourTime =  moment(nextProps.value, this.props.component.format).format("HH:mm:ss");
+      state.hourTime = nextProps.value ? moment(nextProps.value, this.props.component.format).format("HH:mm:ss") : nextProps.value;
       return state;
     });
   },
@@ -23,7 +23,7 @@ module.exports = React.createClass({
     this.setState(state => {
       state.hourTime = value;
       return state;
-    }, this.setValue(moment(value, "HH:mm:ss").format(this.props.component.format), index));
+    }, this.setValue(value ? moment(value, "HH:mm:ss").format(this.props.component.format) : value, index));
   },
   getSingleElement: function(value, index) {
     index = index || 0;
