@@ -67,12 +67,12 @@ class EditGridRow extends Component {
   };
 
   render = () => {
-    const { component, rowIndex, row, isOpen } = this.props;
+    const { component, rowIndex, row, isOpen, validation } = this.props;
 
     if (isOpen) {
       return (
         <div>
-          <div className="edit-body">
+          <div className={'edit-body ' + component.rowClass}>
             <RowEdit
               {...this.props}
             />
@@ -101,7 +101,14 @@ class EditGridRow extends Component {
       ];
       const Row = renderTemplate(component.templates.row, data, actions);
       return (
-        <Row />
+        <div>
+          <Row />
+          {
+            validation && !validation.isValid ?
+              <div className={validation.errorType + '-error'}>{validation.errorMessage}</div> :
+              null
+          }
+        </div>
       );
     }
   }
@@ -240,6 +247,7 @@ export default React.createClass({
     }
     state.value = rows || [];
     state.openRows = [];
+    state.rowsValid = [];
     return state;
   },
   setPristine: function(isPristine) {
@@ -285,8 +293,7 @@ export default React.createClass({
       previousState.value = rows;
       previousState.isPristine = true;
       previousState.openRows.push(index);
-      previousState.isValid = false;
-      previousState.errorMessage = 'Please save all rows before proceeding.';
+      Object.assign(previousState, this.validateCustom(null, previousState));
       return previousState;
     }, () => {
       this.props.onChange(this);
@@ -295,8 +302,7 @@ export default React.createClass({
   editRow: function(id) {
     this.setState(previousState => {
       previousState.openRows.push(id);
-      previousState.isValid = false;
-      previousState.errorMessage = 'Please save all rows before proceeding.';
+      Object.assign(previousState, this.validateCustom(null, previousState));
       return previousState;
     }, () => {
       this.props.onChange(this);
@@ -320,7 +326,7 @@ export default React.createClass({
       previousState.value = value;
       previousState.isPristine = false;
       previousState.openRows.splice(previousState.openRows.indexOf(id), 1);
-      previousState.isValid = previousState.openRows.length === 0;
+      Object.assign(previousState, this.validateCustom(null, previousState));
       return previousState;
     }, () => {
       this.props.onChange(this);
@@ -336,85 +342,72 @@ export default React.createClass({
     this.setState(previousState => {
       previousState.value = rows;
       previousState.isPristine = false;
+      Object.assign(previousState, this.validateCustom(null, previousState));
       return previousState;
     }, () => {
       this.props.onChange(this);
     });
   },
-  elementChange: function(row, component) {
-    const isValid = this.validateCustom();
-    this.setState(previousState => {
-      // Clone to keep state immutable.
-      let value = clone(previousState.value);
-      value[row] = clone(value[row]);
-      value[row][component.props.component.key] = component.state.value;
-      previousState.value = value;
-      previousState.isValid = isValid.isValid;
-      // If a component isn't pristine, the datagrid isn't pristine.
-      if (!component.state.isPristine && previousState.isPristine) {
-        previousState.isPristine = false;
+  validateCustom: function(value, state) {
+    let isValid = true, errorType = '', errorMessage = '';
+    const myState = state || this.state;
+    if (myState) {
+      if (myState.openRows.length) {
+        isValid = false;
+        errorType = 'editgrid';
+        errorMessage = 'Please save all rows before proceeding.';
       }
-      return previousState;
-    }, () => this.props.onChange(component, { row, datagrid: this }));
-  },
-  attachToDatarid(row, component) {
-    this.inputs = this.inputs || [];
-    this.inputs[row] = this.inputs[row] || {};
-    this.inputs[row][component.props.component.key] = component;
-    this.setState(previousState => {
-      return Object.assign(previousState, this.validate());
-    }, () => {
-      this.props.onChange(this);
-    });
-  },
-  detachFromDatagrid: function(row, component) {
-    if (this.unmounting) {
-      return;
-    }
-    let value = clone(this.state.value);
-    if (!component.props.component.hasOwnProperty('clearOnHide') || component.props.component.clearOnHide !== false) {
-      if (component.props.component.key && value[row] && value[row].hasOwnProperty(component.props.component.key)) {
-        delete value[row][component.props.component.key];
-        this.setValue(value);
-      }
-    }
-    delete this.inputs[row][component.props.component.key];
-    if (Object.keys(this.inputs[row]).length === 0) {
-      delete this.inputs[row];
-    }
-    this.setState(previousState => {
-      return Object.assign(previousState, this.validate());
-    }, () => {
-      this.props.onChange(this);
-    });
-  },
-  validateCustom: function() {
-    let isValid = true;
-    // If any inputs are false, the datagrid is false.
-    if (this.inputs) {
-      this.inputs.forEach(row => {
-        Object.keys(row).forEach(key => {
-          if (row[key].state.isValid === false) {
-            isValid = false;
-          }
-        });
-      });
-    }
-    if (this.state && this.state.openRows.length) {
-      return {
-        isValid: false,
-        errorType: 'editgrid',
-        errorMessage: ''
+      const rowsValid = this.validateRows(myState.value);
+      if (!rowsValid.allRowsValid) {
+        isValid = false;
+        errorMessage = 'Please correct rows before proceeding.';
+        errorType = 'editgrid-row';
       }
     }
     return {
       isValid,
-      errorType: '',
-      errorMessage: ''
+      errorType,
+      errorMessage
     };
+  },
+  validateRows: function(values) {
+    const { component } = this.props;
+    let allRowsValid = true;
+    let rowsValid = values.map(value => {
+      let state = {
+        isValid: true,
+        errorType: '',
+        errorMessage: ''
+      };
+      let custom = component.validate.row;
+      custom = custom.replace(/({{\s+(.*)\s+}})/, function(match, $1, $2) {
+        return value[$2];
+      }.bind(this));
+      let valid;
+      try {
+        const row = value;
+        const { data } = this.props;
+        valid = eval(custom);
+        state.isValid = (valid === true);
+      }
+      catch (e) {
+        /* eslint-disable no-console */
+        console.warn('A syntax error occurred while computing custom values in ' + component.key, e);
+        /* eslint-enable no-console */
+      }
+      if (!state.isValid) {
+        state.errorType = 'custom';
+        state.errorMessage = valid;
+      }
+      allRowsValid = allRowsValid && state.isValid;
+      return state;
+    });
+    rowsValid.allRowsValid = allRowsValid;
+    return rowsValid;
   },
   getElements: function() {
     const { value, openRows } = this.state;
+    const rowsValid = this.validateRows(value);
     const { component, checkConditional } = this.props;
     const Header = renderTemplate(component.templates.header, {
       components: component.components,
@@ -464,6 +457,7 @@ export default React.createClass({
                     editRow={this.editRow}
                     editDone={this.editDone}
                     isOpen={openRows.indexOf(rowIndex) !== -1}
+                    validation={rowsValid[rowIndex]}
                   />
                 );
               })
