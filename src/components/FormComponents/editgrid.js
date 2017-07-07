@@ -414,6 +414,11 @@ export default React.createClass({
       value
     });
 
+    const Footer = renderTemplate(component.templates.footer, {
+      components: component.components,
+      value
+    });
+
     let visibleCols = component.components.reduce((prev, col) => {
       prev[col.key] = value.reduce(
         (prev, row) => {
@@ -437,13 +442,12 @@ export default React.createClass({
       <div className='formio-edit-grid'>
         <label className={classLabel}>{inputLabel}</label>
         <ul className={tableClasses}>
-          <Header
-            value={value}
-            component={component}
-            checkConditional={checkConditional}
-            visibleCols={visibleCols}
-          />
-          <li className="editgrid-rows list-group-items">
+          { component.templates.header ?
+            <li className="list-group-item list-group-header">
+              <Header />
+            </li> : null
+          }
+          <li className="editgrid-rows list-group-item">
             {
               value.map((row, rowIndex) => {
                 return (
@@ -463,6 +467,11 @@ export default React.createClass({
               })
             }
           </li>
+          { component.templates.footer ?
+            <li className="list-group-item list-group-footer">
+              <Footer />
+            </li> : null
+          }
         </ul>
         { (!component.hasOwnProperty('validate') || !component.validate.hasOwnProperty('maxLength') || value.length < component.validate.maxLength) ?
           <div className='editgrid-add'>

@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.4.1
+### Fixed
+ - HTML output of editgrid header
+
+### Added
+ - Footer for editgrid
+
 ## 1.4.0
 ### Added
  - Time component
