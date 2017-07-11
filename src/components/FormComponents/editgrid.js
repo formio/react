@@ -123,7 +123,7 @@ class RowEdit extends React.Component {
     };
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.props.onEvent('editGridOpen', this.props.rowIndex);
     this.unmounting = false;
   }

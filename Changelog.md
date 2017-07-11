@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.4.2
+### Changed
+ - Fire edit grid open event on componentDidMount instead of componentWillMount.
+
 ## 1.4.1
 ### Fixed
  - HTML output of editgrid header
