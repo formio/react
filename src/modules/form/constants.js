@@ -1,0 +1,6 @@
+export const FORM_REQUEST = 'FORM_REQUEST';
+export const FORM_SUCCESS = 'FORM_SUCCESS';
+export const FORM_FAILURE = 'FORM_FAILURE';
+export const FORMS_REQUEST = 'FORMS_REQUEST';
+export const FORMS_SUCCESS = 'FORMS_SUCCESS';
+export const FORMS_FAILURE = 'FORMS_FAILURE';
