@@ -13,13 +13,19 @@ module.exports = React.createClass({
   displayName: 'Select',
   mixins: [valueMixin, selectMixin, componentMixin],
   getValueField: function() {
-    if (this.props.component.dataSrc === 'custom' || this.props.component.dataSrc === 'json') {
+    if (this.props.component.dataSrc === 'values') {
+      return 'value';
+    }
+    if (this.props.component.dataSrc === 'custom') {
       return false;
     }
     if (this.props.component.dataSrc === 'resource' && this.props.component.valueProperty === '') {
       return '_id';
     }
-    return this.props.component.valueProperty || 'value';
+    if (this.props.component.valueProperty) {
+      return this.props.component.valueProperty;
+    }
+    return false;
   },
   componentWillMount: function() {
     switch (this.props.component.dataSrc) {

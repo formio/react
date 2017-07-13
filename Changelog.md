@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## 1.4.4
+ - Fix issue where Select JSON fields couldn't set the value field.
+
+## 1.4.3
+ - Fix issue where components in a container that hide at the same time can't fail to clear data.
 
 ## 1.4.2
 ### Changed
