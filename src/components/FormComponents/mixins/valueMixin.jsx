@@ -148,7 +148,7 @@ module.exports = {
       }
     }
     // Input Mask
-    if (this.element && component.inputMask && this.state.value && this.state.value.includes(this.element.maskChar)) {
+    if (this.element && component.inputMask && this.state.value && this.state.value.includes('_')) {
       state.isValid = false;
       state.errorType = 'mask';
       state.errorMessage = (component.label || component.key) + ' must use the format ' + component.inputMask;

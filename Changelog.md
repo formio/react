@@ -6,14 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.4.6
+### Fixed
+ - Input mask not required for required fields.
+
 ## 1.4.5
-Fixed
+### Fixed
  - Edit grid editing was showing all fields as invalid.
 
 ## 1.4.4
+### Fixed
  - Fix issue where Select JSON fields couldn't set the value field.
 
 ## 1.4.3
+### Fixed
  - Fix issue where components in a container that hide at the same time can't fail to clear data.
 
 ## 1.4.2
