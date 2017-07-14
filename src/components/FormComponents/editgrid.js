@@ -303,6 +303,7 @@ export default React.createClass({
     this.setState(previousState => {
       previousState.openRows.push(id);
       Object.assign(previousState, this.validateCustom(null, previousState));
+      previousState.isPristine = true;
       return previousState;
     }, () => {
       this.props.onChange(this);

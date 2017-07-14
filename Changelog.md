@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## 1.4.5
+Fixed
+ - Edit grid editing was showing all fields as invalid.
+
 ## 1.4.4
  - Fix issue where Select JSON fields couldn't set the value field.
 
