@@ -306,6 +306,7 @@ export const Formio = React.createClass({
   },
   render: function () {
     var components = this.state.form.components || [];
+    var formClass = (this.props.readOnly ? 'form-disabled' : '');
     var loading = (this.state.isLoading ?
       <i id='formio-loading' className='glyphicon glyphicon-refresh glyphicon-spin'></i> : '');
     var alerts = this.state.alerts.map(function (alert, index) {
@@ -314,7 +315,7 @@ export const Formio = React.createClass({
     });
 
     return (
-      <form role='form' name='formioForm' onSubmit={this.onSubmit}>
+      <form role='form' name='formioForm' onSubmit={this.onSubmit} className={formClass}>
         {loading}
         {alerts}
         <FormioComponentsList

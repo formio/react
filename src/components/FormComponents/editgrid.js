@@ -300,6 +300,9 @@ export default React.createClass({
     });
   },
   editRow: function(id) {
+    if (this.props.readOnly) {
+      return;
+    }
     this.setState(previousState => {
       previousState.openRows.push(id);
       Object.assign(previousState, this.validateCustom(null, previousState));
@@ -380,21 +383,23 @@ export default React.createClass({
         errorType: '',
         errorMessage: ''
       };
-      let custom = component.validate.row;
-      custom = custom.replace(/({{\s+(.*)\s+}})/, function(match, $1, $2) {
-        return value[$2];
-      }.bind(this));
-      let valid;
-      try {
-        const row = value;
-        const { data } = this.props;
-        valid = eval(custom);
-        state.isValid = (valid === true);
-      }
-      catch (e) {
-        /* eslint-disable no-console, no-undef */
-        console.warn('A syntax error occurred while computing custom values in ' + component.key, e);
-        /* eslint-enable no-console */
+      if (component.validate && component.validate.row) {
+        let custom = component.validate.row;
+        custom = custom.replace(/({{\s+(.*)\s+}})/, function(match, $1, $2) {
+          return value[$2];
+        }.bind(this));
+        let valid;
+        try {
+          const row = value;
+          const { data } = this.props;
+          valid = eval(custom);
+          state.isValid = (valid === true);
+        }
+        catch (e) {
+          /* eslint-disable no-console, no-undef */
+          console.warn('A syntax error occurred while computing custom values in ' + component.key, e);
+          /* eslint-enable no-console */
+        }
       }
       if (!state.isValid) {
         state.errorType = 'custom';

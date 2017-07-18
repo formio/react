@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.4.7
+### Fixed
+ - Disable editgrid controls when form is read-only.
+
 ## 1.4.6
 ### Fixed
  - Input mask not required for required fields.
