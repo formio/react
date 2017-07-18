@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 1.4.7
 ### Fixed
  - Disable editgrid controls when form is read-only.
+ - Edit grid was not fully calculating validity on form load.
 
 ## 1.4.6
 ### Fixed

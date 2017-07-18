@@ -354,7 +354,7 @@ export default React.createClass({
   },
   validateCustom: function(value, state) {
     let isValid = true, errorType = '', errorMessage = '';
-    const myState = state || this.state;
+    const myState = state || this.state || { value, openRows: [] };
     if (myState) {
       if (myState.openRows.length) {
         isValid = false;
@@ -392,7 +392,7 @@ export default React.createClass({
         try {
           const row = value;
           const { data } = this.props;
-          valid = eval(custom);
+          valid = new Function('row', 'data', custom + '; return valid;')(row, data);
           state.isValid = (valid === true);
         }
         catch (e) {
