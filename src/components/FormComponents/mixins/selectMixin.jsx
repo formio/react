@@ -100,11 +100,19 @@ module.exports = {
       render: function() {
         let { item } = this.props;
         if (component.dataSrc === 'values') {
-          component.data.values.forEach(function(option) {
-            if (option.value === item) {
-              item = option;
-            }
-          });
+          // Search for the full item from values.
+          item = _.find(component.data.values, { value: item }) || item;
+        }
+
+        if (component.data.json && component.valueProperty) {
+          var items = [];
+          if (typeof component.data.json === 'string') {
+            items = JSON.parse(component.data.json);
+          }
+          else if (typeof component.data.json === 'object') {
+            items = component.data.json;
+          }
+          item = _.find(items, {[component.valueProperty]: item}) || item;
         }
 
         if (item && typeof item === 'object') {
