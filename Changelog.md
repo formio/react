@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.4.9
+### Fixed
+ - Input masks not initializing validity properly.
+
 ## 1.4.8
 ### Fixed
  - Select JSON with a value property not finding item when loading in a submission.
