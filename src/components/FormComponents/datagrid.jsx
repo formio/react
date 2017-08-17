@@ -205,7 +205,7 @@ module.exports = React.createClass({
       delete this.inputs[row];
     }
     this.setState(previousState => {
-      if (deleteKey) {
+      if (deleteKey && previousState.value[row]) {
         delete previousState.value[row][deleteKey];
       }
       return Object.assign(previousState, this.validate());

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.4.10
+### Fixed
+ - Crash when empty rows are deleted from datagrids.
+
 ## 1.4.9
 ### Fixed
  - Input masks not initializing validity properly.
