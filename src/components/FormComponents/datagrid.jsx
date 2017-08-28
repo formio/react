@@ -166,21 +166,22 @@ module.exports = React.createClass({
       this.props.onChange(this);
     });
   },
-  elementChange: function(row, component) {
+  elementChange: function(row, component, options = {}) {
     const isValid = this.validateCustom();
     this.setState(previousState => {
       // Clone to keep state immutable.
       let value = clone(previousState.value);
       value[row] = clone(value[row]);
-      value[row][component.props.component.key] = component.state.value;
+      let item = options.item || component;
+      value[row][item.props.component.key] = item.state.value;
       previousState.value = value;
       previousState.isValid = isValid.isValid;
       // If a component isn't pristine, the datagrid isn't pristine.
-      if (!component.state.isPristine && previousState.isPristine) {
+      if (!item.state.isPristine && previousState.isPristine) {
         previousState.isPristine = false;
       }
       return previousState;
-    }, () => this.props.onChange(component, { row, datagrid: this }));
+    }, () => this.props.onChange(component, { row, datagrid: this, item: this }));
   },
   attachToDatarid(row, component) {
     this.inputs = this.inputs || [];
