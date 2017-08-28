@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.4.12
+### Fixed
+ - Datagrids and containers embedded within other datagrids and containers not setting values properly.
+
 ## 1.4.11
 ### Added
  - Support for column definitions.
