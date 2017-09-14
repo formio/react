@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 2.0.2
+### Changed
+ - Rebuild for failed build.
+
 ## 2.0.1
 ### Fixed
  - Allow adjusting submission while form is being created
