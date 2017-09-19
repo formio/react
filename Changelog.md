@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.4.13
+### Fixed
+ - Select components with lots of json were slow to filter. Pre-rendering the data on load speeds it up.
+
 ## 1.4.12
 ### Fixed
  - Datagrids and containers embedded within other datagrids and containers not setting values properly.

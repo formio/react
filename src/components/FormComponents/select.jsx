@@ -55,6 +55,11 @@ module.exports = React.createClass({
           limit: parseInt(this.props.component.limit) || 20,
           skip: 0
         };
+        // Pre-render all items to make them filter faster.
+        this.items.map(item => {
+          item.render = interpolate(this.props.component.template, {item}).replace(/<(?:.|\n)*?>/gm, '');
+          return item;
+        });
         this.refreshItems = (input, url, append) => {
           // If they typed in a search, reset skip.
           if ((this.lastInput || input) && this.lastInput !== input) {
@@ -64,15 +69,13 @@ module.exports = React.createClass({
           let items = this.items;
           if (input) {
             items = items.filter(item => {
-              // Get the visible string from the interpolated item.
-              const value = interpolate(this.props.component.template, {item}).replace(/<(?:.|\n)*?>/gm, '');
               switch (this.props.component.filter) {
                 case 'startsWith':
-                  return value.toLowerCase().lastIndexOf(input.toLowerCase(), 0) === 0;
+                  return item.render.toLowerCase().lastIndexOf(input.toLowerCase(), 0) === 0;
                   break;
                 case 'contains':
                 default:
-                  return value.toLowerCase().indexOf(input.toLowerCase()) !== -1;
+                  return item.render.toLowerCase().indexOf(input.toLowerCase()) !== -1;
                   break;
               }
             });
