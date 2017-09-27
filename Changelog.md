@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.4.14
+### Fixed
+ - Fix performance of rendering select json components with lots of items in the json array.
+
 ## 1.4.13
 ### Fixed
  - Select components with lots of json were slow to filter. Pre-rendering the data on load speeds it up.

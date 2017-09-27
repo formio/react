@@ -95,6 +95,13 @@ module.exports = {
     if (!component.template) {
       return null;
     }
+    var items = [];
+    if (typeof component.data.json === 'string') {
+      items = JSON.parse(component.data.json);
+    }
+    else if (typeof component.data.json === 'object') {
+      items = component.data.json;
+    }
 
     return React.createClass({
       render: function() {
@@ -103,15 +110,7 @@ module.exports = {
           // Search for the full item from values.
           item = _.find(component.data.values, { value: item }) || item;
         }
-
-        if (component.data.json && component.valueProperty) {
-          var items = [];
-          if (typeof component.data.json === 'string') {
-            items = JSON.parse(component.data.json);
-          }
-          else if (typeof component.data.json === 'object') {
-            items = component.data.json;
-          }
+        if (component.data.json && component.valueProperty && item && typeof item !== 'object') {
           item = _.find(items, {[component.valueProperty]: item}) || item;
         }
 
