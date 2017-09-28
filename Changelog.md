@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.4.15
+### Fixed
+ - Crash in select resources if not json due to change in 1.4.14
+
 ## 1.4.14
 ### Fixed
  - Fix performance of rendering select json components with lots of items in the json array.
