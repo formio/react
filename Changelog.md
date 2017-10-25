@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.4.17
+### Changed
+ - Upgrade react-widgets version.
+
+## 1.4.16
+### Changed
+ - Decrease animations to 10ms
+
 ## 1.4.15
 ### Fixed
  - Crash in select resources if not json due to change in 1.4.14
