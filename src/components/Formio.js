@@ -14,7 +14,7 @@ export class Formio extends Component {
     options: PropTypes.shape({
       readOnly: PropTypes.boolean,
       noAlerts: PropTypes.boolean,
-      i18n: PropTypes.string,
+      i18n: PropTypes.object,
       template: PropTypes.string
     }),
     onPrevPage: PropTypes.func,
