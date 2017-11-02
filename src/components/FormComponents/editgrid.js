@@ -146,7 +146,7 @@ class RowEdit extends React.Component {
     if (!component.props.component.hasOwnProperty('clearOnHide') || component.props.component.clearOnHide !== false) {
       if (component.props.component.key && value && value.hasOwnProperty(component.props.component.key)) {
         this.setState(previousState => {
-          delete previousState[component.props.component.key];
+          delete previousState.value[component.props.component.key];
           return previousState;
         });
       }
