@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.4.17
 ### Changed
- - Upgrade react-widgets version.
+ - Upgrade react-widgets version to 4.x.
 
 ## 1.4.16
 ### Changed
