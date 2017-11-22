@@ -54,15 +54,21 @@ module.exports = {
   },
   validate: function(value) {
     const { component } = this.props;
-    // Allow components to have custom validation.
-    if (typeof this.validateCustom === 'function') {
-      return this.validateCustom(value);
-    }
     var state = {
       isValid: true,
       errorType: '',
       errorMessage: ''
     };
+
+    // Allow components to have custom validation.
+    if (typeof this.validateCustom === 'function') {
+      const customValidation = this.validateCustom(value);
+      if (!customValidation.isValid) {
+        state.isValid = false;
+        state.errorType = 'day';
+        state.errorMessage = customValidation.errorMessage;
+      }
+    }
     // Validate each item if multiple.
     if (component.multiple) {
       value.forEach(item => {
