@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.4.19
+### Fixed
+ - Day component didn't properly implement custom validations.
+
 ## 1.4.18
 ### Fixed
  - Hiding items in editgrids didn't remove their values.
