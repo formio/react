@@ -4,7 +4,17 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## 1.4.21
+### Changed
+ - Upgrade formiojs to 2.25.4
+
+### Fixed
+ - Fix skipInit preventing default values being set on conditionally visible fields.
+
+## 1.4.20
+### Fixed
+ - Fix crash of editgrid when using the default template that contains a util function.
+ - Fix crash of editgrid when not using skipInit that would attempt to change the array to an object.
 
 ## 1.4.19
 ### Fixed

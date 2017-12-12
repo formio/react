@@ -33,6 +33,7 @@ export const Formio = React.createClass({
     };
   },
   componentWillMount: function () {
+    this.props.options.isInit = true;
     if (this.props.submission && this.props.submission.data) {
       this.data = clone(this.props.submission.data);
     }
@@ -43,6 +44,7 @@ export const Formio = React.createClass({
     if (this.props.src) {
       this.formio = new Formiojs(this.props.src);
       this.formio.loadForm().then(function (form) {
+        this.rerender = true;
         if (typeof this.props.onFormLoad === 'function') {
           this.props.onFormLoad(form);
         }
@@ -67,11 +69,16 @@ export const Formio = React.createClass({
       this.validate();
     }
   },
+  componentWillUpdate: function() {
+    this.props.options.isInit = this.rerender;
+    this.rerender = false;
+  },
   componentWillUnmount: function() {
     this.unmounting = true;
   },
   componentWillReceiveProps: function (nextProps) {
     if (nextProps.form !== this.props.form) {
+      this.rerender = true;
       this.setState({
         form: nextProps.form
       });
