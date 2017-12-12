@@ -230,7 +230,7 @@ module.exports = {
   safeSingleToMultiple: function(value) {
     const { component } = this.props;
     // Don't do anything to datagrid or containers.
-    if ((component.type === 'datagrid') || (component.type === 'container')) {
+    if ((component.type === 'datagrid') || (component.type === 'container') || (component.type === 'editgrid')) {
       return value;
     }
     // If this was a single but is not a multivalue.

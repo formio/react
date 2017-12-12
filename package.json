@@ -33,7 +33,7 @@
   "dependencies": {
     "babel-polyfill": "^6.22.0",
     "formio-utils": "^0.3.0",
-    "formiojs": "^2.19.2",
+    "formiojs": "^2.25.4",
     "lodash": "^4.15.0",
     "moment": "^2.10.6",
     "react-dropzone": "^3.5.3",

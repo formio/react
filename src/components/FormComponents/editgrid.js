@@ -84,8 +84,8 @@ class EditGridRow extends Component {
       const data = {
         row,
         rowIndex,
-        components: component.components
-
+        components: component.components,
+        util: FormioUtils
       };
       const actions = [
         {
@@ -417,11 +417,13 @@ export default React.createClass({
     const { component, checkConditional } = this.props;
     const Header = renderTemplate(component.templates.header, {
       components: component.components,
+      util: FormioUtils,
       value
     });
 
     const Footer = renderTemplate(component.templates.footer, {
       components: component.components,
+      util: FormioUtils,
       value
     });
 
