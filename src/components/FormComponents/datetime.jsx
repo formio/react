@@ -62,7 +62,7 @@ module.exports = React.createClass({
         }
         // On mobile with date only we will have a date string without time. This will set to midnight UTC instead of
         // local time. By setting to midnight here it will format as midnight local time.
-        if (date.length === 10) {
+        if (typeof date === 'string' && date.length === 10) {
           date += ' 00:00:00';
         }
         return new Date(date);
