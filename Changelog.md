@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.4.22
+### Fixed
+ - Date picker on android only returns the date portion which makes the rendered date appear on the day before.
+
 ## 1.4.21
 ### Changed
  - Upgrade formiojs to 2.25.4
