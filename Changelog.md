@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.4.24
+### Fixed
+ - Pass input variable to select custom values so that manual filtering can be done.
+
 ## 1.4.23
 ### Fixed
  - Add typecheck to date parsing.
