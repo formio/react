@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.4.25
+### Fixed
+ - Nesting datagrids passing parameters wrong causing remove rows to call on wrong datagrid.
+
 ## 1.4.24
 ### Fixed
  - Pass input variable to select custom values so that manual filtering can be done.

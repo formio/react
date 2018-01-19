@@ -286,6 +286,7 @@ module.exports = React.createClass({
           value.map((row, rowIndex) => {
             return (
               <DataGridRow
+                {...this.props}
                 elementChange={this.elementChange}
                 attachToDatarid={this.attachToDatarid}
                 detachFromDatagrid={this.detachFromDatagrid}
@@ -294,7 +295,6 @@ module.exports = React.createClass({
                 row={row}
                 rowIndex={rowIndex}
                 key={rowIndex}
-                {...this.props}
               />
             );
           })
