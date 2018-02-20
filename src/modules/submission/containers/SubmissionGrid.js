@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import FormioUtils from 'formiojs/utils';
-import Components from 'formiojs/build/components';
+import Components from 'formiojs/lib/components';
 import _get from 'lodash/get';
 import Grid from '../../../components/Grid';
 
