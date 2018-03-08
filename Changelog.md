@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.4.26
+### Fixed
+ - Crash in signature component when in read only mode.
+
 ## 1.4.25
 ### Fixed
  - Nesting datagrids passing parameters wrong causing remove rows to call on wrong datagrid.

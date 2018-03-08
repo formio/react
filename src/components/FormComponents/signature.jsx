@@ -10,6 +10,9 @@ module.exports = React.createClass({
     this.setValue(this.signature.getCanvas().toDataURL());
   },
   componentDidMount: function() {
+    if (!this.signature) {
+      return;
+    }
     if (this.state.value) {
       this.signature.fromDataURL(this.state.value);
     }
@@ -18,6 +21,9 @@ module.exports = React.createClass({
     }
   },
   willReceiveProps: function(nextProps) {
+    if (!this.signature) {
+      return;
+    }
     if (this.props.value !== nextProps.value) {
       this.signature.fromDataURL(nextProps.value);
     }
