@@ -54,7 +54,7 @@ module.exports = {
    */
   getInputMask: function(mask) {
     if (typeof this.customMask === 'function') {
-      return this.customMask;
+      return this.customMask();
     }
     if (!mask) {
       return false;
@@ -87,7 +87,7 @@ module.exports = {
     const { component, name, readOnly } = this.props;
     const mask = component.inputMask || '';
     const properties = {
-      type: component.inputType,
+      type: component.inputType !== 'number' ? component.inputType : 'text',
       key: index,
       className: 'form-control',
       id: component.key,
@@ -101,13 +101,8 @@ module.exports = {
       ref:  input => this.element = input
     };
 
-    if (component.type === 'number') {
-      properties.min = this.props.component.validate.min;
-      properties.max = this.props.component.validate.max;
-      properties.step = this.props.component.validate.step;
-    }
-
-    if (mask || component.type === 'currency') {
+    if (mask || component.type === 'currency' || component.type === 'number') {
+      properties.inputMode = 'number';
       properties.mask = this.getInputMask(mask);
       properties.placeholderChar = "_";
       properties.guide = true;
