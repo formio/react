@@ -116,17 +116,22 @@ module.exports = React.createClass({
             this.url = formiojs.getBaseUrl() + this.props.component.data.url;
           }
 
+          this.options = {
+            headers: new Headers({
+              'Pragma': undefined,
+              'Cache-Control': undefined
+            })
+          };
+
           // Disable auth for outgoing requests.
           if (!this.props.component.authenticate && this.url.indexOf(formiojs.getBaseUrl()) === -1) {
-            this.options = {
-              disableJWT: true,
-              headers: {
-                Authorization: undefined,
-                Pragma: undefined,
-                'Cache-Control': undefined
-              }
-            };
+            this.options.disableJWT = 'true';
+            this.options.headers.set('Authorization', undefined);
           }
+
+          this.props.component.data.headers.forEach((header) => {
+            this.options.headers.set(header.key, header.value);
+          });
         }
         else {
           this.url = formiojs.getBaseUrl();
