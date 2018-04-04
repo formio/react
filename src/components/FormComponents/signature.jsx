@@ -61,6 +61,7 @@ module.exports = React.createClass({
               canvasProps={{
                 className: 'signature-canvas'
               }}
+              clearOnResize={false}
               onEnd={this.onEnd}
             />
           </div>
