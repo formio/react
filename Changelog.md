@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.3
+### Fixed
+ - Datagrid not always refreshing when a component is hidden.
+
+## 1.5.2
+### Fixed
+ - Stop signature clearing on resize.
+
+## 1.5.1
+### Fixed
+ - Allow select component to set headers.
+
+## 1.5.0
+### Added
+ - Number and currency components can be limited to a certain number of decimals.
+
 ## 1.4.26
 ### Fixed
  - Crash in signature component when in read only mode.

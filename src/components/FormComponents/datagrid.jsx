@@ -31,9 +31,13 @@ class DataGridRow extends React.Component {
   };
 
   shouldComponentUpdate = (nextProps) => {
-    const { row } = this.props;
+    const { row, value } = this.props;
 
     if (!isEqual(row, nextProps.row)) {
+      return true;
+    }
+
+    if (value !== nextProps.value) {
       return true;
     }
 
@@ -207,6 +211,8 @@ module.exports = React.createClass({
     }
     this.setState(previousState => {
       if (deleteKey && previousState.value[row]) {
+        // Force a refresh if we delete a value.
+        previousState.value = clone(previousState.value);
         delete previousState.value[row][deleteKey];
       }
       return Object.assign(previousState, this.validate());
