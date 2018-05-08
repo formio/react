@@ -105,5 +105,22 @@ options={
 }
 ```
 
+## FormioBuilder class
+The FormioBuilder class can be used to embed a form builder directly in your react application. Please note that you'll need to include the CSS for the form builder from formio.js as well.
+
+** For es6 import/export modules. **
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Formio} from 'react-formio';
+```
+
+```javascript
+ReactDOM.render(
+  <Formio form={{display: 'form'}} onChange={(schema) => console.log(schema)} />
+  , document.getElementById('builder')
+);
+```
+
 ## License
 Released under the [MIT License](http://www.opensource.org/licenses/MIT).
