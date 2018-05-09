@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { FormioBuilder as Builder } from 'formiojs/formio.builder';
+import FormBuilder from 'formiojs/FormBuilder';
 
-export class FormioBuilder extends Component {
+export default class extends Component {
   static defaultProps = {
     options: {}
   };
@@ -30,7 +30,7 @@ export class FormioBuilder extends Component {
   initializeBuilder = () => {
     const {options, form} = this.props;
 
-    this.builder = new Builder(this.element, form, options);
+    this.builder = new FormBuilder(this.element, form, options);
     this.builderReady = this.builder.setDisplay(form.display);
 
     this.builderReady.then(() => {
