@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.4
+### Changed
+ - Editgrid rows close now removes new rows but just close existing rows.
+ - Changed events when editing and saving rows.
+
 ## 1.5.3
 ### Fixed
  - Datagrid not always refreshing when a component is hidden.
