@@ -321,13 +321,17 @@ export default React.createClass({
       value.push(row);
     }
     else if (id !== null && row === null) {
-      this.props.onEvent('removeEditgridRow', this, id);
       if (this.state.isNew === id) {
+        this.props.onEvent('removeEditgridRow', this, id);
         value.splice(id, 1);
+      }
+      else {
+        this.props.onEvent('closeEditgridRow', this, id);
       }
     }
     else if (id !== null && row) {
       value[id] = row;
+      this.props.onEvent('saveEditgridRow', this, id);
     }
     this.setState(previousState => {
       previousState.value = value;
