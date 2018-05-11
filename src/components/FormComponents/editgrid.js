@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import clone from 'lodash/clone';
 import isEqual from 'lodash/isEqual';
-import valueMixin from 'react-formio/lib/components/FormComponents/mixins/valueMixin';
+import valueMixin from './mixins/valueMixin';
 import FormioComponentsList from '../FormioComponentsList';
 import FormioUtils from 'formiojs/utils';
 
@@ -292,6 +292,7 @@ export default React.createClass({
     this.setState(previousState => {
       previousState.value = rows;
       previousState.isPristine = true;
+      previousState.isNew = index;
       previousState.openRows.push(index);
       Object.assign(previousState, this.validateCustom(null, previousState));
       return previousState;
@@ -321,7 +322,9 @@ export default React.createClass({
     }
     else if (id !== null && row === null) {
       this.props.onEvent('removeEditgridRow', this, id);
-      value.splice(id, 1);
+      if (this.state.isNew === id) {
+        value.splice(id, 1);
+      }
     }
     else if (id !== null && row) {
       value[id] = row;
@@ -329,6 +332,9 @@ export default React.createClass({
     this.setState(previousState => {
       previousState.value = value;
       previousState.isPristine = false;
+      if (id === previousState.isNew) {
+        delete previousState.isNew;
+      }
       previousState.openRows.splice(previousState.openRows.indexOf(id), 1);
       Object.assign(previousState, this.validateCustom(null, previousState));
       return previousState;
