@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import AllComponents from 'formiojs/components';
+import Components from 'formiojs/components/Components';
+Components.setComponents(AllComponents);
 import FormBuilder from 'formiojs/FormBuilder';
 
 export default class extends Component {
