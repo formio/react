@@ -26,7 +26,7 @@ export default class extends Component {
 
   componentWillUnmount = () => {
     if (this.builder !== undefined) {
-      this.builder.destroy(true);
+      this.builder.instance.destroy(true);
     }
   };
 
