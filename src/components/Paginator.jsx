@@ -1,6 +1,7 @@
 import React from 'react';
 import Pagify from 'react-pagify';
 import segmentize from 'segmentize';
+import clone from 'lodash/clone';
 
 export default class extends React.Component {
   static propTypes = {
@@ -54,7 +55,7 @@ export default class extends React.Component {
         }
       }
     };
-    const segments = _.clone(segmentize({
+    const segments = clone(segmentize({
       page: parseInt(pagination.page) + 1,
       pages: parseInt(pagination.numPages),
       beginPages: 3,
