@@ -12,13 +12,14 @@ export default class extends Component {
 
   static propTypes = {
     src: PropTypes.string,
+    url: PropTypes.string,
     form: PropTypes.object,
     submission: PropTypes.object,
     options: PropTypes.shape({
       readOnly: PropTypes.boolean,
       noAlerts: PropTypes.boolean,
       i18n: PropTypes.object,
-      template: PropTypes.string
+      template: PropTypes.string,
     }),
     onPrevPage: PropTypes.func,
     onNextPage: PropTypes.func,
@@ -32,7 +33,7 @@ export default class extends Component {
   };
 
   componentDidMount = () => {
-    const {options, src, form} = this.props;
+    const {options, src, url, form} = this.props;
 
     if (src) {
       this.createPromise = new Form(this.element, src, options).render().then(formio => {
@@ -44,6 +45,9 @@ export default class extends Component {
       this.createPromise = new Form(this.element, form, options).render().then(formio => {
         this.formio = formio;
         this.formio.form = form;
+        if (url) {
+          this.formio.url = url;
+        }
       });
     }
 
