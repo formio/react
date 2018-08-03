@@ -20,6 +20,7 @@ export default class extends Component {
       noAlerts: PropTypes.boolean,
       i18n: PropTypes.object,
       template: PropTypes.string,
+      templates: PropTypes.any,
     }),
     onPrevPage: PropTypes.func,
     onNextPage: PropTypes.func,
@@ -36,13 +37,13 @@ export default class extends Component {
     const {options, src, url, form} = this.props;
 
     if (src) {
-      this.createPromise = new Form(this.element, src, options).render().then(formio => {
+      this.createPromise = new Form(this.element, src, options).then(formio => {
         this.formio = formio;
         this.formio.src = src;
       });
     }
     if (form) {
-      this.createPromise = new Form(this.element, form, options).render().then(formio => {
+      this.createPromise = new Form(this.element, form, options).then(formio => {
         this.formio = formio;
         this.formio.form = form;
         if (url) {
@@ -84,14 +85,14 @@ export default class extends Component {
     const {options, src, form, submission} = this.props;
 
     if (src !== nextProps.src) {
-      this.createPromise = new Form(this.element, nextProps.src, options).render().then(formio => {
+      this.createPromise = new Form(this.element, nextProps.src, options).then(formio => {
         this.formio = formio;
         this.formio.src = nextProps.src;
       });
       this.initializeFormio();
     }
     if (form !== nextProps.form) {
-      this.createPromise = new Form(this.element, nextProps.form, options).render().then(formio => {
+      this.createPromise = new Form(this.element, nextProps.form, options).then(formio => {
         this.formio = formio;
         this.formio.form = form;
       });
