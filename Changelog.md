@@ -1,8 +1,16 @@
-# Change Log 
+# Change Log
 All notable changes to this project will be documented in this file
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## 1.5.6
+### Added
+ - Support for hidden flag on component definitions.
+
+## 1.5.5
+### Fixed
+ - Lodash imports for clone.
 
 ## 1.5.4
 ### Changed
@@ -140,11 +148,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 1.4.0
 ### Added
  - Time component
- - EditGrid component 
- 
+ - EditGrid component
+
 ## 1.3.14
  - Fix default formatting of empty custom error validation.
- 
+
 ## 1.3.13
 ### Fixed
  - Disable datagrid buttons when form is read only.
@@ -159,7 +167,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 1.3.11
 ### Reverted
  - Reverted revert of change to datagrids delete value.
- 
+
 ### Fixed
  - Calculated Select values could return something other than an array which caused an error.
 
@@ -172,7 +180,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Fix MinLength calculation for datagrids.
  - Fixed error about setState in select component.
  - Scenario where updating a form doesn't always set the values.
- 
+
 ### Changed
  - Replace full lodash with individual functions.
 
@@ -206,7 +214,7 @@ Changed
 
 ## 1.3.1
 ### Fixed
- - Fixed tests dealing with input mask change and missing onChange events. 
+ - Fixed tests dealing with input mask change and missing onChange events.
 
 ### Removed
  - Removing tests that don't work with current libraries.
