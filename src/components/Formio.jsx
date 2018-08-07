@@ -193,7 +193,16 @@ export const Formio = React.createClass({
     }
   },
   checkConditional: function (component, row = {}) {
-    const show = FormioUtils.checkCondition(component, row, this.data);
+    let show = true;
+
+    // If component is manually set to hidden, hide it.
+    if (component.hasOwnProperty('hidden') && component.hidden) {
+      show = false;
+    }
+    else {
+      // Calculate whether the field is visible or not.
+      show = FormioUtils.checkCondition(component, row, this.data);
+    }
 
     // If element is hidden, remove any values already on the form (this can happen when data is loaded into the form
     // and the field is initially hidden.
