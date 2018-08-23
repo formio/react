@@ -30,9 +30,10 @@ module.exports = React.createClass({
     var maskOptions = {
       prefix: '',
       suffix: '',
+      thousandsSeparatorSymbol: component.hasOwnProperty('thousandsSeparator') ? component.thousandsSeparator : '',
       allowDecimal: true,
       allowNegative: true
-    }
+    };
 
     if (this.decimalLimit === 0) {
       maskOptions.allowDecimal = false;
@@ -43,6 +44,6 @@ module.exports = React.createClass({
       maskOptions.requireDecimal = this.requireDecimal;
     }
 
-    return createNumberMask(maskOptions)
+    return createNumberMask(maskOptions);
   }
 });
