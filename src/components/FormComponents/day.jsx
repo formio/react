@@ -7,6 +7,9 @@ import Input from 'react-text-mask';
 module.exports = React.createClass({
   displayName: 'Textfield',
   mixins: [valueMixin, multiMixin, componentMixin],
+  getInitialValue: function() {
+    return '00/00/0000';
+  },
   onChangeCustom: function(config, event) {
     const { value } = event.target;
     // Don't fire a change if the value didn't change.
@@ -129,7 +132,7 @@ module.exports = React.createClass({
           id={config.componentId}
           style={{paddingRight: '10px'}}
           placeholder={config.placeholder}
-          value={this.state.date[config.key]}
+          value={this.state.date[config.key] !== 0 ? this.state.date[config.key] : ''}
           onChange={this.onChangeCustom.bind(null, config)}
           mask={mask}
           pipe={pipe}
