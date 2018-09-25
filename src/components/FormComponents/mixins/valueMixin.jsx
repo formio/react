@@ -255,7 +255,7 @@ module.exports = {
   },
   componentWillMount: function() {
     this.unmounting = false;
-    if (!this.props.options || !this.props.options.skipInit || !this.props.options.isInit) {
+    if (!this.props.options || !this.props.options.hasOwnProperty('skipInit') || !this.props.options.skipInit) {
       this.setValue(this.state.value, null, true);
     }
     if (typeof this.props.attachToForm === 'function') {

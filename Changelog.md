@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.9
+### Reverted
+ - 1.4.21 - Override skip init for conditionally visible.
+
 ## 1.5.8
 ### Fixed
  - Day components not defaulting to 00/00/0000 when initialized.

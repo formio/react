@@ -69,16 +69,11 @@ export const Formio = React.createClass({
       this.validate();
     }
   },
-  componentWillUpdate: function() {
-    this.props.options.isInit = this.rerender;
-    this.rerender = false;
-  },
   componentWillUnmount: function() {
     this.unmounting = true;
   },
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.form !== this.props.form) {
-      this.rerender = true;
       this.setState({
         form: nextProps.form
       });
