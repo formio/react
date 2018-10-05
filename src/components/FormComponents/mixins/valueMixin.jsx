@@ -67,6 +67,8 @@ module.exports = {
         state.isValid = false;
         state.errorType = 'day';
         state.errorMessage = customValidation.errorMessage;
+
+        return state;
       }
     }
     // Validate each item if multiple.

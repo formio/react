@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.10
+### Fixed
+ - Day component validation not properly validating required.
+
 ## 1.5.9
 ### Reverted
  - 1.4.21 - Override skip init for conditionally visible.
