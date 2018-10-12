@@ -1,5 +1,5 @@
 import React from 'react';
-import {Formio} from '../../../components/Formio';
+import Form from '../../../components/Form';
 import FormioView from '../../../FormioView';
 
 export default config => class Edit extends FormioView {
@@ -10,7 +10,7 @@ export default config => class Edit extends FormioView {
     }
     return (
       <div>
-        <Formio form={form} submission={submission} hideComponents={hideComponents} onSubmit={onSubmit} />
+        <Form form={form} submission={submission} hideComponents={hideComponents} onSubmit={onSubmit} />
       </div>
     );
   }

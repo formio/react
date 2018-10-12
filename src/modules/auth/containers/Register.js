@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {Formio} from '../../../components/Formio';
+import Form from '../../../components/Form';
 import FormioView from '../../../FormioView';
 
 export default class RegisterView extends FormioView {
   component = props => {
     return (
-      <Formio {...props} />
+      <Form {...props} />
     );
   }
 

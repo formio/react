@@ -1,14 +1,15 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
-import { Formio } from '../src/components/Formio.jsx';
+import Form from '../src/components/Form';
 import sinon from 'sinon';
 
+/* eslint-disable quotes */
 describe('Change Events @change', function () {
   it('fires change events on a form', function(done) {
     const onChange = sinon.spy();
     const element = mount(
-      <Formio
+      <Form
         form={{
           components: [
             {
@@ -59,7 +60,7 @@ describe('Change Events @change', function () {
   it('fires change events on a form with skipInit', function(done) {
     const onChange = sinon.spy();
     const element = mount(
-      <Formio
+      <Form
         form={{
           components: [
             {
@@ -111,7 +112,7 @@ describe('Change Events @change', function () {
   it('fires events when a field becomes visible', function(done) {
     const onChange = sinon.spy();
     const element = mount(
-      <Formio
+      <Form
         form={{
           "components": [
             {
@@ -192,7 +193,7 @@ describe('Change Events @change', function () {
   it('fires events when a field becomes visible with skipInit', function(done) {
     const onChange = sinon.spy();
     const element = mount(
-      <Formio
+      <Form
         form={{
           "components": [
             {
@@ -274,7 +275,7 @@ describe('Change Events @change', function () {
   it('fires events and removes hidden data on form load', function(done) {
     const onChange = sinon.spy();
     const element = mount(
-      <Formio
+      <Form
         form={{
           "components": [
             {
@@ -357,7 +358,7 @@ describe('Change Events @change', function () {
   it('fires events when data already exists', function(done) {
     const onChange = sinon.spy();
     const element = mount(
-      <Formio
+      <Form
         form={{
           "components": [
             {
@@ -438,7 +439,7 @@ describe('Change Events @change', function () {
   it('fires events when data already exists with skipInit', function(done) {
     const onChange = sinon.spy();
     const element = mount(
-      <Formio
+      <Form
         form={{
           "components": [
             {
@@ -528,7 +529,7 @@ describe('Change Events @change', function () {
   it('fires events when data is hidden in a layout component', function(done) {
     const onChange = sinon.spy();
     const element = mount(
-      <Formio
+      <Form
         form={{
           "components": [
             {
@@ -631,7 +632,7 @@ describe('Change Events @change', function () {
   it('fires events when data is hidden in a column component @wip', function(done) {
     const onChange = sinon.spy();
     const element = mount(
-      <Formio
+      <Form
         form={{
           "components": [
             {

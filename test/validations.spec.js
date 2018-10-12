@@ -1,13 +1,13 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
-import { Formio } from '../src/components/Formio.jsx';
+import Form from '../src/components/Form';
 import sinon from 'sinon';
 
 describe('Validations @validations', function () {
   it('defaults to a valid form', function(done) {
     const element = mount(
-      <Formio
+      <Form
         form={{
           components: [
             {
@@ -50,7 +50,7 @@ describe('Validations @validations', function () {
 
   it('validates on form load', function(done) {
     const element = mount(
-      <Formio
+      <Form
         form={{
           components: [
             {
@@ -93,7 +93,7 @@ describe('Validations @validations', function () {
 
   it('validates when field becomes valid', function(done) {
     const element = mount(
-      <Formio
+      <Form
         form={{
           components: [
             {
@@ -138,7 +138,7 @@ describe('Validations @validations', function () {
 
   it('validates when required field becomes cleared', function(done) {
     const element = mount(
-      <Formio
+      <Form
         form={{
           components: [
             {
@@ -186,7 +186,7 @@ describe('Validations @validations', function () {
 
   it('validates when required field is hidden', function(done) {
     const element = mount(
-      <Formio
+      <Form
         form={{
           "components": [
             {
@@ -259,7 +259,7 @@ describe('Validations @validations', function () {
 
   it('validates when inside a container', function(done) {
     const element = mount(
-      <Formio
+      <Form
         form={{
           "components": [
             {
@@ -322,7 +322,7 @@ describe('Validations @validations', function () {
 
   it('validates when inside a hidden container', function(done) {
     const element = mount(
-      <Formio
+      <Form
         form={{
           components: [
             {
@@ -419,7 +419,7 @@ describe('Validations @validations', function () {
 
   it('validates a required field in a datagrid', function(done) {
     const element = mount(
-      <Formio
+      <Form
         form={{
           components: [
             {
@@ -493,7 +493,7 @@ describe('Validations @validations', function () {
 
   it('validates a required field in a hidden datagrid', function(done) {
     const element = mount(
-      <Formio
+      <Form
         form={{
           components: [
             {
@@ -594,7 +594,7 @@ describe('Validations @validations', function () {
 
   it('validates a required field in a hidden panel', function(done) {
     const element = mount(
-      <Formio
+      <Form
         form={{
           components: [
             {
@@ -733,7 +733,7 @@ describe('Validations @validations', function () {
 
   it('validates a required field in a hidden datagrid with skipInit', function(done) {
     const element = mount(
-      <Formio
+      <Form
         form={{
           components: [
             {
@@ -873,7 +873,7 @@ describe('Validations @validations', function () {
 
   it('validates a required field in a hidden container with skipInit', function(done) {
     const element = mount(
-      <Formio
+      <Form
         form={{
           components: [
             {
@@ -973,7 +973,7 @@ describe('Validations @validations', function () {
 
   it('validates a required field in a hidden datagrid with skipInit', function(done) {
     const element = mount(
-      <Formio
+      <Form
         form={{
           components: [
             {
