@@ -48,6 +48,8 @@ export default class extends Component {
         if (url) {
           this.formio.url = url;
         }
+
+        return this.formio;
       });
     }
 

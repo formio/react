@@ -1,740 +1,362 @@
+import EventEmitter from 'eventemitter2';
 import React from 'react';
-import { expect } from 'chai';
-import { shallow, mount, render } from 'enzyme';
-import Form from '../src/components/Form';
 import sinon from 'sinon';
+import {expect} from 'chai';
+import Form from '../src/components/Form';
+import {
+  textField,
+  visible,
+  layout,
+  columns
+} from './fixtures';
 
-/* eslint-disable quotes */
-describe('Change Events @change', function () {
-  it('fires change events on a form', function(done) {
-    const onChange = sinon.spy();
-    const element = mount(
-      <Form
-        form={{
-          components: [
-            {
-              'input': true,
-              'tableView': true,
-              'inputType': 'text',
-              'inputMask': '',
-              'label': 'My Textfield',
-              'key': 'myTextfield',
-              'placeholder': '',
-              'prefix': '',
-              'suffix': '',
-              'multiple': false,
-              'defaultValue': '',
-              'protected': false,
-              'unique': false,
-              'persistent': true,
-              'validate': {
-                'required': false,
-                'minLength': '',
-                'maxLength': '',
-                'pattern': '',
-                'custom': '',
-                'customPrivate': false
-              },
-              'conditional': {
-                'show': null,
-                'when': null,
-                'eq': ''
-              },
-              'type': 'textfield'
-            }
-          ]
-        }}
-        onChange={onChange}
-      />
-    );
-    expect(onChange.callCount).to.equal(1);
-    element.find('input[type="text"]').simulate('change', {target: {value: 'My Value'}});
-    element.find('input[type="text"]').simulate('blur');
-    expect(onChange.callCount).to.equal(2);
-    element.find('input[type="text"]').simulate('change', {target: {value: ''}});
-    element.find('input[type="text"]').simulate('blur');
-    expect(onChange.callCount).to.equal(3);
-    done();
+import {
+  createIfExceed,
+  createMount,
+  seq
+} from './utils';
+
+describe('Form component', function() {
+  let mount;
+  let options;
+
+  beforeEach(() => {
+    options = {
+      events: new EventEmitter({
+        wildcard: false,
+        maxListeners: 0
+      })
+    };
+    mount = createMount();
   });
 
-  it('fires change events on a form with skipInit', function(done) {
-    const onChange = sinon.spy();
-    const element = mount(
-      <Form
-        form={{
-          components: [
-            {
-              'input': true,
-              'tableView': true,
-              'inputType': 'text',
-              'inputMask': '',
-              'label': 'My Textfield',
-              'key': 'myTextfield',
-              'placeholder': '',
-              'prefix': '',
-              'suffix': '',
-              'multiple': false,
-              'defaultValue': '',
-              'protected': false,
-              'unique': false,
-              'persistent': true,
-              'validate': {
-                'required': false,
-                'minLength': '',
-                'maxLength': '',
-                'pattern': '',
-                'custom': '',
-                'customPrivate': false
-              },
-              'conditional': {
-                'show': null,
-                'when': null,
-                'eq': ''
-              },
-              'type': 'textfield'
-            }
-          ]
-        }}
-        onChange={onChange}
-        options={{skipInit: true}}
-      />
-    );
-    expect(onChange.callCount).to.equal(0);
-    element.find('input[type="text"]').simulate('change', {target: {value: 'My Value'}});
-    element.find('input[type="text"]').simulate('blur');
-    expect(onChange.callCount).to.equal(1);
-    element.find('input[type="text"]').simulate('change', {target: {value: ''}});
-    element.find('input[type="text"]').simulate('blur');
-    expect(onChange.callCount).to.equal(2);
-    done();
+  afterEach(() => {
+    options.events.removeAllListeners();
+    mount.cleanUp();
   });
 
-  it('fires events when a field becomes visible', function(done) {
-    const onChange = sinon.spy();
+  it('should create formio instance.', function() {
     const element = mount(
       <Form
-        form={{
-          "components": [
-            {
-              "input": true,
-              "inputType": "checkbox",
-              "tableView": true,
-              "hideLabel": true,
-              "label": "Visible",
-              "datagridLabel": true,
-              "key": "visible",
-              "defaultValue": false,
-              "protected": false,
-              "persistent": true,
-              "clearOnHide": true,
-              "validate": {
-                "required": false
-              },
-              "type": "checkbox",
-              "tags": [],
-              "conditional": {
-                "show": "",
-                "when": null,
-                "eq": ""
-              }
-            },
-            {
-              "input": true,
-              "tableView": true,
-              "inputType": "text",
-              "inputMask": "",
-              "label": "Textfield",
-              "key": "textfield",
-              "placeholder": "",
-              "prefix": "",
-              "suffix": "",
-              "multiple": false,
-              "defaultValue": "",
-              "protected": false,
-              "unique": false,
-              "persistent": true,
-              "clearOnHide": true,
-              "validate": {
-                "required": true,
-                "minLength": "",
-                "maxLength": "",
-                "pattern": "",
-                "custom": "",
-                "customPrivate": false
-              },
-              "conditional": {
-                "show": "true",
-                "when": "visible",
-                "eq": "true"
-              },
-              "type": "textfield",
-              "tags": []
-            }
-          ]
-        }}
-        onChange={onChange}
-      />
-    );
-    expect(onChange.callCount).to.equal(1);
-    const checkbox = element.find('input[type="checkbox"]');
-    checkbox.simulate('change', {target: {"checked": true}});
-    expect(onChange.callCount).to.equal(3);
-    element.find('input[type="text"]').simulate('change', {target: {value: 'My Value'}});
-    element.find('input[type="text"]').simulate('blur');
-    expect(onChange.callCount).to.equal(4);
-    element.find('input[type="text"]').simulate('change', {target: {value: ''}});
-    element.find('input[type="text"]').simulate('blur');
-    expect(onChange.callCount).to.equal(5);
-    checkbox.simulate('change', {target: {"checked": false}});
-    expect(onChange.callCount).to.equal(7);
-    done();
+        form={{display: 'form', components: [textField]}}
+        options={options}
+      />);
+    return element
+      .instance()
+      .createPromise
+      .then(formio => {
+        expect(formio).to.be.an('object');
+        expect(formio.isBuilt).to.be.true;
+      });
   });
 
-  it('fires events when a field becomes visible with skipInit', function(done) {
-    const onChange = sinon.spy();
-    const element = mount(
-      <Form
-        form={{
-          "components": [
-            {
-              "input": true,
-              "inputType": "checkbox",
-              "tableView": true,
-              "hideLabel": true,
-              "label": "Visible",
-              "datagridLabel": true,
-              "key": "visible",
-              "defaultValue": false,
-              "protected": false,
-              "persistent": true,
-              "clearOnHide": true,
-              "validate": {
-                "required": false
-              },
-              "type": "checkbox",
-              "tags": [],
-              "conditional": {
-                "show": "",
-                "when": null,
-                "eq": ""
-              }
-            },
-            {
-              "input": true,
-              "tableView": true,
-              "inputType": "text",
-              "inputMask": "",
-              "label": "Textfield",
-              "key": "textfield",
-              "placeholder": "",
-              "prefix": "",
-              "suffix": "",
-              "multiple": false,
-              "defaultValue": "",
-              "protected": false,
-              "unique": false,
-              "persistent": true,
-              "clearOnHide": true,
-              "validate": {
-                "required": true,
-                "minLength": "",
-                "maxLength": "",
-                "pattern": "",
-                "custom": "",
-                "customPrivate": false
-              },
-              "conditional": {
-                "show": "true",
-                "when": "visible",
-                "eq": "true"
-              },
-              "type": "textfield",
-              "tags": []
-            }
-          ]
-        }}
-        onChange={onChange}
-        options={{skipInit: true}}
-      />
-    );
-    expect(onChange.callCount).to.equal(0);
-    const checkbox = element.find('input[type="checkbox"]');
-    checkbox.simulate('change', {target: {"checked": true}});
-    expect(onChange.callCount).to.equal(1);
-    element.find('input[type="text"]').simulate('change', {target: {value: 'My Value'}});
-    element.find('input[type="text"]').simulate('blur');
-    expect(onChange.callCount).to.equal(2);
-    element.find('input[type="text"]').simulate('change', {target: {value: ''}});
-    element.find('input[type="text"]').simulate('blur');
-    expect(onChange.callCount).to.equal(3);
-    checkbox.simulate('change', {target: {"checked": false}});
-    expect(onChange.callCount).to.equal(5);
-    done();
+  it('should trigger change on form change.', function() {
+    const {ifexceed, notify} = createIfExceed();
+    const onchange = sinon.spy(notify);
+    let root;
+    let input;
+    let element;
+    return seq([
+      () => {
+        element = mount(
+          <Form
+            form={{display: 'form', components: [textField]}}
+            onChange={onchange}
+            options={options}
+          />
+        );
+        return ifexceed('initial change is not triggered', () => {
+          expect(onchange.calledOnce).to.be.true;
+          // throw new Error;
+        });
+      },
+      () => {
+        root = element.getDOMNode();
+        input = root.querySelector('input[type="text"]');
+        input.value = 'text';
+        input.dispatchEvent(new Event('input'));
+        return ifexceed('textField change is not triggered', () => {
+          expect(onchange.calledTwice).to.be.true;
+        });
+      },
+      () => {
+        input.value = '';
+        input.dispatchEvent(new Event('input'));
+        return ifexceed('textField change is not triggered', () => {
+          expect(onchange.calledThrice).to.be.true;
+        });
+      }
+    ]);
   });
 
-  it('fires events and removes hidden data on form load', function(done) {
-    const onChange = sinon.spy();
-    const element = mount(
-      <Form
-        form={{
-          "components": [
-            {
-              "input": true,
-              "inputType": "checkbox",
-              "tableView": true,
-              "hideLabel": true,
-              "label": "Visible",
-              "datagridLabel": true,
-              "key": "visible",
-              "defaultValue": false,
-              "protected": false,
-              "persistent": true,
-              "clearOnHide": true,
-              "validate": {
-                "required": false
-              },
-              "type": "checkbox",
-              "tags": [],
-              "conditional": {
-                "show": "",
-                "when": null,
-                "eq": ""
-              }
-            },
-            {
-              "input": true,
-              "tableView": true,
-              "inputType": "text",
-              "inputMask": "",
-              "label": "Textfield",
-              "key": "textfield",
-              "placeholder": "",
-              "prefix": "",
-              "suffix": "",
-              "multiple": false,
-              "defaultValue": "",
-              "protected": false,
-              "unique": false,
-              "persistent": true,
-              "clearOnHide": true,
-              "validate": {
-                "required": true,
-                "minLength": "",
-                "maxLength": "",
-                "pattern": "",
-                "custom": "",
-                "customPrivate": false
-              },
-              "conditional": {
-                "show": "true",
-                "when": "visible",
-                "eq": "true"
-              },
-              "type": "textfield",
-              "tags": []
-            }
-          ]
-        }}
-        onChange={onChange}
-        submission={{data: {visible: false, textfield: 'Test'}}}
-      />
-    );
-    expect(onChange.callCount).to.equal(1);
-    expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
-    const checkbox = element.find('input[type="checkbox"]');
-    checkbox.simulate('change', {target: {"checked": true}});
-    expect(onChange.callCount).to.equal(3);
-    expect(onChange.calledWith({data: {visible: true, textfield: ''}})).to.equal(true);
-    element.find('input[type="text"]').simulate('change', {target: {value: 'My Value'}});
-    element.find('input[type="text"]').simulate('blur');
-    expect(onChange.callCount).to.equal(4);
-    expect(onChange.calledWith({data: {visible: true, textfield: 'My Value'}})).to.equal(true);
-    checkbox.simulate('change', {target: {"checked": false}});
-    expect(onChange.callCount).to.equal(6);
-    expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
-    done();
+  it('should trigger change when field is visible.', function() {
+    const {ifexceed, notify} = createIfExceed();
+    const onchange = sinon.spy(notify);
+    let root;
+    let input;
+    let checkbox;
+    let element;
+    return seq([
+      () => {
+        element = mount(
+          <Form
+            form={{display: 'form', components: visible}}
+            onChange={onchange}
+          />
+        );
+        return ifexceed('not initialised', () => {
+          expect(onchange.calledOnce).to.be.true;
+        });
+      },
+      () => {
+        root = element.getDOMNode();
+        checkbox = root.querySelector('input[type="checkbox"]');
+        checkbox.dispatchEvent(new MouseEvent('click'));
+        return ifexceed('not trigger on checkbox change', () => {
+          expect(onchange.callCount).to.equal(2);
+        });
+      },
+      () => {
+        input = root.querySelector('input[type="text"]');
+        input.value = 'text';
+        input.dispatchEvent(new Event('input'));
+        return ifexceed('input change fail', () => {
+          expect(onchange.callCount).to.equal(3);
+        });
+      },
+      () => {
+        input.value = '';
+        input.dispatchEvent(new Event('input'));
+        return ifexceed('input change fail', () => {
+          expect(onchange.callCount).to.equal(4);
+        });
+      },
+      () => {
+        checkbox.dispatchEvent(new MouseEvent('click'));
+        return ifexceed('checkbox click fail', () => {
+          expect(onchange.callCount).to.equal(5);
+        });
+      }
+    ]);
   });
 
-  it('fires events when data already exists', function(done) {
-    const onChange = sinon.spy();
-    const element = mount(
-      <Form
-        form={{
-          "components": [
-            {
-              "input": true,
-              "inputType": "checkbox",
-              "tableView": true,
-              "hideLabel": true,
-              "label": "Visible",
-              "datagridLabel": true,
-              "key": "visible",
-              "defaultValue": false,
-              "protected": false,
-              "persistent": true,
-              "clearOnHide": true,
-              "validate": {
-                "required": false
-              },
-              "type": "checkbox",
-              "tags": [],
-              "conditional": {
-                "show": "",
-                "when": null,
-                "eq": ""
-              }
-            },
-            {
-              "input": true,
-              "tableView": true,
-              "inputType": "text",
-              "inputMask": "",
-              "label": "Textfield",
-              "key": "textfield",
-              "placeholder": "",
-              "prefix": "",
-              "suffix": "",
-              "multiple": false,
-              "defaultValue": "",
-              "protected": false,
-              "unique": false,
-              "persistent": true,
-              "clearOnHide": true,
-              "validate": {
-                "required": true,
-                "minLength": "",
-                "maxLength": "",
-                "pattern": "",
-                "custom": "",
-                "customPrivate": false
-              },
-              "conditional": {
-                "show": "true",
-                "when": "visible",
-                "eq": "true"
-              },
-              "type": "textfield",
-              "tags": []
-            }
-          ]
-        }}
-        onChange={onChange}
-        submission={{data: {visible: true, textfield: 'Test'}}}
-      />
-    );
-    expect(onChange.callCount).to.equal(0);
-    const checkbox = element.find('input[type="checkbox"]');
-    checkbox.simulate('change', {target: {"checked": false}});
-    expect(onChange.callCount).to.equal(2);
-    expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
-    checkbox.simulate('change', {target: {"checked": true}});
-    expect(onChange.callCount).to.equal(4);
-    expect(onChange.calledWith({data: {visible: true, textfield: ''}})).to.equal(true);
-    checkbox.simulate('change', {target: {"checked": false}});
-    expect(onChange.callCount).to.equal(6);
-    expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
-    done();
+  it('should trigger change and remove hidden data on form load.', function() {
+    const {ifexceed, notify} = createIfExceed();
+    const onchange = sinon.spy(notify);
+    let root;
+    let input;
+    let checkbox;
+    let element;
+    let formio;
+
+    return seq([
+      () => {
+        element = mount(
+          <Form
+            form={{display: 'form', components: visible}}
+            onChange={onchange}
+            submission={{data: {visible: false, textfield: 'Test'}}}
+          />
+        );
+        return ifexceed('fail on init change', () => {
+          formio = element.instance().formio;
+          root = element.getDOMNode();
+          expect(onchange.calledOnce).to.be.true;
+          expect(formio.submission).to.have.deep.property('data', {visible: false});
+        });
+      },
+      () => {
+        checkbox = root.querySelector('input[type="checkbox"]');
+        input = root.querySelector('input[type="text"]');
+        checkbox.dispatchEvent(new MouseEvent('click'));
+        return ifexceed('fail on checkbox click', () => {
+          expect(onchange.calledTwice).to.be.true;
+          expect(formio.submission).to.deep.equal({data: {visible: true, textfield: ''}});
+        });
+      },
+      () => {
+        input.value = 'value';
+        input.dispatchEvent(new Event('input'));
+        return ifexceed('fail on textfield input', () => {
+          expect(onchange.callCount).to.equal(3);
+          expect(formio.submission).to.deep.equal({data: {visible: true, textfield: 'value'}});
+        });
+      },
+      () => {
+        checkbox.dispatchEvent(new MouseEvent('click'));
+        return ifexceed('fail on checkbox hide', () => {
+          expect(onchange.callCount).to.equal(4);
+          expect(formio.submission).to.deep.equal({data: {visible: false}});
+        });
+      }
+    ]);
   });
 
-  it('fires events when data already exists with skipInit', function(done) {
-    const onChange = sinon.spy();
-    const element = mount(
-      <Form
-        form={{
-          "components": [
-            {
-              "input": true,
-              "inputType": "checkbox",
-              "tableView": true,
-              "hideLabel": true,
-              "label": "Visible",
-              "datagridLabel": true,
-              "key": "visible",
-              "defaultValue": false,
-              "protected": false,
-              "persistent": true,
-              "clearOnHide": true,
-              "validate": {
-                "required": false
-              },
-              "type": "checkbox",
-              "tags": [],
-              "conditional": {
-                "show": "",
-                "when": null,
-                "eq": ""
-              }
-            },
-            {
-              "input": true,
-              "tableView": true,
-              "inputType": "text",
-              "inputMask": "",
-              "label": "Textfield",
-              "key": "textfield",
-              "placeholder": "",
-              "prefix": "",
-              "suffix": "",
-              "multiple": false,
-              "defaultValue": "",
-              "protected": false,
-              "unique": false,
-              "persistent": true,
-              "clearOnHide": true,
-              "validate": {
-                "required": true,
-                "minLength": "",
-                "maxLength": "",
-                "pattern": "",
-                "custom": "",
-                "customPrivate": false
-              },
-              "conditional": {
-                "show": "true",
-                "when": "visible",
-                "eq": "true"
-              },
-              "type": "textfield",
-              "tags": []
-            }
-          ]
-        }}
-        onChange={onChange}
-        submission={{data: {visible: true, textfield: 'Test'}}}
-        options={{skipInit: true}}
-      />
-    );
-    expect(onChange.callCount).to.equal(0);
-    const checkbox = element.find('input[type="checkbox"]');
-    checkbox.simulate('change', {target: {"checked": false}});
-    expect(onChange.callCount).to.equal(2);
-    expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
-    checkbox.simulate('change', {target: {"checked": true}});
-    expect(onChange.callCount).to.equal(3);
-    expect(onChange.calledWith({data: {visible: true}})).to.equal(true);
-    checkbox.simulate('change', {target: {"checked": false}});
-    expect(onChange.callCount).to.equal(4);
-    expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
-    checkbox.simulate('change', {target: {"checked": true}});
-    element.find('input[type="text"]').simulate('change', {target: {value: 'My Value'}});
-    element.find('input[type="text"]').simulate('blur');
-    expect(onChange.callCount).to.equal(6);
-    expect(onChange.calledWith({data: {visible: true, textfield: 'My Value'}})).to.equal(true);
-    checkbox.simulate('change', {target: {"checked": false}});
-    expect(onChange.callCount).to.equal(8);
-    expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
-    done();
+  it('should trigger change when data exists.', function() {
+    const {ifexceed, notify} = createIfExceed();
+    const onchange = sinon.spy(notify);
+    let root;
+    let input;
+    let checkbox;
+    let element;
+    let formio;
+    return seq([
+      () => {
+        element = mount(
+          <Form
+            form={{display: 'form', components: visible}}
+            onChange={onchange}
+            submission={{data: {visible: true, textfield: 'Test'}}}
+          />
+        );
+        return ifexceed('fail on init change', () => {
+          formio = element.instance().formio;
+          root = element.getDOMNode();
+          checkbox = root.querySelector('input[type="checkbox"]');
+          input = root.querySelector('input[type="text"]');
+          expect(onchange.calledOnce).to.be.true;
+          expect(formio.submission).to.deep.equal({data: {visible: true, textfield: 'Test'}});
+        });
+      },
+      () => {
+        checkbox.dispatchEvent(new MouseEvent('click'));
+        return ifexceed('fail on checkbox click', () => {
+          expect(onchange.calledTwice).to.be.true;
+          expect(formio.submission).to.deep.equal({data: {visible: false}});
+        });
+      },
+      () => {
+        checkbox.dispatchEvent(new MouseEvent('click'));
+        return ifexceed('fail on checkbox click', () => {
+          expect(onchange.callCount).to.equal(3);
+          expect(formio.submission).to.deep.equal({data: {visible: true, textfield: ''}});
+        });
+      },
+      () => {
+        checkbox.dispatchEvent(new MouseEvent('click'));
+        return ifexceed('fail on checkbox click', () => {
+          expect(onchange.callCount).to.equal(4);
+          expect(formio.submission).to.deep.equal({data: {visible: false}});
+        });
+      }
+    ]);
   });
 
-  it('fires events when data is hidden in a layout component', function(done) {
-    const onChange = sinon.spy();
-    const element = mount(
-      <Form
-        form={{
-          "components": [
-            {
-              "conditional": {
-                "eq": "",
-                "when": null,
-                "show": ""
-              },
-              "tags": [],
-              "type": "checkbox",
-              "validate": {
-                "required": false
-              },
-              "clearOnHide": true,
-              "persistent": true,
-              "protected": false,
-              "defaultValue": false,
-              "key": "visible",
-              "datagridLabel": true,
-              "label": "Visible",
-              "hideLabel": true,
-              "tableView": true,
-              "inputType": "checkbox",
-              "input": true,
-              "lockKey": true
-            },
-            {
-              "key": "fieldset1",
-              "input": false,
-              "tableView": true,
-              "legend": "fieldset",
-              "components": [
-                {
-                  "input": true,
-                  "tableView": true,
-                  "inputType": "text",
-                  "inputMask": "",
-                  "label": "Textfield",
-                  "key": "textfield",
-                  "placeholder": "",
-                  "prefix": "",
-                  "suffix": "",
-                  "multiple": false,
-                  "defaultValue": "",
-                  "protected": false,
-                  "unique": false,
-                  "persistent": true,
-                  "clearOnHide": true,
-                  "validate": {
-                    "required": false,
-                    "minLength": "",
-                    "maxLength": "",
-                    "pattern": "",
-                    "custom": "",
-                    "customPrivate": false
-                  },
-                  "conditional": {
-                    "show": "",
-                    "when": null,
-                    "eq": ""
-                  },
-                  "type": "textfield",
-                  "tags": []
-                }
-              ],
-              "type": "fieldset",
-              "tags": [],
-              "conditional": {
-                "show": "true",
-                "when": "visible",
-                "eq": "true"
-              }
-            }
-          ]
-        }}
-        onChange={onChange}
-        submission={{data: {visible: false, textfield: 'Test'}}}
-      />
-    );
-    expect(onChange.callCount).to.equal(1);
-    expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
-    const checkbox = element.find('input[type="checkbox"]');
-    checkbox.simulate('change', {target: {"checked": true}});
-    expect(onChange.callCount).to.equal(3);
-    expect(onChange.calledWith({data: {visible: true, textfield: ''}})).to.equal(true);
-    checkbox.simulate('change', {target: {"checked": false}});
-    expect(onChange.callCount).to.equal(5);
-    expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
-    checkbox.simulate('change', {target: {"checked": true}});
-    element.find('input[type="text"]').simulate('change', {target: {value: 'My Value'}});
-    element.find('input[type="text"]').simulate('blur');
-    expect(onChange.callCount).to.equal(8);
-    expect(onChange.calledWith({data: {visible: true, textfield: 'My Value'}})).to.equal(true);
-    checkbox.simulate('change', {target: {"checked": false}});
-    expect(onChange.callCount).to.equal(10);
-    expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
-    done();
+  it('should trigger change when data is hidden in a layout component.', function() {
+    const {ifexceed, notify} = createIfExceed();
+    const onchange = sinon.spy(notify);
+    let root;
+    let input;
+    let checkbox;
+    let element;
+    let formio;
+    return seq([
+      () => {
+        element = mount(
+          <Form
+            form={{display: 'form', components: layout}}
+            onChange={onchange}
+            submission={{data: {visible: false, textfield: 'Test'}}}
+          />
+        );
+        return ifexceed('fail on init change', () => {
+          formio = element.instance().formio;
+          root = element.getDOMNode();
+          checkbox = root.querySelector('input[type="checkbox"]');
+          input = root.querySelector('input[type="text"]');
+          expect(onchange.calledOnce).to.be.true;
+          expect(formio.submission).to.deep.equal({data: {visible: false}});
+        });
+      },
+      () => {
+        checkbox.dispatchEvent(new MouseEvent('click'));
+        return ifexceed('fail on checkbox click', () => {
+          expect(onchange.calledTwice).to.be.true;
+          expect(formio.submission).to.deep.equal({data: {visible: true, textfield: ''}});
+        });
+      },
+      () => {
+        checkbox.dispatchEvent(new MouseEvent('click'));
+        return ifexceed('fail on checkbox click', () => {
+          expect(onchange.callCount).to.equal(3);
+          expect(formio.submission).to.deep.equal({data: {visible: false}});
+        });
+      },
+      () => {
+        checkbox.dispatchEvent(new MouseEvent('click'));
+        input.value = 'value';
+        input.dispatchEvent(new Event('input'));
+        return ifexceed('fail on checkbox click', () => {
+          expect(onchange.callCount).to.equal(4);
+          expect(formio.submission).to.deep.equal({data: {visible: true, textfield: 'value'}});
+        });
+      },
+      () => {
+        checkbox.dispatchEvent(new MouseEvent('click'));
+        return ifexceed('fail on checkbox click', () => {
+          expect(onchange.callCount).to.equal(5);
+          expect(formio.submission).to.deep.equal({data: {visible: false}});
+        });
+      },
+    ]);
   });
 
-  it('fires events when data is hidden in a column component @wip', function(done) {
-    const onChange = sinon.spy();
-    const element = mount(
-      <Form
-        form={{
-          "components": [
-            {
-              "lockKey": true,
-              "input": true,
-              "inputType": "checkbox",
-              "tableView": true,
-              "hideLabel": true,
-              "label": "Visible",
-              "datagridLabel": true,
-              "key": "visible",
-              "defaultValue": false,
-              "protected": false,
-              "persistent": true,
-              "clearOnHide": true,
-              "validate": {
-                "required": false
-              },
-              "type": "checkbox",
-              "tags": [],
-              "conditional": {
-                "show": "",
-                "when": null,
-                "eq": ""
-              }
-            },
-            {
-              "lockKey": true,
-              "conditional": {
-                "eq": "true",
-                "when": "visible",
-                "show": "true"
-              },
-              "tags": [],
-              "type": "columns",
-              "columns": [
-                {
-                  "components": [
-                    {
-                      "isNew": false,
-                      "tags": [],
-                      "type": "textfield",
-                      "conditional": {
-                        "eq": "",
-                        "when": null,
-                        "show": ""
-                      },
-                      "validate": {
-                        "customPrivate": false,
-                        "custom": "",
-                        "pattern": "",
-                        "maxLength": "",
-                        "minLength": "",
-                        "required": true
-                      },
-                      "clearOnHide": true,
-                      "persistent": true,
-                      "unique": false,
-                      "protected": false,
-                      "defaultValue": "",
-                      "multiple": false,
-                      "suffix": "",
-                      "prefix": "",
-                      "placeholder": "",
-                      "key": "textfield",
-                      "label": "Textfield",
-                      "inputMask": "",
-                      "inputType": "text",
-                      "tableView": true,
-                      "input": true
-                    }
-                  ]
-                },
-                {
-                  "components": []
-                }
-              ],
-              "key": "columns1",
-              "input": false
-            }
-          ]
-        }}
-        onChange={onChange}
-        submission={{data: {visible: false, textfield: 'Test'}}}
-      />
-    );
-    expect(onChange.callCount).to.equal(1);
-    expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
-    const checkbox = element.find('input[type="checkbox"]');
-    //checkbox.simulate('change', {target: {"checked": true}});
-    //expect(onChange.callCount).to.equal(3);
-    //expect(onChange.calledWith({data: {visible: true, textfield: ''}})).to.equal(true);
-    //checkbox.simulate('change', {target: {"checked": false}});
-    //expect(onChange.callCount).to.equal(5);
-    //expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
-    //checkbox.simulate('change', {target: {"checked": true}});
-    //element.find('input[type="text"]').simulate('change', {target: {value: 'My Value'}});
-    //expect(onChange.callCount).to.equal(8);
-    //expect(onChange.calledWith({data: {visible: true, textfield: 'My Value'}})).to.equal(true);
-    //checkbox.simulate('change', {target: {"checked": false}});
-    //expect(onChange.callCount).to.equal(10);
-    //expect(onChange.calledWith({data: {visible: false}})).to.equal(true);
-    done();
+  it('should trigger change when dat is hindden in a columns component.', function() {
+    const {ifexceed, notify} = createIfExceed();
+    const onchange = sinon.spy(notify);
+    let root;
+    let input;
+    let checkbox;
+    let element;
+    let formio;
+    return seq([
+      () => {
+        element = mount(
+          <Form
+            form={{display: 'form', components: columns}}
+            onChange={onchange}
+            submission={{data: {visible: false, textfield: 'Test'}}}
+          />
+        );
+        return ifexceed('fail on init change', () => {
+          formio = element.instance().formio;
+          root = element.getDOMNode();
+          checkbox = root.querySelector('input[type="checkbox"]');
+          input = root.querySelector('input[type="text"]');
+          expect(onchange.calledOnce).to.be.true;
+          expect(formio.submission).to.deep.equal({data: {visible: false}});
+        });
+      },
+      () => {
+        checkbox.dispatchEvent(new MouseEvent('click'));
+        return ifexceed('fail on checkbox click', () => {
+          expect(onchange.calledTwice).to.be.true;
+          expect(formio.submission).to.deep.equal({data: {visible: true, textfield: ''}});
+        });
+      },
+      () => {
+        checkbox.dispatchEvent(new MouseEvent('click'));
+        return ifexceed('fail on checkbox click', () => {
+          expect(onchange.callCount).to.equal(3);
+          expect(formio.submission).to.deep.equal({data: {visible: false}});
+        });
+      },
+      () => {
+        checkbox.dispatchEvent(new MouseEvent('click'));
+        input.value = 'value';
+        input.dispatchEvent(new Event('input'));
+        return ifexceed('fail on checkbox click', () => {
+          expect(onchange.callCount).to.equal(4);
+          expect(formio.submission).to.deep.equal({data: {visible: true, textfield: 'value'}});
+        });
+      },
+      () => {
+        checkbox.dispatchEvent(new MouseEvent('click'));
+        return ifexceed('fail on checkbox click', () => {
+          expect(onchange.callCount).to.equal(5);
+          expect(formio.submission).to.deep.equal({data: {visible: false}});
+        });
+      },
+    ]);
   });
 });

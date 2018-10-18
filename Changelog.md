@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.0.3
+### Changed
+ - Integration tests fixed.
+ - react/react-dom dependencies updated to version 16.
+
+## 3.0.2
+### Changed
+ - Formio component renamed to Form.
+
 ## 3.0.1
 ### Added
  - url property for when using form instead of src.
