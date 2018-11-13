@@ -292,7 +292,6 @@ export default React.createClass({
     this.setState(previousState => {
       previousState.value = rows;
       previousState.isPristine = true;
-      previousState.isNew = index;
       previousState.openRows.push(index);
       Object.assign(previousState, this.validateCustom(null, previousState));
       return previousState;
@@ -321,13 +320,8 @@ export default React.createClass({
       value.push(row);
     }
     else if (id !== null && row === null) {
-      if (this.state.isNew === id) {
-        this.props.onEvent('removeEditgridRow', this, id);
-        value.splice(id, 1);
-      }
-      else {
-        this.props.onEvent('closeEditgridRow', this, id);
-      }
+      this.props.onEvent('removeEditgridRow', this, id);
+      value.splice(id, 1);
     }
     else if (id !== null && row) {
       value[id] = row;
@@ -336,9 +330,6 @@ export default React.createClass({
     this.setState(previousState => {
       previousState.value = value;
       previousState.isPristine = false;
-      if (id === previousState.isNew) {
-        delete previousState.isNew;
-      }
       previousState.openRows.splice(previousState.openRows.indexOf(id), 1);
       Object.assign(previousState, this.validateCustom(null, previousState));
       return previousState;
