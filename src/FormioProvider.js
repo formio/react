@@ -2,7 +2,7 @@ import {Component, Children} from 'react';
 import PropTypes from 'prop-types';
 
 export default class FormioProvider extends Component {
-  static PropTypes = {
+  static propTypes = {
     formio: PropTypes.object.isRequired,
     children: PropTypes.element.isRequired
   };
