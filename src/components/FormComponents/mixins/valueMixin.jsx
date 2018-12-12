@@ -2,6 +2,7 @@ import React from 'react';
 import { deepEqual } from '../../../util';
 import clone from 'lodash/clone';
 import debounce from 'lodash/debounce';
+import moment from 'moment';
 
 module.exports = {
   getDefaultValue: function(value) {
@@ -10,7 +11,8 @@ module.exports = {
     if (value == null) {
       if (component.hasOwnProperty('customDefaultValue')) {
         try {
-          value = eval('(function(data, row) { var value = "";' + component.customDefaultValue.toString() + '; return value; })(data, row)');
+          const f = new Function('data', 'row', 'moment', 'var value = "";' + component.customDefaultValue.toString() + '; return value;');
+          value = f(data, row, moment);
         }
         catch (e) {
           /* eslint-disable no-console */
