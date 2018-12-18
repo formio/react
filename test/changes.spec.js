@@ -7,7 +7,8 @@ import {
   textField,
   visible,
   layout,
-  columns
+  columns,
+  formWithInput
 } from './fixtures';
 
 import {
@@ -357,6 +358,68 @@ describe('Form component', function() {
           expect(formio.submission).to.deep.equal({data: {visible: false}});
         });
       },
+    ]);
+  });
+
+  it('should have own event emitter', function() {
+    const {ifexceed: timeout1, notify: notify1} = createIfExceed();
+    const {ifexceed: timeout2, notify: notify2} = createIfExceed();
+    const onchange1 = sinon.spy(notify1);
+    const onchange2 = sinon.spy(notify2);
+    let element;
+    let input1;
+    let input2;
+
+    return seq([
+      () => {
+        element = mount(
+            <div>
+              <Form form={formWithInput} onChange={onchange1} />
+              <Form form={formWithInput} onChange={onchange2} />
+            </div>
+        );
+
+        return Promise.all([
+          timeout1('Form1 fail on init change', () => {
+            expect(onchange1.calledOnce, 'Form1 init change triggerd more then once').to.be.true;
+          }),
+          timeout2('Form2 fail on init change', () => {
+            expect(onchange2.calledOnce, 'Form2 init change triggerd more then once').to.be.true;
+          })
+        ]);
+      },
+      () => {
+        // Trigger input 1 change.
+        input1 = element.getDOMNode().getElementsByTagName('input')[0];
+        input1.value = 1;
+        input1.dispatchEvent(new Event('input'));
+
+        return timeout1('input1 change is not triggered', () => {
+          expect(
+            onchange1.calledTwice,
+            'Form1#onChange triggerd more then twice after input1 change').to.be.true;
+        });
+      },
+      () => {
+        expect(onchange2.calledOnce, 'input1 triggerd Form2#onChange').to.be.true;
+
+        input2 = element.getDOMNode().getElementsByTagName('input')[1];
+        input2.value = 2;
+        input2.dispatchEvent(new Event('input'));
+
+        return timeout2('input2 change is not triggerd', () => {
+          expect(
+            onchange2.calledTwice,
+            'Form2#onChange triggered more then twice after input2 change'
+          ).to.be.true;
+        });
+      },
+      () => {
+        expect(
+          onchange1.calledTwice,
+          'input2 triggered Form1#onChange'
+        ).to.be.true;
+      }
     ]);
   });
 });
