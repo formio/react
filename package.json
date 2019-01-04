@@ -46,7 +46,7 @@
     "reactabular": "^3.0.5",
     "reselect": "^2.5.4",
     "segmentize": "^0.4.1",
-    "text-mask-addons": "^3.5.0"
+    "text-mask-addons": "^3.8.0"
   },
   "devDependencies": {
     "ajv-pack": "^0.2.5",
