@@ -1,6 +1,6 @@
 {
   "name": "react-formio",
-  "version": "1.5.13",
+  "version": "1.5.14",
   "description": "React rendering library for form.io embedded forms.",
   "main": "lib/index.js",
   "scripts": {
