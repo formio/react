@@ -67,7 +67,7 @@ module.exports = {
       const customValidation = this.validateCustom(value);
       if (!customValidation.isValid) {
         state.isValid = false;
-        state.errorType = 'day';
+        state.errorType = customValidation.errorType;
         state.errorMessage = customValidation.errorMessage;
 
         return state;
@@ -107,7 +107,7 @@ module.exports = {
     // Required
     if (component.validate.required) {
       // Multivalue and selectboxes are exceptions since !![] === true and !!{} === true.
-      if (component.type === 'selectboxes' && !Object.keys(item).reduce(function(prev, cur) {  return prev || item[cur];}, false)) {
+      if (component.type === 'selectboxes' && !Object.keys(item).reduce((prev, cur) => prev || item[cur], false)) {
         state.isValid = false;
         state.errorType = 'required';
         state.errorMessage = (component.label || component.key) + ' is required.';

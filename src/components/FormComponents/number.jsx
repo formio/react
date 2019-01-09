@@ -45,5 +45,17 @@ module.exports = React.createClass({
     }
 
     return createNumberMask(maskOptions);
+  },
+  validateCustom: function(value) {
+    if (value !== '-_') {
+      return {
+        isValid: true
+      };
+    }
+    return {
+      isValid: false,
+      errorType: 'number',
+      errorMessage: 'Must be a number'
+    };
   }
 });
