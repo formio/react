@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.14
+### Fixed
+ - Number components counted a - as a valid value.
+
 ## 1.5.13
 ### Changed
  - Update version of text-mask-addon to fix android cursor positioning.
