@@ -266,7 +266,7 @@ module.exports = {
     this.unmounting = false;
 
     if (
-      this.state.value !== this.getEmptyValue() ||
+      !deepEqual(this.state.value, this.getEmptyValue()) ||
       !this.props.options ||
       !this.props.options.hasOwnProperty('skipInit') ||
       !this.props.options.skipInit
