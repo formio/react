@@ -27,15 +27,20 @@ module.exports = {
           value = this.onChangeCustom(value);
         }
       }
-      else if (typeof this.getInitialValue === 'function') {
-        value = this.getInitialValue();
-      }
       else {
-        value = '';
+        value = this.getEmptyValue();
       }
     }
     value = this.safeSingleToMultiple(value);
     return value;
+  },
+  getEmptyValue: function() {
+    if (typeof this.getInitialValue === 'function') {
+      return this.getInitialValue();
+    }
+    else {
+      return '';
+    }
   },
   getInitialState: function() {
     const value = this.getDefaultValue(this.props.value);
@@ -259,7 +264,13 @@ module.exports = {
   },
   componentWillMount: function() {
     this.unmounting = false;
-    if (!this.props.options || !this.props.options.hasOwnProperty('skipInit') || !this.props.options.skipInit) {
+
+    if (
+      this.state.value !== this.getEmptyValue() ||
+      !this.props.options ||
+      !this.props.options.hasOwnProperty('skipInit') ||
+      !this.props.options.skipInit
+    ) {
       this.setValue(this.state.value, null, true);
     }
     if (typeof this.props.attachToForm === 'function') {
