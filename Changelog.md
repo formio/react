@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.17
+### Reverted
+ - Changes from 1.5.15
+
 ## 1.5.16
 ### Added
  - Signature minimum size validation.
