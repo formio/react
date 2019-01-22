@@ -27,20 +27,15 @@ module.exports = {
           value = this.onChangeCustom(value);
         }
       }
+      else if (typeof this.getInitialValue === 'function') {
+        value = this.getInitialValue();
+      }
       else {
-        value = this.getEmptyValue();
+        value = '';
       }
     }
     value = this.safeSingleToMultiple(value);
     return value;
-  },
-  getEmptyValue: function() {
-    if (typeof this.getInitialValue === 'function') {
-      return this.getInitialValue();
-    }
-    else {
-      return '';
-    }
   },
   getInitialState: function() {
     const value = this.getDefaultValue(this.props.value);
@@ -264,9 +259,7 @@ module.exports = {
   },
   componentWillMount: function() {
     this.unmounting = false;
-
     if (
-      !deepEqual(this.state.value, this.getEmptyValue()) ||
       !this.props.options ||
       !this.props.options.hasOwnProperty('skipInit') ||
       !this.props.options.skipInit
