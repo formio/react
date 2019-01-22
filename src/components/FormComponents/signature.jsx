@@ -28,6 +28,21 @@ module.exports = React.createClass({
       this.signature.fromDataURL(nextProps.value);
     }
   },
+  validateCustom: function(value) {
+    if (this.props.component && this.props.component.validate.min) {
+      if ((4*Math.ceil((value.length/3000))) < parseInt(this.props.component.validate.min)) {
+        return {
+          isValid: false,
+          errorType: 'custom',
+          errorMessage: 'Signature too small'
+        };
+      }
+    }
+
+    return {
+      isValid: true
+    };
+  },
   clearSignature: function() {
     this.signature.clear();
     this.setValue(null);
