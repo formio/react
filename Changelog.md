@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.18
+### Fixed
+ - Crashing error when resetting signature if validation enabled.
+
 ## 1.5.17
 ### Reverted
  - Changes from 1.5.15
