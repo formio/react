@@ -2,6 +2,7 @@ import React from 'react';
 import valueMixin from './mixins/valueMixin';
 import componentMixin from './mixins/componentMixin';
 import SignatureCanvas from 'react-signature-canvas';
+import _ from 'lodash';
 
 module.exports = React.createClass({
   displayName: 'Signature',
@@ -39,7 +40,7 @@ module.exports = React.createClass({
         return {
           isValid: false,
           errorType: 'signature',
-          errorMessage: 'Signature too small'
+          errorMessage: _.get(this.props.component, 'errors.small', 'Signature too small')
         };
       }
     }
