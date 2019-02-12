@@ -95,6 +95,10 @@ module.exports = {
   validateItem: function(item) {
     const { component } = this.props;
 
+    const isNumber = (value) => {
+      return value !== '' && !Number.isNaN(value);
+    }
+
     var state = {
       isValid: true,
       errorType: '',
@@ -125,25 +129,25 @@ module.exports = {
       state.errorMessage = (component.label || component.key) + ' must be a valid email.';
     }
     // MaxLength
-    if (state.isValid && component.validate.maxLength && item.length > component.validate.maxLength) {
+    if (state.isValid && isNumber(component.validate.maxLength) && item.length > Number(component.validate.maxLength)) {
       state.isValid = false;
       state.errorType = 'maxlength';
       state.errorMessage = (component.label || component.key) + ' cannot be longer than ' + (component.validate.maxLength) + ' characters.';
     }
     // MinLength
-    if (state.isValid && component.validate.minLength && item.length < component.validate.minLength) {
+    if (state.isValid && isNumber(component.validate.minLength) && item.length < Number(component.validate.minLength)) {
       state.isValid = false;
       state.errorType = 'minlength';
       state.errorMessage = (component.label || component.key) + ' cannot be shorter than ' + (component.validate.minLength) + ' characters.';
     }
     // MaxValue
-    if (state.isValid && component.validate.max && item > component.validate.max) {
+    if (state.isValid && isNumber(component.validate.max) && item > Number(component.validate.max)) {
       state.isValid = false;
       state.errorType = 'max';
       state.errorMessage = (component.label || component.key) + ' cannot be greater than ' + component.validate.max;
     }
     // MinValue
-    if (state.isValid && component.validate.min && item < component.validate.min) {
+    if (state.isValid && isNumber(component.validate.min) && item < Number(component.validate.min)) {
       state.isValid = false;
       state.errorType = 'min';
       state.errorMessage = (component.label || component.key) + ' cannot be less than ' + component.validate.min;
