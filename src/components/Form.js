@@ -6,6 +6,8 @@ import Components from 'formiojs/components/Components';
 Components.setComponents(AllComponents);
 import FormioForm from 'formiojs/Form';
 
+import Loader from './Loader';
+
 export default class Form extends Component {
   static propTypes = {
     src: PropTypes.string,
@@ -34,6 +36,13 @@ export default class Form extends Component {
       wildcard: false,
       maxListeners: 0
     });
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading : true
+    };
   }
 
   componentDidMount = () => {
@@ -70,6 +79,10 @@ export default class Form extends Component {
     }
   };
 
+  onError = () => {
+    this.setState({isLoading: false});
+  };
+
   initializeFormio = () => {
     if (this.createPromise) {
       this.createPromise.then(() => {
@@ -88,9 +101,11 @@ export default class Form extends Component {
         this.formio.on('render', this.emit('onRender'));
       });
     }
+    this.setState({isLoading: false});
   };
 
   componentWillReceiveProps = (nextProps) => {
+    this.setState({isLoading: true});
     const {options = {}, src, form, submission} = this.props;
 
     if (!options.events) {
@@ -118,7 +133,12 @@ export default class Form extends Component {
   };
 
   render = () => {
-    return <div ref={element => this.element = element} />;
+    return (
+      <div>
+        <Loader isLoading={this.state.isLoading}/>
+        <div ref={element => this.element = element} />
+      </div>
+    );
   };
 
   emit = (funcName) => {
