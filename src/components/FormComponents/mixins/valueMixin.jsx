@@ -96,7 +96,7 @@ module.exports = {
     const { component } = this.props;
 
     const isNumber = (value) => {
-      return value !== '' && !Number.isNaN(value);
+      return value !== '' && value !== null && value !== undefined && !Number.isNaN(value);
     }
 
     var state = {
