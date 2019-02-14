@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.21
+### Changed
+ - Signature minimum changed from kb to percentage increase.
+
 ## 1.5.20
 ### Fixed
  - Validations set to 0 not validating.

@@ -14,11 +14,10 @@ module.exports = React.createClass({
     if (!this.signature) {
       return;
     }
+    this.signature.clear();
+    this.emptySize = this.signature.getCanvas().toDataURL().length;
     if (this.state.value) {
       this.signature.fromDataURL(this.state.value);
-    }
-    else {
-      this.signature.clear();
     }
   },
   willReceiveProps: function(nextProps) {
@@ -36,7 +35,9 @@ module.exports = React.createClass({
       };
     }
     if (this.props.component && this.props.component.validate.min) {
-      if ((4*Math.ceil((value.length/3000))) < parseInt(this.props.component.validate.min)) {
+      // If min is set to 50, increase should be 1.5 (50% more than original).
+      const increase = (parseInt(this.props.component.validate.min) / 100.0) + 1.0;
+      if (value.length < this.emptySize * increase) {
         return {
           isValid: false,
           errorType: 'signature',
