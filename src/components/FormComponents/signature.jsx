@@ -14,10 +14,17 @@ module.exports = React.createClass({
     if (!this.signature) {
       return;
     }
-    this.signature.clear();
-    this.emptySize = this.signature.getCanvas().toDataURL().length;
+    if (!this.emptySize) {
+      const sig = this.signature.getCanvas().toDataURL();
+      this.signature.clear();
+      this.emptySize = this.signature.getCanvas().toDataURL().length;
+      this.signature.fromDataURL(sig);
+    }
     if (this.state.value) {
       this.signature.fromDataURL(this.state.value);
+    }
+    else {
+      this.signature.clear();
     }
   },
   willReceiveProps: function(nextProps) {

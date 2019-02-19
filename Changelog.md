@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.23
+### Fixed
+ - Signature sometimes resetting when form redraws.
+
 ## 1.5.22
 ### Fixed
  - Number validations triggering on null.
