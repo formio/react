@@ -6,6 +6,7 @@
   "scripts": {
     "test": "karma start --single-run",
     "build": "babel ./src --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
+    "webpack": "webpack",
     "lint": "eslint src",
     "watch": "babel ./src --watch --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
     "prepublish": "npm run lint; npm run build"
@@ -32,6 +33,9 @@
     "formiojs": "^3.9.4",
     "prop-types": "^15.6.2",
     "react-bootstrap": "^0.31.0",
+    "react-redux": "^4.4.9",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
     "recompose": "^0.23.5",
     "redux-view": "^0.2.1"
   },
@@ -41,11 +45,14 @@
     "babel-core": "^6.26.3",
     "babel-eslint": "^6.0.5",
     "babel-loader": "^6.2.4",
+    "babel-plugin-css-modules-transform": "^1.6.2",
+    "babel-plugin-react-css-modules": "^3.4.2",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-2": "^6.13.0",
     "babel-register": "^6.26.0",
     "chai": "^4.2.0",
+    "css-loader": "^2.1.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
     "eslint": "^3.2.2",
@@ -63,18 +70,21 @@
     "karma-mocha-reporter": "^2.2.5",
     "karma-webpack": "^3.0.5",
     "mocha": "^5.2.0",
+    "node-sass": "^4.11.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-test-renderer": "^16.5.2",
     "react-transform-catch-errors": "^1.0.0",
+    "sass-loader": "^7.1.0",
     "sinon": "^7.0.0",
+    "style-loader": "^0.23.1",
     "webpack": "^2.7.0"
   },
   "files": [
     "lib"
   ],
   "peerDependencies": {
-    "react": "^15.3.0 || ^16.0.0",
-    "react-dom": "^15.3.0 || ^16.0.0"
+    "react": "^15.3.0 || ^16.2.0",
+    "react-dom": "^15.3.0 || ^16.2.0"
   }
 }

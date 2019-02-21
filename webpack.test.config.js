@@ -1,5 +1,10 @@
+const path = require('path');
+
 module.exports = {
   // mode: 'development',
+  output: {
+    path: path.resolve(__dirname, 'lib') //eslint-disable-line
+  },
   module: {
     rules: [
       {
@@ -13,6 +18,14 @@ module.exports = {
             'stage-2'
           ]
         }
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
       }
     ]
   }

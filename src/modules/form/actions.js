@@ -1,4 +1,4 @@
-import Formiojs from 'formiojs';
+import {Formio as Formiojs} from 'formiojs';
 import * as types from './constants';
 //import { AlertActions } from '../../FormioAlerts/actions';
 
@@ -26,11 +26,13 @@ function failForm(name, err) {
   };
 }
 
-function requestForms(name, tag) {
+function requestForms(name, tag, limit, page) {
   return {
     type: types.FORMS_REQUEST,
     name,
-    tag
+    tag,
+    limit,
+    page
   };
 }
 
@@ -79,18 +81,17 @@ export function formActions(form) {
           });
       };
     },
-    index: (tag, page = 1) => {
+    index: (tag, page = 1, limit = 100) => {
       return (dispatch, getState) => {
-        dispatch(requestForms(form.config.name, tag, page));
+        dispatch(requestForms(form.config.name, tag, limit, page));
         const forms = form.selectors.getForms(getState());
-
         let params = {};
         if (tag) {
           params.tags = tag;
         }
-        if (parseInt(forms.limit) !== 10) {
-          params.limit = forms.limit;
-        }
+        // if (parseInt(forms.limit) !== 10) {
+        //   params.limit = forms.limit;
+        // }
         if (page !== 1) {
           params.skip = ((parseInt(page) - 1) * parseInt(forms.limit));
           params.limit = parseInt(forms.limit);

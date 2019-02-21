@@ -4,6 +4,8 @@ import FormioUtils from 'formiojs/utils';
 import _get from 'lodash/get';
 import {Pagination} from 'react-bootstrap';
 
+import * as styles from '../styles/managerGrid.css';
+
 export default class extends Component {
   static propTypes = {
     submissions: PropTypes.array.isRequired,
@@ -43,7 +45,7 @@ export default class extends Component {
     return (
       <div>
         { submissions.length ?
-          <ul className='list-group list-group-striped'>
+          <ul className={'list-group list-group-striped ' + styles.peps}>
             <li className='list-group-item list-group-header hidden-xs hidden-md'>
               <div className='row'>
                 { columns.map((column, index) => {

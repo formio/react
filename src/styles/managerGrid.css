@@ -1,0 +1,11 @@
+.list-group:nth-child(odd) {
+  background-color: #ccc;
+}
+
+.peps {
+  color: red;
+}
+
+* {
+  color: red;
+}

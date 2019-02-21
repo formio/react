@@ -1,4 +1,4 @@
-import Formiojs from 'formiojs';
+import {Formio as Formiojs} from 'formiojs';
 import * as types from './constants';
 
 function requestSubmission(name) {
