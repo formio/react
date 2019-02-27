@@ -11,6 +11,8 @@ export default class extends Component {
     submissions: PropTypes.array.isRequired,
     columns: PropTypes.array.isRequired,
     columnWidths: PropTypes.object.isRequired,
+    createNewLabel: PropTypes.string,
+    onCreateNew: PropTypes.func,
     onSort: PropTypes.func,
     onClick: PropTypes.func,
     onPage: PropTypes.func,
@@ -71,7 +73,7 @@ export default class extends Component {
                     { columns.map((column, index) => {
                       return (
                         <div key={index} className={'col col-md-' + columnWidths[index]} onClick={() => onClick(submission)}>
-                          <h4 className='hidden-md hidden-lg'>{column.title}</h4>
+                          <h4 className='d-none'>{column.title}</h4>
                           <Cell row={submission} column={column} />
                         </div>
                       );
@@ -81,6 +83,15 @@ export default class extends Component {
               );
             })}
             <li className="list-group-item">
+              {this.props.createNewLabel
+                ? <button
+                    onClick={this.props.onCreateNew}
+                    className="btn btn-primary pull-left float-left"
+                  >
+                    {this.props.createNewLabel}
+                  </button>
+                : null
+              }
               <Pagination
                 className="pagination-sm"
                 prev="Previous"
