@@ -18,6 +18,7 @@ export default class extends Component {
     onDeleteComponent: PropTypes.func,
     onCancelComponent: PropTypes.func,
     onEditComponent: PropTypes.func,
+    builder: PropTypes.any
   };
 
   componentDidMount = () => {
@@ -37,7 +38,7 @@ export default class extends Component {
       this.builder.instance.destroy(true);
     }
 
-    this.builder = new FormBuilder(this.element, form, options);
+    this.builder = new (this.props.builder || FormBuilder)(this.element, form, options);
     this.builderReady = this.builder.setDisplay(form.display);
 
     this.builderReady.then(() => {

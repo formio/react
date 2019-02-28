@@ -26,7 +26,8 @@ export default class Form extends Component {
     onSubmitDone: PropTypes.func,
     onFormLoad: PropTypes.func,
     onError: PropTypes.func,
-    onRender: PropTypes.func
+    onRender: PropTypes.func,
+    formioform: PropTypes.any
   };
 
   static getDefaultEmitter() {
@@ -44,13 +45,13 @@ export default class Form extends Component {
     }
 
     if (src) {
-      this.createPromise = new FormioForm(this.element, src, options).render().then(formio => {
+      this.createPromise = new (this.props.formioform || FormioForm)(this.element, src, options).render().then(formio => {
         this.formio = formio;
         this.formio.src = src;
       });
     }
     if (form) {
-      this.createPromise = new FormioForm(this.element, form, options).render().then(formio => {
+      this.createPromise = new (this.props.formioform || FormioForm)(this.element, form, options).render().then(formio => {
         this.formio = formio;
         this.formio.form = form;
         if (url) {
@@ -98,14 +99,14 @@ export default class Form extends Component {
     }
 
     if (src !== nextProps.src) {
-      this.createPromise = new FormioForm(this.element, nextProps.src, options).render().then(formio => {
+      this.createPromise = new (this.props.formioform || FormioForm)(this.element, nextProps.src, options).render().then(formio => {
         this.formio = formio;
         this.formio.src = nextProps.src;
       });
       this.initializeFormio();
     }
     if (form !== nextProps.form) {
-      this.createPromise = new FormioForm(this.element, nextProps.form, options).render().then(formio => {
+      this.createPromise = new (this.props.formioform || FormioForm)(this.element, nextProps.form, options).render().then(formio => {
         this.formio = formio;
         this.formio.form = form;
       });
