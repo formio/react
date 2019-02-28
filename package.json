@@ -29,11 +29,10 @@
   "homepage": "https://github.com/formio/react-formio#readme",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "formiojs": "^3.9.4",
-    "prop-types": "^15.6.2",
-    "react-bootstrap": "^0.31.0",
-    "recompose": "^0.23.5",
-    "redux-view": "^0.2.1"
+    "formiojs": "^3.16.0",
+    "prop-types": "^15.7.2",
+    "react-bootstrap": "^0.32.4",
+    "recompose": "^0.30.0"
   },
   "devDependencies": {
     "ajv-pack": "^0.2.5",
