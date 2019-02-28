@@ -1,13 +1,44 @@
 import React, {Fragment} from 'react';
 import FormioView from '../../../FormioView';
-import ManagerGrid from './ManagerGrid';
+import Grid from '../../../components/Grid/Grid';
 
 export default config => class extends FormioView {
   query = {};
   page = 1;
   limit = 10;
+  createNewLabel = 'Create Form';
+  state = {
+    regexp: ''
+  };
+  header = {
+    label: 'Title',
+    key: 'title',
+    sort: 'asc',
+    numHeaders: 2
+  };
+  body = {
+    isFormViewAllowed: true,
+    isSubmissionIndexAllowed: true,
+    isFormEditAllowed: true,
+    isFormDeleteAllowed: true
+  };
+  footer = {
+    numHeaders: this.header.numHeaders,
+    isCreateAllowed: true,
+    createText: 'Create Form',
+  };
 
-  component = ({basePath, form, forms, limit, page, sortOrder, isLoading, onSearch, onSort, onPage, onRowClick}) => {
+  handleChange = (event) => {
+    this.setState({regexp: event.currentTarget.value});
+  };
+
+  component = ({
+                 basePath, form, forms,
+                 limit, page, sortOrder,
+                 isLoading, onSearch, onSort,
+                 onPage, onRowClick, onCreateNew,
+                 onRowAction, handleChange
+  }) => {
     if (isLoading) {
       return (
         <div className="form-index">
@@ -18,21 +49,40 @@ export default config => class extends FormioView {
     else {
       return (
         <Fragment>
+
           <div className="input-group mb-3">
-            <input type="text" className="form-control" placeholder="Search Forms" aria-label="Search Forms" aria-describedby="button-search"/>
+            <input
+              type="text"
+              key="search"
+              value={this.state.regexp}
+              onChange={this.handleChange}
+              className="form-control"
+              placeholder="Search Forms"
+            />
             <div className="input-group-append">
-              <button className="btn btn-outline-secondary" type="button" id="button-search" onClick={onSearch}>Search</button>
+              <button className="btn btn-outline-secondary" type="button" id="button-search" onClick={onSearch}>
+                <i className="fa fa-search"/>
+                Search
+              </button>
             </div>
           </div>
-          <ManagerGrid
-            forms={forms}
-            limit={limit}
-            page={this.page}
-            sortOrder={sortOrder}
+
+          <Grid
+            items={forms}
+            header={this.header}
+            footer={this.footer}
+            body={this.body}
             onSort={onSort}
             onPage={onPage}
+            onCreateNew={onCreateNew}
             onRowClick={onRowClick}
+            onRowAction={onRowAction}
+            activePage={this.page}
+            firstItem={parseInt(forms.skip) + 1}
+            lastItem={parseInt(forms.skip) + parseInt(forms.limit)}
+            total={parseInt(forms.serverCount)}
           />
+
         </Fragment>
       );
     }
@@ -75,16 +125,36 @@ export default config => class extends FormioView {
     return {
       onSort: (col) => {
         this.toggleSort(col);
-        dispatch(this.formio.manager[config.name].actions.submission.index(this.page, this.query));
+        dispatch(this.formio.manager[config.name].actions.form.index(this.page, this.query));
       },
       onPage: (page) => {
         this.page = page;
         dispatch(this.formio.manager[config.name].actions.form.index('', this.page, this.limit));
       },
-      onRowClick: (submission) => {
-        this.router.push(manager.getBasePath(ownProps.params) + config.name + '/' + submission._id);
+      onRowClick: (form) => {
+        this.router.push(manager.getBasePath(ownProps.params) + config.name + '/' + form._id + '/view');
+      },
+      onRowAction: (form, actionType) => {
+        switch (actionType) {
+          case 'view':
+            this.router.push(manager.getBasePath(ownProps.params) + config.name + '/' + form._id + '/view');
+            break;
+          case 'submission':
+            this.router.push(manager.getBasePath(ownProps.params) + config.name + '/' + form._id + '/submission');
+            break;
+          case 'edit':
+            this.router.push(manager.getBasePath(ownProps.params) + config.name + '/' + form._id + '/edit');
+            break;
+          case 'delete':
+            this.router.push(manager.getBasePath(ownProps.params) + config.name + '/' + form._id + '/delete');
+            break;
+        }
       },
       onSearch: () => {
+        // dispatch(this.formio.manager[config.name].actions.form.index('', this.page, this.limit, this.regexp));
+      },
+      onCreateNew: () => {
+        this.router.push(manager.getBasePath(ownProps.params) + config.name + '/create');
       }
     };
   };

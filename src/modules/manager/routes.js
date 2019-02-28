@@ -18,13 +18,13 @@ export default (config, childRoutes = []) => [
         path: 'create',
         component: config.Create || create(config)
       },
-      // {
-      //   path: ':' + config.name + 'Id',
-      //   component: (config.Create || create)(config),
-      //   indexRoute: {
-      //     component: config.Index || index(config)
-      //   },
-      // }
+      {
+        path: ':' + config.name + 'Id',
+        component: (config.Create || create)(config),
+        indexRoute: {
+          component: config.Index || index(config)
+        },
+      }
       //   childRoutes: [
       //     {
       //       path: 'edit',

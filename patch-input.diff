@@ -1,0 +1,762 @@
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+index 855e39d..054e52c 100644
+--- a/.idea/workspace.xml
++++ b/.idea/workspace.xml
+@@ -2,26 +2,12 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="9ef0c427-9e54-40fc-91ed-2284df2f7877" name="Default Changelist" comment="">
+-      <change afterPath="$PROJECT_DIR$/src/modules/manager/actions.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/modules/manager/constants.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/modules/manager/containers/Create.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/modules/manager/containers/Index.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/modules/manager/containers/ManagerGrid.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/modules/manager/containers/Wrapper.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/modules/manager/index.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/modules/manager/reducers.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/modules/manager/routes.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/modules/manager/selectors.js" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/styles/managerGrid.css" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.babelrc" beforeDir="false" afterPath="$PROJECT_DIR$/.babelrc" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/components/Input.js" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/components/Grid.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Grid.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/modules/form/actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/form/actions.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/modules/form/reducers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/form/reducers.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/modules/resource/containers/Wrapper.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/resource/containers/Wrapper.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/modules/submission/actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/submission/actions.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/webpack.test.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.test.config.js" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/modules/manager/containers/Index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/manager/containers/Index.js" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/modules/manager/containers/ManagerGrid.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/manager/containers/ManagerGrid.js" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/modules/manager/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/manager/routes.js" afterDir="false" />
+     </list>
+     <ignored path="$PROJECT_DIR$/.tmp/" />
+     <ignored path="$PROJECT_DIR$/temp/" />
+@@ -33,14 +19,14 @@
+     <option name="LAST_RESOLUTION" value="IGNORE" />
+   </component>
+   <component name="FileEditorManager">
+-    <splitter split-orientation="horizontal" split-proportion="0.5356501">
++    <splitter split-orientation="horizontal" split-proportion="0.53476614">
+       <split-first>
+         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+           <file pinned="false" current-in-tab="false">
+             <entry file="file://$PROJECT_DIR$/package.json">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="603">
+-                  <caret line="41" column="22" lean-forward="true" selection-start-line="41" selection-start-column="22" selection-end-line="41" selection-end-column="22" />
++                <state relative-caret-position="152">
++                  <caret line="24" column="48" selection-start-line="24" selection-start-column="48" selection-end-line="24" selection-end-column="48" />
+                 </state>
+               </provider>
+             </entry>
+@@ -48,8 +34,8 @@
+           <file pinned="false" current-in-tab="false">
+             <entry file="file://$PROJECT_DIR$/src/modules/manager/index.js">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="345">
+-                  <caret line="15" selection-start-line="15" selection-end-line="15" />
++                <state relative-caret-position="322">
++                  <caret line="14" selection-start-line="14" selection-end-line="14" />
+                   <folding>
+                     <element signature="e#0#41#0" expanded="true" />
+                   </folding>
+@@ -60,11 +46,11 @@
+           <file pinned="false" current-in-tab="false">
+             <entry file="file://$PROJECT_DIR$/src/modules/manager/routes.js">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="278">
+-                  <caret line="18" column="14" lean-forward="true" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="14" />
++                <state relative-caret-position="345">
++                  <caret line="15" column="18" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
+                   <folding>
+                     <element signature="e#93#132#0" expanded="true" />
+-                    <marker date="1550741816196" expanded="true" signature="528:613" ph="..." />
++                    <marker date="1550745313635" expanded="true" signature="528:613" ph="..." />
+                   </folding>
+                 </state>
+               </provider>
+@@ -82,8 +68,8 @@
+           <file pinned="false" current-in-tab="false">
+             <entry file="file://$PROJECT_DIR$/src/modules/manager/containers/Wrapper.js">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="207">
+-                  <caret line="9" column="70" selection-start-line="9" selection-start-column="70" selection-end-line="9" selection-end-column="70" />
++                <state relative-caret-position="69">
++                  <caret line="3" column="55" selection-start-line="3" selection-start-column="55" selection-end-line="3" selection-end-column="55" />
+                   <folding>
+                     <element signature="e#0#26#0" expanded="true" />
+                   </folding>
+@@ -91,25 +77,27 @@
+               </provider>
+             </entry>
+           </file>
+-          <file pinned="false" current-in-tab="false">
++          <file pinned="false" current-in-tab="true">
+             <entry file="file://$PROJECT_DIR$/src/modules/manager/containers/Index.js">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="326">
+-                  <caret line="82" column="60" selection-start-line="82" selection-start-column="60" selection-end-line="82" selection-end-column="60" />
++                <state relative-caret-position="545">
++                  <caret line="39" column="25" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
+                   <folding>
+                     <element signature="e#0#38#0" expanded="true" />
++                    <element signature="e#1234#1675#0" />
++                    <element signature="e#1704#2105#0" />
+                   </folding>
+                 </state>
+               </provider>
+             </entry>
+           </file>
+-          <file pinned="false" current-in-tab="true">
+-            <entry file="file://$PROJECT_DIR$/src/modules/manager/actions.js">
++          <file pinned="false" current-in-tab="false">
++            <entry file="file://$PROJECT_DIR$/src/components/Input.js">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="207">
+-                  <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
++                <state relative-caret-position="184">
++                  <caret line="8" column="9" lean-forward="true" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
+                   <folding>
+-                    <element signature="e#0#44#0" expanded="true" />
++                    <element signature="e#0#26#0" expanded="true" />
+                   </folding>
+                 </state>
+               </provider>
+@@ -118,8 +106,8 @@
+           <file pinned="false" current-in-tab="false">
+             <entry file="file://$PROJECT_DIR$/src/modules/manager/containers/ManagerGrid.js">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="412">
+-                  <caret line="60" column="32" selection-start-line="60" selection-start-column="32" selection-end-line="60" selection-end-column="32" />
++                <state relative-caret-position="-470">
++                  <caret line="25" column="16" selection-start-line="25" selection-start-column="16" selection-end-line="25" selection-end-column="16" />
+                   <folding>
+                     <element signature="e#0#39#0" expanded="true" />
+                   </folding>
+@@ -127,24 +115,15 @@
+               </provider>
+             </entry>
+           </file>
+-          <file pinned="false" current-in-tab="false">
+-            <entry file="file://$PROJECT_DIR$/webpack.test.config.js">
+-              <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="161">
+-                  <caret line="7" column="11" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
+-                </state>
+-              </provider>
+-            </entry>
+-          </file>
+         </leaf>
+       </split-first>
+       <split-second>
+         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+-          <file pinned="false" current-in-tab="false">
++          <file pinned="false" current-in-tab="true">
+             <entry file="file://$PROJECT_DIR$/src/modules/submission/containers/SubmissionGrid.js">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="230">
+-                  <caret line="10" column="34" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
++                <state relative-caret-position="-1134">
++                  <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+                   <folding>
+                     <element signature="e#0#39#0" expanded="true" />
+                   </folding>
+@@ -152,11 +131,11 @@
+               </provider>
+             </entry>
+           </file>
+-          <file pinned="false" current-in-tab="true">
++          <file pinned="false" current-in-tab="false">
+             <entry file="file://$PROJECT_DIR$/src/modules/form/actions.js">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="394">
+-                  <caret line="72" column="54" lean-forward="true" selection-start-line="72" selection-start-column="54" selection-end-line="72" selection-end-column="54" />
++                <state relative-caret-position="210">
++                  <caret line="64" column="25" selection-start-line="64" selection-start-column="25" selection-end-line="64" selection-end-column="25" />
+                   <folding>
+                     <element signature="e#0#44#0" expanded="true" />
+                   </folding>
+@@ -168,7 +147,7 @@
+             <entry file="file://$PROJECT_DIR$/src/modules/form/reducers.js">
+               <provider selected="true" editor-type-id="text-editor">
+                 <state relative-caret-position="756">
+-                  <caret line="72" column="10" lean-forward="true" selection-start-line="72" selection-start-column="10" selection-end-line="72" selection-end-column="10" />
++                  <caret line="70" column="10" selection-start-line="70" selection-start-column="10" selection-end-line="70" selection-end-column="10" />
+                 </state>
+               </provider>
+             </entry>
+@@ -176,8 +155,8 @@
+           <file pinned="false" current-in-tab="false">
+             <entry file="file://$PROJECT_DIR$/src/components/Grid.js">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="759">
+-                  <caret line="33" column="20" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="20" />
++                <state relative-caret-position="475">
++                  <caret line="40" column="5" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
+                   <folding>
+                     <element signature="e#0#39#0" expanded="true" />
+                   </folding>
+@@ -193,15 +172,13 @@
+     <option name="RECENT_TEMPLATES">
+       <list>
+         <option value="CSS File" />
+-        <option value="JavaScript File" />
+         <option value="SCSS File" />
++        <option value="JavaScript File" />
+       </list>
+     </option>
+   </component>
+   <component name="FindInProjectRecents">
+     <findStrings>
+-      <find>res</find>
+-      <find>resou</find>
+       <find>re</find>
+       <find>resour</find>
+       <find>resources</find>
+@@ -230,6 +207,8 @@
+       <find>formsReducer</find>
+       <find>nextPage</find>
+       <find>this.props);</find>
++      <find>console.log</find>
++      <find>render</find>
+     </findStrings>
+     <replaceStrings>
+       <replace />
+@@ -255,29 +234,30 @@
+         <option value="$PROJECT_DIR$/src/modules/resource/containers/Index.js" />
+         <option value="$PROJECT_DIR$/src/modules/manager/config.js" />
+         <option value="$PROJECT_DIR$/src/modules/manager/constants.js" />
+-        <option value="$PROJECT_DIR$/src/modules/resource/containers/Wrapper.js" />
+         <option value="$PROJECT_DIR$/lib/modules/manager/containers/Wrapper.js" />
+         <option value="$PROJECT_DIR$/src/modules/manager/containers/Create.js" />
+-        <option value="$PROJECT_DIR$/src/modules/manager/index.js" />
+         <option value="$PROJECT_DIR$/src/modules/resource/routes.js" />
+-        <option value="$PROJECT_DIR$/src/modules/submission/actions.js" />
+         <option value="$PROJECT_DIR$/src/modules/manager/selectors.js" />
+         <option value="$PROJECT_DIR$/src/modules/manager/reducers.js" />
+         <option value="$PROJECT_DIR$/src/formioConnect.js" />
+         <option value="$PROJECT_DIR$/src/modules/submission/containers/SubmissionGrid.js" />
+-        <option value="$PROJECT_DIR$/src/modules/form/reducers.js" />
+         <option value="$PROJECT_DIR$/src/modules/manager/actions.js" />
+         <option value="$PROJECT_DIR$/src/modules/manager/containers/Wrapper.js" />
+         <option value="$PROJECT_DIR$/src/modules/form/actions.js" />
+-        <option value="$PROJECT_DIR$/src/modules/manager/containers/Index.js" />
+         <option value="$PROJECT_DIR$/src/modules/styles/managerGrid.scss" />
+         <option value="$PROJECT_DIR$/src/styles/managerGrid.scss" />
+-        <option value="$PROJECT_DIR$/src/components/Grid.js" />
+         <option value="$PROJECT_DIR$/webpack.test.config.js" />
+         <option value="$PROJECT_DIR$/package.json" />
+         <option value="$PROJECT_DIR$/.babelrc" />
+-        <option value="$PROJECT_DIR$/src/modules/manager/containers/ManagerGrid.js" />
++        <option value="$PROJECT_DIR$/src/modules/form/reducers.js" />
++        <option value="$PROJECT_DIR$/src/modules/resource/containers/Wrapper.js" />
++        <option value="$PROJECT_DIR$/src/modules/submission/actions.js" />
++        <option value="$PROJECT_DIR$/src/modules/manager/index.js" />
+         <option value="$PROJECT_DIR$/src/modules/manager/routes.js" />
++        <option value="$PROJECT_DIR$/src/components/Grid.js" />
++        <option value="$PROJECT_DIR$/src/modules/manager/containers/ManagerGrid.js" />
++        <option value="$PROJECT_DIR$/src/components/Input.js" />
++        <option value="$PROJECT_DIR$/src/modules/manager/containers/Index.js" />
+       </list>
+     </option>
+   </component>
+@@ -305,6 +285,12 @@
+               <item name="react-formio" type="462c0819:PsiDirectoryNode" />
+               <item name="src" type="462c0819:PsiDirectoryNode" />
+             </path>
++            <path>
++              <item name="react-formio" type="b2602c69:ProjectViewProjectNode" />
++              <item name="react-formio" type="462c0819:PsiDirectoryNode" />
++              <item name="src" type="462c0819:PsiDirectoryNode" />
++              <item name="components" type="462c0819:PsiDirectoryNode" />
++            </path>
+             <path>
+               <item name="react-formio" type="b2602c69:ProjectViewProjectNode" />
+               <item name="react-formio" type="462c0819:PsiDirectoryNode" />
+@@ -390,18 +376,17 @@
+       <workItem from="1550564109271" duration="13896000" />
+       <workItem from="1550660083455" duration="8856000" />
+       <workItem from="1550672343048" duration="3019000" />
+-      <workItem from="1550738569265" duration="2742000" />
++      <workItem from="1550738569265" duration="17326000" />
+     </task>
+     <servers />
+   </component>
+   <component name="TimeTrackingManager">
+-    <option name="totallyTimeSpent" value="98424000" />
++    <option name="totallyTimeSpent" value="113008000" />
+   </component>
+   <component name="ToolWindowManager">
+     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
+-    <editor active="true" />
+     <layout>
+-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15626666" />
++      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15626666" />
+       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+       <window_info id="npm" order="2" side_tool="true" />
+       <window_info id="Favorites" order="3" side_tool="true" />
+@@ -415,7 +400,7 @@
+       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+       <window_info anchor="bottom" id="Version Control" order="8" />
+       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.21058434" />
++      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.16868798" />
+       <window_info anchor="bottom" id="Thumbnails" order="11" weight="0.3296582" />
+       <window_info anchor="bottom" id="TypeScript" order="12" />
+       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+@@ -450,16 +435,6 @@
+     <option name="version" value="1" />
+   </component>
+   <component name="editorHistoryManager">
+-    <entry file="file://$PROJECT_DIR$/src/components/FormBuilder.js">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="-660">
+-          <folding>
+-            <element signature="e#0#39#0" expanded="true" />
+-          </folding>
+-        </state>
+-      </provider>
+-    </entry>
+-    <entry file="file://$PROJECT_DIR$/src/styles/loader.scss" />
+     <entry file="file://$PROJECT_DIR$/.gitignore">
+       <provider selected="true" editor-type-id="text-editor">
+         <state relative-caret-position="69">
+@@ -685,141 +660,160 @@
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/.babelrc">
++    <entry file="file://$PROJECT_DIR$/src/modules/manager/index.js">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="115">
+-          <caret line="5" column="24" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="24" />
++        <state relative-caret-position="322">
++          <caret line="14" selection-start-line="14" selection-end-line="14" />
++          <folding>
++            <element signature="e#0#41#0" expanded="true" />
++          </folding>
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/webpack.test.config.js">
++    <entry file="file://$PROJECT_DIR$/src/modules/submission/actions.js">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="161">
+-          <caret line="7" column="11" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
++        <state relative-caret-position="644">
++          <caret line="93" column="35" lean-forward="true" selection-start-line="93" selection-start-column="35" selection-end-line="93" selection-end-column="35" />
++          <folding>
++            <element signature="e#0#44#0" expanded="true" />
++          </folding>
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/src/modules/manager/containers/Wrapper.js">
++    <entry file="file://$PROJECT_DIR$/src/modules/resource/actions.js">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="207">
+-          <caret line="9" column="70" selection-start-line="9" selection-start-column="70" selection-end-line="9" selection-end-column="70" />
++        <state relative-caret-position="115">
++          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
+           <folding>
+-            <element signature="e#0#26#0" expanded="true" />
++            <element signature="e#0#44#0" expanded="true" />
+           </folding>
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/src/modules/manager/containers/ManagerGrid.js">
++    <entry file="file://$PROJECT_DIR$/src/modules/form/reducers.js">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="412">
+-          <caret line="60" column="32" selection-start-line="60" selection-start-column="32" selection-end-line="60" selection-end-column="32" />
++        <state relative-caret-position="756">
++          <caret line="70" column="10" selection-start-line="70" selection-start-column="10" selection-end-line="70" selection-end-column="10" />
++        </state>
++      </provider>
++    </entry>
++    <entry file="file://$PROJECT_DIR$/src/modules/manager/actions.js">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="207">
++          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+           <folding>
+-            <element signature="e#0#39#0" expanded="true" />
++            <element signature="e#0#44#0" expanded="true" />
+           </folding>
+         </state>
+       </provider>
+     </entry>
++    <entry file="file://$PROJECT_DIR$/.babelrc">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="115">
++          <caret line="5" column="24" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="24" />
++        </state>
++      </provider>
++    </entry>
++    <entry file="file://$PROJECT_DIR$/lib/FormioProvider.js">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="230">
++          <caret line="28" column="37" lean-forward="true" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
++        </state>
++      </provider>
++    </entry>
+     <entry file="file://$PROJECT_DIR$/package.json">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="603">
+-          <caret line="41" column="22" lean-forward="true" selection-start-line="41" selection-start-column="22" selection-end-line="41" selection-end-column="22" />
++        <state relative-caret-position="152">
++          <caret line="24" column="48" selection-start-line="24" selection-start-column="48" selection-end-line="24" selection-end-column="48" />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/src/modules/manager/index.js">
++    <entry file="file://$PROJECT_DIR$/webpack.test.config.js">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="345">
+-          <caret line="15" selection-start-line="15" selection-end-line="15" />
+-          <folding>
+-            <element signature="e#0#41#0" expanded="true" />
+-          </folding>
++        <state relative-caret-position="161">
++          <caret line="7" column="11" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/src/components/Grid.js">
++    <entry file="file://$PROJECT_DIR$/src/modules/manager/containers/ManagerGrid.js">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="759">
+-          <caret line="33" column="20" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="20" />
++        <state relative-caret-position="-470">
++          <caret line="25" column="16" selection-start-line="25" selection-start-column="16" selection-end-line="25" selection-end-column="16" />
+           <folding>
+             <element signature="e#0#39#0" expanded="true" />
+           </folding>
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/src/modules/manager/routes.js">
++    <entry file="file://$PROJECT_DIR$/src/components/Grid.js">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="278">
+-          <caret line="18" column="14" lean-forward="true" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="14" />
++        <state relative-caret-position="475">
++          <caret line="40" column="5" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
+           <folding>
+-            <element signature="e#93#132#0" expanded="true" />
+-            <marker date="1550741816196" expanded="true" signature="528:613" ph="..." />
++            <element signature="e#0#39#0" expanded="true" />
+           </folding>
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/src/modules/submission/actions.js">
++    <entry file="file://$PROJECT_DIR$/src/modules/form/actions.js">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="644">
+-          <caret line="93" column="35" lean-forward="true" selection-start-line="93" selection-start-column="35" selection-end-line="93" selection-end-column="35" />
++        <state relative-caret-position="210">
++          <caret line="64" column="25" selection-start-line="64" selection-start-column="25" selection-end-line="64" selection-end-column="25" />
+           <folding>
+             <element signature="e#0#44#0" expanded="true" />
+           </folding>
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/src/modules/resource/actions.js">
++    <entry file="file://$PROJECT_DIR$/src/modules/manager/routes.js">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="115">
+-          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
++        <state relative-caret-position="345">
++          <caret line="15" column="18" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
+           <folding>
+-            <element signature="e#0#44#0" expanded="true" />
++            <element signature="e#93#132#0" expanded="true" />
++            <marker date="1550745313635" expanded="true" signature="528:613" ph="..." />
+           </folding>
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/src/modules/manager/containers/Index.js">
++    <entry file="file://$PROJECT_DIR$/src/modules/manager/containers/Wrapper.js">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="326">
+-          <caret line="82" column="60" selection-start-line="82" selection-start-column="60" selection-end-line="82" selection-end-column="60" />
++        <state relative-caret-position="69">
++          <caret line="3" column="55" selection-start-line="3" selection-start-column="55" selection-end-line="3" selection-end-column="55" />
+           <folding>
+-            <element signature="e#0#38#0" expanded="true" />
++            <element signature="e#0#26#0" expanded="true" />
+           </folding>
+         </state>
+       </provider>
+     </entry>
+     <entry file="file://$PROJECT_DIR$/src/modules/submission/containers/SubmissionGrid.js">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="230">
+-          <caret line="10" column="34" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
++        <state relative-caret-position="-1134">
++          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+           <folding>
+             <element signature="e#0#39#0" expanded="true" />
+           </folding>
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/src/modules/form/reducers.js">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="756">
+-          <caret line="72" column="10" lean-forward="true" selection-start-line="72" selection-start-column="10" selection-end-line="72" selection-end-column="10" />
+-        </state>
+-      </provider>
+-    </entry>
+-    <entry file="file://$PROJECT_DIR$/src/modules/form/actions.js">
++    <entry file="file://$PROJECT_DIR$/src/components/Input.js">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="394">
+-          <caret line="72" column="54" lean-forward="true" selection-start-line="72" selection-start-column="54" selection-end-line="72" selection-end-column="54" />
++        <state relative-caret-position="184">
++          <caret line="8" column="9" lean-forward="true" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
+           <folding>
+-            <element signature="e#0#44#0" expanded="true" />
++            <element signature="e#0#26#0" expanded="true" />
+           </folding>
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/src/modules/manager/actions.js">
++    <entry file="file://$PROJECT_DIR$/src/modules/manager/containers/Index.js">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="207">
+-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
++        <state relative-caret-position="545">
++          <caret line="39" column="25" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
+           <folding>
+-            <element signature="e#0#44#0" expanded="true" />
++            <element signature="e#0#38#0" expanded="true" />
++            <element signature="e#1234#1675#0" />
++            <element signature="e#1704#2105#0" />
+           </folding>
+         </state>
+       </provider>
+diff --git a/src/components/Grid.js b/src/components/Grid.js
+index ef02a00..a80d734 100644
+--- a/src/components/Grid.js
++++ b/src/components/Grid.js
+@@ -11,6 +11,8 @@ export default class extends Component {
+     submissions: PropTypes.array.isRequired,
+     columns: PropTypes.array.isRequired,
+     columnWidths: PropTypes.object.isRequired,
++    createNewLabel: PropTypes.string,
++    onCreateNew: PropTypes.func,
+     onSort: PropTypes.func,
+     onClick: PropTypes.func,
+     onPage: PropTypes.func,
+@@ -71,7 +73,7 @@ export default class extends Component {
+                     { columns.map((column, index) => {
+                       return (
+                         <div key={index} className={'col col-md-' + columnWidths[index]} onClick={() => onClick(submission)}>
+-                          <h4 className='hidden-md hidden-lg'>{column.title}</h4>
++                          <h4 className='d-none'>{column.title}</h4>
+                           <Cell row={submission} column={column} />
+                         </div>
+                       );
+@@ -81,6 +83,15 @@ export default class extends Component {
+               );
+             })}
+             <li className="list-group-item">
++              {this.props.createNewLabel
++                ? <button
++                    onClick={this.props.onCreateNew}
++                    className="btn btn-primary pull-left float-left"
++                  >
++                    {this.props.createNewLabel}
++                  </button>
++                : null
++              }
+               <Pagination
+                 className="pagination-sm"
+                 prev="Previous"
+diff --git a/src/components/Input.js b/src/components/Input.js
+new file mode 100644
+index 0000000..cff47b5
+--- /dev/null
++++ b/src/components/Input.js
+@@ -0,0 +1,22 @@
++import React from 'react';
++import PropTypes from 'prop-types';
++
++const Input = (props) => {
++  return (
++    <input
++      type="text"
++      key="search-field"
++      value={props.regexp}
++      onChange={props.handleChange}
++      className="form-control"
++      placeholder="Search Forms"
++    />
++  );
++};
++
++Input.propTypes = {
++  regexp: PropTypes.string,
++  handleChange: PropTypes.func.isRequired
++};
++
++export default Input;
+diff --git a/src/modules/manager/containers/Index.js b/src/modules/manager/containers/Index.js
+index 2d2bba3..a9c69b7 100644
+--- a/src/modules/manager/containers/Index.js
++++ b/src/modules/manager/containers/Index.js
+@@ -6,8 +6,24 @@ export default config => class extends FormioView {
+   query = {};
+   page = 1;
+   limit = 10;
++  createNewLabel = 'Create Form';
++  state = {
++    regexp: ''
++  };
++
++  handleChange = (event) => {
++    console.log('currentTarget: ', event.currentTarget); //eslint-disable-line
++    this.setState({regexp: event.currentTarget.value});
++    console.log('state: ', this.state); //eslint-disable-line
++  };
+ 
+-  component = ({basePath, form, forms, limit, page, sortOrder, isLoading, onSearch, onSort, onPage, onRowClick}) => {
++  component = ({
++                 basePath, form, forms,
++                 limit, page, sortOrder,
++                 isLoading, onSearch, onSort,
++                 onPage, onRowClick, onCreateNew,
++                 handleChange
++  }) => {
+     if (isLoading) {
+       return (
+         <div className="form-index">
+@@ -19,14 +35,26 @@ export default config => class extends FormioView {
+       return (
+         <Fragment>
+           <div className="input-group mb-3">
+-            <input type="text" className="form-control" placeholder="Search Forms" aria-label="Search Forms" aria-describedby="button-search"/>
++            <input
++              type="text"
++              key="search"
++              value={this.state.regexp}
++              onChange={this.handleChange}
++              className="form-control"
++              placeholder="Search Forms"
++            />
+             <div className="input-group-append">
+-              <button className="btn btn-outline-secondary" type="button" id="button-search" onClick={onSearch}>Search</button>
++              <button className="btn btn-outline-secondary" type="button" id="button-search" onClick={onSearch}>
++                <i className="fa fa-search"/>
++                Search
++              </button>
+             </div>
+           </div>
+           <ManagerGrid
+             forms={forms}
+             limit={limit}
++            createNewLabel={this.createNewLabel}
++            onCreateNew={onCreateNew}
+             page={this.page}
+             sortOrder={sortOrder}
+             onSort={onSort}
+@@ -81,10 +109,15 @@ export default config => class extends FormioView {
+         this.page = page;
+         dispatch(this.formio.manager[config.name].actions.form.index('', this.page, this.limit));
+       },
+-      onRowClick: (submission) => {
+-        this.router.push(manager.getBasePath(ownProps.params) + config.name + '/' + submission._id);
++      onRowClick: (form) => {
++        this.router.push(manager.getBasePath(ownProps.params) + config.name + '/' + form._id + '/view');
+       },
+       onSearch: () => {
++        console.log(this.regexp); //eslint-disable-line
++        // dispatch(this.formio.manager[config.name].actions.form.index('', this.page, this.limit, this.regexp));
++      },
++      onCreateNew: () => {
++        this.router.push(manager.getBasePath(ownProps.params) + config.name + '/create');
+       }
+     };
+   };
+diff --git a/src/modules/manager/containers/ManagerGrid.js b/src/modules/manager/containers/ManagerGrid.js
+index fe0f83e..be14ba2 100644
+--- a/src/modules/manager/containers/ManagerGrid.js
++++ b/src/modules/manager/containers/ManagerGrid.js
+@@ -5,12 +5,13 @@ import Components from 'formiojs/components';
+ import _get from 'lodash/get';
+ 
+ import Grid from '../../../components/Grid';
+-import NavLink from 'react-router-dom/es/NavLink';
+ 
+ export default class extends Component {
+   static propTypes = {
+     forms: PropTypes.array.isRequired,
+-    onRowClick: PropTypes.func
++    createNewLabel: PropTypes.string,
++    onRowClick: PropTypes.func,
++    onCreateNew: PropTypes.func
+   };
+ 
+   static defaultProps = {
+@@ -55,7 +56,7 @@ export default class extends Component {
+       return null;
+     }
+     if (column.key === 'title') {
+-      return <NavLink to={'/' + row._id + '/view'}><h5>{cellValue}</h5></NavLink>;
++      return <h5>{cellValue}</h5>;
+     }
+     return <span>{cellValue}</span>;
+   };
+@@ -64,15 +65,19 @@ export default class extends Component {
+     const {forms, onRowClick, onSort, onPage, page, limit, sortOrder} = this.props;
+     const columns = this.getColumns();
+     const columnWidths = this.calculateWidths(columns.length);
++    const createNewLabel = this.props.createNewLabel;
++    const onCreateNew = this.props.onCreateNew;
+ 
+     return (
+       <Grid
+         submissions={forms}
+         columns={columns}
+         columnWidths={columnWidths}
++        createNewLabel={createNewLabel}
+         onSort={onSort}
+         onClick={onRowClick}
+         onPage={onPage}
++        onCreateNew={onCreateNew}
+         sortOrder={sortOrder}
+         activePage={page}
+         firstItem={parseInt(forms.skip) + 1}
+diff --git a/src/modules/manager/routes.js b/src/modules/manager/routes.js
+index cf8c4eb..cc14326 100644
+--- a/src/modules/manager/routes.js
++++ b/src/modules/manager/routes.js
+@@ -18,13 +18,13 @@ export default (config, childRoutes = []) => [
+         path: 'create',
+         component: config.Create || create(config)
+       },
+-      // {
+-      //   path: ':' + config.name + 'Id',
+-      //   component: (config.Create || create)(config),
+-      //   indexRoute: {
+-      //     component: config.Index || index(config)
+-      //   },
+-      // }
++      {
++        path: ':' + config.name + 'Id',
++        component: (config.Create || create)(config),
++        indexRoute: {
++          component: config.Index || index(config)
++        },
++      }
+       //   childRoutes: [
+       //     {
+       //       path: 'edit',

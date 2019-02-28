@@ -8,13 +8,13 @@ const GridHeaderForm = (props) => {
         <th>
           <div className="row">
             <div className="col-sm-8">
-              <a>
+              <a onClick={props.onSort}>
                 {props.header.label}
                 {props.header.sort
                   ? <i
-                    className={'glyphicon fa glyphicon-triangle-top fa-caret-' + props.header.sort === 'asc'
+                    className={'glyphicon fa glyphicon-triangle-top fa-caret-'.concat(props.header.sort === 'asc'
                       ? 'up'
-                      : 'down'}
+                      : 'down')}
                     />
                   : null
                 }
@@ -31,7 +31,8 @@ const GridHeaderForm = (props) => {
 };
 
 GridHeaderForm.propTypes = {
-  header: PropTypes.object.isRequired
+  header: PropTypes.object.isRequired,
+  onSort: PropTypes.func
 };
 
 export default GridHeaderForm;

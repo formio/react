@@ -1,16 +1,17 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import FormioUtils from 'formiojs/utils';
 import Components from 'formiojs/components';
 import _get from 'lodash/get';
 
-import Grid from '../../../components/Grid';
-import NavLink from 'react-router-dom/es/NavLink';
+import Grid from '../../../components/Grid/Grid';
 
 export default class extends Component {
   static propTypes = {
     forms: PropTypes.array.isRequired,
-    onRowClick: PropTypes.func
+    createNewLabel: PropTypes.string,
+    onRowClick: PropTypes.func,
+    onCreateNew: PropTypes.func
   };
 
   static defaultProps = {
@@ -55,24 +56,46 @@ export default class extends Component {
       return null;
     }
     if (column.key === 'title') {
-      return <NavLink to={'/' + row._id + '/view'}><h5>{cellValue}</h5></NavLink>;
+      return <a href="#"><h5>{cellValue}</h5></a>;
     }
-    return <span>{cellValue}</span>;
+    return (
+      <Fragment>
+        <button className="btn btn-secondary btn-sm form-btn">
+          <i className="fa fa-pencil" />
+          {'Enter Data'}
+        </button>
+        <button className="btn btn-secondary btn-sm form-btn">
+          <i className="fa fa-list-alt" />
+          {'View Data'}
+        </button>
+        <button className="btn btn-secondary btn-sm form-btn">
+          <i className="fa fa-edit" />
+          {'Edit Form'}
+        </button>
+        <button className="btn btn-secondary btn-sm form-btn">
+          <i className="fa fa-trash" />
+        </button>
+      </Fragment>
+    );
   };
 
   render = () => {
     const {forms, onRowClick, onSort, onPage, page, limit, sortOrder} = this.props;
     const columns = this.getColumns();
     const columnWidths = this.calculateWidths(columns.length);
+    const createNewLabel = this.props.createNewLabel;
+    const onCreateNew = this.props.onCreateNew;
 
     return (
       <Grid
-        submissions={forms}
+        items={forms}
         columns={columns}
         columnWidths={columnWidths}
+        createNewLabel={createNewLabel}
         onSort={onSort}
         onClick={onRowClick}
         onPage={onPage}
+        onCreateNew={onCreateNew}
         sortOrder={sortOrder}
         activePage={page}
         firstItem={parseInt(forms.skip) + 1}

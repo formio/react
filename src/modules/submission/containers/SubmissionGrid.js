@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import FormioUtils from 'formiojs/utils';
 import Components from 'formiojs/components';
 import _get from 'lodash/get';
-import Grid from '../../../components/Grid';
+import Grid from '../../../components/Grid/Grid';
 
 export default class extends Component {
   static propTypes = {
