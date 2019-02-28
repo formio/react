@@ -1,4 +1,4 @@
-import {Formio as formiojs} from 'formiojs';
+import formiojs from 'formiojs/Formio';
 import * as types from './constants';
 
 const requestUser = () => ({
@@ -30,8 +30,7 @@ const formAccessUser = formAccess => ({
   formAccess
 });
 
-const getAccess = (dispatch) => {
-  const projectUrl = formiojs.getProjectUrl();
+const getAccess = (dispatch, projectUrl) => {
   formiojs.makeStaticRequest(projectUrl + '/access')
     .then(function(result) {
       let submissionAccess = {};
@@ -60,7 +59,7 @@ const getAccess = (dispatch) => {
     });
 };
 
-export const init = () => {
+export const init = (options) => {
   return (dispatch) => {
     dispatch(requestUser());
 
@@ -68,7 +67,7 @@ export const init = () => {
       .then(user => {
         if (user) {
           dispatch(receiveUser(user));
-          getAccess(dispatch);
+          getAccess(dispatch, options.project);
         }
       })
       .catch(result => {
@@ -77,20 +76,20 @@ export const init = () => {
   };
 };
 
-export const setUser = (user) => {
+export const setUser = (user, options) => {
   formiojs.setUser(user);
   return (dispatch) => {
     dispatch(receiveUser(user));
-    getAccess(dispatch);
+    getAccess(dispatch, options.project);
   };
 };
 
-export const logout = () => {
+export const logout = (options) => {
   return (dispatch, getState) => {
     formiojs.logout()
       .then(() => {
         dispatch(logoutUser());
-        getAccess(dispatch, getState);
+        getAccess(dispatch, options.project);
       });
   };
 };

@@ -1,12 +1,13 @@
 import * as types from './constants';
 
-export function submission(config) {
+export function submissions(config) {
   const initialState = {
     formId: '',
-    id: '',
     isFetching: false,
     lastUpdated: 0,
-    submission: {},
+    submissions: [],
+    limit: 10,
+    page: 0,
     error: ''
   };
 
@@ -16,39 +17,31 @@ export function submission(config) {
       return state;
     }
     switch (action.type) {
-      case types.SUBMISSION_REQUEST:
+      case types.SUBMISSIONS_RESET:
+        return initialState;
+      case types.SUBMISSIONS_REQUEST:
         return {
           ...state,
           formId: action.formId,
-          id: action.id,
-          submission: {},
+          limit: action.limit || state.limit,
           isFetching: true,
+          submissions: [],
+          page: action.page,
+          error: ''
         };
-      case types.SUBMISSION_SAVE:
+      case types.SUBMISSIONS_SUCCESS:
         return {
           ...state,
-          formId: action.formId,
-          id: action.id,
-          submission: {},
-          isFetching: true,
-        };
-      case types.SUBMISSION_SUCCESS:
-        return {
-          ...state,
-          id: action.submission._id,
-          submission: action.submission,
+          submissions: action.submissions,
           isFetching: false,
           error: ''
         };
-      case types.SUBMISSION_FAILURE:
+      case types.SUBMISSIONS_FAILURE:
         return {
           ...state,
           isFetching: false,
-          isInvalid: true,
           error: action.error
         };
-      case types.SUBMISSION_RESET:
-        return initialState;
       default:
         return state;
     }

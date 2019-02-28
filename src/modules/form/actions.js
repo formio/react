@@ -1,6 +1,6 @@
-import Formiojs from 'formiojs';
+import Formiojs from 'formiojs/Formio';
 import * as types from './constants';
-//import { AlertActions } from '../../FormioAlerts/actions';
+import {selectForm} from './selectors';
 
 function requestForm(name, id) {
   return {
@@ -26,85 +26,74 @@ function failForm(name, err) {
   };
 }
 
-function requestForms(name, tag) {
+function resetForm(name) {
   return {
-    type: types.FORMS_REQUEST,
-    name,
-    tag
-  };
-}
-
-function receiveForms(name, forms) {
-  return {
-    type: types.FORMS_SUCCESS,
-    forms,
+    type: types.FORM_RESET,
     name
   };
 }
 
-function failForms(name, err) {
+function sendForm(name, form) {
   return {
-    type: types.FORMS_FAILURE,
-    error: err,
+    type: types.FORM_SAVE,
+    form,
     name
   };
 }
 
-export function formActions(form) {
-  return {
-    get: (id = '') => {
-      return (dispatch, getState) => {
-        // Check to see if the form is already loaded.
-        const root = form.selectors.getForm(getState());
-        if (root.form.components && root.form.id === id) {
-          return;
-        }
-
-        dispatch(requestForm(form.config.name, id));
-
-        const formPath = form.config.form || 'form/' + id;
-
-        const formioForm = new Formiojs(form.config.projectUrl + '/' + formPath);
-
-        return formioForm.loadForm()
-          .then((result) => {
-            dispatch(receiveForm(form.config.name, result));
-          })
-          .catch((result) => {
-            //dispatch(AlertActions.add({
-            //  type: 'danger',
-            //  message: result
-            //}));
-            dispatch(failForm(form.config.name, result));
-          });
-      };
-    },
-    index: (tag, page = 1) => {
-      return (dispatch, getState) => {
-        dispatch(requestForms(form.config.name, tag, page));
-        const forms = form.selectors.getForms(getState());
-
-        let params = {};
-        if (tag) {
-          params.tags = tag;
-        }
-        if (parseInt(forms.limit) !== 10) {
-          params.limit = forms.limit;
-        }
-        if (page !== 1) {
-          params.skip = ((parseInt(page) - 1) * parseInt(forms.limit));
-          params.limit = parseInt(forms.limit);
-        }
-        const formio = new Formiojs(form.config.projectUrl + '/form');
-
-        return formio.loadForms({params})
-          .then((result) => {
-            dispatch(receiveForms(form.config.name, result));
-          })
-          .catch((result) => {
-            dispatch(failForms(form.config.name, result));
-          });
-      };
+export const getForm = (name, id = '', options) => {
+  return (dispatch, getState) => {
+    // Check to see if the form is already loaded.
+    const form = selectForm(name, getState());
+    if (form.components && Array.isArray(form.components) && form.components.length && form._id === id) {
+      return;
     }
+
+    dispatch(requestForm(name, id));
+
+    const formPath = id ? `/form/${id}` : `/${name}`;
+
+    const formio = new Formiojs(options.project + '/' + formPath);
+
+    return formio.loadForm()
+      .then((result) => {
+        dispatch(receiveForm(name, result));
+      })
+      .catch((result) => {
+        dispatch(failForm(name, result));
+      });
   };
-}
+};
+
+export const saveForm = (name, form, options) => {
+  return (dispatch) => {
+    dispatch(sendForm(name, form));
+
+    const id = form._id;
+
+    const formio = new Formiojs(options.project + '/form' + (id ? '/' + id : ''));
+
+    formio.saveForm(form)
+      .then((result) => {
+        dispatch(receiveForm(name, result));
+      })
+      .catch((result) => {
+        dispatch(failForm(name, result));
+      });
+  };
+};
+
+export const deleteForm = (name, id, options) => {
+  return (dispatch, getState) => {
+    const formio = new Formiojs(options.project + '/form/' + id);
+
+    return formio.deleteForm()
+      .then(() => {
+        dispatch(resetForm(name));
+      })
+      .catch((result) => {
+        dispatch(failForm(name, result));
+      });
+  };
+};
+
