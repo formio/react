@@ -5,7 +5,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 
 export default class extends Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: PropTypes.object.isRequired,
     options: PropTypes.object,
     builder: PropTypes.any,
     onSave: PropTypes.func

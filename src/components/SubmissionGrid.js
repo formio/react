@@ -62,17 +62,17 @@ export default class extends Component {
   }
 
   render = () => {
-    const {submissions, onRowClick, onSort, onPage, page, limit, sortOrder} = this.props;
+    const {submissions, onAction, onSort, onPage, page, limit, sortOrder} = this.props;
     const columns = this.getColumns();
     const columnWidths = this.calculateWidths(columns.length);
 
     return (
       <Grid
-        submissions={submissions}
+        items={submissions}
         columns={columns}
         columnWidths={columnWidths}
         onSort={onSort}
-        onClick={onRowClick}
+        onAction={onAction}
         onPage={onPage}
         sortOrder={sortOrder}
         activePage={page + 1}
@@ -80,6 +80,7 @@ export default class extends Component {
         lastItem={parseInt(submissions.skip) + parseInt(submissions.limit)}
         total={parseInt(submissions.serverCount)}
         pages={Math.ceil(submissions.serverCount / limit)}
+        emptyText='No data found'
         Cell={this.Cell}
       />
     );

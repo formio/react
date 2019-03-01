@@ -1,4 +1,4 @@
-import Formiojs from 'formiojs';
+import Formiojs from 'formiojs/Formio';
 import * as types from './constants';
 
 function requestSubmission(name) {
@@ -38,7 +38,7 @@ function reset(name) {
   };
 }
 
-export const getSubmission = (name, id, options) => {
+export const getSubmission = (name, id, options, done = () => {}) => {
   return (dispatch, getState) => {
     // Check to see if the submission is already loaded.
     if (getState().id === id) {
@@ -52,14 +52,16 @@ export const getSubmission = (name, id, options) => {
     formio.loadSubmission()
       .then((result) => {
         dispatch(receiveSubmission(name, result));
+        done(null, result);
       })
       .catch((result) => {
         dispatch(failSubmission(name, result));
+        done(result);
       });
   };
 };
 
-export const saveSubmission = (name, data, options) => {
+export const saveSubmission = (name, data, options, done = () => {}) => {
   return (dispatch) => {
     dispatch(sendSubmission(name, data));
 
@@ -70,23 +72,27 @@ export const saveSubmission = (name, data, options) => {
     formio.saveSubmission(data)
       .then((result) => {
         dispatch(receiveSubmission(name, result));
+        done(null, result);
       })
       .catch((result) => {
         dispatch(failSubmission(name, result));
+        done(result);
       });
   };
 };
 
-export const deleteSubmission = (name, id, options) => {
+export const deleteSubmission = (name, id, options, done = () => {}) => {
   return (dispatch, getState) => {
     const formio = new Formiojs(options.project + '/' + (options.formId ? 'form/' + options.formId : name) + '/submission/' + id);
 
     return formio.deleteSubmission()
       .then(() => {
         dispatch(reset(name));
+        done();
       })
       .catch((result) => {
         dispatch(failSubmission(name, result));
+        done(result);
       });
   };
 };

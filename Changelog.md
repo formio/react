@@ -6,9 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 3.1.2
 ### Added
-  - New reset actions for resetting state
-  - FormGrid component
-  - FormEdit component
+ - New reset actions for resetting state
+ - FormGrid component
+ - FormEdit component
+ - Add action callback
+
+## Changed
+ - Refactor SubmissionGrid component
+ - Refactor Grid component
 
 ## 3.1.1
 ### Added

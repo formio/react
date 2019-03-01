@@ -41,7 +41,7 @@ function sendForm(name, form) {
   };
 }
 
-export const getForm = (name, id = '', options) => {
+export const getForm = (name, id = '', options, done = () => {}) => {
   return (dispatch, getState) => {
     // Check to see if the form is already loaded.
     const form = selectForm(name, getState());
@@ -58,14 +58,16 @@ export const getForm = (name, id = '', options) => {
     return formio.loadForm()
       .then((result) => {
         dispatch(receiveForm(name, result));
+        done(null, result);
       })
       .catch((result) => {
         dispatch(failForm(name, result));
+        done(result);
       });
   };
 };
 
-export const saveForm = (name, form, options) => {
+export const saveForm = (name, form, options, done = () => {}) => {
   return (dispatch) => {
     dispatch(sendForm(name, form));
 
@@ -76,23 +78,27 @@ export const saveForm = (name, form, options) => {
     formio.saveForm(form)
       .then((result) => {
         dispatch(receiveForm(name, result));
+        done(null, result);
       })
       .catch((result) => {
         dispatch(failForm(name, result));
+        done(result);
       });
   };
 };
 
-export const deleteForm = (name, id, options) => {
+export const deleteForm = (name, id, options, done = () => {}) => {
   return (dispatch) => {
     const formio = new Formiojs(options.project + '/form/' + id);
 
     return formio.deleteForm()
       .then(() => {
         dispatch(reset(name));
+        done();
       })
       .catch((result) => {
         dispatch(failForm(name, result));
+        done(result);
       });
   };
 };
