@@ -2,7 +2,7 @@ import Formiojs from 'formiojs/Formio';
 import * as types from './constants';
 import {selectSubmissions} from './selectors';
 
-function resetSubmissions(name) {
+function reset(name) {
   return {
     type: types.SUBMISSIONS_RESET,
     name
@@ -59,4 +59,8 @@ export const getSubmissions = (name, page = 0, params = {}, options) => {
         dispatch(failSubmissions(name, result));
       });
   };
+};
+
+export const resetSubmissions = (name) => {
+  return dispatch => dispatch(reset(name));
 };

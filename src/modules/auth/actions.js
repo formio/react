@@ -59,7 +59,7 @@ const getAccess = (dispatch, projectUrl) => {
     });
 };
 
-export const init = (options) => {
+export const initUser = (options) => {
   return (dispatch) => {
     dispatch(requestUser());
 

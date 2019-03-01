@@ -31,7 +31,7 @@ function failSubmission(name, err) {
   };
 }
 
-function resetSubmission(name) {
+function reset(name) {
   return {
     type: types.SUBMISSION_RESET,
     name
@@ -83,10 +83,14 @@ export const deleteSubmission = (name, id, options) => {
 
     return formio.deleteSubmission()
       .then(() => {
-        dispatch(resetSubmission(name));
+        dispatch(reset(name));
       })
       .catch((result) => {
         dispatch(failSubmission(name, result));
       });
   };
+};
+
+export const resetSubmission = (name) => {
+  return dispatch => dispatch(reset(name));
 };

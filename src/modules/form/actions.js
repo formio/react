@@ -26,7 +26,7 @@ function failForm(name, err) {
   };
 }
 
-function resetForm(name) {
+function reset(name) {
   return {
     type: types.FORM_RESET,
     name
@@ -84,16 +84,20 @@ export const saveForm = (name, form, options) => {
 };
 
 export const deleteForm = (name, id, options) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     const formio = new Formiojs(options.project + '/form/' + id);
 
     return formio.deleteForm()
       .then(() => {
-        dispatch(resetForm(name));
+        dispatch(reset(name));
       })
       .catch((result) => {
         dispatch(failForm(name, result));
       });
   };
+};
+
+export const resetForm = (name) => {
+  return (dispatch) => dispatch(reset(name));
 };
 

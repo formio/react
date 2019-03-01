@@ -2,7 +2,7 @@ import Formiojs from 'formiojs/Formio';
 import * as types from './constants';
 import {selectRoot} from '../root/selectors';
 
-function resetForms(name) {
+function reset(name) {
   return {
     type: types.FORMS_RESET,
     name
@@ -54,4 +54,8 @@ export const indexForms = (name, page = 1, params = {}, options) => {
         dispatch(failForms(name, result));
       });
   };
-}
+};
+
+export const resetForms = (name) => {
+  return dispatch => dispatch(reset(name));
+};
