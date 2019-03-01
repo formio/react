@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.1.2
+### Added
+  - New reset actions for resetting state
+  - FormGrid component
+  - FormEdit component
+
+## 3.1.1
+### Added
+ - Option to override the renderer and builder if they have custom components.
+
+## 3.1.0
+### Changed
+ - Refactor module code to remove unneeded complexity
+
+## 3.0.6
+### Rerelease
+
 ## 3.0.5
 ### Changed 
  - Update Formio verison

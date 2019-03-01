@@ -25,14 +25,6 @@ You can find it in the [/dist directory](https://github.com/formio/react-formio/
 
 Give `Form` a `src` property and render:
 
-** For es5 require() modules. **
-```javascript
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Form = require('react-formio').Form;
-```
-
-** For es6 import/export modules. **
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
