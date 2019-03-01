@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 4.0.0
 ### Changed
  - Upgrade formio.js to 4.x branch to enable templating.
+ - Refactor of modules and new components.
 
 ## 3.0.1
 ### Added
