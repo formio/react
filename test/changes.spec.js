@@ -244,6 +244,7 @@ describe('Form component', function() {
   });
 
   it('should trigger change when data is hidden in a layout component.', function() {
+    const groupname = 'Layout Test';
     const {ifexceed, notify} = createIfExceed();
     const onchange = sinon.spy(notify);
     let root;
@@ -252,7 +253,8 @@ describe('Form component', function() {
     let element;
     let formio;
     return seq([
-      () => {
+      function() {
+        const testname = `${groupname} 1 Initial change`;
         element = mount(
           <Form
             form={{display: 'form', components: layout}}
@@ -260,49 +262,93 @@ describe('Form component', function() {
             submission={{data: {visible: false, textfield: 'Test'}}}
           />
         );
-        return ifexceed('fail on init change', () => {
+        return ifexceed(`${testname}: initial change timeout`, () => {
           formio = element.instance().formio;
           root = element.getDOMNode();
           checkbox = root.querySelector('input[type="checkbox"]');
           input = root.querySelector('input[type="text"]');
-          expect(onchange.calledOnce).to.be.true;
-          expect(formio.submission).to.deep.equal({data: {visible: false}});
+          expect(
+            onchange.calledOnce,
+            `${testname}: onChange not triggerd on initial change`
+          ).to.be.true;
+          expect(
+            formio.submission,
+            `${testname}: submission.data should not contain keys other then "visible"`
+          ).to.deep.equal({data: {visible: false}});
         });
       },
-      () => {
+      function() {
+        const testname = `${groupname} 2 Show input`;
         checkbox.dispatchEvent(new MouseEvent('click'));
-        return ifexceed('fail on checkbox click', () => {
-          expect(onchange.calledTwice).to.be.true;
-          expect(formio.submission).to.deep.equal({data: {visible: true, textfield: ''}});
+        return ifexceed(`${testname}: checkbox change timeout`, () => {
+          expect(
+            onchange.calledTwice,
+            `${testname}: onChange not triggerd on checkbox change`
+          ).to.be.true;
+          expect(
+            formio.submission,
+            `${testname}: submission.data should include textfield with empty value`
+          ).to.deep.equal({data: {visible: true, textfield: ''}});
         });
       },
-      () => {
+      function() {
+        const testname = `${groupname} 3 Hide input`;
         checkbox.dispatchEvent(new MouseEvent('click'));
-        return ifexceed('fail on checkbox click', () => {
-          expect(onchange.callCount).to.equal(3);
-          expect(formio.submission).to.deep.equal({data: {visible: false}});
+        return ifexceed(`${testname}: checkbox change timeout`, () => {
+          expect(
+            onchange.callCount,
+            `${testname}: onChange not triggerd on checkbox change`
+          ).to.equal(3);
+          expect(
+            formio.submission,
+            `${testname}: submission.data should not contain keys other then "visible"`
+          ).to.deep.equal({data: {visible: false}});
         });
       },
-      () => {
+      function() {
+        const testname = `${groupname} 4 Show input`;
         checkbox.dispatchEvent(new MouseEvent('click'));
+        return ifexceed(`${testname}: checkbox change timeout`, () => {
+          expect(
+            onchange.callCount,
+            `${testname}: onChange not triggerd on checkbox change`
+          ).to.equal(4);
+        });
+      },
+      function() {
+        const testname = `${groupname} 5 Set input value`;
         input.value = 'value';
         input.dispatchEvent(new Event('input'));
-        return ifexceed('fail on checkbox click', () => {
-          expect(onchange.callCount).to.equal(4);
-          expect(formio.submission).to.deep.equal({data: {visible: true, textfield: 'value'}});
+        return ifexceed(`${testname}: input change timeout`, () => {
+          expect(
+            onchange.callCount,
+            `${testname}: onChange not triggerd on input change`
+          ).to.equal(5);
+          expect(
+            formio.submission,
+            `${testname}: submission.data should include textfield with value "value"`
+          ).to.deep.equal({data: {visible: true, textfield: 'value'}});
         });
       },
-      () => {
+      function() {
+        const testname = `${groupname} 6 Hide input, clear submission data`;
         checkbox.dispatchEvent(new MouseEvent('click'));
-        return ifexceed('fail on checkbox click', () => {
-          expect(onchange.callCount).to.equal(5);
-          expect(formio.submission).to.deep.equal({data: {visible: false}});
+        return ifexceed(`${testname}: input change timeout`, () => {
+          expect(
+            onchange.callCount,
+            `${testname}: onChange not triggerd on input change`
+          ).to.equal(6);
+          expect(
+            formio.submission,
+            `${testname}: submission.data should not contain keys other then "visible"`
+          ).to.deep.equal({data: {visible: false}});
         });
       },
     ]);
   });
 
   it('should trigger change when dat is hindden in a columns component.', function() {
+    const groupname = 'Columns Test';
     const {ifexceed, notify} = createIfExceed();
     const onchange = sinon.spy(notify);
     let root;
@@ -311,7 +357,8 @@ describe('Form component', function() {
     let element;
     let formio;
     return seq([
-      () => {
+      function() {
+        const testname = `${groupname} 1 Init`;
         element = mount(
           <Form
             form={{display: 'form', components: columns}}
@@ -319,43 +366,86 @@ describe('Form component', function() {
             submission={{data: {visible: false, textfield: 'Test'}}}
           />
         );
-        return ifexceed('fail on init change', () => {
+        return ifexceed(`${testname}: initial change timeout`, () => {
           formio = element.instance().formio;
           root = element.getDOMNode();
           checkbox = root.querySelector('input[type="checkbox"]');
           input = root.querySelector('input[type="text"]');
-          expect(onchange.calledOnce).to.be.true;
-          expect(formio.submission).to.deep.equal({data: {visible: false}});
+          expect(
+            onchange.calledOnce,
+            `${testname}: onChange not triggerd on initial change`
+          ).to.be.true;
+          expect(
+            formio.submission,
+            `${testname}: submission.data should not contain keys other then "visible"`
+          ).to.deep.equal({data: {visible: false}});
         });
       },
-      () => {
+      function() {
+        const testname = `${groupname} 2 Show columns`;
         checkbox.dispatchEvent(new MouseEvent('click'));
-        return ifexceed('fail on checkbox click', () => {
-          expect(onchange.calledTwice).to.be.true;
-          expect(formio.submission).to.deep.equal({data: {visible: true, textfield: ''}});
+        return ifexceed(`${testname}: checkbox change timeout`, () => {
+          expect(
+            onchange.calledTwice,
+            `${testname}: onChange not triggerd on checkbox change`
+          ).to.be.true;
+          expect(
+            formio.submission,
+            `${testname}: submission.data should include textfield with empty value`
+          ).to.deep.equal({data: {visible: true, textfield: ''}});
         });
       },
-      () => {
+      function() {
+        const testname = `${groupname} 3 Hide columns`;
         checkbox.dispatchEvent(new MouseEvent('click'));
-        return ifexceed('fail on checkbox click', () => {
-          expect(onchange.callCount).to.equal(3);
-          expect(formio.submission).to.deep.equal({data: {visible: false}});
+        return ifexceed(`${testname}: checkbox change timeout`, () => {
+          expect(
+            onchange.callCount,
+            `${testname}: onChange not triggerd on checkbox change`
+          ).to.equal(3);
+          expect(
+            formio.submission,
+            `${testname}: submission.data should not contain keys other then "visible"`
+          ).to.deep.equal({data: {visible: false}});
         });
       },
-      () => {
+      function() {
+        const testname = `${groupname} 4 Hide columns`;
         checkbox.dispatchEvent(new MouseEvent('click'));
+        return ifexceed(`${testname}: checkbox change timeout`, () => {
+          expect(
+            onchange.callCount,
+            `${testname}: onChange not triggerd on checkbox change`
+          ).to.equal(4);
+        });
+      },
+      function() {
+        const testname = `${groupname} 5 Hide columns`;
         input.value = 'value';
         input.dispatchEvent(new Event('input'));
-        return ifexceed('fail on checkbox click', () => {
-          expect(onchange.callCount).to.equal(4);
-          expect(formio.submission).to.deep.equal({data: {visible: true, textfield: 'value'}});
+        return ifexceed(`${testname}: input change timeout`, () => {
+          expect(
+            onchange.callCount,
+            `${testname}: onChange not triggerd on checkbox change`
+          ).to.equal(5);
+          expect(
+            formio.submission,
+            `${testname}: submission.data should include textfield with value "value"`
+          ).to.deep.equal({data: {visible: true, textfield: 'value'}});
         });
       },
-      () => {
+      function() {
+        const testname = `${groupname} 6 Hide columns`;
         checkbox.dispatchEvent(new MouseEvent('click'));
-        return ifexceed('fail on checkbox click', () => {
-          expect(onchange.callCount).to.equal(5);
-          expect(formio.submission).to.deep.equal({data: {visible: false}});
+        return ifexceed(`${testname}: input change timeout`, () => {
+          expect(
+            onchange.callCount,
+            `${testname}: onChange not triggerd on input change`
+          ).to.equal(6);
+          expect(
+            formio.submission,
+            `${testname}: submission.data should not contain keys other then "visible"`
+          ).to.deep.equal({data: {visible: false}});
         });
       },
     ]);
