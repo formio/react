@@ -46,7 +46,7 @@ const getAccess = (dispatch) => {
     .catch(function(err) {
       //console.error(err);
     });
-  formiojs.makeStaticRequest(projectUrl)
+  formiojs.makeStaticRequest(formiojs.getProjectUrl())
     .then(function(project) {
       let formAccess = {};
       project.access.forEach(access => {
@@ -59,7 +59,7 @@ const getAccess = (dispatch) => {
     });
 };
 
-export const initAuth = (options) => {
+export const initAuth = () => {
   return (dispatch) => {
     dispatch(requestUser());
 
@@ -76,7 +76,7 @@ export const initAuth = (options) => {
   };
 };
 
-export const setUser = (user, options) => {
+export const setUser = (user, ) => {
   formiojs.setUser(user);
   return (dispatch) => {
     dispatch(receiveUser(user));
@@ -84,7 +84,7 @@ export const setUser = (user, options) => {
   };
 };
 
-export const logout = (options) => {
+export const logout = () => {
   return (dispatch, getState) => {
     formiojs.logout()
       .then(() => {

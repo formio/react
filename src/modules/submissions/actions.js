@@ -36,7 +36,7 @@ function failSubmissions(name, err) {
 
 export const getSubmissions = (name, page = 0, params = {}, formId) => {
   return (dispatch, getState) => {
-    dispatch(requestSubmissions(name, page, options.formId));
+    dispatch(requestSubmissions(name, page, formId));
     const submissions = selectSubmissions(name, getState());
 
     if (parseInt(submissions.limit) !== 10) {
