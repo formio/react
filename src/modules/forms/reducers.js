@@ -3,7 +3,7 @@ import * as types from './constants';
 export function forms(config) {
   const initialState = {
     tag: '',
-    isFetching: false,
+    isActive: false,
     lastUpdated: 0,
     forms: [],
     limit: 10,
@@ -26,7 +26,7 @@ export function forms(config) {
           ...state,
           limit: action.limit || state.limit,
           tag: config.tag,
-          isFetching: true,
+          isActive: true,
           pagination: {
             page: action.page || state.pagination.page
           },
@@ -41,13 +41,13 @@ export function forms(config) {
             numPages: Math.ceil(action.forms.serverCount / state.limit),
             total: action.forms.serverCount
           },
-          isFetching: false,
+          isActive: false,
           error: ''
         };
       case types.FORMS_FAILURE:
         return {
           ...state,
-          isFetching: false,
+          isActive: false,
           isInvalid: true,
           error: action.error
         };

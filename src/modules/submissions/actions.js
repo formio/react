@@ -34,7 +34,7 @@ function failSubmissions(name, err) {
   };
 }
 
-export const getSubmissions = (name, page = 0, params = {}, options) => {
+export const getSubmissions = (name, page = 0, params = {}, formId) => {
   return (dispatch, getState) => {
     dispatch(requestSubmissions(name, page, options.formId));
     const submissions = selectSubmissions(name, getState());
@@ -49,7 +49,7 @@ export const getSubmissions = (name, page = 0, params = {}, options) => {
     else {
       delete params.skip;
     }
-    const formio = new Formiojs(options.project + '/' + (options.formId ? 'form/' + options.formId : name) + '/submission');
+    const formio = new Formiojs(Formiojs.getProjectUrl() + '/' + (formId ? 'form/' + formId : name) + '/submission');
 
     return formio.loadSubmissions({params})
       .then((result) => {

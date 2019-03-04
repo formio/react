@@ -38,16 +38,16 @@ function reset(name) {
   };
 }
 
-export const getSubmission = (name, id, options, done = () => {}) => {
+export const getSubmission = (name, id, formId, done = () => {}) => {
   return (dispatch, getState) => {
     // Check to see if the submission is already loaded.
     if (getState().id === id) {
       return;
     }
 
-    dispatch(requestSubmission(name, id, options.formId));
+    dispatch(requestSubmission(name, id, formId));
 
-    const formio = new Formiojs(options.project + '/' + (options.formId ? 'form/' + options.formId : name) + '/submission/' + id);
+    const formio = new Formiojs(Formiojs.getProjectUrl() + '/' + (formId ? 'form/' + formId : name) + '/submission/' + id);
 
     formio.loadSubmission()
       .then((result) => {
@@ -61,13 +61,13 @@ export const getSubmission = (name, id, options, done = () => {}) => {
   };
 };
 
-export const saveSubmission = (name, data, options, done = () => {}) => {
+export const saveSubmission = (name, data, formId, done = () => {}) => {
   return (dispatch) => {
     dispatch(sendSubmission(name, data));
 
     const id = data._id;
 
-    const formio = new Formiojs(options.project + '/' + (options.formId ? 'form/' + options.formId : name) + '/submission' + (id ? '/' + id : ''));
+    const formio = new Formiojs(Formiojs.getProjectUrl() + '/' + (formId ? 'form/' + formId : name) + '/submission' + (id ? '/' + id : ''));
 
     formio.saveSubmission(data)
       .then((result) => {
@@ -81,9 +81,9 @@ export const saveSubmission = (name, data, options, done = () => {}) => {
   };
 };
 
-export const deleteSubmission = (name, id, options, done = () => {}) => {
+export const deleteSubmission = (name, id, formId, done = () => {}) => {
   return (dispatch, getState) => {
-    const formio = new Formiojs(options.project + '/' + (options.formId ? 'form/' + options.formId : name) + '/submission/' + id);
+    const formio = new Formiojs(Formiojs.getProjectUrl() + '/' + (formId ? 'form/' + formId : name) + '/submission/' + id);
 
     return formio.deleteSubmission()
       .then(() => {

@@ -3,7 +3,7 @@ import * as types from './constants';
 export function submissions(config) {
   const initialState = {
     formId: '',
-    isFetching: false,
+    isActive: false,
     lastUpdated: 0,
     submissions: [],
     limit: 10,
@@ -24,7 +24,7 @@ export function submissions(config) {
           ...state,
           formId: action.formId,
           limit: action.limit || state.limit,
-          isFetching: true,
+          isActive: true,
           submissions: [],
           page: action.page,
           error: ''
@@ -33,13 +33,13 @@ export function submissions(config) {
         return {
           ...state,
           submissions: action.submissions,
-          isFetching: false,
+          isActive: false,
           error: ''
         };
       case types.SUBMISSIONS_FAILURE:
         return {
           ...state,
-          isFetching: false,
+          isActive: false,
           error: action.error
         };
       default:

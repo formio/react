@@ -2,7 +2,7 @@ import * as types from './constants';
 
 const initialState = {
   init: false,
-  isFetching: false,
+  isActive: false,
   user: null,
   authenticated: false,
   formAccess: false,
@@ -20,12 +20,12 @@ export const auth = config => (state = initialState, action) => {
         ...state,
         init: true,
         submissionAccess: false,
-        isFetching: true
+        isActive: true
       };
     case types.USER_REQUEST_SUCCESS:
       return {
         ...state,
-        isFetching: false,
+        isActive: false,
         user: action.user,
         authenticated: true,
         error: ''
@@ -33,7 +33,7 @@ export const auth = config => (state = initialState, action) => {
     case types.USER_REQUEST_FAILURE:
       return {
         ...state,
-        isFetching: false,
+        isActive: false,
         error: action.error
       };
     case types.USER_SUBMISSION_ACCESS:
@@ -55,7 +55,7 @@ export const auth = config => (state = initialState, action) => {
       return {
         ...state,
         user: null,
-        isFetching: false,
+        isActive: false,
         authenticated: false,
         error: ''
       };

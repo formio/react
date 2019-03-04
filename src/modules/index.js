@@ -4,4 +4,3 @@ export * from './forms';
 export * from './submission';
 export * from './submissions';
 export * from './root';
-export {Components, Formio} from 'formiojs';
