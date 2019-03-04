@@ -7,6 +7,7 @@ export function submission(config) {
     isActive: false,
     lastUpdated: 0,
     submission: {},
+    url: '',
     error: ''
   };
 
@@ -21,6 +22,7 @@ export function submission(config) {
           ...state,
           formId: action.formId,
           id: action.id,
+          url: action.url,
           submission: {},
           isActive: true,
         };
@@ -29,6 +31,7 @@ export function submission(config) {
           ...state,
           formId: action.formId,
           id: action.id,
+          url: action.url || state.url,
           submission: {},
           isActive: true,
         };

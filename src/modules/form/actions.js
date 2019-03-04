@@ -2,19 +2,21 @@ import Formiojs from 'formiojs/Formio';
 import * as types from './constants';
 import {selectForm} from './selectors';
 
-function requestForm(name, id) {
+function requestForm(name, id, url) {
   return {
     type: types.FORM_REQUEST,
     name,
-    id
+    id,
+    url
   };
 }
 
-function receiveForm(name, form) {
+function receiveForm(name, form, url) {
   return {
     type: types.FORM_SUCCESS,
     form,
-    name
+    name,
+    url
   };
 }
 
@@ -49,11 +51,11 @@ export const getForm = (name, id = '', done = () => {}) => {
       return;
     }
 
-    dispatch(requestForm(name, id));
+    const url = Formiojs.getProjectUrl() + '/' + (id ? `form/${id}` : `/${name}`);
 
-    const formPath = id ? `/form/${id}` : `/${name}`;
+    dispatch(requestForm(name, id, url));
 
-    const formio = new Formiojs(Formiojs.getProjectUrl() + '/' + formPath);
+    const formio = new Formiojs(url);
 
     return formio.loadForm()
       .then((result) => {
@@ -73,11 +75,12 @@ export const saveForm = (name, form, done = () => {}) => {
 
     const id = form._id;
 
-    const formio = new Formiojs(Formiojs.getProjectUrl() + '/form' + (id ? '/' + id : ''));
+    const formio = new Formiojs();
 
     formio.saveForm(form)
       .then((result) => {
-        dispatch(receiveForm(name, result));
+        const url = Formiojs.getProjectUrl() + '/form/' + result._id;
+        dispatch(receiveForm(name, result, url));
         done(null, result);
       })
       .catch((result) => {
