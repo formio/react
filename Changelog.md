@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 3.1.4
 ### Added
  - Pagination to SubmissionGrid and FormGrid
+ 
+### Changed
+ - Specify query for submissions and forms reducers and remove tag.
 
 ## 3.1.3
 ### Added
