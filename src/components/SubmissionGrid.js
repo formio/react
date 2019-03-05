@@ -9,11 +9,15 @@ export default class extends Component {
   static propTypes = {
     submissions: PropTypes.array.isRequired,
     form: PropTypes.object.isRequired,
-    onRowClick: PropTypes.func
+    onAction: PropTypes.func,
+    onSort: PropTypes.func,
+    onPage: PropTypes.func,
   };
 
   static defaultProps = {
-    onRowClick: () => {}
+    onAction: () => {},
+    onSort: () => {},
+    onPage: () => {},
   }
 
   getColumns = () => {
