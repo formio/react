@@ -7,7 +7,9 @@ export function submissions(config) {
     lastUpdated: 0,
     submissions: [],
     limit: 10,
-    page: 0,
+    pagination: {
+      page: 1
+    },
     error: ''
   };
 
@@ -26,13 +28,22 @@ export function submissions(config) {
           limit: action.limit || state.limit,
           isActive: true,
           submissions: [],
-          page: action.page,
+          pagination: {
+            page: action.page || state.pagination.page,
+            numPages: action.numPages || state.pagination.numPages,
+            total: action.total || state.pagination.total
+          },
           error: ''
         };
       case types.SUBMISSIONS_SUCCESS:
         return {
           ...state,
           submissions: action.submissions,
+          pagination: {
+            page: state.pagination.page,
+            numPages: Math.ceil((action.submissions.serverCount || state.pagination.total) / state.limit),
+            total: action.submissions.serverCount || state.pagination.total
+          },
           isActive: false,
           error: ''
         };

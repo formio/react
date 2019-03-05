@@ -87,14 +87,16 @@ export default class extends Component {
               );
             })}
             <li className="list-group-item">
-              <Pagination
-                pages={pages}
-                activePage={activePage}
-                pageNeighbours={pageNeighbours}
-                prev="Previous"
-                next="Next"
-                onSelect={onPage}
-              />
+              <span className="pull-left">
+                <Pagination
+                  pages={pages}
+                  activePage={activePage}
+                  pageNeighbours={pageNeighbours}
+                  prev="Previous"
+                  next="Next"
+                  onSelect={onPage}
+                />
+              </span>
               <span className="pull-right item-counter"><span className="page-num">{ firstItem } - { lastItem }</span> / { total } total</span>
             </li>
           </ul> :
@@ -103,14 +105,4 @@ export default class extends Component {
       </div>
     );
   }
-  //   <Pagination
-  //     className="pagination-sm"
-  //     prev="Previous"
-  //     next="Next"
-  //     items={pages}
-  //     activePage={activePage}
-  //     maxButtons={5}
-  //     onSelect={onPage}
-  //   />
-
 }

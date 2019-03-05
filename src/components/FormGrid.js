@@ -11,6 +11,7 @@ export default class extends Component {
       query: props.query
     };
   }
+
   static propTypes = {
     forms: PropTypes.object,
     perms: PropTypes.object,
@@ -30,6 +31,7 @@ export default class extends Component {
       numPages: 1,
       total: 1
     },
+    getForms: () => {},
     query: {}
   };
 
@@ -42,6 +44,13 @@ export default class extends Component {
 
     return null;
   }
+
+  onPage = (page) => {
+    this.setState(prevState => {
+      prevState.page = page;
+      return prevState;
+    }, () => this.props.getForms(this.state.page, this.state.query));
+  };
 
   getColumns() {
     return [
@@ -102,10 +111,10 @@ export default class extends Component {
   }
 
   render() {
-    const {forms: {forms, limit, pagination}, onAction, onPage, perms} = this.props;
+    const {forms: {forms, limit, pagination}, onAction, perms} = this.props;
     const columns = this.getColumns();
     const columnWidths = {0: 8, 1: 4};
-    const skip = (parseInt(pagination.page) - 1) * parseInt(limit);
+    const skip = (parseInt(this.state.page) - 1) * parseInt(limit);
     const last = skip + parseInt(limit) > pagination.total ? pagination.total : skip + parseInt(limit);
 
     return (
@@ -114,7 +123,7 @@ export default class extends Component {
         columns={columns}
         columnWidths={columnWidths}
         onAction={onAction}
-        onPage={onPage}
+        onPage={this.onPage}
         activePage={pagination.page}
         firstItem={skip + 1}
         lastItem={last}

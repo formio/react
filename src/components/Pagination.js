@@ -52,16 +52,17 @@ export default class extends Component {
       const hasLeftSpill = startPage > 2;
       const hasRightSpill = (totalPages - endPage) > 1;
       const spillOffset = totalNumbers - (pages.length + 1);
+      let extraPages;
 
       switch (true) {
         case (hasLeftSpill && !hasRightSpill): {
-          const extraPages = this.range(startPage - spillOffset, startPage - 1);
+          extraPages = this.range(startPage - spillOffset, startPage - 1);
           pages = [LEFT_PAGE, ...extraPages, ...pages];
           break;
         }
 
         case (!hasLeftSpill && hasRightSpill): {
-          const extraPages = this.range(endPage + 1, endPage + spillOffset);
+          extraPages = this.range(endPage + 1, endPage + spillOffset);
           pages = [...pages, ...extraPages, RIGHT_PAGE];
           break;
         }
@@ -84,18 +85,18 @@ export default class extends Component {
     const pageNumbers = this.getPageNumbers();
 
     return (
-      <nav aria-label="Page navigation example">
-        <ul className="pagination justify-content-center">
-
+      <nav aria-label="Page navigation">
+        <ul className="pagination">
           <li className={`page-item ${activePage === 1 ? 'disabled' : ''}`}>
-            <a
+            <span
               className="page-link"
+              style={{cursor: 'pointer'}}
               onClick={() => {
                 activePage !== 1 ? onSelect(activePage-1) : null;
               }}
-              href="#">
+              >
               {prev}
-            </a>
+            </span>
           </li>
 
           {pageNumbers.map( (page, pageNumber) => {
@@ -104,9 +105,12 @@ export default class extends Component {
             if (page === LEFT_PAGE) {
               return (
                 <li className="page-item disabled">
-                  <a className="page-link" href="#">
+                  <span
+                    className="page-link"
+                    style={{cursor: 'pointer'}}
+                  >
                       <span aria-hidden="true">...</span>
-                  </a>
+                  </span>
                 </li>
               );
             }
@@ -114,36 +118,40 @@ export default class extends Component {
             if (page === RIGHT_PAGE) {
               return (
                 <li className="page-item disabled">
-                  <a className="page-link" href="#">
+                  <span
+                    className="page-link"
+                    style={{cursor: 'pointer'}}
+                  >
                       <span aria-hidden="true">...</span>
-                  </a>
+                  </span>
                 </li>
               );
             }
 
             return (
               <li className={'page-item ' + className} key={pageNumber}>
-                <a
+                <span
                   className="page-link"
                   onClick={() => onSelect(page)}
-                  href="#">
+                  style={{cursor: 'pointer'}}
+                  >
                   {page}
-                </a>
+                </span>
               </li>
             );
           })}
 
           <li className={`page-item ${activePage === pages ? 'disabled' : ''}`}>
-            <a
+            <span
               className="page-link"
+              style={{cursor: 'pointer'}}
               onClick={() => {
                 activePage !== pages ? onSelect(activePage+1) : null;
               }}
-              href="#">
+              >
               {next}
-            </a>
+            </span>
           </li>
-
         </ul>
       </nav>
     );

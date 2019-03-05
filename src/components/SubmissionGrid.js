@@ -6,19 +6,52 @@ import _get from 'lodash/get';
 import Grid from './Grid';
 
 export default class extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      page: props.pagination.page,
+      query: props.query
+    };
+  }
+
   static propTypes = {
-    submissions: PropTypes.array.isRequired,
+    submissions: PropTypes.object.isRequired,
     form: PropTypes.object.isRequired,
     onAction: PropTypes.func,
     onSort: PropTypes.func,
     onPage: PropTypes.func,
+    getSubmissions: PropTypes.func,
   };
 
   static defaultProps = {
+    pagination: {
+      page: 1,
+      numPages: 1,
+      total: 1
+    },
     onAction: () => {},
     onSort: () => {},
     onPage: () => {},
+    getSubmissions: () => {},
   }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.query !== prevState.query) {
+      return {
+        query: nextProps.query
+      };
+    }
+
+    return null;
+  }
+
+  onPage = (page) => {
+    this.setState(prevState => {
+      prevState.page = page;
+      return prevState;
+    }, () => this.props.getSubmissions(this.state.page, this.state.query));
+  };
 
   getColumns = () => {
     let columns = [];
@@ -66,9 +99,11 @@ export default class extends Component {
   }
 
   render = () => {
-    const {submissions, onAction, onSort, onPage, page, limit, sortOrder} = this.props;
+    const {submissions: {submissions, limit, pagination}, onAction, onSort, sortOrder} = this.props;
     const columns = this.getColumns();
     const columnWidths = this.calculateWidths(columns.length);
+    const skip = (parseInt(this.state.page) - 1) * parseInt(limit);
+    const last = skip + parseInt(limit) > pagination.total ? pagination.total : skip + parseInt(limit);
 
     return (
       <Grid
@@ -77,13 +112,13 @@ export default class extends Component {
         columnWidths={columnWidths}
         onSort={onSort}
         onAction={onAction}
-        onPage={onPage}
+        onPage={this.onPage}
         sortOrder={sortOrder}
-        activePage={page + 1}
-        firstItem={parseInt(submissions.skip) + 1}
-        lastItem={parseInt(submissions.skip) + parseInt(submissions.limit)}
-        total={parseInt(submissions.serverCount)}
-        pages={Math.ceil(submissions.serverCount / limit)}
+        activePage={pagination.page}
+        firstItem={skip + 1}
+        lastItem={last}
+        total={parseInt(pagination.total)}
+        pages={Math.ceil(parseInt(pagination.total) / limit)}
         emptyText='No data found'
         Cell={this.Cell}
       />

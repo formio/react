@@ -9,7 +9,7 @@ function reset(name) {
   };
 }
 
-function requestForms(name, page) {
+function requestForms(name, page, query) {
   return {
     type: types.FORMS_REQUEST,
     name,
@@ -36,7 +36,7 @@ function failForms(name, err) {
 export const indexForms = (name, page = 1, params = {}) => {
   return (dispatch, getState) => {
     dispatch(requestForms(name, page));
-    const forms = selectRoot('forms', getState());
+    const forms = selectRoot(name, getState());
 
     if (parseInt(forms.limit) !== 10) {
       params.limit = forms.limit;
@@ -44,6 +44,9 @@ export const indexForms = (name, page = 1, params = {}) => {
     if (page !== 1) {
       params.skip = ((parseInt(page) - 1) * parseInt(forms.limit));
       params.limit = parseInt(forms.limit);
+    }
+    else {
+      delete params.skip;
     }
     const formio = new Formiojs(Formiojs.getProjectUrl() + '/form');
 

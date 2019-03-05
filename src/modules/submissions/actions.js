@@ -1,6 +1,6 @@
 import Formiojs from 'formiojs/Formio';
 import * as types from './constants';
-import {selectSubmissions} from './selectors';
+import {selectRoot} from '../root';
 
 function reset(name) {
   return {
@@ -37,13 +37,13 @@ function failSubmissions(name, err) {
 export const getSubmissions = (name, page = 0, params = {}, formId) => {
   return (dispatch, getState) => {
     dispatch(requestSubmissions(name, page, formId));
-    const submissions = selectSubmissions(name, getState());
+    const submissions = selectRoot(name, getState());
 
     if (parseInt(submissions.limit) !== 10) {
       params.limit = submissions.limit;
     }
-    if (page !== 0) {
-      params.skip = ((parseInt(page)) * parseInt(submissions.limit));
+    if (page !== 1) {
+      params.skip = ((parseInt(page) - 1) * parseInt(submissions.limit));
       params.limit = parseInt(submissions.limit);
     }
     else {
