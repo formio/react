@@ -9,7 +9,7 @@ function reset(name) {
   };
 }
 
-function requestForms(name, page, query) {
+function requestForms(name, page) {
   return {
     type: types.FORMS_REQUEST,
     name,
@@ -38,16 +38,24 @@ export const indexForms = (name, page = 1, params = {}) => {
     dispatch(requestForms(name, page));
     const forms = selectRoot(name, getState());
 
+    // Ten is the default so if set to 10, don't send.
     if (parseInt(forms.limit) !== 10) {
       params.limit = forms.limit;
     }
+    else {
+      delete params.limit;
+    }
+
     if (page !== 1) {
       params.skip = ((parseInt(page) - 1) * parseInt(forms.limit));
-      params.limit = parseInt(forms.limit);
     }
     else {
       delete params.skip;
     }
+
+    // Apply default query
+    params = {...params, ...forms.query};
+
     const formio = new Formiojs(Formiojs.getProjectUrl() + '/form');
 
     return formio.loadForms({params})

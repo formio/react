@@ -39,16 +39,24 @@ export const getSubmissions = (name, page = 0, params = {}, formId) => {
     dispatch(requestSubmissions(name, page, formId));
     const submissions = selectRoot(name, getState());
 
+    // Ten is the default so if set to 10, don't send.
     if (parseInt(submissions.limit) !== 10) {
-      params.limit = submissions.limit;
+      params.limit = parseInt(submissions.limit);
     }
+    else {
+      delete params.limit;
+    }
+
     if (page !== 1) {
       params.skip = ((parseInt(page) - 1) * parseInt(submissions.limit));
-      params.limit = parseInt(submissions.limit);
     }
     else {
       delete params.skip;
     }
+
+    // Apply default query
+    params = {...params, ...submissions.query};
+
     const formio = new Formiojs(Formiojs.getProjectUrl() + '/' + (formId ? 'form/' + formId : name) + '/submission');
 
     return formio.loadSubmissions({params})

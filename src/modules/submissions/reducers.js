@@ -3,6 +3,7 @@ import * as types from './constants';
 export function submissions(config) {
   const initialState = {
     formId: '',
+    query: config.query || {},
     isActive: false,
     lastUpdated: 0,
     submissions: [],

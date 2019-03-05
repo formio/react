@@ -2,7 +2,7 @@ import * as types from './constants';
 
 export function forms(config) {
   const initialState = {
-    tag: '',
+    query: config.query || {},
     isActive: false,
     lastUpdated: 0,
     forms: [],
@@ -25,7 +25,6 @@ export function forms(config) {
         return {
           ...state,
           limit: action.limit || state.limit,
-          tag: config.tag,
           isActive: true,
           pagination: {
             page: action.page || state.pagination.page,
