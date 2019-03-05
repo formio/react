@@ -9,10 +9,11 @@ function reset(name) {
   };
 }
 
-function requestForms(name) {
+function requestForms(name, page) {
   return {
     type: types.FORMS_REQUEST,
-    name
+    name,
+    page
   };
 }
 

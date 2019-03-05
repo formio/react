@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import _get from 'lodash/get';
-// import {Pagination} from 'react-bootstrap';
+
+import Pagination from './Pagination';
 
 export default class extends Component {
   static propTypes = {
@@ -40,7 +41,7 @@ export default class extends Component {
 
   render = () => {
     const {items, columns, columnWidths, sortOrder, onSort, emptyText, Cell} = this.props;
-    const {firstItem, lastItem, total, activePage, onPage, pages} = this.props;
+    const {firstItem, lastItem, total, activePage, onPage, pages, pageNeighbours} = this.props;
     return (
       <div>
         { items.length ?
@@ -86,7 +87,14 @@ export default class extends Component {
               );
             })}
             <li className="list-group-item">
-              <span>Pagination</span>
+              <Pagination
+                pages={pages}
+                activePage={activePage}
+                pageNeighbours={pageNeighbours}
+                prev="Previous"
+                next="Next"
+                onSelect={onPage}
+              />
               <span className="pull-right item-counter"><span className="page-num">{ firstItem } - { lastItem }</span> / { total } total</span>
             </li>
           </ul> :
