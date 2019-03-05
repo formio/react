@@ -26,7 +26,9 @@ export default class extends Component {
       delete: true
     },
     pagination: {
-      page: 1
+      page: 1,
+      numPages: 1,
+      total: 1
     },
     query: {}
   };
