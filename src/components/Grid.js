@@ -69,9 +69,12 @@ export default class extends Component {
                       className={'col col-md-' + columnWidths[index]}
                       style={{cursor: 'pointer'}}
                     >
-                      <a href="#" onClick={() => onSort(column.key)}>
+                      <span
+                        style={{cursor: 'pointer'}}
+                        onClick={() => onSort(column.key)}
+                      >
                         <strong>{ column.title } <span className={sortClass}/></strong>
-                      </a>
+                      </span>
                     </div>
                   );
                 })}
