@@ -34,7 +34,10 @@ export default class extends Component {
     onSort: () => {},
     onPage: () => {},
     getSubmissions: () => {},
-  }
+    query: {
+      sort: ''
+    }
+  };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.query !== prevState.query) {
@@ -53,6 +56,36 @@ export default class extends Component {
     }, () => this.props.getSubmissions(this.state.page, this.state.query));
   };
 
+  onSort = (field) => {
+    if (!this.state.query.sort) {
+      this.setState(prevState => {
+        prevState.query.sort = field;
+        return prevState;
+      }, () => this.props.getSubmissions(this.state.page, this.state.query));
+    }
+    const currentSort = this.state.query.sort[0] === '-'
+      ? this.state.query.sort.slice(1, this.state.query.sort.length)
+      : this.state.query.sort;
+    if (currentSort !== field) {
+      this.setState(prevState => {
+        prevState.query.sort = field;
+        return prevState;
+      }, () => this.props.getSubmissions(this.state.page, this.state.query));
+    }
+    else if (this.state.query.sort[0] !== '-') {
+      this.setState(prevState => {
+        prevState.query.sort = '-' + field;
+        return prevState;
+      }, () => this.props.getSubmissions(this.state.page, this.state.query));
+    }
+    else {
+      this.setState(prevState => {
+        prevState.query.sort = '';
+        return prevState;
+      }, () => this.props.getSubmissions(this.state.page, this.state.query));
+    }
+  };
+
   getColumns = () => {
     let columns = [];
     FormioUtils.eachComponent(this.props.form.components, function(component) {
@@ -60,7 +93,7 @@ export default class extends Component {
         columns.push({
           key: 'data.' + component.key,
           title: component.label || component.title || component.key,
-          sort: '',
+          sort: true,
           component: Components.create(component, null, null, true)
         });
       }
@@ -96,22 +129,23 @@ export default class extends Component {
     else {
       return <span>{cellValue}</span>;
     }
-  }
+  };
 
   render = () => {
-    const {submissions: {submissions, limit, pagination}, onAction, onSort, sortOrder} = this.props;
+    const {submissions: {submissions, limit, pagination}, onAction} = this.props;
     const columns = this.getColumns();
     const columnWidths = this.calculateWidths(columns.length);
     const skip = (parseInt(this.state.page) - 1) * parseInt(limit);
     const last = skip + parseInt(limit) > pagination.total ? pagination.total : skip + parseInt(limit);
+    const sortOrder = this.state.query.sort;
 
     return (
       <Grid
         items={submissions}
         columns={columns}
         columnWidths={columnWidths}
-        onSort={onSort}
         onAction={onAction}
+        onSort={this.onSort}
         onPage={this.onPage}
         sortOrder={sortOrder}
         activePage={pagination.page}

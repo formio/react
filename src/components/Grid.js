@@ -52,20 +52,26 @@ export default class extends Component {
                   if (!column.sort) {
                     return (
                       <div key={index} className={'col col-md-' + columnWidths[index]}>
-                        <strong>{ column.title } <span className={sortClass}/></strong>
+                        <strong>{ column.title }</strong>
                       </div>
                     );
                   }
                   let sortClass = '';
                   if (sortOrder === column.key) {
-                    sortClass = 'glyphicon glyphicon-triangle-top fa-caret-top';
+                    sortClass = 'glyphicon glyphicon-triangle-top fa fa-caret-up';
                   }
                   else if (sortOrder === ('-' + column.key)) {
-                    sortClass = 'glyphicon glyphicon-triangle-bottom fa-caret-down';
+                    sortClass = 'glyphicon glyphicon-triangle-bottom fa fa-caret-down';
                   }
                   return (
-                    <div key={index} className={'col col-md-' + columnWidths[index]}>
-                      <a href="#" onClick={() => onSort(column.key)}><strong>{ column.title } <span className={sortClass}/></strong></a>
+                    <div
+                      key={index}
+                      className={'col col-md-' + columnWidths[index]}
+                      style={{cursor: 'pointer'}}
+                    >
+                      <a href="#" onClick={() => onSort(column.key)}>
+                        <strong>{ column.title } <span className={sortClass}/></strong>
+                      </a>
                     </div>
                   );
                 })}

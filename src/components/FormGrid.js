@@ -32,7 +32,9 @@ export default class extends Component {
       total: 1
     },
     getForms: () => {},
-    query: {}
+    query: {
+      sort: ''
+    }
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -52,12 +54,42 @@ export default class extends Component {
     }, () => this.props.getForms(this.state.page, this.state.query));
   };
 
+  onSort = (field) => {
+    if (!this.state.query.sort) {
+      this.setState(prevState => {
+        prevState.query.sort = field;
+        return prevState;
+      }, () => this.props.getForms(this.state.page, this.state.query));
+    }
+    const currentSort = this.state.query.sort[0] === '-'
+      ? this.state.query.sort.slice(1, this.state.query.sort.length)
+      : this.state.query.sort;
+    if (currentSort !== field) {
+      this.setState(prevState => {
+        prevState.query.sort = field;
+        return prevState;
+      }, () => this.props.getForms(this.state.page, this.state.query));
+    }
+    else if (this.state.query.sort[0] !== '-') {
+      this.setState(prevState => {
+        prevState.query.sort = '-' + field;
+        return prevState;
+      }, () => this.props.getForms(this.state.page, this.state.query));
+    }
+    else {
+      this.setState(prevState => {
+        prevState.query.sort = '';
+        return prevState;
+      }, () => this.props.getForms(this.state.page, this.state.query));
+    }
+  };
+
   getColumns() {
     return [
       {
         key: 'title',
         title: 'Form',
-        sort: false
+        sort: true
       },
       {
         key: 'operations',
@@ -116,6 +148,7 @@ export default class extends Component {
     const columnWidths = {0: 8, 1: 4};
     const skip = (parseInt(this.state.page) - 1) * parseInt(limit);
     const last = skip + parseInt(limit) > pagination.total ? pagination.total : skip + parseInt(limit);
+    const sortOrder = this.state.query.sort;
 
     return (
       <Grid
@@ -123,7 +156,9 @@ export default class extends Component {
         columns={columns}
         columnWidths={columnWidths}
         onAction={onAction}
+        onSort={this.onSort}
         onPage={this.onPage}
+        sortOrder={sortOrder}
         activePage={pagination.page}
         firstItem={skip + 1}
         lastItem={last}
