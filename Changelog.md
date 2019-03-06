@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [UNRELEASED]
+### Removed
+ - Title from FormEdit
+ 
+### Fixed
+ - saveForm action was not saving.
+ 
+### Added
+ - Errors component
+ - selectError selector
+
 ## 3.1.5
 ### Added
  - Sorting of SubmissionGrid and FormGrid

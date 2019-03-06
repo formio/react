@@ -75,7 +75,7 @@ export const saveForm = (name, form, done = () => {}) => {
 
     const id = form._id;
 
-    const formio = new Formiojs();
+    const formio = new Formiojs(Formiojs.getProjectUrl() + '/form' + (id ? '/' + id : ''));
 
     formio.saveForm(form)
       .then((result) => {
