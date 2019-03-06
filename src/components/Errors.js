@@ -47,7 +47,6 @@ export default class extends Component {
     // If this is a joy validation error.
     if (error.hasOwnProperty('name') && error.name === 'ValidationError') {
       return error.details.map((item, index) => {
-        console.log(item);
         return (
           <div key={index}>
             {item.message}
@@ -61,7 +60,6 @@ export default class extends Component {
       return 'Another user has saved this form already. Please reload and re-apply your changes.';
     }
 
-    console.log(error);
     return 'An error occurred. See console logs for details.';
   }
 

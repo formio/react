@@ -63,7 +63,6 @@ export default class extends Component {
   render() {
     const {form} = this.state;
     const {saveText} = this.props;
-    console.log(form.modified);
 
     return (
       <div>
