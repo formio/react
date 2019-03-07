@@ -2,11 +2,14 @@
 
 A [React](http://facebook.github.io/react/) library for rendering out forms based on the [Form.io](https://www.form.io) platform.
 
+## Example Application
+To see an example application of how to implement all the components and modules in this library, see [https://github.com/formio/react-app-starterkit](https://github.com/formio/react-app-starterkit)
+
 ## Install
 
 ### npm
 
-`React Formio` can be used on the server, or bundled for the client using an
+`react-formio` can be used on the server, or bundled for the client using an
 npm-compatible packaging system such as [Browserify](http://browserify.org/) or
 [webpack](http://webpack.github.io/).
 
@@ -99,6 +102,45 @@ ReactDOM.render(
   , document.getElementById('builder')
 );
 ```
+
+### Errors
+Documentation coming soon
+
+### FormEdit
+Documentation coming soon
+
+### FormGrid
+Documentation coming soon
+
+### Grid
+Documentation coming soon
+
+### Pagination
+Documentation coming soon
+
+### SubmissionGrid
+Documentation coming soon
+
+## Modules
+Modules contain Redux actions, reducers, constants and selectors to simplify the API requests made for form.io forms.
+
+### auth
+Documentation coming soon
+
+### form
+Documentation coming soon
+
+### forms
+Documentation coming soon
+
+### root
+Documentation coming soon
+
+### submission
+Documentation coming soon
+
+### submissions
+Documentation coming soon
 
 ## License
 Released under the [MIT License](http://www.opensource.org/licenses/MIT).
