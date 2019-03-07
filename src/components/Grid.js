@@ -39,9 +39,23 @@ export default class extends Component {
     }
   };
 
+  calculateColumnsStyle = (columnsNumber) => {
+    return {
+      'width': 'calc((100% / ' + columnsNumber + ' ) - 1%)',
+      'paddingLeft': '0px',
+      'paddingRight': '0px',
+      'marginLeft': '0.5vw',
+      'marginRight': '0.5vw',
+      'float': 'left',
+      'cursor': 'pointer'
+    };
+  };
+
   render = () => {
     const {items, columns, columnWidths, sortOrder, onSort, emptyText, Cell} = this.props;
     const {firstItem, lastItem, total, activePage, onPage, pages, pageNeighbours} = this.props;
+    const columnsStyle = this.calculateColumnsStyle(columns.length - 1);
+
     return (
       <div>
         { items.length ?
@@ -51,7 +65,7 @@ export default class extends Component {
                 { columns.map((column, index) => {
                   if (!column.sort) {
                     return (
-                      <div key={index} className={'col col-md-' + columnWidths[index]}>
+                      <div key={index} className={'col'} style={columnsStyle}>
                         <strong>{ column.title }</strong>
                       </div>
                     );
@@ -66,8 +80,8 @@ export default class extends Component {
                   return (
                     <div
                       key={index}
-                      className={'col col-md-' + columnWidths[index]}
-                      style={{cursor: 'pointer'}}
+                      className={'col'}
+                      style={columnsStyle}
                     >
                       <span
                         style={{cursor: 'pointer'}}
@@ -86,7 +100,7 @@ export default class extends Component {
                   <div className='row' onClick={() => this.props.onAction(item, 'row')}>
                     { columns.map((column, index) => {
                       return (
-                        <div key={index} className={'col col-md-' + columnWidths[index]}>
+                        <div key={index} className={'col'} style={columnsStyle}>
                           <Cell row={item} column={column} {...this.props} />
                         </div>
                       );

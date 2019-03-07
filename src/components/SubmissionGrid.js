@@ -98,7 +98,7 @@ export default class extends Component {
         });
       }
     });
-    return columns.slice(0, 12);
+    return columns.slice(0, columns.length - 1);
   };
 
   calculateWidths = (columns) => {
