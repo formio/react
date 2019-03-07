@@ -2,14 +2,14 @@ import Webform from 'formiojs/Webform';
 import WebformBuilder from 'formiojs/WebformBuilder';
 import Wizard from 'formiojs/Wizard';
 import WizardBuilder from 'formiojs/WizardBuilder';
-import nestedEditForm from 'formiojs/components/nested/NestedComponent.form';
+import editFormUtils from 'formiojs/components/base/editForm/utils';
 
 export {
   Webform,
   WebformBuilder,
   Wizard,
   WizardBuilder,
-  nestedEditForm,
+  editFormUtils,
 };
 
 export * from './components';
