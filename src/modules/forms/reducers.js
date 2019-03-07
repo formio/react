@@ -2,7 +2,7 @@ import * as types from './constants';
 
 export function forms(config) {
   const initialState = {
-    tag: '',
+    query: config.query || {},
     isActive: false,
     lastUpdated: 0,
     forms: [],
@@ -25,10 +25,11 @@ export function forms(config) {
         return {
           ...state,
           limit: action.limit || state.limit,
-          tag: config.tag,
           isActive: true,
           pagination: {
-            page: action.page || state.pagination.page
+            page: action.page || state.pagination.page,
+            numPages: action.numPages || state.pagination.numPages,
+            total: action.total || state.pagination.total
           },
           error: ''
         };
@@ -38,8 +39,8 @@ export function forms(config) {
           forms: action.forms,
           pagination: {
             page: state.pagination.page,
-            numPages: Math.ceil(action.forms.serverCount / state.limit),
-            total: action.forms.serverCount
+            numPages: Math.ceil((action.forms.serverCount || state.pagination.total) / state.limit),
+            total: action.forms.serverCount || state.pagination.total
           },
           isActive: false,
           error: ''

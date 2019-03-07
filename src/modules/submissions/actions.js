@@ -1,6 +1,6 @@
 import Formiojs from 'formiojs/Formio';
 import * as types from './constants';
-import {selectSubmissions} from './selectors';
+import {selectRoot} from '../root';
 
 function reset(name) {
   return {
@@ -34,22 +34,30 @@ function failSubmissions(name, err) {
   };
 }
 
-export const getSubmissions = (name, page = 0, params = {}, options) => {
+export const getSubmissions = (name, page = 0, params = {}, formId) => {
   return (dispatch, getState) => {
-    dispatch(requestSubmissions(name, page, options.formId));
-    const submissions = selectSubmissions(name, getState());
+    dispatch(requestSubmissions(name, page, formId));
+    const submissions = selectRoot(name, getState());
 
+    // Ten is the default so if set to 10, don't send.
     if (parseInt(submissions.limit) !== 10) {
-      params.limit = submissions.limit;
-    }
-    if (page !== 0) {
-      params.skip = ((parseInt(page)) * parseInt(submissions.limit));
       params.limit = parseInt(submissions.limit);
+    }
+    else {
+      delete params.limit;
+    }
+
+    if (page !== 1) {
+      params.skip = ((parseInt(page) - 1) * parseInt(submissions.limit));
     }
     else {
       delete params.skip;
     }
-    const formio = new Formiojs(options.project + '/' + (options.formId ? 'form/' + options.formId : name) + '/submission');
+
+    // Apply default query
+    params = {...params, ...submissions.query};
+
+    const formio = new Formiojs(Formiojs.getProjectUrl() + '/' + (formId ? 'form/' + formId : name) + '/submission');
 
     return formio.loadSubmissions({params})
       .then((result) => {

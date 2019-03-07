@@ -1,95 +1,114 @@
 import formiojs from 'formiojs/Formio';
-import * as types from './constants';
+import * as type from './constants';
 
 const requestUser = () => ({
-  type: types.USER_REQUEST
+  type: type.USER_REQUEST,
 });
 
-const receiveUser = user => ({
-  type: types.USER_REQUEST_SUCCESS,
-  user
+const receiveUser = (user) => ({
+  type: type.USER_REQUEST_SUCCESS,
+  user,
 });
 
-const failUser = err => ({
-  type: types.USER_REQUEST_FAILURE,
-  err
+const failUser = (error) => ({
+  type: type.USER_REQUEST_FAILURE,
+  error,
 });
 
 const logoutUser = () => ({
-  type: types.USER_LOGOUT
+  type: type.USER_LOGOUT,
 });
 
-const submissionAccessUser = (submissionAccess, roles) => ({
-  type: types.USER_SUBMISSION_ACCESS,
+const submissionAccessUser = (submissionAccess) => ({
+  type: type.USER_SUBMISSION_ACCESS,
   submissionAccess,
-  roles
 });
 
-const formAccessUser = formAccess => ({
-  type: types.USER_FORM_ACCESS,
-  formAccess
+const formAccessUser = (formAccess) => ({
+  type: type.USER_FORM_ACCESS,
+  formAccess,
 });
 
-const getAccess = (dispatch, projectUrl) => {
-  formiojs.makeStaticRequest(projectUrl + '/access')
-    .then(function(result) {
-      let submissionAccess = {};
-      Object.keys(result.forms).forEach(key => {
-        let form = result.forms[key];
-        submissionAccess[form.name] = {};
-        form.submissionAccess.forEach(access => {
-          submissionAccess[form.name][access.type] = access.roles;
-        });
-      });
-      dispatch(submissionAccessUser(submissionAccess, result.roles));
-    })
-    .catch(function(err) {
-      //console.error(err);
-    });
-  formiojs.makeStaticRequest(projectUrl)
-    .then(function(project) {
-      let formAccess = {};
-      project.access.forEach(access => {
-        formAccess[access.type] = access.roles;
-      });
-      dispatch(formAccessUser(formAccess));
-    })
-    .catch(function(err) {
-      //console.error(err);
-    });
-};
+const projectAccessUser = (projectAccess) => ({
+  type: type.USER_FORM_ACCESS,
+  projectAccess,
+});
 
-export const initAuth = (options) => {
-  return (dispatch) => {
-    dispatch(requestUser());
+const rolesUser = (roles) => ({
+  type: type.USER_ROLES,
+  roles,
+});
 
-    formiojs.currentUser()
-      .then(user => {
-        if (user) {
-          dispatch(receiveUser(user));
-          getAccess(dispatch, options.project);
-        }
+function transformSubmissionAccess(forms) {
+  return Object.values(forms).reduce((result, form) => ({
+    ...result,
+    [form.name]: form.submissionAccess.reduce((formSubmissionAccess, access) => ({
+      ...formSubmissionAccess,
+      [access.type]: access.roles,
+    }), {}),
+  }), {});
+}
+
+function transformFormAccess(forms) {
+  return Object.values(forms).reduce((result, form) => ({
+    ...result,
+    [form.name]: form.access.reduce((formAccess, access) => ({
+      ...formAccess,
+      [access.type]: access.roles,
+    }), {}),
+  }), {});
+}
+
+function transformProjectAccess(projectAccess) {
+  return projectAccess.reduce((result, access) => ({
+    ...result,
+    [access.type]: access.roles,
+  }), {});
+}
+
+export const initAuth = () => (dispatch) => {
+  const projectUrl = formiojs.getProjectUrl();
+
+  dispatch(requestUser());
+
+  Promise.all([
+    formiojs.currentUser(),
+    formiojs.makeStaticRequest(`${projectUrl}/access`)
+      .then((result) => {
+        const submissionAccess = transformSubmissionAccess(result.forms);
+        const formAccess = transformFormAccess(result.forms);
+
+        dispatch(submissionAccessUser(submissionAccess));
+        dispatch(formAccessUser(formAccess));
+        dispatch(rolesUser(result.roles));
       })
-      .catch(result => {
-        dispatch(failUser(result));
-      });
-  };
-};
-
-export const setUser = (user, options) => {
-  formiojs.setUser(user);
-  return (dispatch) => {
-    dispatch(receiveUser(user));
-    getAccess(dispatch, options.project);
-  };
-};
-
-export const logout = (options) => {
-  return (dispatch, getState) => {
-    formiojs.logout()
-      .then(() => {
+      .catch(() => {}),
+    formiojs.makeStaticRequest(projectUrl)
+      .then((project) => {
+        const projectAccess = transformProjectAccess(project.access);
+        dispatch(projectAccessUser(projectAccess));
+      })
+      .catch(() => {}),
+  ])
+    .then(([user]) => {
+      if (user) {
+        dispatch(receiveUser(user));
+      }
+      else {
         dispatch(logoutUser());
-        getAccess(dispatch, options.project);
-      });
-  };
+      }
+    })
+    .catch((result) => {
+      dispatch(failUser(result));
+    });
+};
+
+export const setUser = (user) => (dispatch) => {
+  formiojs.setUser(user);
+  dispatch(receiveUser(user));
+};
+
+export const logout = () => (dispatch) => {
+  formiojs.logout();
+  dispatch(logoutUser());
 };

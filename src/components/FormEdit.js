@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
 import _cloneDeep from 'lodash/cloneDeep';
+import _camelCase from 'lodash/camelCase';
 
 export default class extends Component {
   static propTypes = {
@@ -26,7 +27,7 @@ export default class extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.form && prevState.form._id !== nextProps.form._id) {
+    if (nextProps.form && (prevState.form._id !== nextProps.form._id || prevState.form.modified !== nextProps.form.modified)) {
       return {
         form: _cloneDeep(nextProps.form)
       };
@@ -50,18 +51,21 @@ export default class extends Component {
     const value = event.target.value;
     this.setState(prev => {
       prev.form[prop] = value;
+      // If setting title, autogenerate name and path as well.
+      if (prop === 'title' && !this.state.form._id) {
+        prev.form['name'] = _camelCase(value);
+        prev.form['path'] = _camelCase(value).toLowerCase();
+      }
       return prev;
     });
   }
 
   render() {
     const {form} = this.state;
-    const {saveText, title} = this.props;
+    const {saveText} = this.props;
 
     return (
       <div>
-        <h2>{title}</h2>
-        <hr />
         <div className="row">
           <div className="col-lg-2 col-md-4 col-sm-4">
             <div id="form-group-title" className="form-group">

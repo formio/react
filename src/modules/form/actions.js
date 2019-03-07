@@ -2,19 +2,21 @@ import Formiojs from 'formiojs/Formio';
 import * as types from './constants';
 import {selectForm} from './selectors';
 
-function requestForm(name, id) {
+function requestForm(name, id, url) {
   return {
     type: types.FORM_REQUEST,
     name,
-    id
+    id,
+    url
   };
 }
 
-function receiveForm(name, form) {
+function receiveForm(name, form, url) {
   return {
     type: types.FORM_SUCCESS,
     form,
-    name
+    name,
+    url
   };
 }
 
@@ -41,7 +43,7 @@ function sendForm(name, form) {
   };
 }
 
-export const getForm = (name, id = '', options, done = () => {}) => {
+export const getForm = (name, id = '', done = () => {}) => {
   return (dispatch, getState) => {
     // Check to see if the form is already loaded.
     const form = selectForm(name, getState());
@@ -49,11 +51,11 @@ export const getForm = (name, id = '', options, done = () => {}) => {
       return;
     }
 
-    dispatch(requestForm(name, id));
+    const url = Formiojs.getProjectUrl() + '/' + (id ? `form/${id}` : `/${name}`);
 
-    const formPath = id ? `/form/${id}` : `/${name}`;
+    dispatch(requestForm(name, id, url));
 
-    const formio = new Formiojs(options.project + '/' + formPath);
+    const formio = new Formiojs(url);
 
     return formio.loadForm()
       .then((result) => {
@@ -67,17 +69,18 @@ export const getForm = (name, id = '', options, done = () => {}) => {
   };
 };
 
-export const saveForm = (name, form, options, done = () => {}) => {
+export const saveForm = (name, form, done = () => {}) => {
   return (dispatch) => {
     dispatch(sendForm(name, form));
 
     const id = form._id;
 
-    const formio = new Formiojs(options.project + '/form' + (id ? '/' + id : ''));
+    const formio = new Formiojs(Formiojs.getProjectUrl() + '/form' + (id ? '/' + id : ''));
 
     formio.saveForm(form)
       .then((result) => {
-        dispatch(receiveForm(name, result));
+        const url = Formiojs.getProjectUrl() + '/form/' + result._id;
+        dispatch(receiveForm(name, result, url));
         done(null, result);
       })
       .catch((result) => {
@@ -87,9 +90,9 @@ export const saveForm = (name, form, options, done = () => {}) => {
   };
 };
 
-export const deleteForm = (name, id, options, done = () => {}) => {
+export const deleteForm = (name, id, done = () => {}) => {
   return (dispatch) => {
-    const formio = new Formiojs(options.project + '/form/' + id);
+    const formio = new Formiojs(Formiojs.getProjectUrl() + '/form/' + id);
 
     return formio.deleteForm()
       .then(() => {
