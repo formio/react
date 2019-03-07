@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.24
+### Added
+ - Component json added to custom default value and calculated value context.
+
 ## 1.5.23
 ### Fixed
  - Signature sometimes resetting when form redraws.
