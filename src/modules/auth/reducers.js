@@ -1,63 +1,85 @@
-import * as types from './constants';
+import * as type from './constants';
 
 const initialState = {
   init: false,
   isActive: false,
   user: null,
   authenticated: false,
-  formAccess: false,
-  submissionAccess: false,
+  submissionAccess: {},
+  formAccess: {},
+  projectAccess: {},
   roles: {},
   is: {},
-  error: ''
+  error: '',
 };
 
+function mapProjectRolesToUserRoles(projectRoles, userRoles) {
+  return Object.entries(projectRoles).reduce((result, [name, role]) => ({
+    ...result,
+    [name]: userRoles.includes(role._id),
+  }), {});
+}
+
+function getUserRoles(projectRoles) {
+  return Object.keys(projectRoles).reduce((result, name) => ({
+    ...result,
+    [name]: name === 'anonymous',
+  }), {});
+}
+
 export const auth = config => (state = initialState, action) => {
-  // Only proceed for this user.
   switch (action.type) {
-    case types.USER_REQUEST:
+    case type.USER_REQUEST:
       return {
         ...state,
         init: true,
         submissionAccess: false,
         isActive: true
       };
-    case types.USER_REQUEST_SUCCESS:
+    case type.USER_REQUEST_SUCCESS:
       return {
         ...state,
         isActive: false,
         user: action.user,
         authenticated: true,
-        error: ''
+        is: mapProjectRolesToUserRoles(state.roles, action.user.roles),
+        error: '',
       };
-    case types.USER_REQUEST_FAILURE:
+    case type.USER_REQUEST_FAILURE:
       return {
         ...state,
         isActive: false,
-        error: action.error
+        is: getUserRoles(state.roles),
+        error: action.error,
       };
-    case types.USER_SUBMISSION_ACCESS:
-      return {
-        ...state,
-        is: Object.keys(action.roles).reduce((prev, roleName) => ({
-          ...prev,
-          [roleName]: state.user.roles.indexOf(action.roles[roleName]._id) !== -1
-        }), {}),
-        submissionAccess: action.submissionAccess,
-        roles: action.roles
-      };
-    case types.USER_FORM_ACCESS:
-      return {
-        ...state,
-        formAccess: action.formAccess
-      };
-    case types.USER_LOGOUT:
+    case type.USER_LOGOUT:
       return {
         ...state,
         user: null,
         isActive: false,
         authenticated: false,
-        error: ''
+        is: getUserRoles(state.roles),
+        error: '',
+      };
+    case type.USER_SUBMISSION_ACCESS:
+      return {
+        ...state,
+        submissionAccess: action.submissionAccess,
+      };
+    case type.USER_FORM_ACCESS:
+      return {
+        ...state,
+        formAccess: action.formAccess,
+      };
+    case type.USER_PROJECT_ACCESS:
+      return {
+        ...state,
+        projectAccess: action.projectAccess,
+      };
+    case type.USER_ROLES:
+      return {
+        ...state,
+        roles: action.roles,
       };
     default:
       return state;
