@@ -51,11 +51,10 @@ export const getForm = (name, id = '', done = () => {}) => {
       return;
     }
 
-    const url = Formiojs.getProjectUrl() + '/' + (id ? `form/${id}` : `/${name}`);
+    const path = `${Formiojs.getProjectUrl()}${id ? `/form/${id}` : name}`;
+    const formio = new Formiojs(path);
 
-    dispatch(requestForm(name, id, url));
-
-    const formio = new Formiojs(url);
+    dispatch(requestForm(name, id, path));
 
     return formio.loadForm()
       .then((result) => {
@@ -74,12 +73,12 @@ export const saveForm = (name, form, done = () => {}) => {
     dispatch(sendForm(name, form));
 
     const id = form._id;
-
-    const formio = new Formiojs(Formiojs.getProjectUrl() + '/form' + (id ? '/' + id : ''));
+    const path = `${Formiojs.getProjectUrl()}/form${id ? `/${id}` : ''}`;
+    const formio = new Formiojs(path);
 
     formio.saveForm(form)
       .then((result) => {
-        const url = Formiojs.getProjectUrl() + '/form/' + result._id;
+        const url = `${Formiojs.getProjectUrl()}/form/${result._id}`;
         dispatch(receiveForm(name, result, url));
         done(null, result);
       })
@@ -92,7 +91,8 @@ export const saveForm = (name, form, done = () => {}) => {
 
 export const deleteForm = (name, id, done = () => {}) => {
   return (dispatch) => {
-    const formio = new Formiojs(Formiojs.getProjectUrl() + '/form/' + id);
+    const path = `${Formiojs.getProjectUrl()}/form/${id}`;
+    const formio = new Formiojs(path);
 
     return formio.deleteForm()
       .then(() => {
