@@ -110,8 +110,8 @@ The Errors component can be used to print out errors that can be generated withi
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| errors | any | null | If null is passed, the component is not rendered. Otherwise it will render the errors. There are various formats (including an array of errors) that can be passed in. |
-| type | string | 'danger' | The bootstrap alert type to render the container.
+| ```errors``` | any | null | If null is passed, the component is not rendered. Otherwise it will render the errors. There are various formats (including an array of errors) that can be passed in. |
+| ```type``` | string | 'danger' | The bootstrap alert type to render the container.
 
 #### Event Props
 None
@@ -123,14 +123,14 @@ The FormEdit component wraps the FormBuilder component and adds the title, displ
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| form | object | {display: 'form'} | The form definition of the exiting form that is to be modified. |
-| options | object | {} | The options to be passed to FormBuilder |
+| ```form``` | object | {display: 'form'} | The form definition of the exiting form that is to be modified. |
+| ```options``` | object | {} | The options to be passed to FormBuilder |
 
 #### Event Props
 
 | Name | Parameters | Description |
 |---|---|---|
-| onSave | form | Called when the save button is pressed. Will pass the form definition to the callback. |
+| ```onSave``` | form | Called when the save button is pressed. Will pass the form definition to the callback. |
 
 ### FormGrid
 The FormGrid component can be used to render a list of forms with buttons to edit, view, delete, etc on each row.
@@ -139,16 +139,16 @@ The FormGrid component can be used to render a list of forms with buttons to edi
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| forms | array of forms | [] | A list of forms to be rendered in the grid. |
-| perms | object | {view: true, edit: truem data: true, delete: true} | Whether or not to display buttons on the grid. |
-| query | object | {} | A query filter for passing to getForms when fetching forms. |
-| getForms | function | () => {} | A function to trigger getting a new set of forms. Should accept the page number and filter query object as parameters. |
+| ```forms``` | array of forms | [] | A list of forms to be rendered in the grid. |
+| ```perms``` | object | {view: true, edit: truem data: true, delete: true} | Whether or not to display buttons on the grid. |
+| ```query``` | object | {} | A query filter for passing to getForms when fetching forms. |
+| ```getForms``` | function | () => {} | A function to trigger getting a new set of forms. Should accept the page number and filter query object as parameters. |
 
 #### Event Props
 
 | Name | Parameters | Description |
 |---|---|---|
-| onAction | form: object, action: string | Called when the user clicks on a button on a row of the form. |
+| ```onAction``` | form: object, action: string | Called when the user clicks on a button on a row of the form. |
 
 ### SubmissionGrid
 The submisison grid will render a list of submissions and allow clicking on one row to select it.
@@ -157,37 +157,126 @@ The submisison grid will render a list of submissions and allow clicking on one 
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| submissions | array of submissions | [] | A list of submissions to be rendered in the grid. |
-| query | object | {} | A query filter for passing to getForms when fetching submissions. |
-| form | object | {} | The form definition for the submissions. This is used to render the submissions. |
-| getSubmissions | function | () => {} | A function to trigger getting a new set of submissions. Should accept the page number and filter query object as parameters. |
+| ```submissions``` | array of submissions | [] | A list of submissions to be rendered in the grid. |
+| ```query``` | object | {} | A query filter for passing to getForms when fetching submissions. |
+| ```form``` | object | {} | The form definition for the submissions. This is used to render the submissions. |
+| ```getSubmissions``` | function | () => {} | A function to trigger getting a new set of submissions. Should accept the page number and filter query object as parameters. |
 
 #### Event Props
 
 | Name | Parameters | Description |
 |---|---|---|
-| onAction | submission: object, action: string | Called when the user clicks on a button on a row of the submission. |
+| ```onAction``` | submission: object, action: string | Called when the user clicks on a button on a row of the submission. |
 
 ## Modules
-Modules contain Redux actions, reducers, constants and selectors to simplify the API requests made for form.io forms.
-
-### auth
-Documentation coming soon
-
-### form
-Documentation coming soon
-
-### forms
-Documentation coming soon
+Modules contain Redux actions, reducers, constants and selectors to simplify the API requests made for form.io forms. Reducers, actions and selectors all have names. This provides namespaces so the same actions and reducers can be re-used within the same redux state.
 
 ### root
-Documentation coming soon
+The root module is the container for things shared by other modules such as the selectRoot selector.
+
+#### Selectors
+
+| Name | Parameters | Description |
+|---|---|---|
+| ```selectRoot``` | name: string, state: object | Returns the state for a namespace |
+| ```selectError``` | name: string, state: object | Returns any errors for a namespace |
+| ```selectIsActive``` | name: string, state: object | Returns isActive state for a namespace |
+
+### auth
+The auth module is designed to make it easier to login, register and authenticate users within react using the form.io login system.
+
+#### Reducers
+| Name | Parameters | Description |
+|---|---|---|
+| ```auth``` | config: object | Mounts the user and access information to the state tree. Config is not currently used but is a placeholder to make it consistent to the other reducers.
+
+#### Actions
+| Name | Parameters | Description |
+|---|---|---|
+| ```initAuth``` |  | This is usually used at the start of an app code. It will check the localStorage for an existing user token and if found, log them in and fetch the needed information about the user. |
+| ```setUser``` | user: object | When a user logs in, this will set the user and fetch the access information for that user. The user object is usually a submission from the login or register form. |
+| ```logout``` | | This action will reset everything to the default state, including removing any localStorage information. |
+
+### form
+The form module is for interacting with a single form.
+
+#### Reducers
+| Name | Parameters | Description |
+|---|---|---|
+| ```form``` | config: object | Mounts the form to the state tree. The config object should contain a name property defining a unique name for the redux state. |
+
+#### Actions
+| Name | Parameters | Description |
+|---|---|---|
+| ```getForm``` | name: string, id: string, done: function | Fetch a form from the server. If no id is provided, the name is used as the path. The ```done``` callback will be called when the action is complete. The first parameter is any errors and the second is the form definition. |
+| ```saveForm``` | name: string, form: object, done: function | Save a form to the server. It will use the _id property on the form to save it if it exists. Otherwise it will create a new form. The ```done``` callback will be called when the action is complete. The first parameter is any errors and the second is the form definition. |
+| ```deleteForm``` | name: string, id: string, done: function | Delete the form on the server with the id. |
+| ```resetForm``` | Reset this reducer back to its initial state. This is automatically called after delete but can be called other times as well. |
+
+#### Selectors
+| Name | Parameters | Description |
+|---|---|---|
+| ```selectForm``` | name: string, state: object | Select the form definition from the state. |
+
+### forms
+The forms module handles multiple forms like a list of forms.
+
+#### Reducers
+| Name | Parameters | Description |
+|---|---|---|
+| ```forms``` | config: object | Mounts the forms to the state tree. The config object should contain a name property defining a unique name for the redux state. The config object can also contain a query property which is added to all requests for forms. For example: {tags: 'common'} would limit the lists of forms to only forms tagged with 'common'.|
+
+#### Actions
+| Name | Parameters | Description |
+|---|---|---|
+| ```getForms``` | name: string, page: integer, params: object | Fetch a list of forms from the server. ```params``` is a query object to filter the forms. |
+| ```resetForms``` | Reset this reducer back to its initial state. This is automatically called after delete but can be called other times as well. |
+
+#### Selectors
+| Name | Parameters | Description |
+|---|---|---|
+| ```selectForms``` | name: string, state: object | Select the list of forms from the state. |
 
 ### submission
-Documentation coming soon
+The submission module is for interacting with a single submission.
+
+#### Reducers
+| Name | Parameters | Description |
+|---|---|---|
+| ```submission``` | config: object | Mounts the submission to the state tree. The config object should contain a name property defining a unique name for the redux state. |
+
+#### Actions
+| Name | Parameters | Description |
+|---|---|---|
+| ```getSubmission``` | name: string, id: string, formId: string, done: function | Fetch a submission from the server. The ```done``` callback will be called when the action is complete. The first parameter is any errors and the second is the submission. |
+| ```saveSubmission``` | name: string, submission: object, formId: string, done: function | Save a submission to the server. It will use the _id property on the submission to save it if it exists. Otherwise it will create a new submission. The ```done``` callback will be called when the action is complete. The first parameter is any errors and the second is the submission. |
+| ```deleteSubmission``` | name: string, id: string, formId: string, done: function | Delete the submission on the server with the id. |
+| ```resetSubmission``` | Reset this reducer back to its initial state. This is automatically called after delete but can be called other times as well. |
+
+#### Selectors
+| Name | Parameters | Description |
+|---|---|---|
+| ```selectSubmission``` | name: string, state: object | Select the submission data from the state. |
+
 
 ### submissions
-Documentation coming soon
+The submissions module handles multiple submissions within a form, like for a list of submissions.
+
+#### Reducers
+| Name | Parameters | Description |
+|---|---|---|
+| ```submissions``` | config: object | Mounts the submissions to the state tree. The config object should contain a name property defining a unique name for the redux state. |
+
+#### Actions
+| Name | Parameters | Description |
+|---|---|---|
+| ```getSubmissions``` | name: string, page: integer, params: object, formId: string | Fetch a list of submissions from the server. ```params``` is a query object to filter the submissions. |
+| ```resetSubmissions``` | Reset this reducer back to its initial state. This is automatically called after delete but can be called other times as well. |
+
+#### Selectors
+| Name | Parameters | Description |
+|---|---|---|
+| ```selectSubmissions``` | name: string, state: object | Select the list of submissions from the state. |
 
 ## License
 Released under the [MIT License](http://www.opensource.org/licenses/MIT).
