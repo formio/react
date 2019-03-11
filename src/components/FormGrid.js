@@ -16,6 +16,7 @@ export default class extends Component {
     forms: PropTypes.object,
     perms: PropTypes.object,
     getForms: PropTypes.func,
+    query: PropTypes.object,
     onAction: PropTypes.func
   }
 

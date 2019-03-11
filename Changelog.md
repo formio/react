@@ -14,9 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Refactor of modules and new components.
 
 ## 3.1.8
-
 ### Changed
+ - Allow override of FormEdit
  - Auth actions and reducers to make requests more efficient.
+ 
+### Added
+ - selectIsActive selector.
 
 ## 3.1.7
 ### Removed
