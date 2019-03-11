@@ -4,9 +4,13 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## 3.1.8
 ### Changed
+ - Allow override of FormEdit
  - Auth actions and reducers to make requests more efficient.
+ 
+### Added
+ - selectIsActive selector.
 
 ## 3.1.7
 ### Removed
