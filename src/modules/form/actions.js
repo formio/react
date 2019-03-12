@@ -51,7 +51,7 @@ export const getForm = (name, id = '', done = () => {}) => {
       return;
     }
 
-    const path = `${Formiojs.getProjectUrl()}${id ? `/form/${id}` : name}`;
+    const path = `${Formiojs.getProjectUrl()}/${id ? `form/${id}` : name}`;
     const formio = new Formiojs(path);
 
     dispatch(requestForm(name, id, path));

@@ -84,6 +84,11 @@ export default class extends Component {
     const {activePage, prev, next, onSelect, pages} = this.props;
     const pageNumbers = this.getPageNumbers();
 
+    // If there are no or 1 page, don't print a pager.
+    if (pages <= 1) {
+      return null;
+    }
+
     return (
       <nav aria-label="Page navigation">
         <ul className="pagination">

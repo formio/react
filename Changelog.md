@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.1.10
+### Fixed
+ - Loading forms by path instead of id.
+
+### Changed
+ - Don't show pager if 1 or less pages exist.
+
 ## 3.1.9
 ### Changed
  - FormGrid title links from a to span to remove weirdness with router.
