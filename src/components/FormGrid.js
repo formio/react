@@ -105,7 +105,7 @@ export default class extends Component {
 
     if (column.key === 'title') {
       return (
-        <a href="#" onClick={() => props.onAction(form, 'view')}><h5>{form.title}</h5></a>
+        <span style={{cursor: 'pointer'}} onClick={() => props.onAction(form, 'view')}><h5>{form.title}</h5></span>
       );
     }
     else {

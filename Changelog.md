@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Upgrade formio.js to 4.x branch to enable templating.
  - Refactor of modules and new components.
 
+## 3.1.9
+### Changed
+ - FormGrid title links from a to span to remove weirdness with router.
+
 ## 3.1.8
 ### Changed
  - Allow override of FormEdit
