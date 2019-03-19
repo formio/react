@@ -108,7 +108,7 @@ export default class Form extends Component {
     if (form !== nextProps.form) {
       this.createPromise = new (this.props.formioform || FormioForm)(this.element, nextProps.form, options).ready.then(formio => {
         this.formio = formio;
-        this.formio.form = form;
+        this.formio.form = nextProps.form;
       });
       this.initializeFormio();
     }
