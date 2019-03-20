@@ -1,6 +1,6 @@
 {
   "name": "react-formio",
-  "version": "4.0.0-beta.2",
+  "version": "4.0.0-beta.3",
   "description": "React renderer for form.io forms.",
   "main": "lib/index.js",
   "scripts": {
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/formio/react-formio#readme",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "formiojs": "^4.0.0-beta.10",
+    "formiojs": "^4.0.0-beta.13",
     "lodash": "^4.17.11",
     "prop-types": "^15.7.2",
     "recompose": "^0.30.0"
