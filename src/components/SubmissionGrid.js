@@ -97,14 +97,7 @@ export default class extends Component {
         });
       }
     });
-
-    columns.push({
-        key: 'operations',
-        title: 'Operations',
-        sort: false
-    });
-
-    return columns;
+    return columns.slice(0, 12);
   };
 
   calculateWidths = (columns) => {
@@ -118,57 +111,27 @@ export default class extends Component {
     for (var i = 0; i < left; i++) {
       result[i]++;
     }
-    return columns.length > 12 ? 1 : result;
+    return result;
   };
 
   Cell = props => {
-    const {form} = this.props;
     const {row, column} = props;
+    const cellValue = _get(row, column.key);
 
-    if (column.key !== 'operations') {
-      const cellValue = _get(row, column.key);
-
-      if (cellValue === null) {
-        return null;
-      }
-      const rendered = column.component.asString(cellValue);
-      if (cellValue !== rendered) {
-        return <div dangerouslySetInnerHTML={{__html: rendered}} />;
-      }
-      else {
-        return <span>{cellValue}</span>;
-      }
+    if (cellValue === null) {
+      return null;
+    }
+    const rendered = column.component.asString(cellValue);
+    if (cellValue !== rendered) {
+      return <div dangerouslySetInnerHTML={{__html: rendered}} />;
     }
     else {
-      return (
-        <div>
-          {form.perms.data
-            ? <span className="btn btn-warning btn-sm form-btn" onClick={() => props.onAction(form, 'submission')}>
-              <i className="fa fa-list-alt" />&nbsp;
-              View Data
-            </span>
-            : null
-          }
-          {form.perms.edit
-            ? <span className="btn btn-secondary btn-sm form-btn" onClick={() => props.onAction(form, 'edit')}>
-              <i className="fa fa-edit" />&nbsp;
-              Edit Form
-            </span>
-            : null
-          }
-          {form.perms.delete
-            ? <span className="btn btn-danger btn-sm form-btn" onClick={() => props.onAction(form, 'delete')}>
-              <i className="fa fa-trash" />
-            </span>
-            : null
-          }
-        </div>
-      );
+      return <span>{cellValue}</span>;
     }
   };
 
   render = () => {
-    const {submissions: {submissions, limit, pagination}, onAction, form} = this.props;
+    const {submissions: {submissions, limit, pagination}, onAction} = this.props;
     const columns = this.getColumns();
     const columnWidths = this.calculateWidths(columns.length);
     const skip = (parseInt(this.state.page) - 1) * parseInt(limit);
@@ -177,7 +140,6 @@ export default class extends Component {
 
     return (
       <Grid
-        perms={form.perms}
         items={submissions}
         columns={columns}
         columnWidths={columnWidths}

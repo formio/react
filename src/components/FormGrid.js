@@ -105,38 +105,34 @@ export default class extends Component {
 
     if (column.key === 'title') {
       return (
-        <span style={{cursor: 'pointer'}} onClick={() => {
-          if (form.perms.view) {
-            return props.onAction(form, 'view');
-          }
-        }}><h5>{form.title}</h5></span>
+        <span style={{cursor: 'pointer'}} onClick={() => props.onAction(form, 'view')}><h5>{form.title}</h5></span>
       );
     }
     else {
       return (
         <div>
-          {form.perms.view
+          {props.perms.view
             ? <span className="btn btn-primary btn-sm form-btn" onClick={() => props.onAction(form, 'view')}>
               <i className="fa fa-pencil" />&nbsp;
               Enter Data
             </span>
             : null
           }
-          {form.perms.data
+          {props.perms.data
             ? <span className="btn btn-warning btn-sm form-btn" onClick={() => props.onAction(form, 'submission')}>
               <i className="fa fa-list-alt" />&nbsp;
               View Data
             </span>
             : null
           }
-          {form.perms.edit
+          {props.perms.edit
             ? <span className="btn btn-secondary btn-sm form-btn" onClick={() => props.onAction(form, 'edit')}>
               <i className="fa fa-edit" />&nbsp;
               Edit Form
             </span>
             : null
           }
-          {form.perms.delete
+          {props.perms.delete
             ? <span className="btn btn-danger btn-sm form-btn" onClick={() => props.onAction(form, 'delete')}>
               <i className="fa fa-trash" />
             </span>

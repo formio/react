@@ -40,7 +40,7 @@ export default class extends Component {
   };
 
   render = () => {
-    const {items, columns, columnWidths, sortOrder, onSort, emptyText, Cell, perms} = this.props;
+    const {items, columns, columnWidths, sortOrder, onSort, emptyText, Cell} = this.props;
     const {firstItem, lastItem, total, activePage, onPage, pages, pageNeighbours} = this.props;
     return (
       <div>
@@ -83,11 +83,7 @@ export default class extends Component {
             { items.map((item, index) => {
               return (
                 <li className='list-group-item' key={item._id}>
-                  <div className='row' onClick={() => {
-                    if (perms.data) {
-                      return this.props.onAction(item, 'row');
-                    }
-                  }}>
+                  <div className='row' onClick={() => this.props.onAction(item, 'row')}>
                     { columns.map((column, index) => {
                       return (
                         <div key={index} className={'col col-md-' + columnWidths[index]}>
