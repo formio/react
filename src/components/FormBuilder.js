@@ -7,7 +7,8 @@ import FormBuilder from 'formiojs/FormBuilder';
 
 export default class extends Component {
   static defaultProps = {
-    options: {}
+    options: {},
+    Builder: FormBuilder,
   };
 
   static propTypes = {
@@ -18,7 +19,7 @@ export default class extends Component {
     onDeleteComponent: PropTypes.func,
     onCancelComponent: PropTypes.func,
     onEditComponent: PropTypes.func,
-    builder: PropTypes.any
+    Builder: PropTypes.any,
   };
 
   componentDidMount = () => {
@@ -32,13 +33,13 @@ export default class extends Component {
   };
 
   initializeBuilder = (props) => {
-    const {options, form} = props;
+    const {options, form, Builder} = props;
 
     if (this.builder !== undefined) {
       this.builder.instance.destroy(true);
     }
 
-    this.builder = new (this.props.builder || FormBuilder)(this.element, form, options);
+    this.builder = new Builder(this.element, form, options);
     this.builderReady = this.builder.setDisplay(form.display);
 
     this.builderReady.then(() => {
@@ -56,9 +57,9 @@ export default class extends Component {
   componentWillReceiveProps = (nextProps) => {
     const {options, form} = this.props;
 
-    if (form !== nextProps.form) {
-      this.initializeBuilder(nextProps);
-    }
+    // if (form !== nextProps.form) {
+    //   this.initializeBuilder(nextProps);
+    // }
 
     if (options !== nextProps.options) {
       this.initializeBuilder(nextProps);
