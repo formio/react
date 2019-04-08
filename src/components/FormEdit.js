@@ -25,6 +25,7 @@ export default class extends Component {
           name: '',
           path: '',
           display: 'form',
+          type: 'form',
           components: [],
         },
     };
@@ -115,7 +116,24 @@ export default class extends Component {
               </div>
             </div>
           </div>
-          <div className="col-lg-3 col-md-4 col-sm-4">
+          <div className="col-lg-2 col-md-3 col-sm-3">
+            <div id="form-group-type" className="form-group">
+              <label htmlFor="form-type" className="control-label">Type</label>
+              <div className="input-group">
+                <select
+                  className="form-control"
+                  name="form-type"
+                  id="form-type"
+                  value={this.state.form.type}
+                  onChange={event => this.handleChange('type', event)}
+                >
+                  <option label="Form" value="form">Form</option>
+                  <option label="Resource" value="resource">Resource</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div className="col-lg-2 col-md-4 col-sm-4">
             <div id="form-group-path" className="form-group">
               <label htmlFor="path" className="control-label field-required">Path</label>
               <div className="input-group">
@@ -131,7 +149,7 @@ export default class extends Component {
               </div>
             </div>
           </div>
-          <div id="save-buttons" className="col-lg-3 col-md-5 col-sm-5 save-buttons pull-right">
+          <div id="save-buttons" className="col-lg-2 col-md-5 col-sm-5 save-buttons pull-right">
             <div className="form-group pull-right">
               <span className="btn btn-primary" onClick={() => this.saveForm()}>
                 {saveText}
