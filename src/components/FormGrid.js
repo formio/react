@@ -17,7 +17,8 @@ export default class extends Component {
     perms: PropTypes.object,
     getForms: PropTypes.func,
     query: PropTypes.object,
-    onAction: PropTypes.func
+    onAction: PropTypes.func,
+    formAccess: PropTypes.func,
   }
 
   static defaultProps = {
@@ -27,15 +28,24 @@ export default class extends Component {
       data: true,
       delete: true
     },
-    pagination: {
-      page: 1,
-      numPages: 1,
-      total: 1
-    },
     getForms: () => {},
     query: {
       sort: ''
-    }
+    },
+    formAccess: () => ({
+      form: {
+        create: true,
+        view: true,
+        edit: true,
+        delete: true,
+      },
+      submission: {
+        create: true,
+        view: true,
+        edit: true,
+        delete: true,
+      },
+    }),
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -101,38 +111,44 @@ export default class extends Component {
   }
 
   Cell = props => {
-    const {row: form, column} = props;
+    const {row: form, column, formAccess} = props;
+
+    const access = formAccess(form);
 
     if (column.key === 'title') {
       return (
-        <span style={{cursor: 'pointer'}} onClick={() => props.onAction(form, 'view')}><h5>{form.title}</h5></span>
+        <span style={{cursor: 'pointer'}} onClick={() => {
+          if (access.submission.create) {
+            props.onAction(form, 'view');
+          }
+        }}><h5>{form.title}</h5></span>
       );
     }
     else {
       return (
         <div>
-          {props.perms.view
+          {access.submission.create
             ? <span className="btn btn-primary btn-sm form-btn" onClick={() => props.onAction(form, 'view')}>
               <i className="fa fa-pencil" />&nbsp;
               Enter Data
             </span>
             : null
           }
-          {props.perms.data
+          {access.submission.view
             ? <span className="btn btn-warning btn-sm form-btn" onClick={() => props.onAction(form, 'submission')}>
               <i className="fa fa-list-alt" />&nbsp;
               View Data
             </span>
             : null
           }
-          {props.perms.edit
+          {access.form.edit
             ? <span className="btn btn-secondary btn-sm form-btn" onClick={() => props.onAction(form, 'edit')}>
               <i className="fa fa-edit" />&nbsp;
               Edit Form
             </span>
             : null
           }
-          {props.perms.delete
+          {access.form.delete
             ? <span className="btn btn-danger btn-sm form-btn" onClick={() => props.onAction(form, 'delete')}>
               <i className="fa fa-trash" />
             </span>
@@ -141,10 +157,10 @@ export default class extends Component {
         </div>
       );
     }
-  }
+  };
 
   render() {
-    const {forms: {forms, limit, pagination}, onAction, perms} = this.props;
+    const {forms: {forms, limit, pagination}, onAction, formAccess, perms} = this.props;
     const columns = this.getColumns();
     const columnWidths = {0: 8, 1: 4};
     const skip = (parseInt(this.state.page) - 1) * parseInt(limit);
@@ -167,6 +183,7 @@ export default class extends Component {
         pages={Math.ceil(parseInt(pagination.total) / limit)}
         emptyText="No forms found"
         Cell={this.Cell}
+        formAccess={formAccess}
         perms={perms}
       />
     );
