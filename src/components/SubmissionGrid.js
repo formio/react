@@ -24,54 +24,28 @@ export default class extends Component {
   };
 
   static defaultProps = {
-    query: {},
+    pagination: {
+      page: 1,
+      numPages: 1,
+      total: 1
+    },
+    query: {
+      sort: ''
+    },
     onAction: () => {},
+    onSort: () => {},
+    onPage: () => {},
     getSubmissions: () => {},
   };
 
-  getColumns = () => {
-    let columns = [];
-    FormioUtils.eachComponent(this.props.form.components, function(component) {
-      if (component.input && component.tableView && component.key) {
-        columns.push({
-          key: 'data.' + component.key,
-          title: component.label || component.title || component.key,
-          sort: true,
-          component: Components.create(component, null, null, true)
-        });
-      }
-    });
-    return columns.slice(0, 12);
-  };
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.query !== prevState.query) {
+      return {
+        query: nextProps.query
+      };
+    }
 
-  calculateWidths = (columns) => {
-    let result = {};
-    let left = 12;
-    var basewidth = Math.floor(12/columns);
-    for (let i = 0; i < columns; i++) {
-      result[i] = basewidth;
-      left -= basewidth;
-    }
-    for (var i = 0; i < left; i++) {
-      result[i]++;
-    }
-    return result;
-  };
-
-  Cell = props => {
-    const {row, column} = props;
-    const cellValue = _get(row, column.key);
-
-    if (cellValue === null) {
-      return null;
-    }
-    const rendered = column.component.asString(cellValue);
-    if (cellValue !== rendered) {
-      return <div dangerouslySetInnerHTML={{__html: rendered}} />;
-    }
-    else {
-      return <span>{cellValue}</span>;
-    }
+    return null;
   }
 
   onPage = (page) => {
@@ -111,8 +85,90 @@ export default class extends Component {
     }
   };
 
+  getColumns = () => {
+    let columns = [];
+    FormioUtils.eachComponent(this.props.form.components, function(component) {
+      if (component.input && component.tableView && component.key) {
+        columns.push({
+          key: 'data.' + component.key,
+          title: component.label || component.title || component.key,
+          sort: true,
+          component: Components.create(component, null, null, true)
+        });
+      }
+    });
+
+    columns.push({
+      key: 'operations',
+      title: 'Operations',
+      sort: false
+    });
+
+    return columns;
+  };
+
+  calculateWidths = (columns) => {
+    let result = {};
+    let left = 12;
+    var basewidth = Math.floor(12/columns);
+    for (let i = 0; i < columns; i++) {
+      result[i] = basewidth;
+      left -= basewidth;
+    }
+    for (var i = 0; i < left; i++) {
+      result[i]++;
+    }
+    return columns.length > 12 ? 1 : result;
+  };
+
+  Cell = props => {
+    const {form} = this.props;
+    const {row, column} = props;
+
+    if (column.key !== 'operations') {
+      const cellValue = _get(row, column.key);
+
+      if (cellValue === null) {
+        return null;
+      }
+      const rendered = column.component.asString(cellValue);
+      if (cellValue !== rendered) {
+        return <div dangerouslySetInnerHTML={{__html: rendered}} />;
+      }
+      else {
+        return <span>{cellValue}</span>;
+      }
+    }
+    else {
+      return (
+        <div>
+          {(!form.perms || form.perms.data)
+            ? <span className="btn btn-warning btn-sm form-btn" onClick={(event) => props.onAction(row, 'view')}>
+              <i className="fa fa-list-alt" />&nbsp;
+              View
+            </span>
+            : null
+          }
+          {(!form.perms || form.perms.edit)
+            ? <span className="btn btn-secondary btn-sm form-btn" onClick={() => props.onAction(row, 'edit')}>
+              <i className="fa fa-edit" />&nbsp;
+              Edit
+            </span>
+            : null
+          }
+          {(!form.perms || form.perms.delete)
+            ? <span className="btn btn-danger btn-sm form-btn" onClick={() => props.onAction(row, 'delete')}>
+              <i className="fa fa-trash" />
+            </span>
+            : null
+          }
+        </div>
+      );
+    }
+  };
+
   render = () => {
-    const {submissions: {submissions, limit, pagination}, onAction} = this.props;
+    const {submissions: {submissions, limit, pagination}, onAction, form} = this.props;
     const columns = this.getColumns();
     const columnWidths = this.calculateWidths(columns.length);
     const skip = (parseInt(this.state.page) - 1) * parseInt(limit);
@@ -121,12 +177,13 @@ export default class extends Component {
 
     return (
       <Grid
+        // perms={form.perms}
         items={submissions}
         columns={columns}
         columnWidths={columnWidths}
+        onAction={onAction}
         onSort={this.onSort}
         onPage={this.onPage}
-        onAction={onAction}
         sortOrder={sortOrder}
         activePage={pagination.page}
         firstItem={skip + 1}
