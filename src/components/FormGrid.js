@@ -7,13 +7,13 @@ export default class extends Component {
     super(props);
 
     this.state = {
-      page: props.pagination.page,
+      page: (props.forms && props.forms.pagination) ? props.forms.pagination.page : 0,
       query: props.query
     };
   }
 
   static propTypes = {
-    forms: PropTypes.object,
+    forms: PropTypes.object.isRequired,
     perms: PropTypes.object,
     getForms: PropTypes.func,
     query: PropTypes.object,
@@ -72,7 +72,7 @@ export default class extends Component {
         return prevState;
       }, () => this.props.getForms(this.state.page, this.state.query));
     }
-    const currentSort = this.state.query.sort[0] === '-'
+    const currentSort = (this.state.query.sort && this.state.query.sort.length > 0 && this.state.query.sort[0] === '-')
       ? this.state.query.sort.slice(1, this.state.query.sort.length)
       : this.state.query.sort;
     if (currentSort !== field) {
@@ -81,7 +81,7 @@ export default class extends Component {
         return prevState;
       }, () => this.props.getForms(this.state.page, this.state.query));
     }
-    else if (this.state.query.sort[0] !== '-') {
+    else if (this.state.query.sort && this.state.query.sort.length > 0 && this.state.query.sort[0] !== '-') {
       this.setState(prevState => {
         prevState.query.sort = '-' + field;
         return prevState;
