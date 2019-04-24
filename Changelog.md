@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.25
+### Added
+ - AllowCalculateOverride support.
+
+### Fixed
+ - has-error classes removed from top level day and editgrid components.
+
 ## 1.5.24
 ### Added
  - Component json added to custom default value and calculated value context.
