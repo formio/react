@@ -6,6 +6,7 @@ import Input from 'react-text-mask';
 
 module.exports = React.createClass({
   displayName: 'Textfield',
+  noErrorClass: true,
   mixins: [valueMixin, multiMixin, componentMixin],
   getInitialValue: function() {
     return '00/00/0000';
@@ -105,11 +106,11 @@ module.exports = React.createClass({
           month: parseInt(parts[(this.props.component.dayFirst ? 1 : 0)]).toString(),
           year: parts[2]
         }
-      })
+      });
     }
   },
   getDatePart: function(config) {
-    const classes = (config.required ? 'field-required' : '');
+    const classes = 'control-label' + (config.required ? ' field-required' : '');
 
     const mask = Array(config.characters).fill(/\d/);
 
@@ -123,8 +124,14 @@ module.exports = React.createClass({
       return value;
     };
 
+    const errorClass = (
+      !this.state.isPristine &&
+      config.required &&
+      !this.state.date[config.key]
+    ) ? ' has-error' : '';
+
     return (
-      <div className={'form-group control-label col-xs-' + config.columns}>
+      <div className={`form-group col-xs-${config.columns}${errorClass}`}>
         <label htmlFor={config.componentId} className={classes}>{config.title}</label>
         <Input
           className='form-control'
@@ -140,7 +147,7 @@ module.exports = React.createClass({
           disabled={this.props.readOnly}
         />
       </div>
-    )
+    );
   },
   getDay: function(componentId, field) {
     if (field.hide) {
@@ -162,12 +169,18 @@ module.exports = React.createClass({
     if (field.hide) {
       return null;
     }
-    const classes = (field.required ? 'field-required' : '');
+    const classes = 'control-label' + (field.required ? ' field-required' : '');
     const options = [field.placeholder, 'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'];
 
+    const errorClass = (
+      !this.state.isPristine &&
+      field.required &&
+      !this.state.date.month
+    ) ? ' has-error' : '';
+
     return (
-      <div className='form-group control-label col-xs-4'>
+      <div className={`form-group col-xs-4${errorClass}`}>
         <label htmlFor={componentId + '-month'} className={classes}>Month</label>
         <select className='form-control'
           type='text'

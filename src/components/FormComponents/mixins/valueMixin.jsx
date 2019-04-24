@@ -337,7 +337,15 @@ module.exports = {
   },
   getComponent: function() {
     var id = 'form-group-' + this.props.component.key;
-    var classNames = 'form-group form-field-type-' + this.props.component.type + ' ' + id + (this.state.errorMessage !== '' && !this.state.isPristine ? ' has-error': '') + (this.props.component.customClass ? ' ' + this.props.component.customClass : '');
+    let errorClass = '';
+    if (
+      this.state.errorMessage !== '' &&
+      !this.state.isPristine &&
+      !this.noErrorClass
+    ) {
+      errorClass = ' has-error';
+    }
+    var classNames = 'form-group form-field-type-' + this.props.component.type + ' ' + id + errorClass + (this.props.component.customClass ? ' ' + this.props.component.customClass : '');
     var Elements = this.getElements();
     var Error = (this.state.errorMessage && !this.state.isPristine ? <p className={'help-block error-' + this.state.errorType }>{this.state.errorMessage}</p> : '');
     return (

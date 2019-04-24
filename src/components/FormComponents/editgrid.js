@@ -230,6 +230,7 @@ class RowEdit extends React.Component {
 
 export default React.createClass({
   displayName: 'EditGrid',
+  noErrorClass: true,
   mixins: [valueMixin],
   getInitialValue: () => [],
   customState: function(state) {
