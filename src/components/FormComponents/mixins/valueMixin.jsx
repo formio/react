@@ -191,24 +191,44 @@ module.exports = {
     }
     return state;
   },
+  calculateValue(component, data, row, moment) {
+    let value = this.state.value;
+    try {
+      const f = new Function('component', 'data', 'row', 'moment', 'var value = [];' + component.calculateValue.toString() + '; return value;');
+      value = f(component, data, row, moment);
+    }
+    catch (e) {
+      /* eslint-disable no-console */
+      console.warn('An error occurred calculating a value for ' + component.key, e);
+      /* eslint-enable no-console */
+    }
+    return value;
+  },
   componentWillReceiveProps: function(nextProps) {
     const { component } = this.props;
     let value;
     if (component.hasOwnProperty('calculateValue') && component.calculateValue) {
+      // Initialize calculated value if it doesn't already exist.
+      if (
+        component.hasOwnProperty('allowCalculateOverride') &&
+        component.allowCalculateOverride &&
+        (this.calculatedValue === undefined)
+      ) {
+        this.calculatedValue = this.calculateValue(component, nextProps.data, nextProps.row, moment);
+      }
       if (!deepEqual(this.data, nextProps.data)) {
         this.data = clone(nextProps.data);
-        try {
-          const f = new Function('component', 'data', 'row', 'moment', 'var value = [];' + component.calculateValue.toString() + '; return value;');
-          value = f(component, this.data, nextProps.row, moment);
+        if (
+          !component.allowCalculateOverride ||
+          !this.state.value ||
           // eslint-disable-next-line eqeqeq
-          if (this.state.value != value) {
-            this.setValue(value);
+          this.calculatedValue == this.state.value
+        ) {
+          this.calculatedValue = this.calculateValue(component, this.data, nextProps.row, moment);
+          // eslint-disable-next-line eqeqeq
+          if (this.state.value != this.calculatedValue) {
+            this.setValue(this.calculatedValue);
           }
-        }
-        catch (e) {
-          /* eslint-disable no-console */
-          console.warn('An error occurred calculating a value for ' + component.key, e);
-          /* eslint-enable no-console */
         }
       }
     }
