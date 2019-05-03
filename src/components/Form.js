@@ -17,6 +17,7 @@ export default class Form extends Component {
       noAlerts: PropTypes.boolean,
       i18n: PropTypes.object,
       template: PropTypes.string,
+      saveDraft: PropTypes.boolean,
     }),
     onPrevPage: PropTypes.func,
     onNextPage: PropTypes.func,
@@ -86,7 +87,8 @@ export default class Form extends Component {
         this.formio.on('submit', this.emit('onSubmit'));
         this.formio.on('submitDone', this.emit('onSubmitDone'));
         this.formio.on('error', this.emit('onError'));
-        this.formio.on('render', this.emit('onRender'));
+        // We're at the end of the render so go ahead and emit the render.
+        this.emit('onRender');
       });
     }
   };
