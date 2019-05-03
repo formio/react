@@ -100,7 +100,7 @@ export default class ReactComponent extends Field {
     flags = flags || {};
     const newValue = value === undefined || value === null ? this.getValue() : value;
     const changed = (newValue !== undefined) ? this.hasChanged(newValue, this.dataValue) : false;
-    this.dataValue = newValue;
+    this.dataValue = Array.isArray(newValue) ? [...newValue] : newValue;
     if (this.viewOnly) {
       this.updateViewOnlyValue(newValue);
     }
