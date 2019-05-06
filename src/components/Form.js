@@ -46,13 +46,15 @@ export default class Form extends Component {
     }
 
     if (src) {
-      this.createPromise = new (this.props.formioform || FormioForm)(this.element, src, options).ready.then(formio => {
+      this.instance = new (this.props.formioform || FormioForm)(this.element, src, options)
+      this.createPromise = this.instance.ready.then(formio => {
         this.formio = formio;
         this.formio.src = src;
       });
     }
     if (form) {
-      this.createPromise = new (this.props.formioform || FormioForm)(this.element, form, options).ready.then(formio => {
+      this.instance = new (this.props.formioform || FormioForm)(this.element, form, options)
+      this.createPromise = this.instance.ready.then(formio => {
         this.formio = formio;
         this.formio.form = form;
         if (url) {
@@ -74,6 +76,9 @@ export default class Form extends Component {
 
   initializeFormio = () => {
     if (this.createPromise) {
+      this.instance.on('render', this.emit('onRender'));
+      this.instance.on('attach', this.emit('onAttach'));
+      this.instance.on('build', this.emit('onBuild'));
       this.createPromise.then(() => {
         if (this.props.submission) {
           this.formio.submission = this.props.submission;
@@ -87,8 +92,6 @@ export default class Form extends Component {
         this.formio.on('submit', this.emit('onSubmit'));
         this.formio.on('submitDone', this.emit('onSubmitDone'));
         this.formio.on('error', this.emit('onError'));
-        // We're at the end of the render so go ahead and emit the render.
-        this.emit('onRender');
       });
     }
   };
@@ -101,14 +104,16 @@ export default class Form extends Component {
     }
 
     if (src !== nextProps.src) {
-      this.createPromise = new (this.props.formioform || FormioForm)(this.element, nextProps.src, options).ready.then(formio => {
+      this.instance = new (this.props.formioform || FormioForm)(this.element, nextProps.src, options)
+      this.createPromise = this.instance.ready.then(formio => {
         this.formio = formio;
         this.formio.src = nextProps.src;
       });
       this.initializeFormio();
     }
     if (form !== nextProps.form) {
-      this.createPromise = new (this.props.formioform || FormioForm)(this.element, nextProps.form, options).ready.then(formio => {
+      this.instance = new (this.props.formioform || FormioForm)(this.element, nextProps.form, options)
+      this.createPromise = this.instance.ready.then(formio => {
         this.formio = formio;
         this.formio.form = nextProps.form;
       });
