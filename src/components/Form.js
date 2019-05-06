@@ -28,6 +28,8 @@ export default class Form extends Component {
     onFormLoad: PropTypes.func,
     onError: PropTypes.func,
     onRender: PropTypes.func,
+    onAttach: PropTypes.func,
+    onBuild: PropTypes.func,
     formioform: PropTypes.any
   };
 
