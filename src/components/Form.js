@@ -78,9 +78,11 @@ export default class Form extends Component {
 
   initializeFormio = () => {
     if (this.createPromise) {
-      this.instance.on('render', this.emit('onRender'));
-      this.instance.on('attach', this.emit('onAttach'));
-      this.instance.on('build', this.emit('onBuild'));
+      if (this.instance.hasOwnProperty('on')) {
+        this.instance.on('render', this.emit('onRender'));
+        this.instance.on('attach', this.emit('onAttach'));
+        this.instance.on('build', this.emit('onBuild'));
+      }
       this.createPromise.then(() => {
         if (this.props.submission) {
           this.formio.submission = this.props.submission;

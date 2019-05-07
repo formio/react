@@ -79,6 +79,13 @@ export default class ReactComponent extends Field {
   }
 
   /**
+   * Override this function.
+   */
+  detachReact(element) {
+    return;
+  }
+
+  /**
    * Something external has set a value and our component needs to be updated to reflect that. For example, loading a submission.
    *
    * @param value
