@@ -109,9 +109,9 @@ export default class extends Component {
                   value={this.state.form.display}
                   onChange={event => this.handleChange('display', event)}
                 >
-                  <option label="Form" value="string:form">Form</option>
-                  <option label="Wizard" value="string:wizard">Wizard</option>
-                  <option label="PDF" value="string:pdf">PDF</option>
+                  <option label="Form" value="form">Form</option>
+                  <option label="Wizard" value="wizard">Wizard</option>
+                  <option label="PDF" value="pdf">PDF</option>
                 </select>
               </div>
             </div>
