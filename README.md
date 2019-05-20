@@ -31,7 +31,7 @@ The form component is the primary component of the system. It is what takes the 
 | ```url``` | url  |   | The url of the form definition. The form will not be loaded from this url and the submission will not be saved here either. This is used for file upload, oauth and other components or actions that need to know where the server is. Use this in connection with ```form```  |
 | ```form``` | object |   | Instead of loading a form from the ```src``` url, you can preload the form definition and pass it in with the ```form``` prop. You should also set ```url``` if you are using any advanced components like file upload or oauth. |
 | ```submission``` | object | | Submission data to fill the form. You can either load a previous submission or create a submission with some pre-filled data. If you do not provide a submissions the form will initialize an empty submission using default values from the form. |
-| ```options``` | object | | an options object that can pass options to the formio.js Form that is rendered. You can set options such as ```readOnly```, ```noAlerts``` or ```hide```. There are many options to be found in the formio.js library. |
+| ```options``` | object | | an options object that can pass options to the formio.js Form that is rendered. You can set options such as ```readOnly```, ```noAlerts``` or ```hide```. There are [many options to be found in the formio.js library](https://github.com/formio/formio.js/wiki/Form-Renderer#options). |
 
 #### Event Props
 
