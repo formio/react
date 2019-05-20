@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
+import _clone from 'lodash/clone';
 import _cloneDeep from 'lodash/cloneDeep';
 import _camelCase from 'lodash/camelCase';
 
@@ -56,13 +57,19 @@ export default class extends Component {
   handleChange(prop, event) {
     const value = event.target.value;
     this.setState(prev => {
-      prev.form[prop] = value;
+      const form = _clone(prev.form);
+      form[prop] = value;
+
       // If setting title, autogenerate name and path as well.
-      if (prop === 'title' && !this.state.form._id) {
-        prev.form['name'] = _camelCase(value);
-        prev.form['path'] = _camelCase(value).toLowerCase();
+      if (prop === 'title' && !form._id) {
+        form['name'] = _camelCase(value);
+        form['path'] = _camelCase(value).toLowerCase();
       }
-      return prev;
+
+      return {
+        ...prev,
+        form,
+      };
     });
   }
 
@@ -109,9 +116,9 @@ export default class extends Component {
                   value={this.state.form.display}
                   onChange={event => this.handleChange('display', event)}
                 >
-                  <option label="Form" value="string:form">Form</option>
-                  <option label="Wizard" value="string:wizard">Wizard</option>
-                  <option label="PDF" value="string:pdf">PDF</option>
+                  <option label="Form" value="form">Form</option>
+                  <option label="Wizard" value="wizard">Wizard</option>
+                  <option label="PDF" value="pdf">PDF</option>
                 </select>
               </div>
             </div>
