@@ -21,6 +21,7 @@ export default class Form extends Component {
     }),
     onPrevPage: PropTypes.func,
     onNextPage: PropTypes.func,
+    onCancel: PropTypes.func,
     onChange: PropTypes.func,
     onCustomEvent: PropTypes.func,
     onSubmit: PropTypes.func,
@@ -48,14 +49,14 @@ export default class Form extends Component {
     }
 
     if (src) {
-      this.instance = new (this.props.formioform || FormioForm)(this.element, src, options)
+      this.instance = new (this.props.formioform || FormioForm)(this.element, src, options);
       this.createPromise = this.instance.ready.then(formio => {
         this.formio = formio;
         this.formio.src = src;
       });
     }
     if (form) {
-      this.instance = new (this.props.formioform || FormioForm)(this.element, form, options)
+      this.instance = new (this.props.formioform || FormioForm)(this.element, form, options);
       this.createPromise = this.instance.ready.then(formio => {
         this.formio = formio;
         this.formio.form = form;
@@ -89,6 +90,7 @@ export default class Form extends Component {
         }
         //this.formio.hideComponents([]); (From Components.js)
         this.formio.on('prevPage', this.emit('onPrevPage'));
+        this.formio.on('cancel', this.emit('onCancel'));
         this.formio.on('nextPage', this.emit('onNextPage'));
         this.formio.on('change', this.emit('onChange'));
         this.formio.on('customEvent', this.emit('onCustomEvent'));
@@ -108,7 +110,7 @@ export default class Form extends Component {
     }
 
     if (src !== nextProps.src) {
-      this.instance = new (this.props.formioform || FormioForm)(this.element, nextProps.src, options)
+      this.instance = new (this.props.formioform || FormioForm)(this.element, nextProps.src, options);
       this.createPromise = this.instance.ready.then(formio => {
         this.formio = formio;
         this.formio.src = nextProps.src;
@@ -116,7 +118,7 @@ export default class Form extends Component {
       this.initializeFormio();
     }
     if (form !== nextProps.form) {
-      this.instance = new (this.props.formioform || FormioForm)(this.element, nextProps.form, options)
+      this.instance = new (this.props.formioform || FormioForm)(this.element, nextProps.form, options);
       this.createPromise = this.instance.ready.then(formio => {
         this.formio = formio;
         this.formio.form = nextProps.form;
