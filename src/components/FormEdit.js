@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
-import _clone from 'lodash/clone';
+import _set from 'lodash/set';
 import _cloneDeep from 'lodash/cloneDeep';
 import _camelCase from 'lodash/camelCase';
 
@@ -43,8 +43,9 @@ export default class extends Component {
   }
 
   setForm(form) {
-    this.setState({
-      form
+    this.setState((state) => {
+      state.form.components = form.components;
+      return state;
     });
   }
 
@@ -54,16 +55,18 @@ export default class extends Component {
     }
   }
 
-  handleChange(prop, event) {
-    const value = event.target.value;
-    this.setState(prev => {
-      const form = _clone(prev.form);
-      form[prop] = value;
+  handleChange(path, event) {
+    const {target} = event;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+
+    this.setState((prev) => {
+      const form = _cloneDeep(prev.form);
+      _set(form, path, value);
 
       // If setting title, autogenerate name and path as well.
-      if (prop === 'title' && !form._id) {
-        form['name'] = _camelCase(value);
-        form['path'] = _camelCase(value).toLowerCase();
+      if (path === 'title' && !form._id) {
+        form.name = _camelCase(value);
+        form.path = _camelCase(value).toLowerCase();
       }
 
       return {
