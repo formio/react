@@ -44,8 +44,12 @@ export default class extends Component {
 
   setForm(form) {
     this.setState((state) => {
-      state.form.components = form.components;
-      return state;
+      const stateForm = _cloneDeep(state.form);
+      stateForm.components = form.components;
+      return {
+        ...state,
+        form: stateForm,
+      };
     });
   }
 
