@@ -1,7 +1,7 @@
-import Webform from 'formiojs/Webform';
-import WebformBuilder from 'formiojs/WebformBuilder';
-import Wizard from 'formiojs/Wizard';
-import WizardBuilder from 'formiojs/WizardBuilder';
+import Webform from 'formiojs/lib/Webform';
+import WebformBuilder from 'formiojs/lib/WebformBuilder';
+import Wizard from 'formiojs/lib/Wizard';
+import WizardBuilder from 'formiojs/lib/WizardBuilder';
 // import editFormUtils from 'formiojs/components//editForm/utils';
 
 export {
@@ -14,4 +14,4 @@ export {
 
 export * from './components';
 export * from './modules';
-export {Components, Formio, Utils} from 'formiojs';
+export {Components, Formio, Utils} from 'formiojs/lib';

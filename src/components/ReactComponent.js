@@ -1,4 +1,4 @@
-import Field from 'formiojs/components/_classes/field/Field';
+import Field from 'formiojs/lib/components/_classes/field/Field';
 
 export default class ReactComponent extends Field {
   /**

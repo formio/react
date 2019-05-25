@@ -1,4 +1,4 @@
-import Formiojs from 'formiojs/Formio';
+import Formiojs from 'formiojs/lib/Formio';
 import * as types from './constants';
 import {selectForm} from './selectors';
 
