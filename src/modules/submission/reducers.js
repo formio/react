@@ -8,7 +8,7 @@ export function submission(config) {
     lastUpdated: 0,
     submission: {},
     url: '',
-    error: ''
+    error: '',
   };
 
   return (state = initialState, action) => {
@@ -17,6 +17,11 @@ export function submission(config) {
       return state;
     }
     switch (action.type) {
+      case types.SUBMISSION_CLEAR_ERROR:
+        return {
+          ...state,
+          error: '',
+        };
       case types.SUBMISSION_REQUEST:
         return {
           ...state,
@@ -41,14 +46,14 @@ export function submission(config) {
           id: action.submission._id,
           submission: action.submission,
           isActive: false,
-          error: ''
+          error: '',
         };
       case types.SUBMISSION_FAILURE:
         return {
           ...state,
           isActive: false,
           isInvalid: true,
-          error: action.error
+          error: action.error,
         };
       case types.SUBMISSION_RESET:
         return initialState;
