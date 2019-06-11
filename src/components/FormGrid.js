@@ -110,6 +110,11 @@ export default class extends Component {
     ];
   }
 
+  stopPropagationWrapper = (fn) => (event) => {
+    event.stopPropagation();
+    fn();
+  }
+
   Cell = props => {
     const {row: form, column, formAccess} = props;
 
@@ -117,39 +122,39 @@ export default class extends Component {
 
     if (column.key === 'title') {
       return (
-        <span style={{cursor: 'pointer'}} onClick={() => {
+        <span style={{cursor: 'pointer'}} onClick={this.stopPropagationWrapper(() => {
           if (access.submission.create) {
             props.onAction(form, 'view');
           }
-        }}><h5>{form.title}</h5></span>
+        })}><h5>{form.title}</h5></span>
       );
     }
     else {
       return (
         <div>
           {access.submission.create
-            ? <span className="btn btn-primary btn-sm form-btn" onClick={() => props.onAction(form, 'view')}>
+            ? <span className="btn btn-primary btn-sm form-btn" onClick={this.stopPropagationWrapper(() => props.onAction(form, 'view'))}>
               <i className="fa fa-pencil" />&nbsp;
               Enter Data
             </span>
             : null
           }
           {access.submission.view
-            ? <span className="btn btn-warning btn-sm form-btn" onClick={() => props.onAction(form, 'submission')}>
+            ? <span className="btn btn-warning btn-sm form-btn" onClick={this.stopPropagationWrapper(() => props.onAction(form, 'submission'))}>
               <i className="fa fa-list-alt" />&nbsp;
               View Data
             </span>
             : null
           }
           {access.form.edit
-            ? <span className="btn btn-secondary btn-sm form-btn" onClick={() => props.onAction(form, 'edit')}>
+            ? <span className="btn btn-secondary btn-sm form-btn" onClick={this.stopPropagationWrapper(() => props.onAction(form, 'edit'))}>
               <i className="fa fa-edit" />&nbsp;
               Edit Form
             </span>
             : null
           }
           {access.form.delete
-            ? <span className="btn btn-danger btn-sm form-btn" onClick={() => props.onAction(form, 'delete')}>
+            ? <span className="btn btn-danger btn-sm form-btn" onClicks={this.stopPropagationWrapper(() => props.onAction(form, 'delete'))}>
               <i className="fa fa-trash" />
             </span>
             : null

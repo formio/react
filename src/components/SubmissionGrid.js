@@ -121,6 +121,11 @@ export default class extends Component {
     return columns.length > 12 ? 1 : result;
   };
 
+  stopPropagationWrapper = (fn) => (event) => {
+    event.stopPropagation();
+    fn();
+  }
+
   Cell = props => {
     const {form} = this.props;
     const {row, column} = props;
@@ -143,21 +148,21 @@ export default class extends Component {
       return (
         <div>
           {(!form.perms || form.perms.data)
-            ? <span className="btn btn-warning btn-sm form-btn" onClick={(event) => props.onAction(row, 'view')}>
+            ? <span className="btn btn-warning btn-sm form-btn" onClick={this.stopPropagationWrapper(() => props.onAction(row, 'view'))}>
               <i className="fa fa-list-alt" />&nbsp;
               View
             </span>
             : null
           }
           {(!form.perms || form.perms.edit)
-            ? <span className="btn btn-secondary btn-sm form-btn" onClick={() => props.onAction(row, 'edit')}>
+            ? <span className="btn btn-secondary btn-sm form-btn" onClick={this.stopPropagationWrapper(() => props.onAction(row, 'edit'))}>
               <i className="fa fa-edit" />&nbsp;
               Edit
             </span>
             : null
           }
           {(!form.perms || form.perms.delete)
-            ? <span className="btn btn-danger btn-sm form-btn" onClick={() => props.onAction(row, 'delete')}>
+            ? <span className="btn btn-danger btn-sm form-btn" onClick={this.stopPropagationWrapper(() => props.onAction(row, 'delete'))}>
               <i className="fa fa-trash" />
             </span>
             : null
