@@ -39,8 +39,8 @@ export default class extends Component {
       this.builder.instance.destroy(true);
     }
 
-    this.builder = new Builder(this.element, form, options);
-    this.builderReady = this.builder.setDisplay(form.display);
+    this.builder = new Builder(this.element.firstChild, form, options);
+    this.builderReady = this.builder.ready;
 
     this.builderReady.then(() => {
       this.builder.instance.on('saveComponent', this.emit('onSaveComponent'));
@@ -67,7 +67,9 @@ export default class extends Component {
   };
 
   render = () => {
-    return <div ref={element => this.element = element} />;
+    return <div ref={element => this.element = element}>
+      <div></div>
+    </div>;
   };
 
   onChange = () => {

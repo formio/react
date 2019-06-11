@@ -154,7 +154,7 @@ export default class extends Component {
             : null
           }
           {access.form.delete
-            ? <span className="btn btn-danger btn-sm form-btn" onClicks={this.stopPropagationWrapper(() => props.onAction(form, 'delete'))}>
+            ? <span className="btn btn-danger btn-sm form-btn" onClick={this.stopPropagationWrapper(() => props.onAction(form, 'delete'))}>
               <i className="fa fa-trash" />
             </span>
             : null
