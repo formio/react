@@ -7,7 +7,7 @@ export function form(config) {
     lastUpdated: 0,
     form: {},
     url: '',
-    error: ''
+    error: '',
   };
 
   return (state = initialState, action) => {
@@ -27,7 +27,7 @@ export function form(config) {
           isActive: true,
           id: action.id,
           url: action.url,
-          error: ''
+          error: '',
         };
       case types.FORM_SUCCESS:
         return {
@@ -36,19 +36,19 @@ export function form(config) {
           form: action.form,
           isActive: false,
           url: action.url || state.url,
-          error: ''
+          error: '',
         };
       case types.FORM_FAILURE:
         return {
           ...state,
           isActive: false,
           isInvalid: true,
-          error: action.error
+          error: action.error,
         };
       case types.FORM_SAVE:
         return {
           ...state,
-          isActive: true
+          isActive: true,
         };
       case types.FORM_RESET:
         return initialState;
