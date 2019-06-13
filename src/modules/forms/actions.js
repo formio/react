@@ -54,7 +54,7 @@ export const indexForms = (name, page = 1, params = {}) => {
     }
 
     // Apply default query
-    params = {...params, ...forms.query};
+    params = {...forms.query, ...params};
 
     const formio = new Formiojs(Formiojs.getProjectUrl() + '/form');
 
