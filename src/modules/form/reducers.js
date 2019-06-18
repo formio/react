@@ -26,15 +26,16 @@ export function form(config) {
           ...state,
           isActive: true,
           id: action.id,
+          form: {},
           url: action.url,
           error: '',
         };
       case types.FORM_SUCCESS:
         return {
           ...state,
+          isActive: false,
           id: action.form._id,
           form: action.form,
-          isActive: false,
           url: action.url || state.url,
           error: '',
         };
