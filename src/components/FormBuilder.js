@@ -57,11 +57,11 @@ export default class extends Component {
   componentWillReceiveProps = (nextProps) => {
     const {options, form} = this.props;
 
-    if (form.display !== nextProps.form.display) {
-      this.initializeBuilder(nextProps);
-    }
-
-    if (options !== nextProps.options) {
+    if (
+      (form.display !== nextProps.form.display)
+      || (options !== nextProps.options)
+      || (form.components !== nextProps.form.components)
+    ) {
       this.initializeBuilder(nextProps);
     }
   };

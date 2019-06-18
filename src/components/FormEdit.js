@@ -42,17 +42,6 @@ export default class extends Component {
     return null;
   }
 
-  setForm(form) {
-    this.setState((state) => {
-      const stateForm = _cloneDeep(state.form);
-      stateForm.components = form.components;
-      return {
-        ...state,
-        form: stateForm,
-      };
-    });
-  }
-
   saveForm() {
     if (this.props.saveForm && typeof this.props.saveForm === 'function') {
       this.props.saveForm(this.state.form);
@@ -175,7 +164,6 @@ export default class extends Component {
           key={form._id}
           form={form}
           options={this.props.options}
-          onChange={(form) => this.setForm(form)}
           builder={this.props.builder}
         />
       </div>
