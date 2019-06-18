@@ -2,40 +2,39 @@ import Formiojs from 'formiojs/Formio';
 import * as types from './constants';
 import {selectRoot} from '../root/selectors';
 
-function reset(name) {
-  return {
-    type: types.FORMS_RESET,
-    name
-  };
-}
+export const resetForms = (name) => ({
+  type: types.FORMS_RESET,
+  name,
+});
 
-function requestForms(name, page) {
-  return {
-    type: types.FORMS_REQUEST,
-    name,
-    page
-  };
-}
+const requestForms = (name, page, {
+  limit,
+  numPages,
+  total,
+}) => ({
+  type: types.FORMS_REQUEST,
+  name,
+  page,
+  limit,
+  numPages,
+  total,
+});
 
-function receiveForms(name, forms) {
-  return {
-    type: types.FORMS_SUCCESS,
-    forms,
-    name
-  };
-}
+const receiveForms = (name, forms) => ({
+  type: types.FORMS_SUCCESS,
+  forms,
+  name,
+});
 
-function failForms(name, err) {
-  return {
-    type: types.FORMS_FAILURE,
-    error: err,
-    name
-  };
-}
+const failForms = (name, err) => ({
+  type: types.FORMS_FAILURE,
+  error: err,
+  name,
+});
 
 export const indexForms = (name, page = 1, params = {}) => {
   return (dispatch, getState) => {
-    dispatch(requestForms(name, page));
+    dispatch(requestForms(name, page, params));
     const forms = selectRoot(name, getState());
 
     // Ten is the default so if set to 10, don't send.
@@ -66,8 +65,4 @@ export const indexForms = (name, page = 1, params = {}) => {
         dispatch(failForms(name, result));
       });
   };
-};
-
-export const resetForms = (name) => {
-  return dispatch => dispatch(reset(name));
 };

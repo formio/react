@@ -1,3 +1,6 @@
+import _get from 'lodash/get';
+import _isFunction from 'lodash/isFunction';
+import _map from 'lodash/map';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Grid from './Grid';
@@ -19,6 +22,13 @@ export default class extends Component {
     query: PropTypes.object,
     onAction: PropTypes.func,
     formAccess: PropTypes.func,
+    columns: PropTypes.arrayOf(PropTypes.shape({
+      key: PropTypes.string,
+      title: PropTypes.string,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+      sort: PropTypes.bool,
+      width: PropTypes.number,
+    })),
   }
 
   static defaultProps = {
@@ -46,6 +56,20 @@ export default class extends Component {
         delete: true,
       },
     }),
+    columns: [
+      {
+        key: 'title',
+        title: 'Form',
+        sort: true,
+        width: 8,
+      },
+      {
+        key: 'operations',
+        title: 'Operations',
+        sort: false,
+        width: 4,
+      },
+    ],
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -95,21 +119,6 @@ export default class extends Component {
     }
   };
 
-  getColumns() {
-    return [
-      {
-        key: 'title',
-        title: 'Form',
-        sort: true
-      },
-      {
-        key: 'operations',
-        title: 'Operations',
-        sort: false
-      }
-    ];
-  }
-
   stopPropagationWrapper = (fn) => (event) => {
     event.stopPropagation();
     fn();
@@ -129,7 +138,7 @@ export default class extends Component {
         })}><h5>{form.title}</h5></span>
       );
     }
-    else {
+    else if (column.key === 'operations') {
       return (
         <div>
           {access.submission.create
@@ -162,12 +171,16 @@ export default class extends Component {
         </div>
       );
     }
+    else {
+      return (
+        <span>{_isFunction(column.value) ? column.value(form) : _get(form, column.value, '')}</span>
+      );
+    }
   };
 
   render() {
-    const {forms: {forms, limit, pagination}, onAction, formAccess, perms} = this.props;
-    const columns = this.getColumns();
-    const columnWidths = {0: 8, 1: 4};
+    const {forms: {forms, limit, pagination}, onAction, formAccess, perms, columns} = this.props;
+    const columnWidths = _map(columns, 'width');
     const skip = (parseInt(this.state.page) - 1) * parseInt(limit);
     const last = skip + parseInt(limit) > pagination.total ? pagination.total : skip + parseInt(limit);
     const sortOrder = this.state.query.sort;
