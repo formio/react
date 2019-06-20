@@ -123,14 +123,15 @@ The FormEdit component wraps the FormBuilder component and adds the title, displ
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| ```form``` | object | {display: 'form'} | The form definition of the exiting form that is to be modified. |
+| ```form``` | object | {display: 'form' | 'wizard'} | The form definition of the exiting form that is to be modified. |
 | ```options``` | object | {} | The options to be passed to FormBuilder |
+| ```saveText``` | string | 'Create Form' | The string that will be displayed in the save-button |
 
 #### Event Props
 
 | Name | Parameters | Description |
 |---|---|---|
-| ```onSave``` | form | Called when the save button is pressed. Will pass the form definition to the callback. |
+| ```saveForm``` | form | Called when the save button is pressed. Will pass the form definition to the callback. |
 
 ### FormGrid
 The FormGrid component can be used to render a list of forms with buttons to edit, view, delete, etc on each row.
