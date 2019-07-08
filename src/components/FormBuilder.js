@@ -61,7 +61,6 @@ export default class extends Component {
     if (
       (form.display !== nextProps.form.display)
       || (options !== nextProps.options)
-      || (form.components !== nextProps.form.components)
     ) {
       this.initializeBuilder(nextProps);
     }
