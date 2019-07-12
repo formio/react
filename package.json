@@ -30,7 +30,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "core-js": "^3.1.4",
-    "formiojs": "^4.0.0-rc.8",
+    "formiojs": "^4.0.0-rc.9",
     "lodash": "^4.17.11",
     "prop-types": "^15.7.2",
     "recompose": "^0.30.0"
