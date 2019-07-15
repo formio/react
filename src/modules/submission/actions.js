@@ -1,4 +1,5 @@
 import Formiojs from 'formiojs/Formio';
+
 import * as types from './constants';
 
 export const clearSubmissionError = (name) => ({
@@ -7,94 +8,87 @@ export const clearSubmissionError = (name) => ({
 });
 
 const requestSubmission = (name, id, formId,  url) => ({
-  name,
   type: types.SUBMISSION_REQUEST,
+  name,
   id,
   formId,
-  url
+  url,
 });
 
 const sendSubmission = (name, data) => ({
+  type: types.SUBMISSION_SAVE,
   name,
-  type: types.SUBMISSION_SAVE
 });
 
 const receiveSubmission = (name, submission, url) => ({
   type: types.SUBMISSION_SUCCESS,
   name,
   submission,
-  url
+  url,
 });
 
-const failSubmission = (name, err) => ({
+const failSubmission = (name, error) => ({
   type: types.SUBMISSION_FAILURE,
   name,
-  error: err
+  error,
 });
 
 export const resetSubmission = (name) => ({
   type: types.SUBMISSION_RESET,
-  name
+  name,
 });
 
-export const getSubmission = (name, id, formId, done = () => {}) => {
-  return (dispatch, getState) => {
-    // Check to see if the submission is already loaded.
-    if (getState().id === id) {
-      return;
-    }
+export const getSubmission = (name, id, formId, done = () => {}) => (dispatch, getState) => {
+  // Check to see if the submission is already loaded.
+  if (getState().id === id) {
+    return;
+  }
 
-    const url = Formiojs.getProjectUrl() + '/' + (formId ? 'form/' + formId : name) + '/submission/' + id;
+  const url = `${Formiojs.getProjectUrl()}/${formId ? `form/${formId}` : name}/submission/${id}`;
+  const formio = new Formiojs(url);
 
-    dispatch(requestSubmission(name, id, formId, url));
+  dispatch(requestSubmission(name, id, formId, url));
 
-    const formio = new Formiojs(url);
-
-    formio.loadSubmission()
-      .then((result) => {
-        dispatch(receiveSubmission(name, result));
-        done(null, result);
-      })
-      .catch((result) => {
-        dispatch(failSubmission(name, result));
-        done(result);
-      });
-  };
+  formio.loadSubmission()
+    .then((result) => {
+      dispatch(receiveSubmission(name, result));
+      done(null, result);
+    })
+    .catch((error) => {
+      dispatch(failSubmission(name, error));
+      done(error);
+    });
 };
 
-export const saveSubmission = (name, data, formId, done = () => {}) => {
-  return (dispatch) => {
-    dispatch(sendSubmission(name, data));
+export const saveSubmission = (name, data, formId, done = () => {}) => (dispatch) => {
+  dispatch(sendSubmission(name, data));
 
-    const id = data._id;
+  const id = data._id;
 
-    const formio = new Formiojs(Formiojs.getProjectUrl() + '/' + (formId ? 'form/' + formId : name) + '/submission' + (id ? '/' + id : ''));
+  const formio = new Formiojs(`${Formiojs.getProjectUrl()}/${formId ? `form/${formId}` : name}/submission${id ? `/${id}` : ''}`);
 
-    formio.saveSubmission(data)
-      .then((result) => {
-        const url = Formiojs.getProjectUrl() + '/' + (formId ? 'form/' + formId : name) + '/submission/' + result._id;
-        dispatch(receiveSubmission(name, result, url));
-        done(null, result);
-      })
-      .catch((result) => {
-        dispatch(failSubmission(name, result));
-        done(result);
-      });
-  };
+  formio.saveSubmission(data)
+    .then((result) => {
+      const url = `${Formiojs.getProjectUrl()}/${formId ? `form/${formId}` : name}/submission/${result._id}`;
+      dispatch(receiveSubmission(name, result, url));
+      done(null, result);
+    })
+    .catch((error) => {
+      dispatch(failSubmission(name, error));
+      done(error);
+    });
 };
 
-export const deleteSubmission = (name, id, formId, done = () => {}) => {
-  return (dispatch, getState) => {
-    const formio = new Formiojs(Formiojs.getProjectUrl() + '/' + (formId ? 'form/' + formId : name) + '/submission/' + id);
+export const deleteSubmission = (name, id, formId, done = () => {}) => (dispatch, getState) => {
+  const formio = new Formiojs(`${Formiojs.getProjectUrl()}/${formId ? `form/${formId}` : name}/submission/${id}`);
 
-    return formio.deleteSubmission()
-      .then(() => {
-        dispatch(resetSubmission(name));
-        done();
-      })
-      .catch((result) => {
-        dispatch(failSubmission(name, result));
-        done(result);
-      });
-  };
+  return formio.deleteSubmission()
+    .then(() => {
+      dispatch(resetSubmission(name));
+      done(null, true);
+    })
+    .catch((error) => {
+      dispatch(failSubmission(name, error));
+      done(error);
+    });
 };

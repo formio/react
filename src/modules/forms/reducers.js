@@ -1,56 +1,72 @@
+import _pick from 'lodash/pick';
+
 import * as types from './constants';
 
-export function forms(config) {
+export function forms({
+  name,
+  limit = 10,
+  query = {},
+  select = '',
+  sort = '',
+}) {
   const initialState = {
-    query: config.query || {},
-    isActive: false,
-    lastUpdated: 0,
+    error: '',
     forms: [],
-    limit: 10,
+    isActive: false,
+    limit,
     pagination: {
-      page: 1
+      page: 1,
     },
-    error: ''
+    query,
+    select,
+    sort,
   };
 
   return (state = initialState, action) => {
     // Only proceed for this forms.
-    if (action.name !== config.name) {
+    if (action.name !== name) {
       return state;
     }
+
     switch (action.type) {
       case types.FORMS_RESET:
         return initialState;
       case types.FORMS_REQUEST:
         return {
           ...state,
-          limit: action.limit || state.limit,
+          ..._pick(action.params, [
+            'limit',
+            'query',
+            'select',
+            'sort',
+          ]),
+          error: '',
+          forms: [],
           isActive: true,
           pagination: {
-            page: action.page || state.pagination.page,
-            numPages: action.numPages || state.pagination.numPages,
-            total: action.total || state.pagination.total
+            ...state.pagination,
+            page: action.page,
           },
-          error: ''
         };
-      case types.FORMS_SUCCESS:
+      case types.FORMS_SUCCESS: {
+        const total = action.forms.serverCount;
+
         return {
           ...state,
           forms: action.forms,
-          pagination: {
-            page: state.pagination.page,
-            numPages: Math.ceil((action.forms.serverCount || state.pagination.total) / state.limit),
-            total: action.forms.serverCount || state.pagination.total
-          },
           isActive: false,
-          error: ''
+          pagination: {
+            ...state.pagination,
+            numPages: Math.ceil(total / state.limit),
+            total,
+          },
         };
+      }
       case types.FORMS_FAILURE:
         return {
           ...state,
+          error: action.error,
           isActive: false,
-          isInvalid: true,
-          error: action.error
         };
       default:
         return state;

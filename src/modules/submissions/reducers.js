@@ -1,58 +1,74 @@
+import _pick from 'lodash/pick';
+
 import * as types from './constants';
 
-export function submissions(config) {
+export function submissions({
+  name,
+  limit = 10,
+  query = {},
+  select = '',
+  sort = '',
+}) {
   const initialState = {
+    error: '',
     formId: '',
-    query: config.query || {},
     isActive: false,
-    lastUpdated: 0,
-    submissions: [],
-    limit: 10,
+    limit,
     pagination: {
-      page: 1
+      page: 1,
     },
-    error: ''
+    query,
+    select,
+    sort,
+    submissions: [],
   };
 
   return (state = initialState, action) => {
-    // Only proceed for this form.
-    if (action.name !== config.name) {
+    // Only proceed for this submissions.
+    if (action.name !== name) {
       return state;
     }
+
     switch (action.type) {
       case types.SUBMISSIONS_RESET:
         return initialState;
       case types.SUBMISSIONS_REQUEST:
         return {
           ...state,
+          ..._pick(action.params, [
+            'limit',
+            'query',
+            'select',
+            'sort',
+          ]),
+          error: '',
           formId: action.formId,
-          limit: action.limit || state.limit,
           isActive: true,
-          submissions: [],
           pagination: {
-            page: action.page || state.pagination.page,
-            numPages: action.numPages || state.pagination.numPages,
-            total: action.total || state.pagination.total
+            ...state.pagination,
+            page: action.page,
           },
-          error: ''
+          submissions: [],
         };
-      case types.SUBMISSIONS_SUCCESS:
+      case types.SUBMISSIONS_SUCCESS: {
+        const total = action.submissions.serverCount;
+
         return {
           ...state,
-          submissions: action.submissions,
-          pagination: {
-            page: state.pagination.page,
-            numPages: Math.ceil((action.submissions.serverCount || state.pagination.total) / state.limit),
-            total: action.submissions.serverCount || state.pagination.total
-          },
           isActive: false,
-          error: ''
+          pagination: {
+            ...state.pagination,
+            numPages: Math.ceil(total / state.limit),
+            total,
+          },
+          submissions: action.submissions,
         };
+      }
       case types.SUBMISSIONS_FAILURE:
         return {
           ...state,
+          error: action.error,
           isActive: false,
-          error: action.error
         };
       default:
         return state;

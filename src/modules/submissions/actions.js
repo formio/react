@@ -1,74 +1,82 @@
 import Formiojs from 'formiojs/Formio';
-import * as types from './constants';
+
 import {selectRoot} from '../root';
 
-function reset(name) {
-  return {
-    type: types.SUBMISSIONS_RESET,
-    name
-  };
-}
+import * as types from './constants';
 
-function requestSubmissions(name, page, formId) {
-  return {
-    type: types.SUBMISSIONS_REQUEST,
-    name,
-    page,
-    formId
-  };
-}
+export const resetSubmissions = (name) => ({
+  type: types.SUBMISSIONS_RESET,
+  name,
+});
 
-function receiveSubmissions(name, submissions) {
-  return {
-    type: types.SUBMISSIONS_SUCCESS,
-    submissions,
-    name
-  };
-}
+const requestSubmissions = (name, page, params, formId) => ({
+  type: types.SUBMISSIONS_REQUEST,
+  name,
+  page,
+  params,
+  formId,
+});
 
-function failSubmissions(name, err) {
-  return {
-    type: types.SUBMISSIONS_FAILURE,
-    error: err,
-    name
-  };
-}
+const receiveSubmissions = (name, submissions) => ({
+  type: types.SUBMISSIONS_SUCCESS,
+  name,
+  submissions,
+});
 
-export const getSubmissions = (name, page = 0, params = {}, formId) => {
-  return (dispatch, getState) => {
-    dispatch(requestSubmissions(name, page, formId));
-    const submissions = selectRoot(name, getState());
+const failSubmissions = (name, error) => ({
+  type: types.SUBMISSIONS_FAILURE,
+  name,
+  error,
+});
 
-    // Ten is the default so if set to 10, don't send.
-    if (parseInt(submissions.limit) !== 10) {
-      params.limit = parseInt(submissions.limit);
-    }
-    else {
-      delete params.limit;
-    }
+export const getSubmissions = (name, page = 0, params = {}, formId, done = () => {}) => (dispatch, getState) => {
+  dispatch(requestSubmissions(name, page, params, formId));
 
-    if (page !== 1) {
-      params.skip = ((parseInt(page) - 1) * parseInt(submissions.limit));
-    }
-    else {
-      delete params.skip;
-    }
+  const {
+    limit,
+    query,
+    select,
+    sort,
+  } = selectRoot(name, getState());
+  const formio = new Formiojs(`${Formiojs.getProjectUrl()}/${(formId ? `form/${formId}` : name)}/submission`);
+  const requestParams = {...query};
 
-    // Apply default query
-    params = {...params, ...submissions.query};
+  // Ten is the default so if set to 10, don't send.
+  if (limit !== 10) {
+    requestParams.limit = limit;
+  }
+  else {
+    delete requestParams.limit;
+  }
 
-    const formio = new Formiojs(Formiojs.getProjectUrl() + '/' + (formId ? 'form/' + formId : name) + '/submission');
+  if (page !== 1) {
+    requestParams.skip = (page - 1) * limit;
+  }
+  else {
+    delete requestParams.skip;
+  }
 
-    return formio.loadSubmissions({params})
-      .then((result) => {
-        dispatch(receiveSubmissions(name, result));
-      })
-      .catch((result) => {
-        dispatch(failSubmissions(name, result));
-      });
-  };
-};
+  if (select) {
+    requestParams.select = select;
+  }
+  else {
+    delete requestParams.select;
+  }
 
-export const resetSubmissions = (name) => {
-  return dispatch => dispatch(reset(name));
+  if (sort) {
+    requestParams.sort = sort;
+  }
+  else {
+    delete requestParams.sort;
+  }
+
+  return formio.loadSubmissions({params: requestParams})
+    .then((result) => {
+      dispatch(receiveSubmissions(name, result));
+      done(null, result);
+    })
+    .catch((error) => {
+      dispatch(failSubmissions(name, error));
+      done(error);
+    });
 };
