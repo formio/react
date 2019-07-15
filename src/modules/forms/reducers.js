@@ -15,7 +15,9 @@ export function forms({
     isActive: false,
     limit,
     pagination: {
+      numPages: 0,
       page: 1,
+      total: 0,
     },
     query,
     select,

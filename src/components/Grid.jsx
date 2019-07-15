@@ -158,7 +158,7 @@ function Grid(props) {
                                 <div className="row align-items-center">
                                   <div className="col-auto">
                                     <Pagination
-                                      pages={111}
+                                      pages={pages}
                                       activePage={activePage}
                                       pageNeighbours={pageNeighbours}
                                       prev="Previous"

@@ -15,7 +15,9 @@ export function submissions({
     isActive: false,
     limit,
     pagination: {
+      numPages: 0,
       page: 1,
+      total: 0,
     },
     query,
     select,
