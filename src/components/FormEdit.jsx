@@ -5,7 +5,7 @@ import _set from 'lodash/set';
 import _cloneDeep from 'lodash/cloneDeep';
 import _camelCase from 'lodash/camelCase';
 
-export default class extends Component {
+export default class FormEdit extends Component {
   static propTypes = {
     form: PropTypes.object.isRequired,
     options: PropTypes.object,
