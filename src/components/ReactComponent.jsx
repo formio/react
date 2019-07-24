@@ -103,14 +103,11 @@ export default class ReactComponent extends Field {
    *
    * @param value
    */
-  updateValue = (flags, value) => {
+  updateValue = (value, flags) => {
     flags = flags || {};
     const newValue = value === undefined || value === null ? this.getValue() : value;
     const changed = (newValue !== undefined) ? this.hasChanged(newValue, this.dataValue) : false;
     this.dataValue = Array.isArray(newValue) ? [...newValue] : newValue;
-    if (this.viewOnly) {
-      this.updateViewOnlyValue(newValue);
-    }
 
     this.updateOnChange(flags, changed);
     return changed;
