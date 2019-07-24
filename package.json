@@ -30,8 +30,8 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "core-js": "^3.1.4",
-    "formiojs": "4.0.0-rc.10",
-    "lodash": "^4.17.11",
+    "formiojs": "^4.0.0-rc.16",
+    "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
     "recompose": "^0.30.0"
   },
