@@ -24,7 +24,6 @@ export default class FormBuilder extends Component {
 
   componentDidMount = () => {
     this.initializeBuilder(this.props);
-    console.log('formBuilder is launched!!')
   };
 
   componentWillUnmount = () => {
