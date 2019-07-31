@@ -8,7 +8,7 @@
     "build": "babel ./src --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
     "lint": "eslint src",
     "watch": "babel ./src --watch --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
-    "prepublish": "npm run lint; npm run build"
+    "prepublish": "npm run lint && npm run build"
   },
   "repository": {
     "type": "git",
