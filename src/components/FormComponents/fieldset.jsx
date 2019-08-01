@@ -1,9 +1,10 @@
 import React from 'react';
 import { FormioComponentsList } from '../../components';
 
-module.exports = React.createClass({
-  displayName: 'Fieldset',
-  render: function() {
+module.exports = class extends React.Component {
+  static displayName = 'Fieldset';
+
+  render() {
     var legend = (this.props.component.legend ? <legend>{this.props.component.legend}</legend> : '');
     var className = (this.props.component.customClass) ? this.props.component.customClass : '';
     return (
@@ -16,4 +17,4 @@ module.exports = React.createClass({
       </fieldset>
     );
   }
-});
+};

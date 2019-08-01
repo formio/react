@@ -1,10 +1,11 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import clone from 'lodash/clone';
 import valueMixin from './mixins/valueMixin';
 import componentMixin from './mixins/componentMixin';
 import { FormioComponentsList } from '../../components';
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   displayName: 'Container',
   mixins: [valueMixin, componentMixin],
   getInitialValue: function() {

@@ -1,9 +1,10 @@
 import React from 'react';
 import { FormioComponentsList } from '../../components';
 
-module.exports = React.createClass({
-  displayName: 'Column',
-  render: function() {
+module.exports = class extends React.Component {
+  static displayName = 'Column';
+
+  render() {
     return (
       <div className='row'>
         {this.props.component.columns.map(function(column, index) {
@@ -23,4 +24,4 @@ module.exports = React.createClass({
       </div>
     );
   }
-});
+};

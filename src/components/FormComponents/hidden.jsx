@@ -1,8 +1,9 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import valueMixin from './mixins/valueMixin';
 import componentMixin from './mixins/componentMixin';
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   mixins: [valueMixin, componentMixin],
   displayName: 'Hidden',
   getElements: function() {

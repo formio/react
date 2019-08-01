@@ -1,8 +1,9 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import componentMixin from './mixins/componentMixin';
 
 // TODO: Support other button actions like reset.
-module.exports = React.createClass({
+module.exports = createReactClass({
   displayName: 'Button',
   mixins: [componentMixin],
   getButtonType: function() {

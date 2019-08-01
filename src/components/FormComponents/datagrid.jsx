@@ -1,4 +1,5 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import clone from 'lodash/clone';
 import isEqual from 'lodash/isEqual';
 import valueMixin from './mixins/valueMixin';
@@ -97,7 +98,7 @@ class DataGridRow extends React.Component {
   }
 }
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   displayName: 'Datagrid',
   mixins: [valueMixin],
   getInitialValue: function() {

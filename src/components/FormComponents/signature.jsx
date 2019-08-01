@@ -1,10 +1,11 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import valueMixin from './mixins/valueMixin';
 import componentMixin from './mixins/componentMixin';
 import SignatureCanvas from 'react-signature-canvas';
 import _ from 'lodash';
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   displayName: 'Signature',
   mixins: [valueMixin, componentMixin],
   onEnd: function() {
