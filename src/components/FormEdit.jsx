@@ -83,7 +83,7 @@ export default class FormEdit extends Component {
                 type="text"
                 className="form-control" id="title"
                 placeholder="Enter the form title"
-                value={this.state.form.title}
+                value={form.title || ''}
                 onChange={event => this.handleChange('title', event)}
               />
             </div>
@@ -96,7 +96,7 @@ export default class FormEdit extends Component {
                 className="form-control"
                 id="name"
                 placeholder="Enter the form machine name"
-                value={this.state.form.name}
+                value={form.name || ''}
                 onChange={event => this.handleChange('name', event)}
               />
             </div>
@@ -109,7 +109,7 @@ export default class FormEdit extends Component {
                   className="form-control"
                   name="form-display"
                   id="form-display"
-                  value={this.state.form.display}
+                  value={form.display || ''}
                   onChange={event => this.handleChange('display', event)}
                 >
                   <option label="Form" value="form">Form</option>
@@ -146,7 +146,7 @@ export default class FormEdit extends Component {
                   id="path"
                   placeholder="example"
                   style={{'textTransform': 'lowercase', width:'120px'}}
-                  value={this.state.form.path}
+                  value={form.path || ''}
                   onChange={event => this.handleChange('path', event)}
                 />
               </div>
