@@ -1,9 +1,10 @@
 import React from 'react';
 import { FormioComponentsList } from '../../components';
 
-module.exports = React.createClass({
-  displayName: 'Panel',
-  render: function() {
+module.exports = class extends React.Component {
+  static displayName = 'Panel';
+
+  render() {
     var title = (this.props.component.title ? <div className="panel-heading"><h3 className="panel-title">{this.props.component.title}</h3></div> : '');
     var tableClasses = 'table';
     tableClasses += (this.props.component.striped) ? ' table-striped' : '';
@@ -44,4 +45,4 @@ module.exports = React.createClass({
       </div>
     );
   }
-});
+};

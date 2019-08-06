@@ -1,9 +1,10 @@
 import React from 'react';
 import { FormioComponentsList } from '../../components';
 
-module.exports = React.createClass({
-  displayName: 'Well',
-  render: function() {
+module.exports = class extends React.Component {
+  static displayName = 'Well';
+
+  render() {
     return (
       <div className="well">
         <FormioComponentsList
@@ -13,4 +14,4 @@ module.exports = React.createClass({
       </div>
     );
   }
-});
+};

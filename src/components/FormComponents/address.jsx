@@ -1,10 +1,10 @@
-import React from 'react';
+import createReactClass from 'create-react-class';
 import valueMixin from './mixins/valueMixin';
 import selectMixin from './mixins/selectMixin';
 import componentMixin from './mixins/componentMixin';
 import debounce from 'lodash/debounce';
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   displayName: 'Address',
   mixins: [valueMixin, selectMixin, componentMixin],
   getTextField: function() {

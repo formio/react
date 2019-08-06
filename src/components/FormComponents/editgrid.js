@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import createReactClass from 'create-react-class';
 import clone from 'lodash/clone';
 import isEqual from 'lodash/isEqual';
 import valueMixin from './mixins/valueMixin';
@@ -228,7 +229,7 @@ class RowEdit extends React.Component {
   };
 }
 
-export default React.createClass({
+export default createReactClass({
   displayName: 'EditGrid',
   noErrorClass: true,
   mixins: [valueMixin],

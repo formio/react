@@ -1,10 +1,11 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import valueMixin from './mixins/valueMixin';
 import multiMixin from './mixins/multiMixin';
 import componentMixin from './mixins/componentMixin';
 import moment from 'moment';
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   displayName: 'Time',
   mixins: [valueMixin, multiMixin, componentMixin],
   customState: function(state) {

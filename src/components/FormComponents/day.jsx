@@ -1,10 +1,11 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import valueMixin from './mixins/valueMixin';
 import multiMixin from './mixins/multiMixin';
 import componentMixin from './mixins/componentMixin';
 import Input from 'react-text-mask';
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   displayName: 'Textfield',
   noErrorClass: true,
   mixins: [valueMixin, multiMixin, componentMixin],

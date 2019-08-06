@@ -1,12 +1,14 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import Dropzone from 'react-dropzone';
 import valueMixin from './mixins/valueMixin';
 import componentMixin from './mixins/componentMixin';
 import { fileSize } from '../../util';
 
-const FormioFileList = React.createClass({
-  displayName: 'FormioFileList',
-  fileRow: function (file, index) {
+class FormioFileList extends React.Component {
+  static displayName = 'FormioFileList';
+
+  fileRow = (file, index) => {
     if (!file) {
       return null;
     }
@@ -27,8 +29,9 @@ const FormioFileList = React.createClass({
         <td>{ fileSize(file.size) }</td>
       </tr>
     );
-  },
-  render: function() {
+  };
+
+  render() {
     return (
       <table className='table table-striped table-bordered'>
         <thead>
@@ -50,11 +53,12 @@ const FormioFileList = React.createClass({
       </table>
     );
   }
-});
+}
 
-const FormioImageList = React.createClass({
-  displayName: 'FormioImageList',
-  render: function() {
+class FormioImageList extends React.Component {
+  static displayName = 'FormioImageList';
+
+  render() {
     return <div>
       {
         this.props.files ? this.props.files.map((file, index) => {
@@ -74,11 +78,12 @@ const FormioImageList = React.createClass({
       }
     </div>
   }
-});
+}
 
-const FormioFile = React.createClass({
-  displayName: 'FormioFile',
-  getFile: function(event) {
+class FormioFile extends React.Component {
+  static displayName = 'FormioFile';
+
+  getFile = (event) => {
     event.preventDefault();
     this.props.formio
        .downloadFile(this.props.file).then(file => {
@@ -91,20 +96,21 @@ const FormioFile = React.createClass({
         // User is expecting an immediate notification due to attempting to download a file.
         alert(response);
       });
-  },
-  render: function() {
+  };
+
+  render() {
     return <a href={this.props.file.url} onClick={event => {this.getFile(event)}} target="_blank">{this.props.file.name}</a>;
   }
-});
+}
 
-const FormioImage = React.createClass({
-  displayName: 'FormioImage',
-  getInitialState: function() {
-    return {
-      imageSrc: ''
-    }
-  },
-  componentWillMount: function() {
+class FormioImage extends React.Component {
+  static displayName = 'FormioImage';
+
+  state = {
+    imageSrc: ''
+  };
+
+  componentWillMount() {
     this.props.formio
       .downloadFile(this.props.file)
         .then(result => {
@@ -112,13 +118,14 @@ const FormioImage = React.createClass({
             imageSrc: result.url
           });
         });
-  },
-  render: function() {
+  }
+
+  render() {
     return <img src={this.state.imageSrc} alt={this.props.file.name} style={{width: this.props.width}} />;
   }
-});
+}
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   displayName: 'File',
   mixins: [valueMixin, componentMixin],
   getInitialValue: function() {

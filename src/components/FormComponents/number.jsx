@@ -1,4 +1,4 @@
-import React from 'react';
+import createReactClass from 'create-react-class';
 import valueMixin from './mixins/valueMixin';
 import inputMixin from './mixins/inputMixin';
 import multiMixin from './mixins/multiMixin';
@@ -6,7 +6,7 @@ import componentMixin from './mixins/componentMixin';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import _repeat from 'lodash/repeat';
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   displayName: 'Number',
   mixins: [valueMixin, multiMixin, componentMixin, inputMixin],
   onChangeCustom: function(value) {

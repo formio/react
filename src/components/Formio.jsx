@@ -1,4 +1,5 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import Formiojs from 'formiojs';
 import FormioUtils from 'formio-utils';
 import { FormioComponentsList } from '../components';
@@ -7,7 +8,7 @@ import clone from 'lodash/clone';
 // TODO: We should have a better way of initializing form components.
 import '../components/FormComponents';
 
-export const Formio = React.createClass({
+export const Formio = createReactClass({
   displayName: 'Formio',
   getInitialState: function() {
     this.unmounting = false;

@@ -1,9 +1,10 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import valueMixin from './mixins/valueMixin';
 import componentMixin from './mixins/componentMixin';
 import clone from 'lodash/clone';
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   displayName: 'SelectBox',
   mixins: [valueMixin, componentMixin],
   getInitialValue: function() {

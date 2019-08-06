@@ -4,7 +4,7 @@
   "description": "React rendering library for form.io embedded forms.",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha --timeout 30000 --reporter spec test/.setup.js **/*.spec.js",
+    "test": "mocha --timeout 30000 --reporter spec test/.setup.js src/**/*.spec.js test/**/*.spec.js",
     "build": "babel ./src --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
     "lint": "eslint src",
     "watch": "babel ./src --watch --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.22.0",
+    "create-react-class": "^15.6.3",
     "formio-utils": "^0.3.0",
     "formiojs": "^2.32.3",
     "lodash": "^4.15.0",

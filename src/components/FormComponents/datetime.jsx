@@ -1,11 +1,12 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import valueMixin from './mixins/valueMixin';
 import multiMixin from './mixins/multiMixin';
 import componentMixin from './mixins/componentMixin';
 import DateTimePicker from 'react-flatpickr';
 import _get from 'lodash/get';
 
-module.exports = React.createClass({
+module.exports = createReactClass({
   displayName: 'Datetime',
   mixins: [valueMixin, multiMixin, componentMixin],
   getInitialValue: function() {

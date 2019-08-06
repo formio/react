@@ -106,8 +106,8 @@ module.exports = {
       }
     }
 
-    return React.createClass({
-      render: function() {
+    return class extends React.Component {
+      render() {
         let { item } = this.props;
         if (component.dataSrc === 'values') {
           // Search for the full item from values.
@@ -124,7 +124,7 @@ module.exports = {
 
         return React.createElement('span', {}, item);
       }
-    });
+    };
   },
   listComponent: function() {
     var root = this;
