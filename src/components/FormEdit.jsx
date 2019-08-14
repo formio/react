@@ -69,6 +69,12 @@ export default class FormEdit extends Component {
     });
   }
 
+  formChange = (form) => {
+    this.setState({
+      form,
+    });
+  };
+
   render() {
     const {form} = this.state;
     const {saveText} = this.props;
@@ -165,6 +171,7 @@ export default class FormEdit extends Component {
           form={form}
           options={this.props.options}
           builder={this.props.builder}
+          onChange={this.formChange}
         />
       </div>
     );
