@@ -56,7 +56,9 @@ export default class ReactComponent extends Field {
       [`react-${this.id}`]: 'single',
     });
 
-    this.reactInstance = this.attachReact(this.refs[`react-${this.id}`]);
+    if (this.refs[`react-${this.id}`]) {
+      this.reactInstance = this.attachReact(this.refs[`react-${this.id}`]);
+    }
     return Promise.resolve();
   }
 
@@ -65,7 +67,9 @@ export default class ReactComponent extends Field {
    * or it is being removed from the form.
    */
   detach() {
-    this.detachReact(this.refs[`react-${this.id}`]);
+    if (this.refs[`react-${this.id}`]) {
+      this.detachReact(this.refs[`react-${this.id}`]);
+    }
     super.detach();
   }
 
