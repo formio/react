@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.26
+### Fixed
+ - Select component was using old props when refreshing items.
+
 ## 1.5.25
 ### Added
  - AllowCalculateOverride support.
