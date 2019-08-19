@@ -87,10 +87,10 @@ module.exports = createReactClass({
         this.refreshItems();
         break;
       case 'custom':
-        this.refreshItems = (input) => {
+        this.refreshItems = (input, props = this.props) => {
           try {
             /* eslint-disable no-unused-vars */
-            const { data, row } = this.props;
+            const { data, row } = props;
             /* eslint-enable no-unused-vars */
             let selectItems = eval('(function(data, row, input) { var values = [];' + this.props.component.data.custom.toString() + '; return values; })(data, row, input)');
             if (!Array.isArray(selectItems)) {

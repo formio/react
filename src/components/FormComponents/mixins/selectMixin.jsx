@@ -4,8 +4,8 @@ import Multiselect from 'react-widgets/lib/Multiselect';
 import List from 'react-widgets/lib/List';
 import { interpolate, raw } from '../../../util';
 import get from 'lodash/get';
-import isEqual from 'lodash/isEqual'
-  
+import isEqual from 'lodash/isEqual';
+
 module.exports = {
   data: {},
   getInitialState: function() {
@@ -39,7 +39,7 @@ module.exports = {
       }
     }
     if (this.refresh) {
-      this.refreshItems();
+      this.refreshItems(null, nextProps);
       this.refresh = false;
     }
     this.data = {...nextProps.data};
