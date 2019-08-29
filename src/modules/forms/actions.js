@@ -38,7 +38,7 @@ export const indexForms = (name, page = 1, params = {}, done = () => {}) => (dis
     sort,
   } = selectRoot(name, getState());
   const formio = new Formiojs(`${Formiojs.getProjectUrl()}/form`);
-  const requestParams = {...query};
+  const requestParams = {...query, ...params};
 
   // Ten is the default so if set to 10, don't send.
   if (limit !== 10) {
