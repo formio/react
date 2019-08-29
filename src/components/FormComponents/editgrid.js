@@ -156,7 +156,6 @@ class RowEdit extends React.Component {
 
   elementChange = component => {
     if (component.props.component.key) {
-      this.props.setFormDirty();
       this.setState(previousState => {
         let value = clone(previousState.value);
         value[component.props.component.key] = component.state.value;
