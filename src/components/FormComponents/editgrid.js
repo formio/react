@@ -53,13 +53,17 @@ class EditGridRow extends Component {
   };
 
   shouldComponentUpdate = (nextProps) => {
-    const { row, isOpen } = this.props;
+    const { row, isOpen, formPristine } = this.props;
 
     if (!isEqual(row, nextProps.row)) {
       return true;
     }
 
     if (isOpen !== nextProps.isOpen) {
+      return true;
+    }
+
+    if (formPristine !== nextProps.formPristine) {
       return true;
     }
 

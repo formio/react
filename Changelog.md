@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.29
+### Fixed
+ - Editgrids with selects don't refresh correctly.
+
 ## 1.5.28
 ### Fixed
  - Select Values using wrong filter logic. Now uses same as JSON.
