@@ -4,9 +4,20 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.31
+### Reverted
+ - Reverted changed from 1.5.27.
+
 ## 1.5.29
 ### Fixed
  - Editgrids with selects don't refresh correctly.
+ 
+### Reverted
+ - Change from 1.5.27
+
+## 1.5.27
+### Fixed
+ - Fix select not refreshing initially in editgrid.
 
 ## 1.5.26
 ### Fixed
