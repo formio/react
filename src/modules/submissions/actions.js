@@ -39,7 +39,7 @@ export const getSubmissions = (name, page = 0, params = {}, formId, done = () =>
     sort,
   } = selectRoot(name, getState());
   const formio = new Formiojs(`${Formiojs.getProjectUrl()}/${(formId ? `form/${formId}` : name)}/submission`);
-  const requestParams = {...query};
+  const requestParams = {...query, ...params};
 
   // Ten is the default so if set to 10, don't send.
   if (limit !== 10) {
