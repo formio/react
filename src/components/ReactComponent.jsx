@@ -58,6 +58,10 @@ export default class ReactComponent extends Field {
 
     if (this.refs[`react-${this.id}`]) {
       this.reactInstance = this.attachReact(this.refs[`react-${this.id}`]);
+      if (this.shouldSetValue) {
+        this.setValue(this.dataForSetting);
+        this.updateValue(this.dataForSetting);
+      }
     }
     return Promise.resolve();
   }
@@ -99,6 +103,10 @@ export default class ReactComponent extends Field {
       this.reactInstance.setState({
         value: value
       });
+      this.shouldSetValue = false;
+    } else {
+      this.shouldSetValue = true;
+      this.dataForSetting = value;
     }
   }
 
