@@ -37,6 +37,7 @@
     "formiojs": "^2.32.3",
     "lodash": "^4.15.0",
     "moment": "^2.22.2",
+    "prop-types": "^15.7.2",
     "react-dropzone": "^3.5.3",
     "react-flatpickr": "^3.1.1",
     "react-pagify": "^2.1.1",
