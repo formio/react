@@ -41,13 +41,14 @@
     "react-dropzone": "^3.5.3",
     "react-flatpickr": "^3.1.1",
     "react-pagify": "^2.1.1",
-    "react-quill": "^0.4.1",
+    "react-quill": "^1.2.6",
     "react-signature-canvas": "^0.3.0",
-    "react-text-mask": "^4.1.0",
+    "react-text-mask": "^5.4.3",
     "react-widgets": "^4.0.3",
-    "reactabular": "^3.0.5",
+    "reactabular-table": "^8.14.0",
     "reselect": "^2.5.4",
     "segmentize": "^0.4.1",
+    "table-resolver": "^4.1.1",
     "text-mask-addons": "^3.8.0"
   },
   "devDependencies": {
@@ -87,7 +88,7 @@
     "formio.css"
   ],
   "peerDependencies": {
-    "react": "^0.14.0 || ^15.0.0",
-    "react-dom": "^0.14.0 || ^15.0.0"
+    "react": "^0.14.9 || ^15.3.0 || ^16.0.0",
+    "react-dom": "^0.14.9 || ^15.3.0 || ^16.0.0"
   }
 }
