@@ -13,7 +13,7 @@ export default class extends React.Component {
     super(props);
     this.state = {
       pagination: this.props.pagination
-    }
+    };
   }
 
   componentWillReceiveProps(nextProps) {
