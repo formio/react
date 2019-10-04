@@ -24,6 +24,7 @@ export default class Form extends Component {
     onCancel: PropTypes.func,
     onChange: PropTypes.func,
     onCustomEvent: PropTypes.func,
+    onComponentChange: PropTypes.func,
     onSubmit: PropTypes.func,
     onSubmitDone: PropTypes.func,
     onFormLoad: PropTypes.func,
@@ -31,6 +32,9 @@ export default class Form extends Component {
     onRender: PropTypes.func,
     onAttach: PropTypes.func,
     onBuild: PropTypes.func,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
+    onInitialized: PropTypes.func,
     formioform: PropTypes.any
   };
 
@@ -79,25 +83,18 @@ export default class Form extends Component {
 
   initializeFormio = () => {
     if (this.createPromise) {
-      if (this.instance.hasOwnProperty('on')) {
-        this.instance.on('render', this.emit('onRender'));
-        this.instance.on('attach', this.emit('onAttach'));
-        this.instance.on('build', this.emit('onBuild'));
-      }
+      this.instance.onAny((event, ...args) => {
+        if (event.startsWith('formio.')) {
+          const funcName = `on${event.charAt(7).toUpperCase()}${event.slice(8)}`;
+          if (this.props.hasOwnProperty(funcName) && typeof (this.props[funcName]) === 'function') {
+            this.props[funcName](...args);
+          }
+        }
+      });
       this.createPromise.then(() => {
         if (this.props.submission) {
           this.formio.submission = this.props.submission;
         }
-        //this.formio.hideComponents([]); (From Components.js)
-        this.formio.on('prevPage', this.emit('onPrevPage'));
-        this.formio.on('cancel', this.emit('onCancel'));
-        this.formio.on('nextPage', this.emit('onNextPage'));
-        this.formio.on('change', this.emit('onChange'));
-        this.formio.on('customEvent', this.emit('onCustomEvent'));
-        this.formio.on('formLoad', this.emit('onFormLoad'));
-        this.formio.on('submit', this.emit('onSubmit'));
-        this.formio.on('submitDone', this.emit('onSubmitDone'));
-        this.formio.on('error', this.emit('onError'));
       });
     }
   };
@@ -133,13 +130,5 @@ export default class Form extends Component {
 
   render = () => {
     return <div ref={element => this.element = element} />;
-  };
-
-  emit = (funcName) => {
-    return (...args) => {
-      if (this.props.hasOwnProperty(funcName) && typeof (this.props[funcName]) === 'function') {
-        this.props[funcName](...args);
-      }
-    };
   };
 }
