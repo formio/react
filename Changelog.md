@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.2.1
+### Fixed
+ - getForm not calculating url correctly.
+
 ## 4.2.0
 ### Changed 
  - Upgrade formio.js to 4.2 branch.
