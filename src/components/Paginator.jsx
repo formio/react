@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Pagify from 'react-pagify';
 import segmentize from 'segmentize';
@@ -5,14 +6,14 @@ import clone from 'lodash/clone';
 
 export default class extends React.Component {
   static propTypes = {
-    onSelect: React.PropTypes.func
+    onSelect: PropTypes.func
   }
 
   constructor(props) {
     super(props);
     this.state = {
       pagination: this.props.pagination
-    }
+    };
   }
 
   componentWillReceiveProps(nextProps) {

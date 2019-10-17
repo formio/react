@@ -1,10 +1,9 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Formiojs from 'formiojs';
 import FormioUtils from 'formio-utils';
-import {
-  Table, search, edit, sort, highlight, resolve,
-  SearchColumns, resizableColumn
-} from 'reactabular';
+import * as Table from 'reactabular-table';
+import * as resolve from 'table-resolver';
 import Paginator from './Paginator';
 import { nested } from '../util';
 import { FormioComponents } from '../factories';
@@ -27,7 +26,7 @@ export default class FormioGrid extends React.Component {
   }
 
   static propTypes = {
-    src: React.PropTypes.string
+    src: PropTypes.string
   }
 
   constructor(props) {
