@@ -50,6 +50,7 @@ export default class FormBuilder extends Component {
       this.builder.instance.on('removeComponent', this.emit('onDeleteComponent'));
       this.builder.instance.on('cancelComponent', this.emit('onCancelComponent'));
       this.builder.instance.on('editComponent', this.emit('onEditComponent'));
+      this.builder.instance.on('addComponent', this.onChange);
       this.builder.instance.on('saveComponent', this.onChange);
       this.builder.instance.on('updateComponent', this.onChange);
       this.builder.instance.on('removeComponent', this.onChange);
