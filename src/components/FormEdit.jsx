@@ -70,9 +70,9 @@ export default class FormEdit extends Component {
   }
 
   formChange = (form) => {
-    this.setState({
-      form,
-    });
+      this.setState({
+        form: {...this.state.form, ...form}
+      });
   };
 
   shouldComponentUpdate(nextProps, nextState, nextContext) {
