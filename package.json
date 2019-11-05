@@ -49,6 +49,7 @@
     "chai": "^4.2.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
+    "escope": "^3.6.0",
     "eslint": "^4.18.2",
     "eslint-config-airbnb": "^10.0.0",
     "eslint-config-formio": "^1.1.0",
