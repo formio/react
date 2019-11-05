@@ -71,7 +71,7 @@ export default class FormEdit extends Component {
 
   formChange = (form) => {
     this.setState({
-      form,
+      form: {...this.state.form, ...form}
     });
   };
 
