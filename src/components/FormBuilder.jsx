@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import AllComponents from 'formiojs/components';
 import Components from 'formiojs/components/Components';
-Components.setComponents(AllComponents);
 import FormioFormBuilder from 'formiojs/FormBuilder';
+
+Components.setComponents(AllComponents);
 
 export default class FormBuilder extends Component {
   static defaultProps = {
     options: {},
-    Builder: FormioFormBuilder,
+    Builder: FormioFormBuilder
   };
 
   static propTypes = {
@@ -19,7 +20,7 @@ export default class FormBuilder extends Component {
     onDeleteComponent: PropTypes.func,
     onCancelComponent: PropTypes.func,
     onEditComponent: PropTypes.func,
-    Builder: PropTypes.any,
+    Builder: PropTypes.any
   };
 
   componentDidMount = () => {
@@ -79,7 +80,7 @@ export default class FormBuilder extends Component {
 
   onChange = () => {
     if (this.props.hasOwnProperty('onChange') && typeof this.props.onChange === 'function') {
-      this.props.onChange(this.builder.instance.schema);
+      this.props.onChange(this.builder.instance.form);
     }
   };
 
