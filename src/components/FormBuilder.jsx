@@ -54,6 +54,8 @@ export default class FormBuilder extends Component {
       this.builder.instance.on('saveComponent', this.onChange);
       this.builder.instance.on('updateComponent', this.onChange);
       this.builder.instance.on('removeComponent', this.onChange);
+      this.builder.instance.on('deleteComponent', this.onChange);
+      this.builder.instance.on('pdfUploaded', this.onChange);
     });
   };
 
