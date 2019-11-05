@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.2.2
+### Added
+ - PDF Uploaded event watcher
+ 
+### Fixed
+ - Form reset when props change
+ - onChange and onDelet not being called in builder.
+
 ## 4.2.1
 ### Fixed
  - getForm not calculating url correctly.
