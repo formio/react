@@ -5,6 +5,8 @@ import * as types from './constants';
 export function forms({
   name,
   limit = 10,
+  options = {},
+  projectUrl = '',
   query = {},
   select = '',
   sort = '',
@@ -14,11 +16,13 @@ export function forms({
     forms: [],
     isActive: false,
     limit,
+    options,
     pagination: {
       numPages: 0,
       page: 1,
       total: 0,
     },
+    projectUrl,
     query,
     select,
     sort,
@@ -38,6 +42,8 @@ export function forms({
           ...state,
           ..._pick(action.params, [
             'limit',
+            'options',
+            'projectUrl',
             'query',
             'select',
             'sort',

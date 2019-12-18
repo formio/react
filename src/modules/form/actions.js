@@ -1,6 +1,8 @@
 import Formiojs from 'formiojs/Formio';
+
 import * as types from './constants';
 import {selectForm} from './selectors';
+import {selectRoot} from '../root';
 
 export const clearFormError = (name) => ({
   type: types.FORM_CLEAR_ERROR,
@@ -42,30 +44,34 @@ export const getForm = (name, id = '', done = () => {}) => {
   return (dispatch, getState) => {
     // Check to see if the form is already loaded.
     const form = selectForm(name, getState());
+    const {
+      options,
+      projectUrl,
+    } = selectRoot(name, getState());
     if (form.components && Array.isArray(form.components) && form.components.length && form._id === id) {
       return;
     }
 
-    const path = `${Formiojs.getProjectUrl()}/${id ? `form/${id}` : name}`;
+    const path = `${projectUrl || Formiojs.getProjectUrl()}/${id ? `form/${id}` : name}`;
     const formio = new Formiojs(path);
 
     dispatch(requestForm(name, id, path));
 
-    return formio.loadForm()
+    return formio.loadForm({}, options)
       .then((result) => {
-        dispatch(receiveForm(name, result));
+        dispatch(receiveForm(name, result, path));
         done(null, result);
       })
-      .catch((result) => {
-        dispatch(failForm(name, result));
-        done(result);
+      .catch((error) => {
+        dispatch(failForm(name, error));
+        done(error);
       });
   };
 };
 
 export const saveForm = (name, form, done = () => {}) => {
   return (dispatch) => {
-    dispatch(sendForm(name, form));
+    dispatch(sendForm(name));
 
     const id = form._id;
     const path = `${Formiojs.getProjectUrl()}/form${id ? `/${id}` : ''}`;
@@ -77,26 +83,27 @@ export const saveForm = (name, form, done = () => {}) => {
         dispatch(receiveForm(name, result, url));
         done(null, result);
       })
-      .catch((result) => {
-        dispatch(failForm(name, result));
-        done(result);
+      .catch((error) => {
+        dispatch(failForm(name, error));
+        done(error);
       });
   };
 };
 
-export const deleteForm = (name, id, done = () => {}) => {
+export const deleteForm = (name, id, done = () => {}) => (dispatch, getState) => {
   return (dispatch) => {
-    const path = `${Formiojs.getProjectUrl()}/form/${id}`;
+    const form = selectForm(name, getState());
+    const path = `${Formiojs.getProjectUrl()}/form/${form._id}`;
     const formio = new Formiojs(path);
 
     return formio.deleteForm()
       .then(() => {
         dispatch(resetForm(name));
-        done();
+        done(null, true);
       })
-      .catch((result) => {
-        dispatch(failForm(name, result));
-        done(result);
+      .catch((error) => {
+        dispatch(failForm(name, error));
+        done(error);
       });
   };
 };

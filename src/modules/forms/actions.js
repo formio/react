@@ -33,11 +33,14 @@ export const indexForms = (name, page = 1, params = {}, done = () => {}) => (dis
 
   const {
     limit,
+    options,
+    projectUrl,
     query,
     select,
     sort,
   } = selectRoot(name, getState());
-  const formio = new Formiojs(`${Formiojs.getProjectUrl()}/form`);
+
+  const formio = new Formiojs(`${projectUrl || Formiojs.getProjectUrl()}/form`);
   const requestParams = {...query, ...params};
 
   // Ten is the default so if set to 10, don't send.
@@ -48,7 +51,12 @@ export const indexForms = (name, page = 1, params = {}, done = () => {}) => (dis
     delete requestParams.limit;
   }
 
-  if (page !== 1) {
+  if (page === -1) {
+    if (params.skip) {
+      requestParams.skip = params.skip;
+    }
+  }
+  else if (page !== 1) {
     requestParams.skip = (page - 1) * limit;
   }
   else {
@@ -69,9 +77,11 @@ export const indexForms = (name, page = 1, params = {}, done = () => {}) => (dis
     delete requestParams.sort;
   }
 
-  return formio.loadForms({params: requestParams})
+  return formio.loadForms({params: requestParams}, options)
     .then((result) => {
-      dispatch(receiveForms(name, result));
+      const ignoredResult = [];
+      ignoredResult.serverCount = result.serverCount;
+      dispatch(receiveForms(name, params.ignoreResult ? ignoredResult : result));
       done(null, result);
     })
     .catch((error) => {

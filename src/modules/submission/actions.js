@@ -2,8 +2,8 @@ import Formiojs from 'formiojs/Formio';
 
 import * as types from './constants';
 
-export const clearSubmissionError = (name) => ({
-  type: types.SUBMISSION_CLEAR_ERROR,
+export const resetSubmission = (name) => ({
+  type: types.SUBMISSION_RESET,
   name,
 });
 
@@ -13,11 +13,6 @@ const requestSubmission = (name, id, formId,  url) => ({
   id,
   formId,
   url,
-});
-
-const sendSubmission = (name, data) => ({
-  type: types.SUBMISSION_SAVE,
-  name,
 });
 
 const receiveSubmission = (name, submission, url) => ({
@@ -33,8 +28,8 @@ const failSubmission = (name, error) => ({
   error,
 });
 
-export const resetSubmission = (name) => ({
-  type: types.SUBMISSION_RESET,
+const sendSubmission = (name, data) => ({
+  type: types.SUBMISSION_SAVE,
   name,
 });
 

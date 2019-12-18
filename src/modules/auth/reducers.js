@@ -13,7 +13,7 @@ const initialState = {
   error: '',
 };
 
-function mapProjectRolesToUserRoles(projectRoles, userRoles) {
+function mapProjectRolesToUserRoles(projectRoles, userRoles = []) {
   return Object.entries(projectRoles).reduce((result, [name, role]) => ({
     ...result,
     [name]: userRoles.includes(role._id),
