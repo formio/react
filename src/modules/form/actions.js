@@ -90,20 +90,18 @@ export const saveForm = (name, form, done = () => {}) => {
   };
 };
 
-export const deleteForm = (name, id, done = () => {}) => (dispatch, getState) => {
-  return (dispatch) => {
-    const form = selectForm(name, getState());
-    const path = `${Formiojs.getProjectUrl()}/form/${form._id}`;
-    const formio = new Formiojs(path);
+export const deleteForm = (name, done = () => {}) => (dispatch, getState) => {
+  const form = selectForm(name, getState());
+  const path = `${Formiojs.getProjectUrl()}/form/${form._id}`;
+  const formio = new Formiojs(path);
 
-    return formio.deleteForm()
-      .then(() => {
-        dispatch(resetForm(name));
-        done(null, true);
-      })
-      .catch((error) => {
-        dispatch(failForm(name, error));
-        done(error);
-      });
-  };
+  return formio.deleteForm()
+    .then(() => {
+      dispatch(resetForm(name));
+      done(null, true);
+    })
+    .catch((error) => {
+      dispatch(failForm(name, error));
+      done(error);
+    });
 };
