@@ -27,7 +27,7 @@ module.exports = {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       this.triggerChange();
-    }, 500);
+    }, 50);
     this.setState(previousState => {
       if (index !== null && Array.isArray(previousState.value)) {
         // Clone so we keep state immutable.
