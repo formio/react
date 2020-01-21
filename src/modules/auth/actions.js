@@ -30,7 +30,7 @@ const formAccessUser = (formAccess) => ({
 });
 
 const projectAccessUser = (projectAccess) => ({
-  type: type.USER_FORM_ACCESS,
+  type: type.USER_PROJECT_ACCESS,
   projectAccess,
 });
 
