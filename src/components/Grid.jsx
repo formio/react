@@ -133,7 +133,7 @@ function Grid(props) {
               </li>
               {
                 items.map((item) => (
-                  <li className="list-group-item" key={item._id}>
+                  <li className={`list-group-item ${item.state && item.state === 'draft' ? 'draft-row' : ''}`} key={item._id}>
                     <div className="row" onClick={() => onAction(item, 'row')}>
                       {
                         columns.map((column) => (
