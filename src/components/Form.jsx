@@ -100,7 +100,29 @@ export default class Form extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    const {options = {}, src, form, submission} = this.props;
+    const {options = {}, src, url, form, submission} = this.props;
+
+    if ((form || src) && (this.props.options.language !==nextProps.options.language)) {
+      if (src) {
+        this.instance = new (this.props.formioform || FormioForm)(this.element, src, nextProps.options);
+        this.createPromise = this.instance.ready.then(formio => {
+          this.formio = formio;
+          this.formio.src = src;
+        });
+      }
+      if (form) {
+        this.instance = new (this.props.formioform || FormioForm)(this.element, form, nextProps.options);
+        this.createPromise = this.instance.ready.then(formio => {
+          this.formio = formio;
+          this.formio.form = form;
+          if (url) {
+            this.formio.url = url;
+          }
+
+          return this.formio;
+        });
+      }
+    }
 
     if (!options.events) {
       options.events = Form.getDefaultEmitter();
