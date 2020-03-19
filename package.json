@@ -33,8 +33,7 @@
     "eventemitter2": "^5.0.1",
     "formiojs": "^4.8.1",
     "lodash": "^4.17.15",
-    "prop-types": "^15.7.2",
-    "recompose": "^0.30.0"
+    "prop-types": "^15.7.2"
   },
   "devDependencies": {
     "ajv-pack": "^0.2.5",
