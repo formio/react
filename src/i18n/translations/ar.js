@@ -59,6 +59,8 @@ export default {
     'Quality':'جودة AR',
     'items per page':'مواد لكل صفحةAR',
     'total':'مجموع AR',
-    'No data found':'لاتوجد بيانات AR'
+    'No data found':'لاتوجد بيانات AR',
+    'Flavor Use and Follow Up':'استخدام النكهة ومتابعتها AR',
+    'Consumption':'استهلاك AR',
   },
 };
