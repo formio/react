@@ -5,6 +5,7 @@ import AllComponents from 'formiojs/components';
 import Components from 'formiojs/components/Components';
 Components.setComponents(AllComponents);
 import FormioForm from 'formiojs/Form';
+import {translationConfig} from '../i18n';
 
 export default class Form extends Component {
   static propTypes = {
@@ -45,8 +46,14 @@ export default class Form extends Component {
     });
   }
 
+  addLanguageTranslationOption(options) {
+    return {...options, i18n: translationConfig.formsConfig};
+  }
+
   componentDidMount = () => {
-    const {options = {}, src, url, form} = this.props;
+    const {src, url, form} = this.props;
+    let {options = {}} = this.props;
+    options = this.addLanguageTranslationOption(options);
 
     if (!options.events) {
       options.events = Form.getDefaultEmitter();
@@ -100,18 +107,21 @@ export default class Form extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    const {options = {}, src, url, form, submission} = this.props;
+    const {src, url, form, submission} = this.props;
+    let {options = {}} = this.props;
+    options = this.addLanguageTranslationOption(options);
 
     if ((form || src) && (this.props.options.language !==nextProps.options.language)) {
+      const nextOptions = this.addLanguageTranslationOption(nextProps.options);
       if (src) {
-        this.instance = new (this.props.formioform || FormioForm)(this.element, src, nextProps.options);
+        this.instance = new (this.props.formioform || FormioForm)(this.element, src, nextOptions);
         this.createPromise = this.instance.ready.then(formio => {
           this.formio = formio;
           this.formio.src = src;
         });
       }
       if (form) {
-        this.instance = new (this.props.formioform || FormioForm)(this.element, form, nextProps.options);
+        this.instance = new (this.props.formioform || FormioForm)(this.element, form, nextOptions);
         this.createPromise = this.instance.ready.then(formio => {
           this.formio = formio;
           this.formio.form = form;
@@ -122,6 +132,7 @@ export default class Form extends Component {
           return this.formio;
         });
       }
+      this.initializeFormio();
     }
 
     if (!options.events) {
