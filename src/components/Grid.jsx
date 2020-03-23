@@ -3,7 +3,7 @@ import _isObject from 'lodash/isObject';
 import _isString from 'lodash/isString';
 import PropTypes from 'prop-types';
 import React from 'react';
-
+import {i18next} from '../i18n';
 import {defaultPageSizes} from '../constants';
 import {AllItemsPerPage, PageSizes} from '../types';
 
@@ -100,7 +100,7 @@ function Grid(props) {
                       if (!sort) {
                         return (
                           <div {...columnProps}>
-                            <strong>{title}</strong>
+                            <strong>{i18next.t(title)}</strong>
                           </div>
                         );
                       }
@@ -116,14 +116,13 @@ function Grid(props) {
                       else if (sortOrder === descSort) {
                         sortClass = 'glyphicon glyphicon-triangle-bottom fa fa-caret-down';
                       }
-
                       return (
                         <div {...columnProps}>
                           <span
                             style={{cursor: 'pointer'}}
                             onClick={() => onSort(column)}
                           >
-                            <strong>{title} <span className={sortClass}/></strong>
+                            <strong>{i18next.t(title)} <span className={sortClass}/></strong>
                           </span>
                         </div>
                       );
@@ -161,8 +160,8 @@ function Grid(props) {
                                       pages={pages}
                                       activePage={activePage}
                                       pageNeighbours={pageNeighbours}
-                                      prev="Previous"
-                                      next="Next"
+                                      prev={i18next.t('Previous')}
+                                      next={i18next.t('Next')}
                                       onSelect={onPage}
                                     />
                                   </div>
@@ -182,13 +181,13 @@ function Grid(props) {
                                                     label,
                                                     value,
                                                   }) => (
-                                                    <option key={value} value={value}>{label}</option>
+                                                    <option key={value} value={value}>{i18next.t(label)}</option>
                                                   ))
                                                 }
                                               </select>
                                             </div>
                                             <span className="col-auto">
-                                              items per page
+                                              {i18next.t('items per page')}
                                             </span>
                                           </div>
                                         </div>
@@ -205,7 +204,7 @@ function Grid(props) {
                             ? (
                               <div className="col-auto ml-auto">
                                 <span className="item-counter pull-right">
-                                  <span className="page-num">{ firstItem } - { lastItem }</span> / { total } total
+                                  <span className="page-num">{ firstItem } - { lastItem }</span> / { total } {i18next.t('total')}
                                 </span>
                               </div>
                             )
@@ -218,7 +217,7 @@ function Grid(props) {
               }
             </ul>
           )
-          : <div>{emptyText}</div>
+          : <div>{i18next.t(emptyText)}</div>
       }
     </div>
   );

@@ -5,6 +5,7 @@ import _isObject from 'lodash/isObject';
 import _isString from 'lodash/isString';
 import PropTypes from 'prop-types';
 import React from 'react';
+import {i18next} from '../i18n';
 
 import {defaultPageSizes} from '../constants';
 import {
@@ -160,7 +161,7 @@ export default class SubmissionGrid extends React.Component {
                         )
                         : null
                     }
-                    {title}
+                    {i18next.t(title)}
                   </span>
                 )
                 : null
@@ -177,8 +178,8 @@ export default class SubmissionGrid extends React.Component {
     return (_isObject(value) && value.content)
       ? value.isHtml
         ? <div dangerouslySetInnerHTML={{__html: value.content}} />
-        : <span>{String(value.content)}</span>
-      : <span>{String(value)}</span>;
+        : <span>{i18next.t(String(value.content))}</span>
+      : <span>{i18next.t(String(value))}</span>;
   };
 
   render = () => {
