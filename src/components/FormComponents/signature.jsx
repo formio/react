@@ -14,18 +14,15 @@ module.exports = React.createClass({
     if (!this.signature) {
       return;
     }
+    let sig = this.signature.getCanvas().toDataURL();
     if (!this.emptySize) {
-      const sig = this.signature.getCanvas().toDataURL();
       this.signature.clear();
       this.emptySize = this.signature.getCanvas().toDataURL().length;
-      this.signature.fromDataURL(sig);
     }
     if (this.state.value) {
-      this.signature.fromDataURL(this.state.value);
+      sig = this.state.value;
     }
-    else {
-      this.signature.clear();
-    }
+    this.signature.fromDataURL(sig);
   },
   willReceiveProps: function(nextProps) {
     if (!this.signature) {

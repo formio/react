@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.32
+### Fixed
+ - Signature occasionally clears on set due to async fromDataUrl.
+
+## 1.5.31
+### Unknown
+
 ## 1.5.30
 ### Merged
  - changes from 1.5.29
