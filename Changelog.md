@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Signature occasionally clears on set due to async fromDataUrl.
 
 ## 1.5.31
-### Unknown
+### Reverted
+ - Reverted changed from 1.5.27.
 
 ## 1.5.30
 ### Merged
@@ -18,6 +19,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 1.5.29
 ### Fixed
  - Editgrids with selects don't refresh correctly.
+ 
+## 1.5.27
+### Fixed
+ - Fix select not refreshing initially in editgrid.
 
 ## 1.5.28
 ### Fixed

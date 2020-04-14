@@ -146,6 +146,13 @@ export const Formio = React.createClass({
       });
     }
   },
+  setFormDirty: function() {
+    if (this.state.isPristine) {
+      this.setState({
+        isPristine: false
+      });
+    }
+  },
   validate: function(next) {
     var allIsValid = true;
 
@@ -342,6 +349,7 @@ export const Formio = React.createClass({
           formio={this.formio}
           data={this.data}
           onChange={this.onChange}
+          setFormDirty={this.setFormDirty}
           onEvent={this.onEvent}
           isDisabled={this.isDisabled}
           checkConditional={this.checkConditional}
