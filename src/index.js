@@ -1,7 +1,7 @@
-import Webform from 'formiojs/Webform';
-import WebformBuilder from 'formiojs/WebformBuilder';
-import Wizard from 'formiojs/Wizard';
-import WizardBuilder from 'formiojs/WizardBuilder';
+import Webform from 'formiojs/displays/webform/Webform';
+import WebformBuilder from 'formiojs/builders/webform/WebformBuilder';
+import Wizard from 'formiojs/displays/wizard/Wizard';
+import WizardBuilder from 'formiojs/builders/wizard/WizardBuilder';
 // import editFormUtils from 'formiojs/components//editForm/utils';
 
 export {
