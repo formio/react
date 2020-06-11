@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import AllComponents from 'formiojs/components';
-import Components from 'formiojs/components/Components';
-import FormioFormBuilder from 'formiojs/FormBuilder';
-
-Components.setComponents(AllComponents);
+import {
+  FormBuilder as FormioFormBuilder
+} from '@formio/core';
 
 export default class FormBuilder extends Component {
   static defaultProps = {

@@ -1,4 +1,4 @@
-import formiojs from 'formiojs/Formio';
+import {Formio as Formiojs} from '@formio/core';
 import * as type from './constants';
 
 const requestUser = () => ({
@@ -67,13 +67,13 @@ function transformProjectAccess(projectAccess) {
 }
 
 export const initAuth = () => (dispatch) => {
-  const projectUrl = formiojs.getProjectUrl();
+  const projectUrl = Formiojs.getProjectUrl();
 
   dispatch(requestUser());
 
   Promise.all([
-    formiojs.currentUser(),
-    formiojs.makeStaticRequest(`${projectUrl}/access`)
+    Formiojs.currentUser(),
+    Formiojs.makeStaticRequest(`${projectUrl}/access`)
       .then((result) => {
         const submissionAccess = transformSubmissionAccess(result.forms);
         const formAccess = transformFormAccess(result.forms);
@@ -83,7 +83,7 @@ export const initAuth = () => (dispatch) => {
         dispatch(rolesUser(result.roles));
       })
       .catch(() => {}),
-    formiojs.makeStaticRequest(projectUrl)
+    Formiojs.makeStaticRequest(projectUrl)
       .then((project) => {
         const projectAccess = transformProjectAccess(project.access);
         dispatch(projectAccessUser(projectAccess));
@@ -104,11 +104,11 @@ export const initAuth = () => (dispatch) => {
 };
 
 export const setUser = (user) => (dispatch) => {
-  formiojs.setUser(user);
+  Formiojs.setUser(user);
   dispatch(receiveUser(user));
 };
 
 export const logout = () => (dispatch) => {
-  formiojs.logout();
+  Formiojs.logout();
   dispatch(logoutUser());
 };

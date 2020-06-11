@@ -1,5 +1,5 @@
 {
-  "name": "react-formio",
+  "name": "@formio/react",
   "version": "5.0.0-m.2",
   "description": "React renderer for form.io forms.",
   "main": "lib/index.js",
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/formio/react-formio#readme",
   "peerDependencies": {
-    "formiojs": "^5.0.0-m.1",
+    "@formio/core": "^5.0.0-m.3",
     "react": "^15.3.0 || ^16.0.0",
     "react-dom": "^15.3.0 || ^16.0.0"
   },
@@ -40,6 +40,7 @@
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
+    "@formio/core": "^5.0.0-m.3",
     "ajv-pack": "^0.3.1",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.26.3",
@@ -61,7 +62,6 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-mocha": "^7.0.1",
     "eslint-plugin-react": "^7.20.0",
-    "formiojs": "^5.0.0-m.1",
     "jsdom": "^16.2.2",
     "karma": "^5.0.9",
     "karma-chrome-launcher": "^3.1.0",

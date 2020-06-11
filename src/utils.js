@@ -1,4 +1,4 @@
-import {Components} from 'formiojs';
+import {Components} from '@formio/core';
 import _get from 'lodash/get';
 
 export const getComponentDefaultColumn = (component) => ({

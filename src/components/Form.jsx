@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import EventEmitter from 'eventemitter2';
-import AllComponents from 'formiojs/components';
-import Components from 'formiojs/components/Components';
-Components.setComponents(AllComponents);
-import FormioForm from 'formiojs/Form';
+import {
+  Form as FormioForm
+} from '@formio/core';
 
 export default class Form extends Component {
   static propTypes = {
