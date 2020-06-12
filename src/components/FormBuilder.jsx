@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import AllComponents from 'formiojs/components';
 import Components from 'formiojs/components/Components';
 import FormioFormBuilder from 'formiojs/FormBuilder';
@@ -65,9 +66,9 @@ export default class FormBuilder extends Component {
     const {options, form} = this.props;
 
     if (
-      (form.display !== nextProps.form.display)
-      || (options !== nextProps.options)
-      || (form.components !== nextProps.form.components)
+      (!_.isEqual(form.display, nextProps.form.display))
+      || (!_.isEqual(options, nextProps.options))
+      || (!_.isEqual(form.components, nextProps.form.components))
     ) {
       this.initializeBuilder(nextProps);
     }
