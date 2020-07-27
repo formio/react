@@ -5,9 +5,9 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "karma start --single-run",
-    "build": "babel ./src --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
+    "build": "tsc",
     "lint": "eslint src",
-    "watch": "babel ./src --watch --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
+    "watch": "tsc -w",
     "prepublish": "npm run lint && npm run build"
   },
   "repository": {
@@ -41,6 +41,8 @@
   },
   "devDependencies": {
     "@formio/core": "^5.0.0-m.4",
+    "@types/react": "^16.9.43",
+    "@types/react-dom": "^16.9.8",
     "ajv-pack": "^0.3.1",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.26.3",
@@ -74,6 +76,7 @@
     "react-test-renderer": "^16.13.1",
     "react-transform-catch-errors": "^1.0.0",
     "sinon": "^9.0.2",
+    "typescript": "^3.9.7",
     "webpack": "^4.43.0"
   },
   "files": [

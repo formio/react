@@ -28,7 +28,7 @@ const failForms = (name, error) => ({
   error,
 });
 
-export const indexForms = (name, page = 1, params = {}, done = () => {}) => (dispatch, getState) => {
+export const indexForms = (name, page = 1, params = {}, done = (err, result) => {}) => (dispatch, getState) => {
   dispatch(requestForms(name, page, params));
 
   const {
