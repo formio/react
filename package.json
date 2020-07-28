@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/formio/react-formio#readme",
   "peerDependencies": {
-    "@formio/core": "^5.0.0-m.4",
+    "@formio/core": "^5.0.0-m.7",
     "react": "^15.3.0 || ^16.0.0",
     "react-dom": "^15.3.0 || ^16.0.0"
   },
@@ -37,7 +37,7 @@
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "@formio/core": "^5.0.0-m.4",
+    "@formio/core": "^5.0.0-m.7",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
     "chai": "^4.2.0",
