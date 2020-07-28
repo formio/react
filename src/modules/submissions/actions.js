@@ -29,7 +29,7 @@ const failSubmissions = (name, error) => ({
   error,
 });
 
-export const getSubmissions = (name, page = 0, params = {}, formId, done = () => {}) => (dispatch, getState) => {
+export const getSubmissions = (name, page = 0, params = {}, formId, done = (err, result) => {}) => (dispatch, getState) => {
   dispatch(requestSubmissions(name, page, params, formId));
 
   const {

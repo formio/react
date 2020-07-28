@@ -38,7 +38,7 @@ const sendForm = (name, form) => ({
   name,
 });
 
-export const getForm = (name, id = '', done = () => {}) => {
+export const getForm = (name, id = '', done = (err, result) => {}) => {
   return (dispatch, getState) => {
     // Check to see if the form is already loaded.
     const form = selectForm(name, getState());
@@ -63,7 +63,7 @@ export const getForm = (name, id = '', done = () => {}) => {
   };
 };
 
-export const saveForm = (name, form, done = () => {}) => {
+export const saveForm = (name, form, done = (err, result) => {}) => {
   return (dispatch) => {
     dispatch(sendForm(name, form));
 
@@ -84,7 +84,7 @@ export const saveForm = (name, form, done = () => {}) => {
   };
 };
 
-export const deleteForm = (name, id, done = () => {}) => {
+export const deleteForm = (name, id, done = (err, result) => {}) => {
   return (dispatch) => {
     const path = `${Formiojs.getProjectUrl()}/form/${id}`;
     const formio = new Formiojs(path);

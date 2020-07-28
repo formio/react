@@ -38,7 +38,7 @@ export const resetSubmission = (name) => ({
   name,
 });
 
-export const getSubmission = (name, id, formId, done = () => {}) => (dispatch, getState) => {
+export const getSubmission = (name, id, formId, done = (err, result) => {}) => (dispatch, getState) => {
   // Check to see if the submission is already loaded.
   if (getState().id === id) {
     return;
@@ -60,7 +60,7 @@ export const getSubmission = (name, id, formId, done = () => {}) => (dispatch, g
     });
 };
 
-export const saveSubmission = (name, data, formId, done = () => {}) => (dispatch) => {
+export const saveSubmission = (name, data, formId, done = (err, result) => {}) => (dispatch) => {
   dispatch(sendSubmission(name, data));
 
   const id = data._id;
@@ -79,7 +79,7 @@ export const saveSubmission = (name, data, formId, done = () => {}) => (dispatch
     });
 };
 
-export const deleteSubmission = (name, id, formId, done = () => {}) => (dispatch, getState) => {
+export const deleteSubmission = (name, id, formId, done = (err, result) => {}) => (dispatch, getState) => {
   const formio = new Formiojs(`${Formiojs.getProjectUrl()}/${formId ? `form/${formId}` : name}/submission/${id}`);
 
   return formio.deleteSubmission()
