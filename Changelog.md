@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 5.0.0
 ### Changed
  - Formio.js 5.x
+ - Switch to typescript compiler.
 
 ## 4.3.0
 ### Changed
