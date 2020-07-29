@@ -1,6 +1,10 @@
 import Field from '@formio/core/lib/components/_classes/field/Field';
 
 export default class ReactComponent extends Field {
+  reactInstance: any;
+  shouldSetValue: boolean;
+  dataForSetting: any;
+
   /**
    * This is the first phase of component building where the component is instantiated.
    *
@@ -82,15 +86,15 @@ export default class ReactComponent extends Field {
    *
    * @param element
    */
-  attachReact(element) {
-    return;
+  attachReact(element): any {
+    throw new Error('Method `attachReact` is not implemented.');
   }
 
   /**
    * Override this function.
    */
-  detachReact(element) {
-    return;
+  detachReact(element): void {
+    throw new Error('Method `attachReact` is not implemented.');
   }
 
   /**
@@ -108,6 +112,8 @@ export default class ReactComponent extends Field {
       this.shouldSetValue = true;
       this.dataForSetting = value;
     }
+
+    return true;
   }
 
   /**
@@ -115,8 +121,7 @@ export default class ReactComponent extends Field {
    *
    * @param value
    */
-  updateValue = (value, flags) => {
-    flags = flags || {};
+  updateValue = (value, flags = {}) => {
     const newValue = value === undefined || value === null ? this.getValue() : value;
     const changed = (newValue !== undefined) ? this.hasChanged(newValue, this.dataValue) : false;
     this.dataValue = Array.isArray(newValue) ? [...newValue] : newValue;
