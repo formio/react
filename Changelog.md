@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.33
+### Fixed
+ - Passing new props not properly calculating row default values.
+
 ## 1.5.32
 ### Fixed
  - Signature occasionally clears on set due to async fromDataUrl.
