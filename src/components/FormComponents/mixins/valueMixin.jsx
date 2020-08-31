@@ -4,8 +4,8 @@ import clone from 'lodash/clone';
 import moment from 'moment';
 
 module.exports = {
-  getDefaultValue: function(value) {
-    const { component, data, row } = this.props;
+  getDefaultValue: function(value, props) {
+    const { component, data, row } = props || this.props;
     // Allow components to set different default values.
     if (value == null) {
       if (component.hasOwnProperty('customDefaultValue')) {
@@ -51,6 +51,7 @@ module.exports = {
     }
     // ComponentWillReceiveProps isn't working without this as the reference to the data already is updated.
     this.data = {};
+    this.row = {};
     return state;
   },
   validate: function(value) {
@@ -216,8 +217,9 @@ module.exports = {
       ) {
         this.calculatedValue = this.calculateValue(component, nextProps.data, nextProps.row, moment);
       }
-      if (!deepEqual(this.data, nextProps.data)) {
+      if (!deepEqual(this.data, nextProps.data) || (nextProps.row && !deepEqual(this.row, nextProps.row))) {
         this.data = clone(nextProps.data);
+        this.row = clone(nextProps.row);
         if (
           !component.allowCalculateOverride ||
           !this.state.value ||
@@ -236,7 +238,7 @@ module.exports = {
       value = this.safeSingleToMultiple(nextProps.value);
     }
     // This occurs when a datagrid row is deleted.
-    let defaultValue = this.getDefaultValue(value);
+    let defaultValue = this.getDefaultValue(value, nextProps);
     if (value === null && this.state.value !== defaultValue) {
       value = defaultValue;
       this.setState({
