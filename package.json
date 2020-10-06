@@ -64,9 +64,9 @@
     "karma-mocha-reporter": "^2.2.5",
     "karma-webpack": "^3.0.5",
     "mocha": "^5.2.0",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-test-renderer": "^16.5.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-test-renderer": "^16.13.1",
     "react-transform-catch-errors": "^1.0.0",
     "sinon": "^7.0.0",
     "webpack": "^2.7.0"
