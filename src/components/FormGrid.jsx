@@ -3,7 +3,7 @@ import _isFunction from 'lodash/isFunction';
 import _isString from 'lodash/isString';
 import _map from 'lodash/map';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 import {defaultPageSizes} from '../constants';
 import {
@@ -15,92 +15,8 @@ import {stopPropagationWrapper} from '../utils';
 
 import Grid from './Grid';
 
-export default class FormGrid extends React.Component {
-  static propTypes = {
-    columns: Columns,
-    formAccess: PropTypes.func,
-    forms: PropTypes.object.isRequired,
-    getForms: PropTypes.func,
-    onAction: PropTypes.func,
-    onPageSizeChanged: PropTypes.func,
-    operations: Operations,
-    pageSizes: PageSizes,
-  }
-
-  static defaultProps = {
-    columns: [
-      {
-        key: 'title',
-        sort: true,
-        title: 'Form',
-        width: 8,
-      },
-      {
-        key: 'operations',
-        title: 'Operations',
-        width: 4,
-      },
-    ],
-    formAccess: () => ({
-      form: {
-        create: true,
-        view: true,
-        edit: true,
-        delete: true,
-      },
-      submission: {
-        create: true,
-        view: true,
-        edit: true,
-        delete: true,
-      },
-    }),
-    getForms: () => {},
-    onPageSizeChanged: () => {},
-    operations: [
-      {
-        action: 'view',
-        buttonType: 'primary',
-        icon: 'pencil',
-        permissionsResolver() {
-          return true;
-        },
-        title: 'Enter Data',
-      },
-      {
-        action: 'submission',
-        buttonType: 'warning',
-        icon: 'list-alt',
-        permissionsResolver() {
-          return true;
-        },
-        title: 'View Data',
-      },
-      {
-        action: 'edit',
-        buttonType: 'secondary',
-        icon: 'edit',
-        permissionsResolver() {
-          return true;
-        },
-        title: 'Edit Form',
-      },
-      {
-        action: 'delete',
-        buttonType: 'danger',
-        icon: 'trash',
-        permissionsResolver() {
-          return true;
-        },
-      },
-    ],
-    pageSizes: defaultPageSizes,
-  };
-
-  onSort = ({
-    key,
-    sort,
-  }) => {
+const FormGrid = (props) => {
+  const onSort = ({key, sort}) => {
     if (_isFunction(sort)) {
       return sort();
     }
@@ -110,7 +26,7 @@ export default class FormGrid extends React.Component {
         sort: currentSort,
       },
       getForms,
-    } = this.props;
+    } = props;
 
     const sortKey = _isString(sort) ? sort : key;
     const ascSort = sortKey;
@@ -133,15 +49,12 @@ export default class FormGrid extends React.Component {
     });
   };
 
-  Cell = ({
-    row: form,
-    column,
-  }) => {
+  const Cell = ({row: form, column}) => {
     const {
       formAccess,
       onAction,
       operations = [],
-    } = this.props;
+    } = props;
 
     const access = formAccess(form);
 
@@ -207,47 +120,128 @@ export default class FormGrid extends React.Component {
     );
   };
 
-  render() {
-    const {
-      columns,
-      forms: {
-        forms,
-        limit,
-        pagination: {
-          page,
-          numPages,
-          total,
-        },
-        sort,
+  const {
+    columns,
+    forms: {
+      forms,
+      limit,
+      pagination: {
+        page,
+        numPages,
+        total,
       },
-      getForms,
-      onAction,
-      onPageSizeChanged,
-      pageSizes,
-    } = this.props;
+      sort,
+    },
+    getForms,
+    onAction,
+    onPageSizeChanged,
+    pageSizes,
+  } = props;
 
-    const skip = (page - 1) * limit;
-    const last = Math.min(skip + limit, total);
+  const skip = (page - 1) * limit;
+  const last = Math.min(skip + limit, total);
 
-    return (
-      <Grid
-        Cell={this.Cell}
-        activePage={page}
-        columns={columns}
-        emptyText="No forms found"
-        firstItem={skip + 1}
-        items={forms}
-        lastItem={last}
-        onAction={onAction}
-        onPage={getForms}
-        onPageSizeChanged={onPageSizeChanged}
-        onSort={this.onSort}
-        pageSize={limit}
-        pageSizes={pageSizes}
-        pages={numPages}
-        sortOrder={sort}
-        total={total}
-      />
-    );
-  }
-}
+  return (
+    <Grid
+      Cell={Cell}
+      activePage={page}
+      columns={columns}
+      emptyText="No forms found"
+      firstItem={skip + 1}
+      items={forms}
+      lastItem={last}
+      onAction={onAction}
+      onPage={getForms}
+      onPageSizeChanged={onPageSizeChanged}
+      onSort={onSort}
+      pageSize={limit}
+      pageSizes={pageSizes}
+      pages={numPages}
+      sortOrder={sort}
+      total={total}
+    />
+  );
+};
+
+FormGrid. defaultProps = {
+  columns: [
+    {
+      key: 'title',
+      sort: true,
+      title: 'Form',
+      width: 8,
+    },
+    {
+      key: 'operations',
+      title: 'Operations',
+      width: 4,
+    },
+  ],
+  formAccess: () => ({
+    form: {
+      create: true,
+      view: true,
+      edit: true,
+      delete: true,
+    },
+    submission: {
+      create: true,
+      view: true,
+      edit: true,
+      delete: true,
+    },
+  }),
+  getForms: () => {},
+  onPageSizeChanged: () => {},
+  operations: [
+    {
+      action: 'view',
+      buttonType: 'primary',
+      icon: 'pencil',
+      permissionsResolver() {
+        return true;
+      },
+      title: 'Enter Data',
+    },
+    {
+      action: 'submission',
+      buttonType: 'warning',
+      icon: 'list-alt',
+      permissionsResolver() {
+        return true;
+      },
+      title: 'View Data',
+    },
+    {
+      action: 'edit',
+      buttonType: 'secondary',
+      icon: 'edit',
+      permissionsResolver() {
+        return true;
+      },
+      title: 'Edit Form',
+    },
+    {
+      action: 'delete',
+      buttonType: 'danger',
+      icon: 'trash',
+      permissionsResolver() {
+        return true;
+      },
+    },
+  ],
+  pageSizes: defaultPageSizes,
+};
+
+FormGrid.propTypes = {
+  columns: Columns,
+  formAccess: PropTypes.func,
+  forms: PropTypes.object.isRequired,
+  getForms: PropTypes.func,
+  onAction: PropTypes.func,
+  onPageSizeChanged: PropTypes.func,
+  operations: Operations,
+  pageSizes: PageSizes,
+};
+
+export default FormGrid;

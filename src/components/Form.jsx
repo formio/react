@@ -13,7 +13,7 @@ import FormioForm from 'formiojs/Form';
   let formio;
 
   useEffect(() => () => formio ? formio.destroy(true) : null, [formio]);
-  
+
   const createWebformInstance = (srcOrForm) => {
     const {options = {}, formioform} = props;
     instance = new (formioform || FormioForm)(element, srcOrForm, options);
@@ -22,7 +22,7 @@ import FormioForm from 'formiojs/Form';
     });
 
     return createPromise;
-  }
+  };
 
   const onAnyEvent = (event, ...args) => {
      if (event.startsWith('formio.')) {
@@ -31,7 +31,7 @@ import FormioForm from 'formiojs/Form';
         props[funcName](...args);
       }
     }
-  }
+  };
 
   const initializeFormio = () => {
     const {submission} = props;
@@ -70,15 +70,16 @@ import FormioForm from 'formiojs/Form';
   }, [props.form]);
 
   useEffect(() => {
-    const { options } = props;
+    const {options = {}} = props;
     if (!options.events) {
       options.events = Form.getDefaultEmitter();
     }
-  }, [props.options.events]);
+  }, [props.options]);
 
   useEffect(() => {
+    const {submission} = props;
     if (formio && submission) {
-      formio.submission = props.submission;
+      formio.submission = submission;
     }
   }, [props.submission]);
 
@@ -121,6 +122,6 @@ Form.getDefaultEmitter = () => {
     wildcard: false,
     maxListeners: 0
   });
-}
+};
 
 export default Form;
