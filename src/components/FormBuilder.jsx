@@ -62,9 +62,11 @@ const FormBuilder = (props) => {
     initializeBuilder(props);
   }, [props.form.display, props.form.components, props.options]);
 
-  return <div ref={el => element = el}>
-    <div></div>
-  </div>;
+  return (
+    <div ref={el => element = el}>
+      <div></div>
+    </div>
+  );
 };
 
 FormBuilder.defaultProps = {
