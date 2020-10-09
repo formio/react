@@ -3,7 +3,7 @@ import _isFunction from 'lodash/isFunction';
 import _isString from 'lodash/isString';
 import _map from 'lodash/map';
 import PropTypes from 'prop-types';
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 
 import {defaultPageSizes} from '../constants';
 import {
@@ -49,6 +49,46 @@ const FormGrid = (props) => {
     });
   };
 
+  const TitleCell = ({access, form}) => (
+    <span
+      style={{cursor: 'pointer'}}
+      onClick={stopPropagationWrapper(() => {
+        if (access.submission.create) {
+          onAction(form, 'view');
+        }
+      })}
+    >
+      <h5>{form.title}</h5>
+    </span>
+  );
+
+  const Icon = ({icon}) => (
+    <span>
+      <i className={`fa fa-${icon}`} />&nbsp;
+    </span>
+  );
+
+  const OperationButton = ({
+    action,
+    onAction,
+    form,
+    buttonType,
+    icon,
+    title
+  }) => (
+    <span
+      className={`btn btn-${buttonType} btn-sm form-btn`}
+      onClick={stopPropagationWrapper(() => onAction(form, action))}
+    >
+      {
+        icon
+          ? <Icon icon={icon}></Icon>
+          : null
+      }
+      {title}
+    </span>
+  );
+
   const Cell = ({row: form, column}) => {
     const {
       formAccess,
@@ -59,18 +99,7 @@ const FormGrid = (props) => {
     const access = formAccess(form);
 
     if (column.key === 'title') {
-      return (
-        <span
-          style={{cursor: 'pointer'}}
-          onClick={stopPropagationWrapper(() => {
-            if (access.submission.create) {
-              onAction(form, 'view');
-            }
-          })}
-        >
-          <h5>{form.title}</h5>
-        </span>
-      );
+      return <TitleCell access={access} form={form}></TitleCell>;
     }
     else if (column.key === 'operations') {
       return (
@@ -84,24 +113,16 @@ const FormGrid = (props) => {
               title = '',
             }) =>
               permissionsResolver(form)
-                ? (
-                  <span
-                    className={`btn btn-${buttonType} btn-sm form-btn`}
-                    onClick={stopPropagationWrapper(() => onAction(form, action))}
+                ? <OperationButton
                     key={action}
+                    action={action}
+                    buttonType={buttonType}
+                    icon={icon}
+                    title={title}
+                    form={form}
+                    onAction={onAction}
                   >
-                    {
-                      icon
-                        ? (
-                          <span>
-                            <i className={`fa fa-${icon}`} />&nbsp;
-                          </span>
-                        )
-                        : null
-                    }
-                    {title}
-                  </span>
-                )
+                  </OperationButton>
                 : null
             )
           }
@@ -163,7 +184,7 @@ const FormGrid = (props) => {
   );
 };
 
-FormGrid. defaultProps = {
+FormGrid.defaultProps = {
   columns: [
     {
       key: 'title',

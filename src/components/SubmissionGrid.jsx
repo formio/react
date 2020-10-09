@@ -93,7 +93,6 @@ const SubmissionGrid = (props) => {
     <span
       className={`btn btn-${buttonType} btn-sm form-btn`}
       onClick={stopPropagationWrapper(() => onAction(submission, action))}
-      key={action}
     >
       {
         icon
@@ -127,6 +126,7 @@ const SubmissionGrid = (props) => {
             }) =>
               permissionsResolver(form, submission)
                 ? <OperationButton
+                    key={action}
                     action={action}
                     buttonType={buttonType}
                     icon={icon}
