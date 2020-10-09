@@ -21,16 +21,8 @@ import {
 import Grid from './Grid';
 
 const SubmissionGrid = (props) => {
-  const onSort = ({
-    key,
-    sort,
-  }) => {
-    if (_isFunction(sort)) {
-      return sort();
-    }
-
+  const getSortQuery = (key, sort) => {
     const {
-      getSubmissions,
       submissions: {
         sort: currentSort,
       },
@@ -41,19 +33,29 @@ const SubmissionGrid = (props) => {
     const descSort = `-${sortKey}`;
     const noSort = '';
 
-    let nextSort = noSort;
     if (currentSort === ascSort) {
-      nextSort = descSort;
+      return descSort;
     }
     else if (currentSort === descSort) {
-      nextSort = noSort;
+      return noSort;
     }
     else {
-      nextSort = ascSort;
+      return ascSort;
+    }
+  };
+
+  const onSort = ({
+    key,
+    sort,
+  }) => {
+    if (_isFunction(sort)) {
+      return sort();
     }
 
+    const {getSubmissions} = props;
+
     getSubmissions(1, {
-      sort: nextSort,
+      sort: getSortQuery(key, sort),
     });
   };
 

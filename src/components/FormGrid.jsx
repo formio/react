@@ -16,16 +16,11 @@ import {stopPropagationWrapper} from '../utils';
 import Grid from './Grid';
 
 const FormGrid = (props) => {
-  const onSort = ({key, sort}) => {
-    if (_isFunction(sort)) {
-      return sort();
-    }
-
+  const getSortQuery = (key, sort) => {
     const {
       forms: {
         sort: currentSort,
-      },
-      getForms,
+      }
     } = props;
 
     const sortKey = _isString(sort) ? sort : key;
@@ -33,19 +28,26 @@ const FormGrid = (props) => {
     const descSort = `-${sortKey}`;
     const noSort = '';
 
-    let nextSort = noSort;
     if (currentSort === ascSort) {
-      nextSort = descSort;
+      return descSort;
     }
     else if (currentSort === descSort) {
-      nextSort = noSort;
+      return noSort;
     }
     else {
-      nextSort = ascSort;
+      return ascSort;
+    }
+  };
+
+  const onSort = ({key, sort}) => {
+    if (_isFunction(sort)) {
+      return sort();
     }
 
+    const {getForms} = props;
+
     getForms(1, {
-      sort: nextSort,
+      sort: getSortQuery(key, sort),
     });
   };
 
