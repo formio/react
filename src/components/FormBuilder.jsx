@@ -56,10 +56,6 @@ const FormBuilder = (props) => {
   useEffect(() => {
     initializeBuilder(props);
     return () => builder ? builder.instance.destroy(true) : null;
-  }, [builder]);
-
-  useEffect(() => {
-    initializeBuilder(props);
   }, [props.form.display, props.form.components, props.options]);
 
   return (
