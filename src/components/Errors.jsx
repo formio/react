@@ -1,31 +1,22 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class Errors extends Component {
-  static propTypes = {
-    errors: PropTypes.any,
-    type: PropTypes.string
-  }
-
-  static defaultProps = {
-    type: 'danger'
-  }
-
-  hasErrors(error) {
+const Errors = (props) => {
+  const hasErrors = (error) => {
     if (Array.isArray(error)) {
       return error.filter(item => !!item).length !== 0;
     }
 
     return !!error;
-  }
+  };
 
-  formatError(error) {
+  const formatError = (error) => {
     if (typeof error === 'string') {
       return error;
     }
 
     if (Array.isArray(error)) {
-      return error.map(this.formatError);
+      return error.map(formatError);
     }
 
     if (error.hasOwnProperty('errors')) {
@@ -61,16 +52,27 @@ export default class Errors extends Component {
     }
 
     return 'An error occurred. See console logs for details.';
+  };
+
+  // If there are no errors, don't render anything.
+  const {errors, type} = props;
+
+  if (!hasErrors(errors)) {
+    return null;
   }
 
-  render() {
-    // If there are no errors, don't render anything.
-    if (!this.hasErrors(this.props.errors)) {
-      return null;
-    }
+  return (
+    <div className={`alert alert-${type}`} role="alert">{formatError(errors)}</div>
+  );
+};
 
-    return (
-      <div className={`alert alert-${this.props.type}`} role="alert">{this.formatError(this.props.errors)}</div>
-    );
-  }
-}
+Errors.propTypes = {
+  errors: PropTypes.any,
+  type: PropTypes.string
+};
+
+Errors.defaultProps = {
+  type: 'danger'
+};
+
+export default Errors;

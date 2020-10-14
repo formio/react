@@ -68,6 +68,145 @@ function Grid(props) {
   } = props;
   const normalizedPageSizes = pageSizes.map(normalizePageSize);
 
+  const getColumn = (column) => {
+    const {
+      key,
+      sort = false,
+      title = '',
+      width,
+    } = column;
+    const className = `col col-md-${width}`;
+
+    const columnProps = {
+      key,
+      className,
+    };
+
+    if (!title) {
+      return (
+        <div {...columnProps} />
+      );
+    }
+
+    if (!sort) {
+      return (
+        <div {...columnProps}>
+          <strong>{title}</strong>
+        </div>
+      );
+    }
+
+    const sortKey = _isString(sort) ? sort : key;
+    const ascSort = sortKey;
+    const descSort = `-${sortKey}`;
+
+    let sortClass = '';
+    if (sortOrder === ascSort) {
+      sortClass = 'glyphicon glyphicon-triangle-top fa fa-caret-up';
+    }
+    else if (sortOrder === descSort) {
+      sortClass = 'glyphicon glyphicon-triangle-bottom fa fa-caret-down';
+    }
+
+    return (
+      <div {...columnProps}>
+        <span
+          style={{cursor: 'pointer'}}
+          onClick={() => onSort(column)}
+        >
+          <strong>{title} <span className={sortClass}/></strong>
+        </span>
+      </div>
+    );
+  };
+
+  const getItem = (item) => (
+    <li className="list-group-item" key={item._id}>
+      <div className="row" onClick={() => onAction(item, 'row')}>
+        {
+          columns.map((column) => (
+            <div key={column.key} className={`col col-md-${column.width}`}>
+              <Cell row={item} column={column} />
+            </div>
+          ))
+        }
+      </div>
+    </li>
+  );
+
+  const PageSizeSelector = () => (
+    <div className="col-auto">
+      <div className="row align-items-center">
+        <div className="col-auto">
+          <select
+            className="form-control"
+            value={pageSize}
+            onChange={(event) => onPageSizeChanged(event.target.value)}
+          >
+            {
+              normalizedPageSizes.map(({
+                label,
+                value,
+              }) => (
+                <option key={value} value={value}>{label}</option>
+              ))
+            }
+          </select>
+        </div>
+        <span className="col-auto">
+          items per page
+        </span>
+      </div>
+    </div>
+  );
+
+  const FooterPagination = () => (
+    <div className="col-auto">
+      <div className="row align-items-center">
+        <div className="col-auto">
+          <Pagination
+            pages={pages}
+            activePage={activePage}
+            pageNeighbours={pageNeighbours}
+            prev="Previous"
+            next="Next"
+            onSelect={onPage}
+          />
+        </div>
+        {
+          renderPageSizeSelector(props)
+            ? <PageSizeSelector></PageSizeSelector>
+            : null
+        }
+      </div>
+    </div>
+  );
+
+  const ItemCounter = () => (
+    <div className="col-auto ml-auto">
+      <span className="item-counter pull-right">
+        <span className="page-num">{ firstItem } - { lastItem }</span> / { total } total
+      </span>
+    </div>
+  );
+
+  const Footer = () => (
+    <li className="list-group-item">
+      <div className="row align-items-center">
+        {
+          renderPagination(props)
+            ? <FooterPagination></FooterPagination>
+            : null
+        }
+        {
+          renderItemCounter(props)
+            ? <ItemCounter></ItemCounter>
+            : null
+        }
+      </div>
+    </li>
+  );
+
   return (
     <div>
       {
@@ -76,144 +215,13 @@ function Grid(props) {
             <ul className="list-group list-group-striped">
               <li className="list-group-item list-group-header hidden-xs hidden-md">
                 <div className="row">
-                  {
-                    columns.map((column) => {
-                      const {
-                        key,
-                        sort = false,
-                        title = '',
-                        width,
-                      } = column;
-                      const className = `col col-md-${width}`;
-
-                      const columnProps = {
-                        key,
-                        className,
-                      };
-
-                      if (!title) {
-                        return (
-                          <div {...columnProps} />
-                        );
-                      }
-
-                      if (!sort) {
-                        return (
-                          <div {...columnProps}>
-                            <strong>{title}</strong>
-                          </div>
-                        );
-                      }
-
-                      const sortKey = _isString(sort) ? sort : key;
-                      const ascSort = sortKey;
-                      const descSort = `-${sortKey}`;
-
-                      let sortClass = '';
-                      if (sortOrder === ascSort) {
-                        sortClass = 'glyphicon glyphicon-triangle-top fa fa-caret-up';
-                      }
-                      else if (sortOrder === descSort) {
-                        sortClass = 'glyphicon glyphicon-triangle-bottom fa fa-caret-down';
-                      }
-
-                      return (
-                        <div {...columnProps}>
-                          <span
-                            style={{cursor: 'pointer'}}
-                            onClick={() => onSort(column)}
-                          >
-                            <strong>{title} <span className={sortClass}/></strong>
-                          </span>
-                        </div>
-                      );
-                    })
-                  }
+                  {columns.map(getColumn)}
                 </div>
               </li>
-              {
-                items.map((item) => (
-                  <li className="list-group-item" key={item._id}>
-                    <div className="row" onClick={() => onAction(item, 'row')}>
-                      {
-                        columns.map((column) => (
-                          <div key={column.key} className={`col col-md-${column.width}`}>
-                            <Cell row={item} column={column} />
-                          </div>
-                        ))
-                      }
-                    </div>
-                  </li>
-                ))
-              }
+              {items.map(getItem)}
               {
                 renderFooter(props)
-                  ? (
-                    <li className="list-group-item">
-                      <div className="row align-items-center">
-                        {
-                          renderPagination(props)
-                            ? (
-                              <div className="col-auto">
-                                <div className="row align-items-center">
-                                  <div className="col-auto">
-                                    <Pagination
-                                      pages={pages}
-                                      activePage={activePage}
-                                      pageNeighbours={pageNeighbours}
-                                      prev="Previous"
-                                      next="Next"
-                                      onSelect={onPage}
-                                    />
-                                  </div>
-                                  {
-                                    renderPageSizeSelector(props)
-                                      ? (
-                                        <div className="col-auto">
-                                          <div className="row align-items-center">
-                                            <div className="col-auto">
-                                              <select
-                                                className="form-control"
-                                                value={pageSize}
-                                                onChange={(event) => onPageSizeChanged(event.target.value)}
-                                              >
-                                                {
-                                                  normalizedPageSizes.map(({
-                                                    label,
-                                                    value,
-                                                  }) => (
-                                                    <option key={value} value={value}>{label}</option>
-                                                  ))
-                                                }
-                                              </select>
-                                            </div>
-                                            <span className="col-auto">
-                                              items per page
-                                            </span>
-                                          </div>
-                                        </div>
-                                      )
-                                      : null
-                                  }
-                                </div>
-                              </div>
-                            )
-                            : null
-                        }
-                        {
-                          renderItemCounter(props)
-                            ? (
-                              <div className="col-auto ml-auto">
-                                <span className="item-counter pull-right">
-                                  <span className="page-num">{ firstItem } - { lastItem }</span> / { total } total
-                                </span>
-                              </div>
-                            )
-                            : null
-                        }
-                      </div>
-                    </li>
-                  )
+                  ? <Footer></Footer>
                   : null
               }
             </ul>

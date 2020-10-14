@@ -15,6 +15,7 @@ npm-compatible packaging system such as [Browserify](http://browserify.org/) or
 
 ```
 npm install react-formio --save
+npm install formiojs --save // Install formiojs since it is a peerDependency
 ```
 
 ## Components

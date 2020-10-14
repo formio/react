@@ -20,55 +20,31 @@ import {
 
 import Grid from './Grid';
 
-export default class SubmissionGrid extends React.Component {
-  static propTypes = {
-    columns: Columns,
-    form: PropTypes.object.isRequired,
-    getSubmissions: PropTypes.func,
-    onAction: PropTypes.func,
-    onPageSizeChanged: PropTypes.func,
-    operations: Operations,
-    pageSizes: PageSizes,
-    submissions: PropTypes.object.isRequired,
+const SubmissionGrid = (props) => {
+  const getSortQuery = (key, sort) => {
+    const {
+      submissions: {
+        sort: currentSort,
+      },
+    } = props;
+
+    const sortKey = _isString(sort) ? sort : key;
+    const ascSort = sortKey;
+    const descSort = `-${sortKey}`;
+    const noSort = '';
+
+    if (currentSort === ascSort) {
+      return descSort;
+    }
+    else if (currentSort === descSort) {
+      return noSort;
+    }
+    else {
+      return ascSort;
+    }
   };
 
-  static defaultProps = {
-    columns: [],
-    getSubmissions: () => {},
-    onAction: () => {},
-    onPageSizeChanged: () => {},
-    operations: [
-      {
-        action: 'view',
-        buttonType: 'warning',
-        icon: 'list-alt',
-        permissionsResolver() {
-          return true;
-        },
-        title: 'View',
-      },
-      {
-        action: 'edit',
-        buttonType: 'secondary',
-        icon: 'edit',
-        permissionsResolver() {
-          return true;
-        },
-        title: 'Edit',
-      },
-      {
-        action: 'delete',
-        buttonType: 'danger',
-        icon: 'trash',
-        permissionsResolver() {
-          return true;
-        },
-      },
-    ],
-    pageSizes: defaultPageSizes,
-  };
-
-  onSort = ({
+  const onSort = ({
     key,
     sort,
   }) => {
@@ -76,35 +52,14 @@ export default class SubmissionGrid extends React.Component {
       return sort();
     }
 
-    const {
-      getSubmissions,
-      submissions: {
-        sort: currentSort,
-      },
-    } = this.props;
-
-    const sortKey = _isString(sort) ? sort : key;
-    const ascSort = sortKey;
-    const descSort = `-${sortKey}`;
-    const noSort = '';
-
-    let nextSort = noSort;
-    if (currentSort === ascSort) {
-      nextSort = descSort;
-    }
-    else if (currentSort === descSort) {
-      nextSort = noSort;
-    }
-    else {
-      nextSort = ascSort;
-    }
+    const {getSubmissions} = props;
 
     getSubmissions(1, {
-      sort: nextSort,
+      sort: getSortQuery(key, sort),
     });
   };
 
-  getColumns = (form) => {
+  const getColumns = (form) => {
     const columns = [];
 
     FormioUtils.eachComponent(form.components, (component) => {
@@ -123,7 +78,34 @@ export default class SubmissionGrid extends React.Component {
     return columns;
   };
 
-  Cell = ({
+  const Icon = ({icon}) => (
+    <span>
+      <i className={`fa fa-${icon}`} />&nbsp;
+    </span>
+  );
+
+  const OperationButton = ({
+    action,
+    buttonType,
+    icon,
+    title,
+    onAction,
+    submission
+  }) => (
+    <span
+      className={`btn btn-${buttonType} btn-sm form-btn`}
+      onClick={stopPropagationWrapper(() => onAction(submission, action))}
+    >
+      {
+        icon
+          ? <Icon icon={icon}></Icon>
+          : null
+      }
+      {title}
+    </span>
+  );
+
+  const Cell = ({
     row: submission,
     column,
   }) => {
@@ -131,7 +113,7 @@ export default class SubmissionGrid extends React.Component {
       form,
       onAction,
       operations,
-    } = this.props;
+    } = props;
 
     if (column.key === 'operations') {
       return (
@@ -145,24 +127,15 @@ export default class SubmissionGrid extends React.Component {
               title = '',
             }) =>
               permissionsResolver(form, submission)
-                ? (
-                  <span
-                    className={`btn btn-${buttonType} btn-sm form-btn`}
-                    onClick={stopPropagationWrapper(() => onAction(submission, action))}
+                ? <OperationButton
                     key={action}
-                  >
-                    {
-                      icon
-                        ? (
-                          <span>
-                            <i className={`fa fa-${icon}`} />&nbsp;
-                          </span>
-                        )
-                        : null
-                    }
-                    {title}
-                  </span>
-                )
+                    action={action}
+                    buttonType={buttonType}
+                    icon={icon}
+                    title={title}
+                    submission={submission}
+                    onAction={onAction}
+                  ></OperationButton>
                 : null
             )
           }
@@ -181,49 +154,96 @@ export default class SubmissionGrid extends React.Component {
       : <span>{String(value)}</span>;
   };
 
-  render = () => {
-    const {
-      columns: propColumns,
-      form,
-      getSubmissions,
-      onAction,
-      onPageSizeChanged,
-      pageSizes,
-      submissions: {
-        limit,
-        pagination: {
-          page,
-          numPages,
-          total,
-        },
-        sort,
-        submissions,
+  const {
+    columns: propColumns,
+    form,
+    getSubmissions,
+    onAction,
+    onPageSizeChanged,
+    pageSizes,
+    submissions: {
+      limit,
+      pagination: {
+        page,
+        numPages,
+        total,
       },
-    } = this.props;
+      sort,
+      submissions,
+    },
+  } = props;
 
-    const columns = propColumns.length ? propColumns : this.getColumns(form);
-    const skip = (page - 1) * limit;
-    const last = Math.min(skip + limit, total);
+  const columns = propColumns.length ? propColumns : getColumns(form);
+  const skip = (page - 1) * limit;
+  const last = Math.min(skip + limit, total);
 
-    return (
-      <Grid
-        Cell={this.Cell}
-        activePage={page}
-        columns={columns}
-        emptyText="No data found"
-        firstItem={skip + 1}
-        items={submissions}
-        lastItem={last}
-        onAction={onAction}
-        onPage={getSubmissions}
-        onPageSizeChanged={onPageSizeChanged}
-        onSort={this.onSort}
-        pageSize={limit}
-        pageSizes={pageSizes}
-        pages={numPages}
-        sortOrder={sort}
-        total={total}
-      />
-    );
-  };
-}
+  return (
+    <Grid
+      Cell={Cell}
+      activePage={page}
+      columns={columns}
+      emptyText="No data found"
+      firstItem={skip + 1}
+      items={submissions}
+      lastItem={last}
+      onAction={onAction}
+      onPage={getSubmissions}
+      onPageSizeChanged={onPageSizeChanged}
+      onSort={onSort}
+      pageSize={limit}
+      pageSizes={pageSizes}
+      pages={numPages}
+      sortOrder={sort}
+      total={total}
+    />
+  );
+};
+
+SubmissionGrid.propTypes = {
+  columns: Columns,
+  form: PropTypes.object.isRequired,
+  getSubmissions: PropTypes.func,
+  onAction: PropTypes.func,
+  onPageSizeChanged: PropTypes.func,
+  operations: Operations,
+  pageSizes: PageSizes,
+  submissions: PropTypes.object.isRequired,
+};
+
+SubmissionGrid.defaultProps = {
+columns: [],
+getSubmissions: () => {},
+onAction: () => {},
+onPageSizeChanged: () => {},
+operations: [
+  {
+    action: 'view',
+    buttonType: 'warning',
+    icon: 'list-alt',
+    permissionsResolver() {
+      return true;
+    },
+    title: 'View',
+  },
+  {
+    action: 'edit',
+    buttonType: 'secondary',
+    icon: 'edit',
+    permissionsResolver() {
+      return true;
+    },
+    title: 'Edit',
+  },
+  {
+    action: 'delete',
+    buttonType: 'danger',
+    icon: 'trash',
+    permissionsResolver() {
+      return true;
+    },
+  },
+],
+pageSizes: defaultPageSizes,
+};
+
+export default SubmissionGrid;
