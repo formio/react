@@ -30,26 +30,26 @@ module.exports = React.createClass({
   componentWillMount: function() {
     switch (this.props.component.dataSrc) {
       case 'values':
+        this.internalFilter = true;
+        this.setState({
+          selectItems: this.props.component.data.values
+        });
+        break;
       case 'json':
-        if (this.props.component.dataSrc === 'values') {
-          this.items = this.props.component.data.values;
-        }
-        else {
-          try {
-            if (typeof this.props.component.data.json === 'string') {
-              this.items = JSON.parse(this.props.component.data.json);
-            }
-            else if (typeof this.props.component.data.json === 'object') {
-              this.items = this.props.component.data.json;
-            }
-            else {
-              this.items = [];
-            }
+        try {
+          if (typeof this.props.component.data.json === 'string') {
+            this.items = JSON.parse(this.props.component.data.json);
           }
-          catch (error) {
-            console.warn('Error parsing JSON in ' + this.props.component.key, error);
+          else if (typeof this.props.component.data.json === 'object') {
+            this.items = this.props.component.data.json;
+          }
+          else {
             this.items = [];
           }
+        }
+        catch (error) {
+          console.warn('Error parsing JSON in ' + this.props.component.key, error);
+          this.items = [];
         }
         this.options.params = {
           limit: parseInt(this.props.component.limit) || 20,
