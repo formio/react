@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.5.35
+### Reverted
+ - Select.js issue that caused Load More to always show select.
+
 ## 1.5.34
 ### Reverted
  - Change from 1.5.32
