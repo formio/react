@@ -47,6 +47,7 @@ You can respond to various events in the form. Simply pass in a prop with a func
 | ```onCustomEvent``` | { ```type```: string - event type, ```component```: object - triggering component, ```data```: object - data for component, ```event```: string - raw event } | Event that is triggered from a button configured with "Event" type. | 
 | ```onPrevPage``` | { ```page```: integer - new page number, ```submission```: object - submission data } | Triggered for wizards when "Previous" button is pressed |
  ```onNextPage``` | { ```page```: integer - new page number, ```submission```: object - submission data } | Triggered for wizards when "Next" button is pressed |
+  ```formReady``` | ```formInstance```: Webform/Wizard - form class instance | Called when the form gets ready state |
 
 #### Example
 
