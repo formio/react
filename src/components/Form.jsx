@@ -15,10 +15,13 @@ import FormioForm from 'formiojs/Form';
   useEffect(() => () => formio ? formio.destroy(true) : null, [formio]);
 
   const createWebformInstance = (srcOrForm) => {
-    const {options = {}, formioform} = props;
+    const {options = {}, formioform, formReady} = props;
     instance = new (formioform || FormioForm)(element, srcOrForm, options);
     createPromise = instance.ready.then(formioInstance => {
       formio = formioInstance;
+      if (formReady) {
+        formReady(formioInstance);
+      }
     });
 
     return createPromise;
@@ -114,6 +117,7 @@ Form.propTypes = {
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
   onInitialized: PropTypes.func,
+  formReady: PropTypes.func,
   formioform: PropTypes.any
 };
 
