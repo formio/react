@@ -125,7 +125,7 @@ The FormEdit component wraps the FormBuilder component and adds the title, displ
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| ```form``` | object | {display: 'form' | 'wizard'} | The form definition of the exiting form that is to be modified. |
+| ```form``` | object | {display: 'form' \| 'wizard'} | The form definition of the exiting form that is to be modified. |
 | ```options``` | object | {} | The options to be passed to FormBuilder |
 | ```saveText``` | string | '' | The string that will be displayed in the save-button |
 
