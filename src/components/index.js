@@ -6,3 +6,4 @@ export {default as FormGrid} from './FormGrid';
 export {default as Grid} from './Grid';
 export {default as ReactComponent} from './ReactComponent';
 export {default as SubmissionGrid} from './SubmissionGrid';
+export {default as Pagination} from './Pagination';
