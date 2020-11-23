@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 5.0.0-rc.1
+### Changed
+ - Upgraded many dependencies.
+ - added Pagination component export
+ - Added event when form is ready
+
 ## 5.0.0-alpha.1
 ### Changed
  - Refactored to work with latest React version.

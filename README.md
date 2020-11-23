@@ -48,6 +48,7 @@ You can respond to various events in the form. Simply pass in a prop with a func
 | ```onCustomEvent``` | { ```type```: string - event type, ```component```: object - triggering component, ```data```: object - data for component, ```event```: string - raw event } | Event that is triggered from a button configured with "Event" type. | 
 | ```onPrevPage``` | { ```page```: integer - new page number, ```submission```: object - submission data } | Triggered for wizards when "Previous" button is pressed |
  ```onNextPage``` | { ```page```: integer - new page number, ```submission```: object - submission data } | Triggered for wizards when "Next" button is pressed |
+  ```formReady``` | ```formInstance```: Webform/Wizard - form class instance | Called when the form gets ready state |
 
 #### Example
 
@@ -124,7 +125,7 @@ The FormEdit component wraps the FormBuilder component and adds the title, displ
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| ```form``` | object | {display: 'form' | 'wizard'} | The form definition of the exiting form that is to be modified. |
+| ```form``` | object | {display: 'form' \| 'wizard'} | The form definition of the exiting form that is to be modified. |
 | ```options``` | object | {} | The options to be passed to FormBuilder |
 | ```saveText``` | string | '' | The string that will be displayed in the save-button |
 
