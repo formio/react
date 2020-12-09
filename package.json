@@ -1,18 +1,17 @@
 {
-  "name": "react-formio",
-  "version": "4.3.0",
+  "name": "@settyl/react-formio",
+  "version": "4.3.3",
   "description": "React renderer for form.io forms.",
   "main": "lib/index.js",
   "scripts": {
     "test": "karma start --single-run",
     "build": "babel ./src --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
     "lint": "eslint src",
-    "watch": "babel ./src --watch --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
-    "prepublish": "npm run lint && npm run build"
+    "watch": "babel ./src --watch --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/formio/react-formio.git"
+    "url": "git+https://github.com/Settyl/react-formio.git"
   },
   "keywords": [
     "React",
@@ -24,14 +23,14 @@
   "author": "Randall Knutson <randall@form.io>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/formio/react-formio/issues"
+    "url": "https://github.com/Settyl/react-formio/issues"
   },
-  "homepage": "https://github.com/formio/react-formio#readme",
+  "homepage": "https://github.com/Settyl/react-formio#readme",
   "dependencies": {
+    "@settyl/formiojs": "^4.12.2-rc.6",
     "babel-polyfill": "^6.26.0",
     "core-js": "^3.1.4",
     "eventemitter2": "^5.0.1",
-    "formiojs": "^4.9.0",
     "lodash": "^4.17.15",
     "prop-types": "^15.7.2"
   },

@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import AllComponents from 'formiojs/components';
-import Components from 'formiojs/components/Components';
-import FormioFormBuilder from 'formiojs/FormBuilder';
+import AllComponents from '@settyl/formiojs/components';
+import Components from '@settyl/formiojs/components/Components';
+import FormioFormBuilder from '@settyl/formiojs/FormBuilder';
 
 Components.setComponents(AllComponents);
 

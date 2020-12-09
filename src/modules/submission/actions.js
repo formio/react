@@ -1,4 +1,4 @@
-import Formiojs from 'formiojs/Formio';
+import Formiojs from '@settyl/formiojs/Formio';
 
 import * as types from './constants';
 
