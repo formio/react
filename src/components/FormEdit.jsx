@@ -20,7 +20,7 @@ export default class FormEdit extends Component {
 
     this.state = {
       form: form
-        ? _cloneDeep(form)
+        ? form
         : {
           title: '',
           name: '',
@@ -35,7 +35,7 @@ export default class FormEdit extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.form && (prevState.form._id !== nextProps.form._id || prevState.form.modified !== nextProps.form.modified)) {
       return {
-        form: _cloneDeep(nextProps.form),
+        form: nextProps.form,
       };
     }
 
