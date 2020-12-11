@@ -1,6 +1,6 @@
 {
   "name": "react-formio",
-  "version": "5.0.0-rc.1",
+  "version": "5.0.0-rc.2",
   "description": "React renderer for form.io forms.",
   "main": "lib/index.js",
   "scripts": {
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/formio/react-formio#readme",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "core-js": "^3.7.0",
+    "core-js": "^3.8.1",
     "eventemitter2": "^6.4.3",
     "lodash": "^4.17.20",
     "prop-types": "^15.7.2"
@@ -39,7 +39,7 @@
     "babel-cli": "^6.24.1",
     "babel-core": "^6.26.3",
     "babel-eslint": "^10.1.0",
-    "babel-loader": "^8.2.1",
+    "babel-loader": "^8.2.2",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-2": "^6.13.0",
@@ -48,7 +48,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "escope": "^3.6.0",
-    "eslint": "^7.13.0",
+    "eslint": "^7.15.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-formio": "^1.1.0",
     "eslint-loader": "^4.0.2",
@@ -56,7 +56,7 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-mocha": "^8.0.0",
     "eslint-plugin-react": "^7.21.5",
-    "formiojs": "^4.12.1",
+    "formiojs": "^4.12.4-rc.2",
     "jsdom": "^16.4.0",
     "karma": "^5.2.3",
     "karma-chrome-launcher": "^3.1.0",
@@ -68,14 +68,14 @@
     "react-dom": "^17.0.1",
     "react-test-renderer": "^17.0.1",
     "react-transform-catch-errors": "^1.0.0",
-    "sinon": "^9.2.1",
-    "webpack": "^5.6.0"
+    "sinon": "^9.2.2",
+    "webpack": "^5.10.0"
   },
   "files": [
     "lib"
   ],
   "peerDependencies": {
-    "formiojs": "^4.12.1",
+    "formiojs": "^4.12.4-rc.2",
     "react": "^15.3.0 || ^16.0.0 || ^17.0.0",
     "react-dom": "^15.3.0 || ^16.0.0 || ^17.0.0"
   }
