@@ -9,12 +9,12 @@ To see an example application of how to implement all the components and modules
 
 ### npm
 
-`react-formio` can be used on the server, or bundled for the client using an
+`@formio/react` can be used on the server, or bundled for the client using an
 npm-compatible packaging system such as [Browserify](http://browserify.org/) or
 [webpack](http://webpack.github.io/).
 
 ```
-npm install react-formio --save
+npm install @formio/react --save
 npm install formiojs --save // Install formiojs since it is a peerDependency
 ```
 
@@ -57,7 +57,7 @@ Give `Form` a `src` property and render:
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Form} from 'react-formio';
+import {Form} from '@formio/react';
 ```
 
 ```javascript
@@ -95,7 +95,7 @@ Please note that the FormBuilder component does not load and save from/to a url.
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {FormBuilder} from 'react-formio';
+import {FormBuilder} from '@formio/react';
 ```
 
 ```javascript
