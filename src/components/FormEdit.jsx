@@ -18,8 +18,6 @@ const reducer = (form, {type, value}) => {
         formCopy.path = _camelCase(value).toLowerCase();
       }
       break;
-    default:
-      return form;
   }
   _set(formCopy, type, value);
   return formCopy;
