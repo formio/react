@@ -30,6 +30,7 @@ import FormioForm from 'formiojs/Form';
   const onAnyEvent = (event, ...args) => {
      if (event.startsWith('formio.')) {
       const funcName = `on${event.charAt(7).toUpperCase()}${event.slice(8)}`;
+       // eslint-disable-next-line no-prototype-builtins
       if (props.hasOwnProperty(funcName) && typeof (props[funcName]) === 'function') {
         props[funcName](...args);
       }

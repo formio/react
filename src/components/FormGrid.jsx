@@ -1,7 +1,6 @@
 import _get from 'lodash/get';
 import _isFunction from 'lodash/isFunction';
 import _isString from 'lodash/isString';
-import _map from 'lodash/map';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -51,7 +50,7 @@ const FormGrid = (props) => {
     });
   };
 
-  const TitleCell = ({access, form}) => (
+  const TitleCell = ({access, form, onAction}) => (
     <span
       style={{cursor: 'pointer'}}
       onClick={stopPropagationWrapper(() => {
@@ -84,7 +83,7 @@ const FormGrid = (props) => {
     >
       {
         icon
-          ? <Icon icon={icon}></Icon>
+          ? <Icon icon={icon} />
           : null
       }
       {title}
@@ -101,7 +100,7 @@ const FormGrid = (props) => {
     const access = formAccess(form);
 
     if (column.key === 'title') {
-      return <TitleCell access={access} form={form}></TitleCell>;
+      return <TitleCell access={access} form={form} onAction={onAction} />;
     }
     else if (column.key === 'operations') {
       return (
