@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef, useState, useCallback, useLayoutEffect} from 'react';
 import PropTypes from 'prop-types';
 import AllComponents from 'formiojs/components';
 import Components from 'formiojs/components/Components';
@@ -7,8 +7,7 @@ import FormioFormBuilder from 'formiojs/FormBuilder';
 Components.setComponents(AllComponents);
 
 const FormBuilder = (props) => {
-  let builder;
-  let builderReady;
+  const builderRef = useRef();
   let element;
 
   const emit = (funcName) => (...args) => {
@@ -21,7 +20,7 @@ const FormBuilder = (props) => {
   const onChange = () => {
     const {onChange} = props;
     if (onChange && typeof onChange === 'function') {
-      onChange(builder.instance.form);
+      onChange(builderRef.current.instance.form);
     }
   };
 
@@ -41,27 +40,45 @@ const FormBuilder = (props) => {
 
   const initializeBuilder = (builderProps) => {
     let {options, form} = builderProps;
+    if (!form || !form.components) return;
     const {Builder} = builderProps;
     options = Object.assign({}, options);
     form = Object.assign({}, form);
 
-    builder = new Builder(element.firstChild, form, options);
-    builderReady = builder.ready;
+    builderRef.current = new Builder(element, form, options);
 
-    builderReady.then(() => {
+    builderRef.current.ready.then(() => {
       onChange();
-      builderEvents.forEach(({name, action}) => builder.instance.on(name, action));
+      builderEvents.forEach(({name, action}) => builderRef.current.instance.on(name, action));
     });
   };
 
   useEffect(() => {
     initializeBuilder(props);
-    return () => builder ? builder.instance.destroy(true) : null;
-  }, [props.form.display, props.form.components, props.options]);
+    return () => (builderRef.current ? builderRef.current.instance.destroy(true) : null)
+  }, [builderRef]);
+
+  
+  const elementDidMount = useCallback((el) => element = el);
+
+  useLayoutEffect(() => {
+    if (builderRef.current && props.form && props.form.display) {
+      builderRef.current.setDisplay(props.form.display);
+    }
+  }, [props.form.display]);
+
+  useLayoutEffect(() => {
+    if (builderRef.current && props.form && props.form.components) {
+      builderRef.current.setForm(props.form);
+    }
+    if (!builderRef.current && props.form) {
+      initializeBuilder(props);
+    }
+  }, [props.form]);
 
   return (
-    <div ref={el => element = el}>
-      <div></div>
+    <div>
+      <div ref={elementDidMount}></div>
     </div>
   );
 };
