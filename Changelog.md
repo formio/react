@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 5.1.0-rc.1
+### Fixed
+ - Change the way formio being stored
+ - FIO-2660: Fixes an issue where FormBuilder reacreats a formiojs instance on each update
+
 ## 5.0.0
 ### Fixed
  - An issue with FormsGrid.
