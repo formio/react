@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import EventEmitter from 'eventemitter2';
 import AllComponents from 'formiojs/components';
@@ -10,7 +10,7 @@ import FormioForm from 'formiojs/Form';
   let instance;
   let createPromise;
   let element;
-  let formio;
+  const [formio, setFormio] = useState(undefined);
 
   useEffect(() => () => formio ? formio.destroy(true) : null, [formio]);
 
@@ -18,7 +18,7 @@ import FormioForm from 'formiojs/Form';
     const {options = {}, formioform, formReady} = props;
     instance = new (formioform || FormioForm)(element, srcOrForm, options);
     createPromise = instance.ready.then(formioInstance => {
-      formio = formioInstance;
+      setFormio(formioInstance);
       if (formReady) {
         formReady(formioInstance);
       }
@@ -42,7 +42,7 @@ import FormioForm from 'formiojs/Form';
     if (createPromise) {
       instance.onAny(onAnyEvent);
       createPromise.then(() => {
-        if (submission) {
+        if (formio && submission) {
           formio.submission = submission;
         }
       });
@@ -53,7 +53,9 @@ import FormioForm from 'formiojs/Form';
     const {src} = props;
     if (src) {
       createWebformInstance(src).then(() => {
-        formio.src = src;
+        if (formio) {
+          formio.src = src;
+        }
       });
       initializeFormio();
     }
@@ -63,11 +65,13 @@ import FormioForm from 'formiojs/Form';
     const {form, url} = props;
     if (form) {
       createWebformInstance(form).then(() => {
+      if (formio) {
         formio.form = form;
         if (url) {
           formio.url = url;
         }
         return formio;
+      }
       });
       initializeFormio();
     }
