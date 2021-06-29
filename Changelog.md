@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 5.1.0
+### Fixed
+ - Remove unnecessary check for form and components
+
+### Changed
+ - Official release
+
 ## 5.1.0-rc.1
 ### Fixed
  - Change the way formio being stored
