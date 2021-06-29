@@ -40,7 +40,6 @@ const FormBuilder = (props) => {
 
   const initializeBuilder = (builderProps) => {
     let {options, form} = builderProps;
-    if (!form || !form.components) return;
     const {Builder} = builderProps;
     options = Object.assign({}, options);
     form = Object.assign({}, form);
@@ -58,7 +57,6 @@ const FormBuilder = (props) => {
     return () => (builderRef.current ? builderRef.current.instance.destroy(true) : null)
   }, [builderRef]);
 
-  
   const elementDidMount = useCallback((el) => element = el);
 
   useLayoutEffect(() => {
