@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 5.1.1
+### Fixed
+ - Add formio dependency to submission hook
+
 ## 5.1.0
 ### Fixed
  - Remove unnecessary check for form and components
