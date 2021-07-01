@@ -89,7 +89,7 @@ import FormioForm from 'formiojs/Form';
     if (formio && submission) {
       formio.submission = submission;
     }
-  }, [props.submission]);
+  }, [props.submission, formio]);
 
   return <div ref={el => element = el} />;
 };
