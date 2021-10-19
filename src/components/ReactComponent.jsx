@@ -115,8 +115,9 @@ export default class ReactComponent extends Field {
    * The user has changed the value in the component and the value needs to be updated on the main submission object and other components notified of a change event.
    *
    * @param value
+   * @param flags
    */
-  updateValue = (value, flags) => {
+  updateValue = (value, flags = []) => {
     flags = flags || {};
     const newValue = value === undefined || value === null ? this.getValue() : value;
     const changed = (newValue !== undefined) ? this.hasChanged(newValue, this.dataValue) : false;
