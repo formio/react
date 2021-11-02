@@ -29,10 +29,10 @@ The form component is the primary component of the system. It is what takes the 
 | Name | Type | Default | Description |
 |---|---|---|---|
 | ```src```  | url  |   | The url of the form definition. This is commonly from a form.io server. When using src, the form will automatically submit the data to that url as well.  |
-| ```url``` | url  |   | The url of the form definition. The form will not be loaded from this url and the submission will not be saved here either. This is used for file upload, oauth and other components or actions that need to know where the server is. Use this in connection with ```form```  |
+| ```url``` | url  |   | The url of the form definition. The form will not be loaded from this url and the submission will not be saved here either. This is used for file upload, oauth and other components or actions that need to know where the server is. Use this in connection with ```form``` . |
 | ```form``` | object |   | Instead of loading a form from the ```src``` url, you can preload the form definition and pass it in with the ```form``` prop. You should also set ```url``` if you are using any advanced components like file upload or oauth. |
 | ```submission``` | object | | Submission data to fill the form. You can either load a previous submission or create a submission with some pre-filled data. If you do not provide a submissions the form will initialize an empty submission using default values from the form. |
-| ```options``` | object | | an options object that can pass options to the formio.js Form that is rendered. You can set options such as ```readOnly```, ```noAlerts``` or ```hide```. There are [many options to be found in the formio.js library](https://github.com/formio/formio.js/wiki/Form-Renderer#options). |
+| ```options``` | object | | An options object that can pass options to the formio.js Form that is rendered. You can set options such as ```readOnly```, ```noAlerts``` or ```hide```. There are [many options to be found in the formio.js library](https://github.com/formio/formio.js/wiki/Form-Renderer#options). |
 
 #### Event Props
 
@@ -46,9 +46,9 @@ You can respond to various events in the form. Simply pass in a prop with a func
 | ```onError``` | ```errors```: array or string or boolean | Called when an error occurs during submission such as a validation issue. |
 | ```onRender``` | | Triggers when the form is finished rendering. |
 | ```onCustomEvent``` | { ```type```: string - event type, ```component```: object - triggering component, ```data```: object - data for component, ```event```: string - raw event } | Event that is triggered from a button configured with "Event" type. | 
-| ```onPrevPage``` | { ```page```: integer - new page number, ```submission```: object - submission data } | Triggered for wizards when "Previous" button is pressed |
- ```onNextPage``` | { ```page```: integer - new page number, ```submission```: object - submission data } | Triggered for wizards when "Next" button is pressed |
-  ```formReady``` | ```formInstance```: Webform/Wizard - form class instance | Called when the form gets ready state |
+| ```onPrevPage``` | { ```page```: integer - new page number, ```submission```: object - submission data } | Triggered for wizards when "Previous" button is pressed. |
+ ```onNextPage``` | { ```page```: integer - new page number, ```submission```: object - submission data } | Triggered for wizards when "Next" button is pressed. |
+  ```formReady``` | ```formInstance```: Webform/Wizard - form class instance | Called when the form gets ready state. |
 
 #### Example
 
@@ -83,12 +83,12 @@ Please note that the FormBuilder component does not load and save from/to a url.
 
 | Name | Parameters | Description |
 |---|---|---|
-| ```onChange```  | ```schema```: object | Triggered any time the form definition changes |
-| ```onEditComponent``` | ```component```: object | Triggered when the component settings dialog is opened |
-| ```onSaveComponent``` | ```component```: object | Triggered when the component settings dialog is saved and closed |
-| ```onCancelComponent``` | ```component```: object | Triggered when the component settings dialog is cancelled |
-| ```onDeleteComponent``` | ```component```: object | Triggered when a component is removed from the form |
-| ```onUpdateComponent``` | ```component```: object | Triggered when a component is added or moved in the form |
+| ```onChange```  | ```schema```: object | Triggered any time the form definition changes. |
+| ```onEditComponent``` | ```component```: object | Triggered when the component settings dialog is opened. |
+| ```onSaveComponent``` | ```component```: object | Triggered when the component settings dialog is saved and closed. |
+| ```onCancelComponent``` | ```component```: object | Triggered when the component settings dialog is cancelled. |
+| ```onDeleteComponent``` | ```component```: object | Triggered when a component is removed from the form. |
+| ```onUpdateComponent``` | ```component```: object | Triggered when a component is added or moved in the form. |
 
 
 #### Example
@@ -126,8 +126,8 @@ The FormEdit component wraps the FormBuilder component and adds the title, displ
 | Name | Type | Default | Description |
 |---|---|---|---|
 | ```form``` | object | {display: 'form' \| 'wizard'} | The form definition of the exiting form that is to be modified. |
-| ```options``` | object | {} | The options to be passed to FormBuilder |
-| ```saveText``` | string | '' | The string that will be displayed in the save-button |
+| ```options``` | object | {} | The options to be passed to FormBuilder. |
+| ```saveText``` | string | '' | The string that will be displayed in the save-button. |
 
 #### Event Props
 
@@ -181,9 +181,9 @@ The root module is the container for things shared by other modules such as the 
 
 | Name | Parameters | Description |
 |---|---|---|
-| ```selectRoot``` | name: string, state: object | Returns the state for a namespace |
-| ```selectError``` | name: string, state: object | Returns any errors for a namespace |
-| ```selectIsActive``` | name: string, state: object | Returns isActive state for a namespace |
+| ```selectRoot``` | name: string, state: object | Returns the state for a namespace. |
+| ```selectError``` | name: string, state: object | Returns any errors for a namespace. |
+| ```selectIsActive``` | name: string, state: object | Returns isActive state for a namespace. |
 
 ### auth
 The auth module is designed to make it easier to login, register and authenticate users within react using the form.io login system.
