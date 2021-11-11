@@ -1,4 +1,4 @@
-import FormioUtils from 'formiojs/utils';
+import {Utils as FormioUtils} from 'formiojs';
 import _get from 'lodash/get';
 import _isFunction from 'lodash/isFunction';
 import _isObject from 'lodash/isObject';

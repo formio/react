@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import EventEmitter from 'eventemitter2';
-import AllComponents from 'formiojs/components';
-import Components from 'formiojs/components/Components';
-Components.setComponents(AllComponents);
-import FormioForm from 'formiojs/Form';
+import {Formio} from 'formiojs';
+const FormioForm = Formio.Form;
 
  const Form = (props) => {
   let instance;
