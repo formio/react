@@ -5,6 +5,7 @@ import AllComponents from 'formiojs/components';
 import Components from 'formiojs/components/Components';
 Components.setComponents(AllComponents);
 import FormioForm from 'formiojs/Form';
+import _isEqual from 'lodash/isEqual';
 
  const Form = (props) => {
   let instance;
@@ -86,7 +87,7 @@ import FormioForm from 'formiojs/Form';
 
   useEffect(() => {
     const {submission} = props;
-    if (formio && submission) {
+    if (formio && submission && !_isEqual(formio.submission.data, submission.data)) {
       formio.submission = submission;
     }
   }, [props.submission, formio]);
