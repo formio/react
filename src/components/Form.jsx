@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import EventEmitter from 'eventemitter2';
+import _isEqual from 'lodash/isEqual';
 import {Formio} from 'formiojs';
 const FormioForm = Formio.Form;
 
@@ -84,7 +85,7 @@ const FormioForm = Formio.Form;
 
   useEffect(() => {
     const {submission} = props;
-    if (formio && submission) {
+    if (formio && submission && !_isEqual(formio.submission.data, submission.data)) {
       formio.submission = submission;
     }
   }, [props.submission, formio]);
