@@ -1,7 +1,8 @@
-import Webform from 'formiojs/Webform';
-import WebformBuilder from 'formiojs/WebformBuilder';
-import Wizard from 'formiojs/Wizard';
-import WizardBuilder from 'formiojs/WizardBuilder';
+import {Formio} from 'formiojs';
+const Webform = Formio.Webform;
+const WebformBuilder = Formio.WebformBuilder;
+const Wizard = Formio.Wizard;
+const WizardBuilder = Formio.WizardBuilder;
 
 export {
   Webform,

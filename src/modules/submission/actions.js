@@ -1,4 +1,4 @@
-import Formiojs from 'formiojs/Formio';
+import {Formio as Formiojs} from 'formiojs';
 
 import * as types from './constants';
 
