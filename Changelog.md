@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 5.2.0
+### Changed
+ - Update to work with latest React and also fixed imports from formiojs for build size.
+
 ## 5.1.1
 ### Fixed
  - Add formio dependency to submission hook
