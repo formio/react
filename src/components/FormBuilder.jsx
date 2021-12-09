@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState, useCallback, useLayoutEffect} from 'react';
+import React, {useEffect, useRef, useCallback, useLayoutEffect} from 'react';
 import PropTypes from 'prop-types';
 import {FormBuilder as FormioFormBuilder} from 'formiojs';
 
@@ -50,7 +50,7 @@ const FormBuilder = (props) => {
 
   useEffect(() => {
     initializeBuilder(props);
-    return () => (builderRef.current ? builderRef.current.instance.destroy(true) : null)
+    return () => (builderRef.current ? builderRef.current.instance.destroy(true) : null);
   }, [builderRef]);
 
   const elementDidMount = useCallback((el) => element = el);
