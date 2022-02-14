@@ -53,11 +53,11 @@ const FormEdit = (props) => {
 
   const formChange = (newForm) => dispatchFormAction({type: 'formChange', value: newForm});
 
-  const {saveText, options, builder} = props;
+  const {saveText, options, builder,ref} = props;
 
   return (
     <div>
-      <div className="row">
+      <div className="row" ref={ref}>
         <div className="col-lg-2 col-md-4 col-sm-4">
           <div id="form-group-title" className="form-group">
             <label htmlFor="title" className="control-label field-required">Title</label>
