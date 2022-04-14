@@ -16,7 +16,7 @@ const FormBuilder = (props) => {
   const onChange = () => {
     const {onChange} = props;
     if (onChange && typeof onChange === 'function') {
-      onChange(builderRef.current.instance.form);
+      onChange(builderRef.current.instance.form, builderRef.current.instance.schema);
     }
   };
 
