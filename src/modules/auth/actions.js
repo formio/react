@@ -109,6 +109,7 @@ export const setUser = (user) => (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-  formiojs.logout();
-  dispatch(logoutUser());
+  formiojs.logout().then(() => {
+    dispatch(logoutUser());
+  });
 };
