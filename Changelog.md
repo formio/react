@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+## 5.2.2
+### Fixed
+ - fixed propTypes that cause error in console
+
+## 5.2.1
+### Fixed
+ - Fixed an issue where user state is cleared before the user is logged out
+ - added access to the form schema in change event in react form builder
 
 ## 5.2.0
 ### Changed
