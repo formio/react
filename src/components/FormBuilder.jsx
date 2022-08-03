@@ -16,7 +16,17 @@ const FormBuilder = (props) => {
   const onChange = () => {
     const {onChange} = props;
     if (onChange && typeof onChange === 'function') {
-      onChange(builderRef.current.instance.form, builderRef.current.instance.schema);
+      const schema = {
+        ...builderRef.current.instance.form
+      };
+
+      Object.defineProperty(schema, 'components', {
+        get: function() {
+          return builderRef.current.instance.schema.components;
+        }
+      });
+
+      onChange(builderRef.current.instance.form, schema);
     }
   };
 
@@ -44,14 +54,23 @@ const FormBuilder = (props) => {
 
     builderRef.current.ready.then(() => {
       onChange();
-      builderEvents.forEach(({name, action}) => builderRef.current.instance.on(name, action));
+      builderEvents.forEach(({name, action}) => {
+        builderRef.current.instance.off(name, action);
+        builderRef.current.instance.on(name, action);
+      });
     });
   };
 
   useEffect(() => {
     initializeBuilder(props);
-    return () => (builderRef.current ? builderRef.current.instance.destroy(true) : null)
+    return () => (builderRef.current ? builderRef.current.instance.destroy(true) : null);
   }, [builderRef]);
+
+  useEffect(() => {
+    if (!builderRef.current && props.form) {
+      initializeBuilder(props);
+    }
+  }, [props.form, builderRef]);
 
   const elementDidMount = useCallback((el) => element = el);
 
@@ -64,9 +83,6 @@ const FormBuilder = (props) => {
   useLayoutEffect(() => {
     if (builderRef.current && props.form && props.form.components) {
       builderRef.current.setForm(props.form);
-    }
-    if (!builderRef.current && props.form) {
-      initializeBuilder(props);
     }
   }, [props.form]);
 
