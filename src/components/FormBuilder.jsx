@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState, useCallback, useLayoutEffect} from 'react';
+import React, {useEffect, useRef, useCallback, useLayoutEffect} from 'react';
 import PropTypes from 'prop-types';
 import {FormBuilder as FormioFormBuilder} from 'formiojs';
 

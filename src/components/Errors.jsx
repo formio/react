@@ -10,6 +10,10 @@ const Errors = (props) => {
     return !!error;
   };
 
+  /**
+   * @param {string|any[]} error
+   * @returns {string|unknown[]|*}
+   */
   const formatError = (error) => {
     if (typeof error === 'string') {
       return error;

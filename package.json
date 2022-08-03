@@ -6,9 +6,10 @@
   "scripts": {
     "test": "karma start --single-run",
     "build": "babel ./src --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
+    "build-types": "npx tsc",
     "lint": "eslint src",
     "watch": "babel ./src --watch --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
-    "prepublish": "npm run lint && npm run build"
+    "prepublish": "npm run lint && npm run build && npm run build-types"
   },
   "repository": {
     "type": "git",
@@ -70,6 +71,7 @@
     "react-test-renderer": "^17.0.2",
     "react-transform-catch-errors": "^1.0.0",
     "sinon": "^12.0.1",
+    "typescript": "^4.5.2",
     "webpack": "^5.65.0"
   },
   "files": [
