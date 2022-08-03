@@ -70,6 +70,39 @@ ReactDOM.render(
 ### FormBuilder
 The FormBuilder class can be used to embed a form builder directly in your react application. Please note that you'll need to include the CSS for the form builder from formio.js as well.
 
+```javascript
+import { FormBuilder } from '@formio/react';
+```
+Without Components:
+
+```javascript
+<FormBuilder form={[]}/>
+ ```
+With Components:
+
+```javascript
+<FormBuilder form={
+ display: 'form',
+ components: [
+ {
+   "label": "Email",
+   "tableView": true,
+   "key": "email",
+   "type": "email",
+   "input": true
+ },
+ {
+   "label": "Password",
+   "tableView": false,
+   "key": "password",
+   "type": "password",
+   "input": true,
+   "protected": true
+ },
+ ]
+ }}/>
+ ```
+
 Please note that the FormBuilder component does not load and save from/to a url. You must handle the form definition loading and saving yourself or use the FormEdit component.
 
 #### Props
