@@ -101,6 +101,7 @@ FormBuilder.defaultProps = {
 FormBuilder.propTypes = {
   form: PropTypes.object,
   options: PropTypes.object,
+  onChange : PropTypes.any,
   onSaveComponent: PropTypes.func,
   onUpdateComponent: PropTypes.func,
   onDeleteComponent: PropTypes.func,
