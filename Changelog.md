@@ -4,10 +4,14 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased: 5.2.4-rc.2]
+## 5.2.4-rc.2
 ### Fixed
  - FIO-4570: Fix issue with form redrawing when passing form object as props
  - updated props in formBuilder
+
+### Changed
+ - Upgrade escope@4.0.0, eslint-plugin-mocha@10.1.0, jsdom@20.0.1, mocha@10.0.0, react-test-renderer@18.2.0, sinon@14.0.1
+ - Changed formiojs peerDependency to formiojs@4.14.9
 
 ## 5.2.2
 ### Fixed
