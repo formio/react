@@ -14,7 +14,7 @@ const FormioForm = Formio.Form;
   let createPromise;
   let element;
   const [formio, setFormio] = useState(undefined);
-  jsonForm = useRef();
+  const jsonForm = useRef();
 
   useEffect(() => () => formio ? formio.destroy(true) : null, [formio]);
 
