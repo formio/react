@@ -14,7 +14,7 @@ const FormioForm = Formio.Form;
   let createPromise;
   let element;
   const [formio, setFormio] = useState(undefined);
-  const [jsonForm, setJsonForm] = useState(undefined);
+  jsonForm = useRef();
 
   useEffect(() => () => formio ? formio.destroy(true) : null, [formio]);
 
@@ -67,8 +67,8 @@ const FormioForm = Formio.Form;
 
   useEffect(() => {
     const {form, url} = props;
-    if (form && !_isEqual(form, jsonForm)) {
-      setJsonForm(form);
+    if (form && !_isEqual(form, jsonForm.current)) {
+      jsonForm.current = form;
       createWebformInstance(form).then(() => {
       if (formio) {
         formio.form = form;
@@ -80,7 +80,7 @@ const FormioForm = Formio.Form;
       });
       initializeFormio();
     }
-  }, [props.form, jsonForm]);
+  }, [props.form]);
 
   useEffect(() => {
     const {options = {}} = props;
