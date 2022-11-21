@@ -77,6 +77,9 @@ export default class Form extends Component {
   componentWillUnmount = () => {
     if (this.formio !== undefined) {
       this.formio.destroy(true);
+      this.formio = null;
+      delete this.instance;
+      this.instance = null;
     }
   };
 
