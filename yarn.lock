@@ -9,10 +9,10 @@
   dependencies:
     regenerator-runtime "^0.13.10"
 
-"@formio/core@5.0.0-m.15":
-  version "5.0.0-m.15"
-  resolved "https://registry.npmjs.org/@formio/core/-/core-5.0.0-m.15.tgz"
-  integrity sha512-qctdTn+vmHZ0cEPrQCbuELlF1l8Oscita4va2Aw2NGIohRf4CCZvPOtgS74AzzgawnM7TQOmr8WJom+0bSjCVA==
+"@formio/core@5.0.0-m.16":
+  version "5.0.0-m.16"
+  resolved "https://registry.yarnpkg.com/@formio/core/-/core-5.0.0-m.16.tgz#364a217cb82078baa5a7aeeb7c224dcf52eea20d"
+  integrity sha512-EIqENoTxEn6K/9CKpfuu9ibrCR6e6Btgwc0+hdq0p12xAONbWR9lZuslW4XR/hvoOTQIu1DMhzmq0/Xv9tsvtg==
   dependencies:
     autocompleter "^6.1.2"
     browser-cookies "^1.2.0"
