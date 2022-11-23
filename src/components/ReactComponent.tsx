@@ -29,8 +29,8 @@ export default class ReactComponent extends Field {
    * destroyed. This is different from detach which is when the component instance still exists but the dom instance is
    * removed.
    */
-  destroy() {
-    return super.destroy();
+  destroy(all) {
+    return super.destroy(all);
   }
 
   /**
