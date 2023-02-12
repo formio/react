@@ -145,6 +145,7 @@ Form.propTypes = {
     i18n: PropTypes.object,
     template: PropTypes.string,
     saveDraft: PropTypes.bool,
+    language: PropTypes.string
   }),
   onPrevPage: PropTypes.func,
   onNextPage: PropTypes.func,
