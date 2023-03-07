@@ -81,7 +81,7 @@ Without Components:
 With Components:
 
 ```javascript
-<FormBuilder form={
+<FormBuilder form={{
  display: 'form',
  components: [
  {
