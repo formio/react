@@ -42,6 +42,7 @@ const Errors = (props) => {
     }
 
     // If this is a joy validation error.
+    // eslint-disable-next-line no-prototype-builtins
     if (error.hasOwnProperty('name') && error.name === 'ValidationError') {
       return error.details.map((item, index) => {
         return (

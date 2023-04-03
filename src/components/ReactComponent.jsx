@@ -116,7 +116,8 @@ export default class ReactComponent extends Field {
         value: value
       });
       this.shouldSetValue = false;
-    } else {
+    }
+    else {
       this.shouldSetValue = true;
       this.dataForSetting = value;
     }
