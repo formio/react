@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import {cloneDeep} from 'lodash/lang';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import EventEmitter from 'eventemitter2';
 import _isEqual from 'lodash/isEqual';
@@ -14,7 +15,7 @@ const FormioForm = Formio.Form;
   let createPromise;
   let element;
   const [formio, setFormio] = useState(undefined);
-  const [jsonForm, setJsonForm] = useState(undefined);
+  const jsonForm = useRef(undefined);
 
   useEffect(() => () => formio ? formio.destroy(true) : null, [formio]);
 
@@ -67,8 +68,10 @@ const FormioForm = Formio.Form;
 
   useEffect(() => {
     const {form, url} = props;
-    if (form && !_isEqual(form, jsonForm)) {
-      setJsonForm(form);
+    // eslint-disable-next-line no-undef
+    console.log({form, current: jsonForm.current});
+    if (form && !_isEqual(form, jsonForm.current)) {
+        jsonForm.current = cloneDeep(form);
       createWebformInstance(form).then(() => {
       if (formio) {
         formio.form = form;
@@ -80,7 +83,7 @@ const FormioForm = Formio.Form;
       });
       initializeFormio();
     }
-  }, [props.form, jsonForm]);
+  }, [props.form]);
 
   useEffect(() => {
     const {options = {}} = props;
