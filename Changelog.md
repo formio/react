@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased: 5.2.4-rc.3]
 ### Fixed
  - FIO-6440: Upgrades dependencies and fixes warnings
+### Changed
+ - Upgraded babel-loader@9.1.2, escope@4.0.0, eslint@8.37.0, eslint-plugin-mocha@10.1.0, jsdom@21.1.1, mocha@10.2.0, react-test-renderer@18.2.0, sinon@15.0.3, typescript@5.0.3
+ - Changed formiojs peerDependency to formiojs@4.14.12
 
 ## 5.2.4-rc.2
 ### Fixed
