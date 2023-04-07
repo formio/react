@@ -157,7 +157,7 @@ FormEdit.propTypes = {
   form: PropTypes.object.isRequired,
   options: PropTypes.object,
   builder: PropTypes.any,
-  onSave: PropTypes.func,
+  saveForm: PropTypes.func,
   saveText: PropTypes.string
 };
 
