@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased: 5.2.4-rc.3]
+## [Unreleased: 5.2.4-rc.4]
+### Fixed
+ - Updated `FormEdit` proptypes to match the props used within the component. Adds `saveForm` function and `saveText` string
+
+## 5.2.4-rc.3
 ### Fixed
  - FIO-6440: Upgrades dependencies and fixes warnings
 
