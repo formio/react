@@ -30,6 +30,15 @@ export default class ReactComponent extends Field {
   destroy() {
     return super.destroy();
   }
+  /**
+   * This method is called before a form is submitted.
+   * It is used to perform any necessary actions or checks before the form data is sent.
+   * 
+   */
+
+  beforeSubmit(){
+    return super.beforeSubmit()
+  }
 
   /**
    * The second phase of component building where the component is rendered as an HTML string.
