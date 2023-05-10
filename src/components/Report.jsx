@@ -58,11 +58,7 @@ const FormioReport = Formio.Report;
   useEffect(() => {
     const {src} = props;
     if (src) {
-      createReportInstance(src).then(() => {
-        if (formio) {
-          formio.src = src;
-        }
-      });
+      createReportInstance(src);
       initializeFormio();
     }
   }, [props.src]);
