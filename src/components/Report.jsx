@@ -26,8 +26,11 @@ const FormioReport = Formio.Report;
   useEffect(() => () => formio ? formio.destroy(true) : null, [formio]);
 
   const createReportInstance = (srcOrReport) => {
-    const {options = {}, onReportReady, apiUrl} = props;
-    options.apiUrl = apiUrl || options.apiUrl;
+    const {options = {}, onReportReady, url} = props;
+    if (url) {
+      options.apiUrl = url;
+    }
+
     instance = new FormioReport(element, srcOrReport, options);
     createPromise = instance.ready.then(formioInstance => {
       setFormio(formioInstance);
@@ -64,17 +67,13 @@ const FormioReport = Formio.Report;
   }, [props.src]);
 
   useEffect(() => {
-    const {report, apiUrl} = props;
+    const {report} = props;
     // eslint-disable-next-line no-undef
     if (report && !_isEqual(report, jsonReport.current)) {
-        jsonReport.current = cloneDeep(report);
+      jsonReport.current = cloneDeep(report);
       createReportInstance(report).then(() => {
         if (formio) {
           formio.form = {components: [], report};
-
-          if (apiUrl && report) {
-            formio.url = `${apiUrl}/project/${report.project}`;
-          }
           return formio;
         }
       });
@@ -104,7 +103,7 @@ const FormioReport = Formio.Report;
 /**
  * @typedef {object} ReportProps
  * @property {string} [src]
- * @property {string} [apiUrl]
+ * @property {string} [url]
  * @property {object} [report]
  * @property {Options} [options]
  * @property {function} [onFormLoad]
@@ -119,15 +118,11 @@ const FormioReport = Formio.Report;
  * @property {function} [onRowSelectChange]
  * @property {function} [onFetchDataError]
  * @property {function} [onChangeItemsPerPage]
- * @property {function} [onFilter]
- * @property {function} [onClearFilters]
- * @property {function} [onApplyColumns]
- * @property {function} [onPerformAction]
  * @property {function} [onPage]
 u */
 Report.propTypes = {
   src: PropTypes.string,
-  apiUrl: PropTypes.string,
+  url: PropTypes.string,
   report: PropTypes.object,
   options: PropTypes.shape({
     readOnly: PropTypes.bool,
@@ -135,17 +130,12 @@ Report.propTypes = {
     i18n: PropTypes.object,
     template: PropTypes.string,
     language: PropTypes.string,
-    apiUrl: PropTypes.string,
   }),
   onRowClick: PropTypes.func,
   onRowSelectChange: PropTypes.func,
   onFetchDataError: PropTypes.func,
   onChangeItemsPerPage: PropTypes.func,
   onPage: PropTypes.func,
-  onFilter: PropTypes.func,
-  onClearFilters: PropTypes.func,
-  onApplyColumns: PropTypes.func,
-  onPerformAction: PropTypes.func,
   onChange: PropTypes.func,
   onFormLoad: PropTypes.func,
   onError: PropTypes.func,
