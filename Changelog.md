@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased: 5.2.4-rc.3]
+## 5.3.0-rc.1
+### Changed
+ - Changed formio.js to formiojs@4.15.0-rc.23
+ - Upgrade babel-loader@9.1.2, escope@4.0.0, eslint@8.41.0, eslint-plugin-mocha@10.1.0, jsdom@22.0.0, mocha@10.2.0, react-test-renderer@18.2.0, sinon@15.1.0, typescript@5.0.4
 ### Fixed
  - FIO-6440: Upgrades dependencies and fixes warnings
  - add methode before on submit so it can be generated in typing
