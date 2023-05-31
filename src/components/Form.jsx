@@ -27,6 +27,7 @@ const FormioForm = Formio.Form;
       if (formReady) {
         formReady(formioInstance);
       }
+      return formioInstance;
     });
 
     return createPromise;
@@ -57,9 +58,9 @@ const FormioForm = Formio.Form;
   useEffect(() => {
     const {src} = props;
     if (src) {
-      createWebformInstance(src).then(() => {
-        if (formio) {
-          formio.src = src;
+      createWebformInstance(src).then((formioInstance) => {
+        if (formioInstance) {
+          formioInstance.src = src;
         }
       });
       initializeFormio();
@@ -68,18 +69,17 @@ const FormioForm = Formio.Form;
 
   useEffect(() => {
     const {form, url} = props;
-    // eslint-disable-next-line no-undef
-    console.log({form, current: jsonForm.current});
+
     if (form && !_isEqual(form, jsonForm.current)) {
-        jsonForm.current = cloneDeep(form);
-      createWebformInstance(form).then(() => {
-      if (formio) {
-        formio.form = form;
-        if (url) {
-          formio.url = url;
+      jsonForm.current = cloneDeep(form);
+      createWebformInstance(jsonForm.current).then((formioInstance) => {
+        if (formioInstance) {
+          formioInstance.form = jsonForm.current;
+          if (url) {
+            formioInstance.url = url;
+          }
+          return formio;
         }
-        return formio;
-      }
       });
       initializeFormio();
     }
