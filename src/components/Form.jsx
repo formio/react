@@ -78,7 +78,6 @@ const FormioForm = Formio.Form;
           if (url) {
             formioInstance.url = url;
           }
-          return formio;
         }
       });
       initializeFormio();
