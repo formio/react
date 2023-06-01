@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased: 5.3.0-rc.2]
+### Fixed
+ - FIO-4301/4302: Fixes an issue where for is being set to the old formioInstance after recreating it 
+
 ## 5.3.0-rc.1
 ### Changed
  - Changed formio.js to formiojs@4.15.0-rc.23
