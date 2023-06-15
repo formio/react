@@ -26,9 +26,9 @@ const FormioReport = Formio.Report;
   useEffect(() => () => formio ? formio.destroy(true) : null, [formio]);
 
   const createReportInstance = (srcOrReport) => {
-    const {options = {}, onReportReady, url} = props;
-    if (url) {
-      options.apiUrl = url;
+    const {options = {}, onReportReady, projectEndpoint} = props;
+    if (projectEndpoint) {
+      options.projectEndpoint = projectEndpoint;
     }
 
     instance = new FormioReport(element, srcOrReport, options);
@@ -97,13 +97,13 @@ const FormioReport = Formio.Report;
  * @property {boolean} [noAlerts]
  * @property {object} [i18n]
  * @property {string} [template]
- * @property {string} [apiUrl]
+ * @property {string} [projectEndpoint]
  */
 
 /**
  * @typedef {object} ReportProps
  * @property {string} [src]
- * @property {string} [url]
+ * @property {string} [projectEndpoint]
  * @property {object} [report]
  * @property {Options} [options]
  * @property {function} [onFormLoad]
@@ -122,7 +122,7 @@ const FormioReport = Formio.Report;
 u */
 Report.propTypes = {
   src: PropTypes.string,
-  url: PropTypes.string,
+  projectEndpoint: PropTypes.string,
   report: PropTypes.object,
   options: PropTypes.shape({
     readOnly: PropTypes.bool,
