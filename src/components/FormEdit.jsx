@@ -53,7 +53,7 @@ const FormEdit = (props) => {
 
   const formChange = (newForm) => dispatchFormAction({type: 'formChange', value: newForm});
 
-  const {saveText, options, builder,ref} = props;
+  const {saveText, options, builder, ref} = props;
 
   return (
     <div>

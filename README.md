@@ -22,14 +22,18 @@ npm install formiojs --save // Install formiojs since it is a peerDependency
 
 ### Form
 
-The form component is the primary component of the system. It is what takes the form definition (json) and renders the form into html. There are multiple ways to send the form to the Form component. The two main ways are to pass the ```src``` prop with a url to the form definition, usually a form.io server. The other is to pass the   ```form``` prop with the json definition and optionally a ```url``` prop with the location of the form.
+The form component is the primary component of the system. It is what takes the form definition (json) and renders the form into html. There are multiple ways to send the form definition to the Form component. The two main ways are to either pass the ```src``` prop which will make a request for the form definition or to pass a pre-loaded ```form``` prop with the form definition you specify and an optional ```url``` prop.
+
+The ```src``` prop is a url to the form definition, usually a form.io server. When using the ```src``` prop the form will automatically submit the data to this url as well.
+
+The ```form``` prop accepts a pre-loaded json form definition. Pair this optionally with a ```url``` prop to the location of the form. This is used for file upload, oauth and other components or actions that need to know where the server is.
 
 #### Props
 
 | Name | Type | Default | Description |
 |---|---|---|---|
 | ```src```  | url  |   | The url of the form definition. This is commonly from a form.io server. When using src, the form will automatically submit the data to that url as well.  |
-| ```url``` | url  |   | The url of the form definition. The form will not be loaded from this url and the submission will not be saved here either. This is used for file upload, oauth and other components or actions that need to know where the server is. Use this in connection with ```form``` . |
+| ```url``` | url  |   | The url of the form definition. This is used for file upload, oauth and other components or actions that need to know where the server is. The form will not be loaded from this url and the submission will not be saved here either. Use this in connection with ```form``` . |
 | ```form``` | object |   | Instead of loading a form from the ```src``` url, you can preload the form definition and pass it in with the ```form``` prop. You should also set ```url``` if you are using any advanced components like file upload or oauth. |
 | ```submission``` | object | | Submission data to fill the form. You can either load a previous submission or create a submission with some pre-filled data. If you do not provide a submissions the form will initialize an empty submission using default values from the form. |
 | ```options``` | object | | An options object that can pass options to the formio.js Form that is rendered. You can set options such as ```readOnly```, ```noAlerts``` or ```hide```. There are [many options to be found in the formio.js library](https://github.com/formio/formio.js/wiki/Form-Renderer#options). |
@@ -45,7 +49,7 @@ You can respond to various events in the form. Simply pass in a prop with a func
 | ```onChange``` | ```submission```: object, ```submission.changed```: object of what changed, ```submission.isValid```: boolean - if the submission passes validations. | A value in the submission has changed. |
 | ```onError``` | ```errors```: array or string or boolean | Called when an error occurs during submission such as a validation issue. |
 | ```onRender``` | | Triggers when the form is finished rendering. |
-| ```onCustomEvent``` | { ```type```: string - event type, ```component```: object - triggering component, ```data```: object - data for component, ```event```: string - raw event } | Event that is triggered from a button configured with "Event" type. | 
+| ```onCustomEvent``` | { ```type```: string - event type, ```component```: object - triggering component, ```data```: object - data for component, ```event```: string - raw event } | Event that is triggered from a button configured with "Event" type. |
 | ```onPrevPage``` | { ```page```: integer - new page number, ```submission```: object - submission data } | Triggered for wizards when "Previous" button is pressed. |
  ```onNextPage``` | { ```page```: integer - new page number, ```submission```: object - submission data } | Triggered for wizards when "Next" button is pressed. |
   ```formReady``` | ```formInstance```: Webform/Wizard - form class instance | Called when the form gets ready state. |
@@ -152,7 +156,7 @@ The Errors component can be used to print out errors that can be generated withi
 None
 
 ### FormEdit
-The FormEdit component wraps the FormBuilder component and adds the title, display, name and path fields at the top along with a save button. 
+The FormEdit component wraps the FormBuilder component and adds the title, display, name and path fields at the top along with a save button.
 
 #### Props
 
@@ -176,7 +180,7 @@ The FormGrid component can be used to render a list of forms with buttons to edi
 | Name | Type | Default | Description |
 |---|---|---|---|
 | ```forms``` | array of forms | [] | A list of forms to be rendered in the grid. |
-| ```perms``` | object | {view: true, edit: truem data: true, delete: true} | Whether or not to display buttons on the grid. |
+| ```perms``` | object | {view: true, edit: true, data: true, delete: true} | Whether or not to display buttons on the grid. |
 | ```query``` | object | {} | A query filter for passing to getForms when fetching forms. |
 | ```getForms``` | function | () => {} | A function to trigger getting a new set of forms. Should accept the page number and filter query object as parameters. |
 
