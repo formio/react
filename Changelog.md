@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased: 5.3.0-rc.2]
 ### Fixed
- - FIO-4301/4302: Fixes an issue where for is being set to the old formioInstance after recreating it 
+ - FIO-4301/4302: Fixes an issue where for is being set to the old formioInstance after recreating it
+ - Bump tough-cookie from 4.1.2 to 4.1.3
+ - Bump semver from 5.7.1 to 5.7.2
+ - Bump word-wrap from 1.2.3 to 1.2.4
 
 ## 5.3.0-rc.1
 ### Changed
