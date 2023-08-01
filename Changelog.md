@@ -4,12 +4,16 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased: 5.3.0-rc.2]
+## 5.3.0-rc.2
 ### Fixed
  - FIO-4301/4302: Fixes an issue where for is being set to the old formioInstance after recreating it
+
+### Changed
  - Bump tough-cookie from 4.1.2 to 4.1.3
  - Bump semver from 5.7.1 to 5.7.2
  - Bump word-wrap from 1.2.3 to 1.2.4
+ - Upgrade @babel/core@7.22.9, babel-loader@9.1.3, eslint-plugin-import@2.28.0, eslint-plugin-react@7.33.0, formiojs@4.15.1, jsdom@22.1.0, sinon@15.2.0, typescript@5.1.6, webpack@5.88.2, core-js@3.32.0
+ - Upgrade formiojs peerDependency to formiojs@4.15.1
 
 ## 5.3.0-rc.1
 ### Changed
