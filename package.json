@@ -29,7 +29,6 @@
   },
   "homepage": "https://github.com/formio/react-formio#readme",
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
     "core-js": "^3.32.0",
     "eventemitter2": "^6.4.5",
     "lodash": "^4.17.21",
