@@ -7,3 +7,4 @@ export {default as Grid} from './Grid';
 export {default as ReactComponent} from './ReactComponent';
 export {default as SubmissionGrid} from './SubmissionGrid';
 export {default as Pagination} from './Pagination';
+export {default as Report} from './Report';
