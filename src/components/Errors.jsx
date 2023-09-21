@@ -2,6 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Errors = (props) => {
+  const {
+    type = 'danger',
+    errors,
+  } = props;
+
   const hasErrors = (error) => {
     if (Array.isArray(error)) {
       return error.filter(item => !!item).length !== 0;
@@ -63,8 +68,6 @@ const Errors = (props) => {
   };
 
   // If there are no errors, don't render anything.
-  const {errors, type} = props;
-
   if (!hasErrors(errors)) {
     return null;
   }
@@ -77,10 +80,6 @@ const Errors = (props) => {
 Errors.propTypes = {
   errors: PropTypes.any,
   type: PropTypes.string
-};
-
-Errors.defaultProps = {
-  type: 'danger'
 };
 
 export default Errors;

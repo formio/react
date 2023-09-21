@@ -56,11 +56,11 @@ function getPageNumbers({
 }
 
 function Pagination({
-  activePage,
-  pageNeighbours,
+  activePage = 1,
+  pageNeighbours = 1,
+  prev = 'Previous',
+  next = 'Next',
   pages,
-  prev,
-  next,
   onSelect,
 }) {
   const pageNumbers = getPageNumbers({
@@ -136,13 +136,6 @@ Pagination.propTypes = {
   prev: PropTypes.string,
   next: PropTypes.string,
   onSelect: PropTypes.func.isRequired,
-};
-
-Pagination.defaultProps = {
-  activePage: 1,
-  pageNeighbours: 1,
-  prev: 'Previous',
-  next: 'Next',
 };
 
 export default Pagination;

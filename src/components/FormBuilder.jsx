@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import {FormBuilder as FormioFormBuilder} from 'formiojs';
 
 const FormBuilder = (props) => {
+  const {
+    options = {},
+    Builder = FormioFormBuilder,
+    form,
+  } = props;
   const builderRef = useRef();
   let element;
 
@@ -62,40 +67,35 @@ const FormBuilder = (props) => {
   };
 
   useEffect(() => {
-    initializeBuilder(props);
+    initializeBuilder({options, Builder, form});
     return () => (builderRef.current ? builderRef.current.instance.destroy(true) : null);
   }, [builderRef]);
 
   useEffect(() => {
-    if (!builderRef.current && props.form) {
-      initializeBuilder(props);
+    if (!builderRef.current && form) {
+      initializeBuilder({options, Builder, form});
     }
-  }, [props.form, builderRef]);
+  }, [form, builderRef]);
 
   const elementDidMount = useCallback((el) => element = el);
 
   useLayoutEffect(() => {
-    if (builderRef.current && props.form && props.form.display) {
-      builderRef.current.setDisplay(props.form.display);
+    if (builderRef.current && form && form.display) {
+      builderRef.current.setDisplay(form.display);
     }
-  }, [props.form.display]);
+  }, [form.display]);
 
   useLayoutEffect(() => {
-    if (builderRef.current && props.form && props.form.components) {
-      builderRef.current.setForm(props.form);
+    if (builderRef.current && form && form.components) {
+      builderRef.current.setForm(form);
     }
-  }, [props.form]);
+  }, [form]);
 
   return (
     <div>
       <div ref={elementDidMount}></div>
     </div>
   );
-};
-
-FormBuilder.defaultProps = {
-  options: {},
-  Builder: FormioFormBuilder
 };
 
 FormBuilder.propTypes = {

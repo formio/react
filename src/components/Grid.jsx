@@ -48,23 +48,23 @@ const renderFooter = (props) => renderPagination(props) || renderItemCounter(pro
 
 function Grid(props) {
   const {
-    Cell,
-    activePage,
+    Cell = ({column, row}) => (<span>{_get(row, column.key, '')}</span>),
+    activePage = 1,
+    emptyText = 'No data found',
+    firstItem = 0,
+    lastItem = 0,
+    onAction = () => {},
+    onPage = () => {},
+    onPageSizeChanged = () => {},
+    onSort = () => {},
+    pageNeighbours = 1,
+    pageSize = 0,
+    pageSizes = defaultPageSizes,
+    pages = 0,
+    sortOrder = '',
+    total = 0,
     columns,
-    emptyText,
-    firstItem,
     items,
-    lastItem,
-    onAction,
-    onPage,
-    onPageSizeChanged,
-    onSort,
-    pageNeighbours,
-    pageSize,
-    pageSizes,
-    pages,
-    sortOrder,
-    total,
   } = props;
   const normalizedPageSizes = pageSizes.map(normalizePageSize);
 
@@ -250,29 +250,6 @@ Grid.propTypes = {
   pages: PropTypes.number,
   sortOrder: PropTypes.string,
   total: PropTypes.number,
-};
-
-Grid.defaultProps = {
-  Cell: ({
-    column,
-    row,
-  }) => (
-    <span>{_get(row, column.key, '')}</span>
-  ),
-  activePage: 1,
-  emptyText: 'No data found',
-  firstItem: 0,
-  lastItem: 0,
-  onAction: () => {},
-  onPage: () => {},
-  onPageSizeChanged: () => {},
-  onSort: () => {},
-  pageNeighbours: 1,
-  pageSize: 0,
-  pageSizes: defaultPageSizes,
-  pages: 0,
-  sortOrder: '',
-  total: 0,
 };
 
 export default Grid;

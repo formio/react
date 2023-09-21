@@ -21,13 +21,54 @@ import {
 import Grid from './Grid';
 
 const SubmissionGrid = (props) => {
-  const getSortQuery = (key, sort) => {
-    const {
-      submissions: {
-        sort: currentSort,
+  const {
+    columns: propColumns = [],
+    getSubmissions = () => {},
+    onAction = () => {},
+    onPageSizeChanged = () => {},
+    operations = [
+      {
+        action: 'view',
+        buttonType: 'warning',
+        icon: 'list-alt',
+        permissionsResolver() {
+          return true;
+        },
+        title: 'View',
       },
-    } = props;
+      {
+        action: 'edit',
+        buttonType: 'secondary',
+        icon: 'edit',
+        permissionsResolver() {
+          return true;
+        },
+        title: 'Edit',
+      },
+      {
+        action: 'delete',
+        buttonType: 'danger',
+        icon: 'trash',
+        permissionsResolver() {
+          return true;
+        },
+      },
+    ],
+    pageSizes = defaultPageSizes,
+    submissions: {
+      sort: currentSort,
+      limit,
+      pagination: {
+        page,
+        numPages,
+        total,
+      },
+      submissions,
+    },
+    form,
+  } = props;
 
+  const getSortQuery = (key, sort) => {
     const sortKey = _isString(sort) ? sort : key;
     const ascSort = sortKey;
     const descSort = `-${sortKey}`;
@@ -51,8 +92,6 @@ const SubmissionGrid = (props) => {
     if (_isFunction(sort)) {
       return sort();
     }
-
-    const {getSubmissions} = props;
 
     getSubmissions(1, {
       sort: getSortQuery(key, sort),
@@ -109,12 +148,6 @@ const SubmissionGrid = (props) => {
     row: submission,
     column,
   }) => {
-    const {
-      form,
-      onAction,
-      operations,
-    } = props;
-
     if (column.key === 'operations') {
       return (
         <div>
@@ -154,25 +187,6 @@ const SubmissionGrid = (props) => {
       : <span>{String(value)}</span>;
   };
 
-  const {
-    columns: propColumns,
-    form,
-    getSubmissions,
-    onAction,
-    onPageSizeChanged,
-    pageSizes,
-    submissions: {
-      limit,
-      pagination: {
-        page,
-        numPages,
-        total,
-      },
-      sort,
-      submissions,
-    },
-  } = props;
-
   const columns = propColumns.length ? propColumns : getColumns(form);
   const skip = (page - 1) * limit;
   const last = Math.min(skip + limit, total);
@@ -193,7 +207,7 @@ const SubmissionGrid = (props) => {
       pageSize={limit}
       pageSizes={pageSizes}
       pages={numPages}
-      sortOrder={sort}
+      sortOrder={currentSort}
       total={total}
     />
   );
@@ -208,42 +222,6 @@ SubmissionGrid.propTypes = {
   operations: Operations,
   pageSizes: PageSizes,
   submissions: PropTypes.object.isRequired,
-};
-
-SubmissionGrid.defaultProps = {
-columns: [],
-getSubmissions: () => {},
-onAction: () => {},
-onPageSizeChanged: () => {},
-operations: [
-  {
-    action: 'view',
-    buttonType: 'warning',
-    icon: 'list-alt',
-    permissionsResolver() {
-      return true;
-    },
-    title: 'View',
-  },
-  {
-    action: 'edit',
-    buttonType: 'secondary',
-    icon: 'edit',
-    permissionsResolver() {
-      return true;
-    },
-    title: 'Edit',
-  },
-  {
-    action: 'delete',
-    buttonType: 'danger',
-    icon: 'trash',
-    permissionsResolver() {
-      return true;
-    },
-  },
-],
-pageSizes: defaultPageSizes,
 };
 
 export default SubmissionGrid;

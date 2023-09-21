@@ -30,13 +30,28 @@ const reducer = (form, {type, value}) => {
 };
 
 const FormEdit = (props) => {
-  const [form, dispatchFormAction] = useReducer(reducer, _cloneDeep(props.form));
+  const {
+    form: propsForm = {
+      title: '',
+      name: '',
+      path: '',
+      display: 'form',
+      type: 'form',
+      components: [],
+    },
+    saveText,
+    options,
+    builder,
+    ref,
+  } = props;
+
+  const [form, dispatchFormAction] = useReducer(reducer, _cloneDeep(propsForm));
   useEffect(() => {
     const {form: newForm} = props;
     if (newForm && (form._id !== newForm._id || form.modified !== newForm.modified)) {
       dispatchFormAction({type: 'replaceForm', value: newForm});
     }
-  }, [props.form]);
+  }, [propsForm]);
 
   const saveForm = () => {
     const {saveForm} = props;
@@ -52,8 +67,6 @@ const FormEdit = (props) => {
   };
 
   const formChange = (newForm) => dispatchFormAction({type: 'formChange', value: newForm});
-
-  const {saveText, options, builder, ref} = props;
 
   return (
     <div>
@@ -159,17 +172,6 @@ FormEdit.propTypes = {
   builder: PropTypes.any,
   saveForm: PropTypes.func,
   saveText: PropTypes.string
-};
-
-FormEdit.defaultProps = {
-  form: {
-    title: '',
-    name: '',
-    path: '',
-    display: 'form',
-    type: 'form',
-    components: [],
-  }
 };
 
 export default FormEdit;
