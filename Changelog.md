@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased: 5.3.0-rc.3]
 ### Added
  - FIO-6493: added react wrapper for reports
+ - FIO-7139: Replaced defaultProps with JS default values
 
 ## 5.3.0-rc.2
 ### Fixed
