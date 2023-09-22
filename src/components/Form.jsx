@@ -104,6 +104,10 @@ const FormioForm = Formio.Form;
 /**
  * @typedef {object} Options
  * @property {boolean} [readOnly]
+ * @property {boolean} [useSessionToken]
+ * @property {boolean} [flatten]
+ * @property {boolean} [sanitize]
+ * @property {string} [renderMode]
  * @property {boolean} [noAlerts]
  * @property {object} [i18n]
  * @property {string} [template]
@@ -143,6 +147,10 @@ Form.propTypes = {
   submission: PropTypes.object,
   options: PropTypes.shape({
     readOnly: PropTypes.bool,
+    useSessionToken: PropTypes.bool,
+    flatten: PropTypes.bool,
+    renderMode: PropTypes.string,
+    sanitize: PropTypes.string,
     noAlerts: PropTypes.bool,
     i18n: PropTypes.object,
     template: PropTypes.string,
