@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - FIO-6493: added react wrapper for reports
  - FIO-7139: Replaced defaultProps with JS default values
+ - FIO-7315: Added missed form options properties to the PropTypes
 
 ## 5.3.0-rc.2
 ### Fixed
