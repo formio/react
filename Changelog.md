@@ -4,11 +4,12 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased: 5.3.0-rc.3]
+## 5.3.0-rc.3
 ### Added
  - FIO-6493: added react wrapper for reports
  - FIO-7139: Replaced defaultProps with JS default values
  - FIO-7315: Added missed form options properties to the PropTypes
+ - Upgrade @babel/core@7.23.0, chai@4.3.9, formiojs@4.17.1, typescript@5.2.2, core-js@3.32.2
 
 ## 5.3.0-rc.2
 ### Fixed
