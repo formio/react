@@ -1,4 +1,5 @@
 import {Formio} from 'formiojs';
+import './i18n';
 const Webform = Formio.Webform;
 const WebformBuilder = Formio.WebformBuilder;
 const Wizard = Formio.Wizard;

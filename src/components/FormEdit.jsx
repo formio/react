@@ -4,6 +4,7 @@ import FormBuilder from './FormBuilder';
 import _set from 'lodash/set';
 import _cloneDeep from 'lodash/cloneDeep';
 import _camelCase from 'lodash/camelCase';
+import {Trans, useTranslation} from 'react-i18next';
 
 const reducer = (form, {type, value}) => {
   const formCopy = _cloneDeep(form);
@@ -45,6 +46,33 @@ const FormEdit = (props) => {
     ref,
   } = props;
 
+  const {t, i18n} = useTranslation();
+  let language = undefined;
+  let i18nOption = undefined;
+  if (options) {
+    language = options.language;
+    i18nOption = options.i18n;
+  }
+  useEffect(() => {
+    if (i18nOption) {
+      for (const lang of Object.keys(i18nOption)) {
+        i18n.addResourceBundle(
+                lang,
+                'translations',
+                i18nOption[lang],
+                true,
+                true
+              );
+      }
+    }
+  }, [i18nOption]);
+
+  useEffect(() => {
+    if (language) {
+      i18n.changeLanguage(language);
+    }
+  }, [language]);
+
   const [form, dispatchFormAction] = useReducer(reducer, _cloneDeep(propsForm));
   useEffect(() => {
     const {form: newForm} = props;
@@ -73,11 +101,13 @@ const FormEdit = (props) => {
       <div className="row" ref={ref}>
         <div className="col-lg-2 col-md-4 col-sm-4">
           <div id="form-group-title" className="form-group">
-            <label htmlFor="title" className="control-label field-required">Title</label>
+            <label htmlFor="title" className="control-label field-required">
+              <Trans>Title</Trans>
+            </label>
             <input
               type="text"
               className="form-control" id="title"
-              placeholder="Enter the form title"
+              placeholder={t('Enter the form title')}
               value={form.title || ''}
               onChange={event => handleChange('title', event)}
             />
@@ -85,12 +115,14 @@ const FormEdit = (props) => {
         </div>
         <div className="col-lg-2 col-md-4 col-sm-4">
           <div id="form-group-name" className="form-group">
-            <label htmlFor="name" className="control-label field-required">Name</label>
+            <label htmlFor="name" className="control-label field-required">
+              <Trans>Name</Trans>
+            </label>
             <input
               type="text"
               className="form-control"
               id="name"
-              placeholder="Enter the form machine name"
+              placeholder={t('Enter the form machine name')}
               value={form.name || ''}
               onChange={event => handleChange('name', event)}
             />
@@ -98,7 +130,9 @@ const FormEdit = (props) => {
         </div>
         <div className="col-lg-2 col-md-3 col-sm-3">
           <div id="form-group-display" className="form-group">
-            <label htmlFor="name" className="control-label">Display as</label>
+            <label htmlFor="name" className="control-label">
+              <Trans>Display as</Trans>
+            </label>
             <div className="input-group">
               <select
                 className="form-control"
@@ -107,16 +141,18 @@ const FormEdit = (props) => {
                 value={form.display || ''}
                 onChange={event => handleChange('display', event)}
               >
-                <option label="Form" value="form">Form</option>
-                <option label="Wizard" value="wizard">Wizard</option>
-                <option label="PDF" value="pdf">PDF</option>
+                <option label={t('Form')} value="form">Form</option>
+                <option label={t('Wizard')} value="wizard">Wizard</option>
+                <option label={t('PDF')} value="pdf">PDF</option>
               </select>
             </div>
           </div>
         </div>
         <div className="col-lg-2 col-md-3 col-sm-3">
           <div id="form-group-type" className="form-group">
-            <label htmlFor="form-type" className="control-label">Type</label>
+            <label htmlFor="form-type" className="control-label">
+              <Trans>Type</Trans>
+            </label>
             <div className="input-group">
               <select
                 className="form-control"
@@ -125,21 +161,23 @@ const FormEdit = (props) => {
                 value={form.type}
                 onChange={event => handleChange('type', event)}
               >
-                <option label="Form" value="form">Form</option>
-                <option label="Resource" value="resource">Resource</option>
+                <option label={t('Form')} value="form">Form</option>
+                <option label={t('Resource')} value="resource">Resource</option>
               </select>
             </div>
           </div>
         </div>
         <div className="col-lg-2 col-md-4 col-sm-4">
           <div id="form-group-path" className="form-group">
-            <label htmlFor="path" className="control-label field-required">Path</label>
+            <label htmlFor="path" className="control-label field-required">
+              <Trans>Path</Trans>
+            </label>
             <div className="input-group">
               <input
                 type="text"
                 className="form-control"
                 id="path"
-                placeholder="example"
+                placeholder={t('example')}
                 style={{'textTransform': 'lowercase', width:'120px'}}
                 value={form.path || ''}
                 onChange={event => handleChange('path', event)}
