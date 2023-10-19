@@ -1,6 +1,6 @@
 {
   "name": "@formio/react",
-  "version": "5.3.0-rc.3",
+  "version": "5.3.0",
   "description": "React renderer for form.io forms.",
   "main": "lib/index.js",
   "scripts": {
