@@ -102,10 +102,10 @@ function Grid(props) {
 
     let sortClass = '';
     if (sortOrder === ascSort) {
-      sortClass = 'glyphicon glyphicon-triangle-top fa fa-caret-up';
+      sortClass = 'fa fa-caret-up bi bi-caret-up';
     }
     else if (sortOrder === descSort) {
-      sortClass = 'glyphicon glyphicon-triangle-bottom fa fa-caret-down';
+      sortClass = 'fa fa-caret-down bi bi-caret-down';
     }
 
     return (
@@ -184,7 +184,7 @@ function Grid(props) {
 
   const ItemCounter = () => (
     <div className="col-auto ml-auto">
-      <span className="item-counter pull-right">
+      <span className="item-counter float-end">
         <span className="page-num">{ firstItem } - { lastItem }</span> / { total } total
       </span>
     </div>
