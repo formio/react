@@ -5,6 +5,7 @@ import _isObject from 'lodash/isObject';
 import _isString from 'lodash/isString';
 import PropTypes from 'prop-types';
 import React from 'react';
+import DOMPurify from 'dompurify';
 
 import {defaultPageSizes} from '../constants';
 import {
@@ -180,9 +181,11 @@ const SubmissionGrid = (props) => {
       ? column.value(submission)
       : _get(submission, column.key, '');
 
+    const sanitizedContent = DOMPurify.sanitize(value.content);
+  
     return (_isObject(value) && value.content)
       ? value.isHtml
-        ? <div dangerouslySetInnerHTML={{__html: value.content}} />
+        ? <div dangerouslySetInnerHTML={{__html: sanitizedContent}} />
         : <span>{String(value.content)}</span>
       : <span>{String(value)}</span>;
   };
