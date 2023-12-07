@@ -19,6 +19,7 @@ import {
 } from '../utils';
 
 import Grid from './Grid';
+import { sanitize } from 'isomorphic-dompurify';
 
 const SubmissionGrid = (props) => {
   const {
@@ -182,7 +183,7 @@ const SubmissionGrid = (props) => {
 
     return (_isObject(value) && value.content)
       ? value.isHtml
-        ? <div dangerouslySetInnerHTML={{__html: value.content}} />
+        ? <div dangerouslySetInnerHTML={{__html: sanitize(value.content)}} />
         : <span>{String(value.content)}</span>
       : <span>{String(value)}</span>;
   };

@@ -32,6 +32,7 @@
     "babel-polyfill": "^6.26.0",
     "core-js": "^3.32.0",
     "eventemitter2": "^6.4.5",
+    "isomorphic-dompurify": "^1.11.0",
     "lodash": "^4.17.21",
     "prop-types": "^15.8.1"
   },
