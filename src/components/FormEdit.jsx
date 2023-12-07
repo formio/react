@@ -147,8 +147,8 @@ const FormEdit = (props) => {
             </div>
           </div>
         </div>
-        <div id="save-buttons" className="col-lg-2 col-md-5 col-sm-5 save-buttons pull-right">
-          <div className="form-group pull-right">
+        <div id="save-buttons" className="col-lg-2 col-md-5 col-sm-5 save-buttons float-end">
+          <div className="form-group float-end">
             <span className="btn btn-primary" onClick={() => saveForm()}>
               {saveText}
             </span>
