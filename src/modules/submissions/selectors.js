@@ -1,3 +1,4 @@
-import {selectRoot} from '../root';
+import { selectRoot } from '../root';
 
-export const selectSubmissions = (name, state) => selectRoot(name, state).submissions;
+export const selectSubmissions = (name, state) =>
+    selectRoot(name, state).submissions;

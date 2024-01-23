@@ -1,1 +1,1 @@
-declare module 'react-formio'
+declare module 'react-formio';

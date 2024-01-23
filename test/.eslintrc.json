@@ -1,9 +1,4 @@
 {
-  "extends": [
-      "../.eslintrc.json",
-      "plugin:mocha/recommended"
-  ],
-  "plugins": [
-      "mocha"
-  ]
+    "extends": ["../.eslintrc.json", "plugin:mocha/recommended"],
+    "plugins": ["mocha"]
 }

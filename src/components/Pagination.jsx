@@ -5,137 +5,139 @@ const LEFT_PAGE = 'LEFT';
 const RIGHT_PAGE = 'RIGHT';
 
 function range(from, to, step = 1) {
-  let i = from;
-  const range = [];
+    let i = from;
+    const range = [];
 
-  while (i <= to) {
-    range.push(i);
-    i += step;
-  }
+    while (i <= to) {
+        range.push(i);
+        i += step;
+    }
 
-  return range;
+    return range;
 }
 
-function getPageNumbers({
-  currentPage,
-  pageNeighbours,
-  totalPages,
-}) {
-  const totalNumbers = (pageNeighbours * 2) + 3;
-  const totalBlocks = totalNumbers + 2;
+function getPageNumbers({ currentPage, pageNeighbours, totalPages }) {
+    const totalNumbers = pageNeighbours * 2 + 3;
+    const totalBlocks = totalNumbers + 2;
 
-  if (totalPages > totalBlocks) {
-    const calculatedStartPage = Math.max(2, currentPage - pageNeighbours);
-    const calculatedEndPage = Math.min(totalPages - 1, currentPage + pageNeighbours);
-    const startPage = (calculatedStartPage === 3) ? 2 : calculatedStartPage;
-    const endPage = (calculatedEndPage === (totalPages - 2)) ? (totalPages - 1) : calculatedEndPage;
+    if (totalPages > totalBlocks) {
+        const calculatedStartPage = Math.max(2, currentPage - pageNeighbours);
+        const calculatedEndPage = Math.min(
+            totalPages - 1,
+            currentPage + pageNeighbours,
+        );
+        const startPage = calculatedStartPage === 3 ? 2 : calculatedStartPage;
+        const endPage =
+            calculatedEndPage === totalPages - 2
+                ? totalPages - 1
+                : calculatedEndPage;
 
-    let pages = range(startPage, endPage);
+        let pages = range(startPage, endPage);
 
-    const hasLeftSpill = startPage > 2;
-    const hasRightSpill = (totalPages - endPage) > 1;
-    const spillOffset = totalNumbers - (pages.length + 1);
-    let extraPages;
+        const hasLeftSpill = startPage > 2;
+        const hasRightSpill = totalPages - endPage > 1;
+        const spillOffset = totalNumbers - (pages.length + 1);
+        let extraPages;
 
-    if (hasLeftSpill && !hasRightSpill) {
-      extraPages = range(startPage - spillOffset, startPage - 1);
-      pages = [LEFT_PAGE, ...extraPages, ...pages];
+        if (hasLeftSpill && !hasRightSpill) {
+            extraPages = range(startPage - spillOffset, startPage - 1);
+            pages = [LEFT_PAGE, ...extraPages, ...pages];
+        } else if (!hasLeftSpill && hasRightSpill) {
+            extraPages = range(endPage + 1, endPage + spillOffset);
+            pages = [...pages, ...extraPages, RIGHT_PAGE];
+        } else {
+            pages = [LEFT_PAGE, ...pages, RIGHT_PAGE];
+        }
+
+        return [1, ...pages, totalPages];
     }
-    else if (!hasLeftSpill && hasRightSpill) {
-      extraPages = range(endPage + 1, endPage + spillOffset);
-      pages = [...pages, ...extraPages, RIGHT_PAGE];
-    }
-    else {
-      pages = [LEFT_PAGE, ...pages, RIGHT_PAGE];
-    }
 
-    return [1, ...pages, totalPages];
-  }
-
-  return range(1, totalPages);
+    return range(1, totalPages);
 }
 
 function Pagination({
-  activePage = 1,
-  pageNeighbours = 1,
-  prev = 'Previous',
-  next = 'Next',
-  pages,
-  onSelect,
+    activePage = 1,
+    pageNeighbours = 1,
+    prev = 'Previous',
+    next = 'Next',
+    pages,
+    onSelect,
 }) {
-  const pageNumbers = getPageNumbers({
-    currentPage: activePage,
-    pageNeighbours,
-    totalPages: pages,
-  });
+    const pageNumbers = getPageNumbers({
+        currentPage: activePage,
+        pageNeighbours,
+        totalPages: pages,
+    });
 
-  return (
-    <nav aria-label="Page navigation">
-      <ul className="pagination">
-        <li className={`page-item ${(activePage === 1) ? 'disabled' : ''}`}>
-          <button
-            className="page-link"
-            onClick={() => {
-              if (activePage !== 1) {
-                onSelect(activePage - 1);
-              }
-            }}
-          >
-            {prev}
-          </button>
-        </li>
-
-        {
-          pageNumbers.map((page) => {
-            const className = (page === activePage) ? 'active' : '';
-
-            if ([LEFT_PAGE, RIGHT_PAGE].includes(page)) {
-              return (
-                <li className="page-item disabled">
-                  <span className="page-link">
-                    <span aria-hidden="true">...</span>
-                  </span>
-                </li>
-              );
-            }
-
-            return (
-              <li className={`page-item ${className}`} key={page}>
-                <button
-                  className="page-link"
-                  onClick={() => onSelect(page)}
+    return (
+        <nav aria-label="Page navigation">
+            <ul className="pagination">
+                <li
+                    className={`page-item ${activePage === 1 ? 'disabled' : ''}`}
                 >
-                  {page}
-                </button>
-              </li>
-            );
-          })
-        }
+                    <button
+                        className="page-link"
+                        onClick={() => {
+                            if (activePage !== 1) {
+                                onSelect(activePage - 1);
+                            }
+                        }}
+                    >
+                        {prev}
+                    </button>
+                </li>
 
-        <li className={`page-item ${(activePage === pages) ? 'disabled' : ''}`}>
-          <button
-            className="page-link"
-            onClick={() => {
-              if (activePage !== pages) {
-                onSelect(activePage + 1);
-              }
-            }}
-          >
-            {next}
-          </button>
-        </li>
-      </ul>
-    </nav>
-  );
+                {pageNumbers.map((page) => {
+                    const className = page === activePage ? 'active' : '';
+
+                    if ([LEFT_PAGE, RIGHT_PAGE].includes(page)) {
+                        return (
+                            <li className="page-item disabled">
+                                <span className="page-link">
+                                    <span aria-hidden="true">...</span>
+                                </span>
+                            </li>
+                        );
+                    }
+
+                    return (
+                        <li className={`page-item ${className}`} key={page}>
+                            <button
+                                className="page-link"
+                                onClick={() => onSelect(page)}
+                            >
+                                {page}
+                            </button>
+                        </li>
+                    );
+                })}
+
+                <li
+                    className={`page-item ${activePage === pages ? 'disabled' : ''}`}
+                >
+                    <button
+                        className="page-link"
+                        onClick={() => {
+                            if (activePage !== pages) {
+                                onSelect(activePage + 1);
+                            }
+                        }}
+                    >
+                        {next}
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    );
 }
 
 Pagination.propTypes = {
-  activePage: PropTypes.number,
-  pageNeighbours: PropTypes.number,
-  pages: PropTypes.number.isRequired,
-  prev: PropTypes.string,
-  next: PropTypes.string,
-  onSelect: PropTypes.func.isRequired,
+    activePage: PropTypes.number,
+    pageNeighbours: PropTypes.number,
+    pages: PropTypes.number.isRequired,
+    prev: PropTypes.string,
+    next: PropTypes.string,
+    onSelect: PropTypes.func.isRequired,
 };
 
 export default Pagination;
