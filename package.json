@@ -1,85 +1,78 @@
 {
-  "name": "@formio/react",
-  "version": "5.3.0",
-  "description": "React renderer for form.io forms.",
-  "main": "lib/index.js",
-  "scripts": {
-    "test": "karma start --single-run",
-    "build": "babel ./src --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
-    "build-types": "npx tsc",
-    "lint": "eslint src",
-    "watch": "babel ./src --watch --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
-    "prepublish": "npm run lint && npm run build && npm run build-types"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/formio/react-formio.git"
-  },
-  "keywords": [
-    "React",
-    "component",
-    "Formio",
-    "Forms",
-    "react-component"
-  ],
-  "author": "Randall Knutson <randall@form.io>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/formio/react-formio/issues"
-  },
-  "homepage": "https://github.com/formio/react-formio#readme",
-  "dependencies": {
-    "babel-polyfill": "^6.26.0",
-    "core-js": "^3.32.0",
-    "eventemitter2": "^6.4.5",
-    "lodash": "^4.17.21",
-    "prop-types": "^15.8.1"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.22.9",
-    "@formio/js": "^5.0.0-rc.33",
-    "ajv-pack": "^0.3.1",
-    "babel-cli": "^6.24.1",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^10.1.0",
-    "babel-loader": "^9.1.3",
-    "babel-preset-es2015": "^6.14.0",
-    "babel-preset-react": "^6.11.1",
-    "babel-preset-stage-2": "^6.13.0",
-    "babel-register": "^6.26.0",
-    "chai": "^4.3.6",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.6",
-    "escope": "^4.0.0",
-    "eslint": "7.29.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-formio": "^1.1.0",
-    "eslint-loader": "^4.0.2",
-    "eslint-plugin-import": "^2.28.0",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-mocha": "^10.1.0",
-    "eslint-plugin-react": "^7.33.0",
-    "jsdom": "^22.1.0",
-    "karma": "^6.3.18",
-    "karma-chrome-launcher": "^3.1.1",
-    "karma-mocha": "^2.0.1",
-    "karma-mocha-reporter": "^2.2.5",
-    "karma-webpack": "^5.0.0",
-    "mocha": "^10.2.0",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-test-renderer": "^18.2.0",
-    "react-transform-catch-errors": "^1.0.0",
-    "sinon": "^15.2.0",
-    "typescript": "^5.1.6",
-    "webpack": "^5.88.2"
-  },
-  "files": [
-    "lib"
-  ],
-  "peerDependencies": {
-    "@formio/js": "^5.0.0-rc.33",
-    "react": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0",
-    "react-dom": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0"
-  }
+	"name": "@formio/react",
+	"version": "5.3.0",
+	"description": "React renderer for form.io forms.",
+	"main": "lib/index.js",
+	"scripts": {
+		"test": "karma start --single-run",
+		"build": "babel ./src --ignore=*.spec.js --out-dir ./lib",
+		"build-types": "npx tsc",
+		"lint": "eslint src",
+		"format": "prettier . --write",
+		"watch": "babel ./src --watch --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
+		"prepublish": "yarn format && yarn lint && yarn build && yarn build-types"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/formio/react-formio.git"
+	},
+	"keywords": [
+		"React",
+		"component",
+		"Formio",
+		"Forms",
+		"react-component"
+	],
+	"author": "Randall Knutson <randall@form.io>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/formio/react-formio/issues"
+	},
+	"homepage": "https://github.com/formio/react-formio#readme",
+	"dependencies": {
+		"babel-polyfill": "^6.26.0",
+		"core-js": "^3.35.1",
+		"eventemitter2": "^6.4.5",
+		"lodash": "^4.17.21",
+		"prop-types": "^15.8.1"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.23.4",
+		"@babel/core": "^7.23.7",
+		"@babel/preset-env": "^7.23.8",
+		"@babel/preset-react": "^7.23.3",
+		"@formio/js": "^5.0.0-rc.33",
+		"babel-loader": "^9.1.3",
+		"chai": "^4.3.6",
+		"enzyme": "^3.11.0",
+		"enzyme-adapter-react-16": "^1.15.6",
+		"escope": "^4.0.0",
+		"eslint": "^8.56.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-mocha": "^10.2.0",
+		"eslint-plugin-react": "^7.33.2",
+		"jsdom": "^22.1.0",
+		"karma": "^6.3.18",
+		"karma-chrome-launcher": "^3.1.1",
+		"karma-mocha": "^2.0.1",
+		"karma-mocha-reporter": "^2.2.5",
+		"karma-webpack": "^5.0.0",
+		"mocha": "^10.2.0",
+		"prettier": "3.2.4",
+		"react": "^18.1.0",
+		"react-dom": "^18.1.0",
+		"react-test-renderer": "^18.2.0",
+		"react-transform-catch-errors": "^1.0.0",
+		"sinon": "^15.2.0",
+		"typescript": "^5.1.6",
+		"webpack": "^5.88.2"
+	},
+	"files": [
+		"lib"
+	],
+	"peerDependencies": {
+		"@formio/js": "^5.0.0-rc.33",
+		"react": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0",
+		"react-dom": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0"
+	}
 }
