@@ -67,8 +67,8 @@ import { Form } from '@formio/react';
 
 ```javascript
 ReactDOM.render(
-    <Form src="https://example.form.io/example" onSubmit={console.log} />,
-    document.getElementById('example'),
+	<Form src="https://example.form.io/example" onSubmit={console.log} />,
+	document.getElementById('example'),
 );
 ```
 
@@ -90,26 +90,26 @@ With Components:
 
 ```javascript
 <FormBuilder
-    form={{
-        display: 'form',
-        components: [
-            {
-                label: 'Email',
-                tableView: true,
-                key: 'email',
-                type: 'email',
-                input: true,
-            },
-            {
-                label: 'Password',
-                tableView: false,
-                key: 'password',
-                type: 'password',
-                input: true,
-                protected: true,
-            },
-        ],
-    }}
+	form={{
+		display: 'form',
+		components: [
+			{
+				label: 'Email',
+				tableView: true,
+				key: 'email',
+				type: 'email',
+				input: true,
+			},
+			{
+				label: 'Password',
+				tableView: false,
+				key: 'password',
+				type: 'password',
+				input: true,
+				protected: true,
+			},
+		],
+	}}
 />
 ```
 
@@ -143,11 +143,11 @@ import { FormBuilder } from '@formio/react';
 
 ```javascript
 ReactDOM.render(
-    <FormBuilder
-        form={{ display: 'form' }}
-        onChange={(schema) => console.log(schema)}
-    />,
-    document.getElementById('builder'),
+	<FormBuilder
+		form={{ display: 'form' }}
+		onChange={(schema) => console.log(schema)}
+	/>,
+	document.getElementById('builder'),
 );
 ```
 

@@ -11,101 +11,101 @@ const FormioForm = Formio.Form;
  * @returns {JSX.Element}
  */
 const Form = (props) => {
-    let instance;
-    let createPromise;
-    let element;
-    const [formio, setFormio] = useState(undefined);
-    const jsonForm = useRef(undefined);
+	let instance;
+	let createPromise;
+	let element;
+	const [formio, setFormio] = useState(undefined);
+	const jsonForm = useRef(undefined);
 
-    useEffect(() => () => (formio ? formio.destroy(true) : null), [formio]);
+	useEffect(() => () => (formio ? formio.destroy(true) : null), [formio]);
 
-    const createWebformInstance = (srcOrForm) => {
-        const { options = {}, formioform, formReady } = props;
-        instance = new (formioform || FormioForm)(element, srcOrForm, options);
-        createPromise = instance.ready.then((formioInstance) => {
-            setFormio(formioInstance);
-            if (formReady) {
-                formReady(formioInstance);
-            }
-            return formioInstance;
-        });
+	const createWebformInstance = (srcOrForm) => {
+		const { options = {}, formioform, formReady } = props;
+		instance = new (formioform || FormioForm)(element, srcOrForm, options);
+		createPromise = instance.ready.then((formioInstance) => {
+			setFormio(formioInstance);
+			if (formReady) {
+				formReady(formioInstance);
+			}
+			return formioInstance;
+		});
 
-        return createPromise;
-    };
+		return createPromise;
+	};
 
-    const onAnyEvent = (event, ...args) => {
-        if (event.startsWith('formio.')) {
-            const funcName = `on${event.charAt(7).toUpperCase()}${event.slice(8)}`;
-            // eslint-disable-next-line no-prototype-builtins
-            if (
-                props.hasOwnProperty(funcName) &&
-                typeof props[funcName] === 'function'
-            ) {
-                props[funcName](...args);
-            }
-        }
-    };
+	const onAnyEvent = (event, ...args) => {
+		if (event.startsWith('formio.')) {
+			const funcName = `on${event.charAt(7).toUpperCase()}${event.slice(8)}`;
+			// eslint-disable-next-line no-prototype-builtins
+			if (
+				props.hasOwnProperty(funcName) &&
+				typeof props[funcName] === 'function'
+			) {
+				props[funcName](...args);
+			}
+		}
+	};
 
-    const initializeFormio = () => {
-        const { submission } = props;
-        if (createPromise) {
-            instance.onAny(onAnyEvent);
-            createPromise.then(() => {
-                if (formio && submission) {
-                    formio.submission = submission;
-                }
-            });
-        }
-    };
+	const initializeFormio = () => {
+		const { submission } = props;
+		if (createPromise) {
+			instance.onAny(onAnyEvent);
+			createPromise.then(() => {
+				if (formio && submission) {
+					formio.submission = submission;
+				}
+			});
+		}
+	};
 
-    useEffect(() => {
-        const { src } = props;
-        if (src) {
-            createWebformInstance(src).then((formioInstance) => {
-                if (formioInstance) {
-                    formioInstance.src = src;
-                }
-            });
-            initializeFormio();
-        }
-    }, [props.src]);
+	useEffect(() => {
+		const { src } = props;
+		if (src) {
+			createWebformInstance(src).then((formioInstance) => {
+				if (formioInstance) {
+					formioInstance.src = src;
+				}
+			});
+			initializeFormio();
+		}
+	}, [props.src]);
 
-    useEffect(() => {
-        const { form, url } = props;
+	useEffect(() => {
+		const { form, url } = props;
 
-        if (form && !_isEqual(form, jsonForm.current)) {
-            jsonForm.current = cloneDeep(form);
-            createWebformInstance(jsonForm.current).then((formioInstance) => {
-                if (formioInstance) {
-                    formioInstance.form = jsonForm.current;
-                    if (url) {
-                        formioInstance.url = url;
-                    }
-                }
-            });
-            initializeFormio();
-        }
-    }, [props.form]);
+		if (form && !_isEqual(form, jsonForm.current)) {
+			jsonForm.current = cloneDeep(form);
+			createWebformInstance(jsonForm.current).then((formioInstance) => {
+				if (formioInstance) {
+					formioInstance.form = jsonForm.current;
+					if (url) {
+						formioInstance.url = url;
+					}
+				}
+			});
+			initializeFormio();
+		}
+	}, [props.form]);
 
-    useEffect(() => {
-        const { options = {} } = props;
-        if (!options.events) {
-            options.events = Form.getDefaultEmitter();
-        }
-    }, [props.options]);
+	useEffect(() => {
+		const { options = {} } = props;
+		if (!options.events) {
+			options.events = Form.getDefaultEmitter();
+		}
+	}, [props.options]);
 
-    useEffect(() => {
-        const { submission } = props;
-        if (
-            formio &&
-            submission &&
-            !_isEqual(formio.submission.data, submission.data)
-        ) {
-            formio.submission = submission;
-        }
-    }, [props.submission, formio]);
+	useEffect(() => {
+		const { submission } = props;
+		if (
+			formio &&
+			submission &&
+			!_isEqual(formio.submission.data, submission.data)
+		) {
+			formio.submission = submission;
+		}
+	}, [props.submission, formio]);
 
-    return <div ref={(el) => (element = el)} />;
+	return <div ref={(el) => (element = el)} />;
 };
 
 /**
@@ -148,47 +148,47 @@ const Form = (props) => {
  * @property {any} [formioform]
  */
 Form.propTypes = {
-    src: PropTypes.string,
-    url: PropTypes.string,
-    form: PropTypes.object,
-    submission: PropTypes.object,
-    options: PropTypes.shape({
-        readOnly: PropTypes.bool,
-        useSessionToken: PropTypes.bool,
-        flatten: PropTypes.bool,
-        renderMode: PropTypes.string,
-        sanitize: PropTypes.string,
-        noAlerts: PropTypes.bool,
-        i18n: PropTypes.object,
-        template: PropTypes.string,
-        saveDraft: PropTypes.bool,
-        language: PropTypes.string,
-    }),
-    onPrevPage: PropTypes.func,
-    onNextPage: PropTypes.func,
-    onCancel: PropTypes.func,
-    onChange: PropTypes.func,
-    onCustomEvent: PropTypes.func,
-    onComponentChange: PropTypes.func,
-    onSubmit: PropTypes.func,
-    onSubmitDone: PropTypes.func,
-    onFormLoad: PropTypes.func,
-    onError: PropTypes.func,
-    onRender: PropTypes.func,
-    onAttach: PropTypes.func,
-    onBuild: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
-    onInitialized: PropTypes.func,
-    formReady: PropTypes.func,
-    formioform: PropTypes.any,
+	src: PropTypes.string,
+	url: PropTypes.string,
+	form: PropTypes.object,
+	submission: PropTypes.object,
+	options: PropTypes.shape({
+		readOnly: PropTypes.bool,
+		useSessionToken: PropTypes.bool,
+		flatten: PropTypes.bool,
+		renderMode: PropTypes.string,
+		sanitize: PropTypes.string,
+		noAlerts: PropTypes.bool,
+		i18n: PropTypes.object,
+		template: PropTypes.string,
+		saveDraft: PropTypes.bool,
+		language: PropTypes.string,
+	}),
+	onPrevPage: PropTypes.func,
+	onNextPage: PropTypes.func,
+	onCancel: PropTypes.func,
+	onChange: PropTypes.func,
+	onCustomEvent: PropTypes.func,
+	onComponentChange: PropTypes.func,
+	onSubmit: PropTypes.func,
+	onSubmitDone: PropTypes.func,
+	onFormLoad: PropTypes.func,
+	onError: PropTypes.func,
+	onRender: PropTypes.func,
+	onAttach: PropTypes.func,
+	onBuild: PropTypes.func,
+	onFocus: PropTypes.func,
+	onBlur: PropTypes.func,
+	onInitialized: PropTypes.func,
+	formReady: PropTypes.func,
+	formioform: PropTypes.any,
 };
 
 Form.getDefaultEmitter = () => {
-    return new EventEmitter({
-        wildcard: false,
-        maxListeners: 0,
-    });
+	return new EventEmitter({
+		wildcard: false,
+		maxListeners: 0,
+	});
 };
 
 export default Form;
