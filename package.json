@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "karma start --single-run",
-    "build": "babel ./src --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
+    "build": "babel ./src --ignore=*.spec.js --out-dir ./lib",
     "build-types": "npx tsc",
     "lint": "eslint src",
     "watch": "babel ./src --watch --ignore=*.spec.js --out-dir ./lib --presets es2015,react,stage-2",
@@ -39,6 +39,7 @@
     "@babel/cli": "^7.23.4",
     "@babel/core": "^7.23.7",
     "@babel/preset-env": "^7.23.8",
+    "@babel/preset-react": "^7.23.3",
     "@formio/js": "^5.0.0-rc.33",
     "chai": "^4.3.6",
     "enzyme": "^3.11.0",

@@ -15,7 +15,7 @@ const requestSubmission = (name, id, formId,  url) => ({
   url,
 });
 
-const sendSubmission = (name, data) => ({
+const sendSubmission = (name) => ({
   type: types.SUBMISSION_SAVE,
   name,
 });
@@ -79,7 +79,7 @@ export const saveSubmission = (name, data, formId, done = () => {}) => (dispatch
     });
 };
 
-export const deleteSubmission = (name, id, formId, done = () => {}) => (dispatch, getState) => {
+export const deleteSubmission = (name, id, formId, done = () => {}) => (dispatch) => {
   const formio = new Formiojs(`${Formiojs.getProjectUrl()}/${formId ? `form/${formId}` : name}/submission/${id}`);
 
   return formio.deleteSubmission()

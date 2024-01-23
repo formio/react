@@ -27,7 +27,7 @@ function getUserRoles(projectRoles) {
   }), {});
 }
 
-export const auth = config => (state = initialState, action) => {
+export const auth = () => (state = initialState, action) => {
   switch (action.type) {
     case type.USER_REQUEST:
       return {
