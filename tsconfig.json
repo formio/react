@@ -5,7 +5,7 @@
 		// Tells TypeScript to read JS files, as
 		// normally they are ignored as source files
 		"allowJs": true,
-		"jsx": "react",
+		"jsx": "react-jsx",
 		// Generate d.ts files
 		"declaration": true,
 		// This compiler run should
