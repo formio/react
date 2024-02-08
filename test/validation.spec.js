@@ -1,7 +1,8 @@
-import EventEmitter from 'eventemitter2';
 import React from 'react';
 import sinon from 'sinon';
+import { EventEmitter } from '@formio/js';
 import { expect } from 'chai';
+
 import Form from '../src/components/Form';
 import { textField, visible, layout, columns } from './fixtures';
 

@@ -1,9 +1,8 @@
 import { cloneDeep } from 'lodash/lang';
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import EventEmitter from 'eventemitter2';
 import _isEqual from 'lodash/isEqual';
-import { Formio } from '@formio/js';
+import { Formio, EventEmitter } from '@formio/js';
 const FormioReport = Formio.Report;
 
 /**
@@ -17,6 +16,8 @@ const Report = (props) => {
 	const [formio, setFormio] = useState(undefined);
 	const jsonReport = useRef(undefined);
 
+	useEffect(() => () => (formio ? formio.destroy(true) : null), [formio]);
+
 	if (!FormioReport) {
 		return (
 			<div className="alert alert-danger" role="alert">
@@ -26,8 +27,6 @@ const Report = (props) => {
 			</div>
 		);
 	}
-
-	useEffect(() => () => (formio ? formio.destroy(true) : null), [formio]);
 
 	const createReportInstance = (srcOrReport) => {
 		const { options = {}, onReportReady, projectEndpoint } = props;
