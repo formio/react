@@ -1,23 +1,15 @@
 {
-	// Change this to match your project
-	"include": ["src/**/*"],
 	"compilerOptions": {
-		// Tells TypeScript to read JS files, as
-		// normally they are ignored as source files
+		"module": "NodeNext",
+		"outDir": "lib",
 		"allowJs": true,
 		"jsx": "react-jsx",
-		// Generate d.ts files
 		"declaration": true,
-		// This compiler run should
-		// only output d.ts files
-		"emitDeclarationOnly": true,
-		// Types should go into this directory.
-		// Removing this would place the .d.ts files
-		// next to the .js files
-		"outDir": "lib",
-		// go to js file when using IDE functions like
-		// "Go to Definition" in VSCode
 		"declarationMap": true,
-		"noEmit": false,
+		"target": "es2015",
+		"baseUrl": "src",
+		"strict": true,
 	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "lib", "test"],
 }

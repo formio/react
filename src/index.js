@@ -7,7 +7,6 @@ const WizardBuilder = Formio.WizardBuilder;
 export { Webform, WebformBuilder, Wizard, WizardBuilder };
 
 export * from './components';
-export * from './hooks';
 export * from './constants';
 export * from './modules';
 export * from './types';
