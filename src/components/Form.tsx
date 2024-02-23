@@ -1,16 +1,16 @@
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
-import { Formio, EventEmitter, Form as FormClass } from '@formio/js';
-import { Component } from '@formio/core';
+import { EventEmitter, Form as FormClass, Webform } from '@formio/js';
+import { Component } from '@formio/core/types';
 
-type FormInstance = FormClass & { submission: { data: JSON } };
-type FormOptions = {
-	readOnly?: boolean;
-	events: EventEmitter;
-};
+type FormOptions = Webform['options'];
 interface FormConstructor {
-	new (...args: any[]): FormInstance;
+	new (
+		element: HTMLElement,
+		formSource: FormSource,
+		options: FormOptions,
+	): Webform;
 }
 type EventError =
 	| string
@@ -27,8 +27,8 @@ type FormProps = {
 	submission?: { data: JSON };
 	// TODO: once events is typed correctly in @formio/js options, we can remove this override
 	options?: FormOptions & { events?: EventEmitter };
-	formReady?: (instance: FormInstance) => void;
-	onFormReady?: (instance: FormInstance) => void;
+	formReady?: (instance: Webform) => void;
+	onFormReady?: (instance: Webform) => void;
 	onPrevPage?: (page: number, submission: JSON) => void;
 	onNextPage?: (page: number, submission: JSON) => void;
 	onCancelSubmit?: () => void;
@@ -41,7 +41,7 @@ type FormProps = {
 		event?: Event;
 	}) => void;
 	onComponentChange?: (changed: {
-		instance: FormInstance;
+		instance: Webform;
 		component: Component;
 		value: any;
 		flags: any;
@@ -54,8 +54,8 @@ type FormProps = {
 	onRender?: (param: any) => void;
 	onAttach?: (param: any) => void;
 	onBuild?: (param: any) => void;
-	onFocus?: (instance: FormInstance) => void;
-	onBlur?: (instance: FormInstance) => void;
+	onFocus?: (instance: Webform) => void;
+	onBlur?: (instance: Webform) => void;
 	onInitialized?: () => void;
 	formioform?: FormConstructor;
 	Formio?: FormConstructor;
@@ -149,128 +149,115 @@ const onAnyEvent = (
 };
 
 const createWebformInstance = async (
-	FormConstructor: FormConstructor,
+	FormConstructor: FormConstructor | undefined,
 	formSource: FormSource,
 	element: MutableRefObject<HTMLDivElement>['current'],
-	options: FormProps['options'],
+	props: FormProps,
 ) => {
-	const instance = new FormConstructor(element, formSource, options);
-	return instance.ready;
+	const {
+		formioform,
+		Formio,
+		src,
+		url,
+		form,
+		formReady,
+		onFormReady,
+		options = {},
+		submission,
+		...handlers
+	} = props;
+	if (!options?.events) {
+		options.events = getDefaultEmitter();
+	}
+	const promise = FormConstructor
+		? new FormConstructor(element, formSource, options)
+		: new FormClass(element, formSource, options);
+	const instance = await promise.ready;
+	if (Object.keys(handlers).length > 0) {
+		instance.onAny((...args: [string, ...any[]]) =>
+			onAnyEvent(handlers, ...args),
+		);
+	}
+	return instance;
+};
+
+// Define effective props (aka I want to rename these props but also maintain backwards compatibility)
+const getEffectiveProps = (props: FormProps) => {
+	const {
+		Formio: FormioProp,
+		formioform,
+		form,
+		src,
+		formReady,
+		onFormReady,
+	} = props;
+	const formConstructor = FormioProp !== undefined ? FormioProp : formioform;
+
+	const formSource = form !== undefined ? form : src;
+
+	const formReadyCallback =
+		onFormReady !== undefined ? onFormReady : formReady;
+
+	return { formConstructor, formSource, formReadyCallback };
 };
 
 const Form = (props: FormProps) => {
-	const formInstance = useRef<FormInstance | null>(null);
+	const [formInstance, setFormInstance] = useState<Webform | null>(null);
 	const renderElement = useRef<HTMLDivElement | null>(null);
 	const prevFormDefinition = useRef<JSON | null>(null);
 
-	const [formIsReady, setFormIsReady] = useState(false);
+	const { formConstructor, formSource, formReadyCallback } =
+		getEffectiveProps(props);
+	const { submission, url } = props;
 
-	const {
-		formioform,
-		Formio: FormioProp,
-		options = { events: getDefaultEmitter() },
-		src,
-		submission,
-		form,
-		url,
-		onFormReady,
-		...handlers
-	} = props;
-
-	// Define effective props and warn about deprecated props
-	const effectiveFormConstructor =
-		FormioProp !== undefined
-			? FormioProp
-			: formioform !== undefined
-				? formioform
-				: (Formio as any).Form;
-	if (formioform !== undefined) {
-		console.warn(
-			'Warning: formioform is deprecated and will be removed in a future release. Please use Formio instead.',
-		);
-	}
-	const effectiveFormSource =
-		src !== undefined ? src : form !== undefined ? form : null;
-	if (form !== undefined) {
-		console.warn(
-			'Warning: form is deprecated and will be removed in a future release. Please use src instead.',
-		);
-	}
+	useEffect(() => () => formInstance?.destroy(), [formInstance]);
 
 	useEffect(() => {
 		if (renderElement.current === null) {
 			console.warn('Form element not found');
 			return;
 		}
-		if (typeof effectiveFormSource === 'string') {
+		if (typeof formSource === 'string') {
 			createWebformInstance(
-				effectiveFormConstructor,
-				effectiveFormSource,
+				formConstructor,
+				formSource,
 				renderElement.current,
-				options,
+				props,
 			).then((instance) => {
 				if (instance) {
-					instance.src = effectiveFormSource;
-					instance.onAny((...args: [string, ...any[]]) =>
-						onAnyEvent(handlers, ...args),
-					);
-					if (onFormReady) onFormReady(instance);
-					formInstance.current = instance;
-					setFormIsReady(true);
+					instance.src = formSource;
+					if (formReadyCallback) formReadyCallback(instance);
+					setFormInstance(instance);
 				}
 			});
 		} else if (
-			typeof effectiveFormSource === 'object' &&
-			!isEqual(effectiveFormSource, prevFormDefinition.current)
+			typeof formSource === 'object' &&
+			!isEqual(formSource, prevFormDefinition.current)
 		) {
-			prevFormDefinition.current = cloneDeep(effectiveFormSource);
+			prevFormDefinition.current = cloneDeep(formSource);
 			createWebformInstance(
-				effectiveFormConstructor,
-				effectiveFormSource,
+				formConstructor,
+				formSource,
 				renderElement.current,
-				options,
+				props,
 			).then((instance) => {
-				if (instance && effectiveFormSource) {
-					instance.form = effectiveFormSource;
+				if (instance && formSource) {
+					instance.form = formSource;
 					if (url) {
 						instance.url = url;
 					}
-					instance.onAny((...args: [string, ...any[]]) =>
-						onAnyEvent(handlers, ...args),
-					);
-					formInstance.current = instance;
-					setFormIsReady(true);
+					if (formReadyCallback) formReadyCallback(instance);
+					setFormInstance(instance);
 				}
 			});
 		}
-		return () =>
-			formInstance.current
-				? formInstance.current.destroy(true)
-				: undefined;
-	}, [
-		effectiveFormConstructor,
-		effectiveFormSource,
-		options,
-		handlers,
-		url,
-		onFormReady,
-	]);
+	}, [formConstructor, formSource, props, url, formReadyCallback]);
 
 	useEffect(() => {
-		if (
-			formIsReady &&
-			formInstance.current &&
-			submission &&
-			!isEqual(formInstance.current.submission?.data, submission.data)
-		) {
-			console.log(
-				'Setting submission...',
-				formInstance.current,
-				submission,
-			);
-			formInstance.current.submission = cloneDeep(submission);
+		if (formInstance && submission) {
+			formInstance.submission = cloneDeep(submission);
 		}
-	}, [submission, formIsReady]);
+	}, [submission, formInstance]);
 
 	return <div ref={renderElement} />;
 };
