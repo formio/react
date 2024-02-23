@@ -1,4 +1,4 @@
-# React Formio
+# @formio/react
 
 A [React](http://facebook.github.io/react/) library for rendering out forms based on the [Form.io](https://www.form.io) platform.
 
@@ -14,62 +14,189 @@ To see an example application of how to implement all the components and modules
 npm-compatible packaging system such as [Browserify](http://browserify.org/) or
 [webpack](http://webpack.github.io/).
 
-```
+```bash
 npm install @formio/react --save
-npm install @formio/js --save // Install @formio/js since it is a peerDependency
+npm install @formio/js --save # Install @formio/js since it is a peerDependency
+```
+
+### yarn
+
+```bash
+yarn add @formio/react @formio/js
 ```
 
 ## Components
 
 ### Form
 
-The form component is the primary component of the system. It is what takes the form definition (json) and renders the form into html. There are multiple ways to send the form definition to the Form component. The two main ways are to either pass the `src` prop which will make a request for the form definition or to pass a pre-loaded `form` prop with the form definition you specify and an optional `url` prop.
-
-The `src` prop is a url to the form definition, usually a form.io server. When using the `src` prop the form will automatically submit the data to this url as well.
-
-The `form` prop accepts a pre-loaded json form definition. Pair this optionally with a `url` prop to the location of the form. This is used for file upload, oauth and other components or actions that need to know where the server is.
+A React component wrapper around [a Form.io form](https://help.form.io/developers/form-development/form-renderer#introduction). Able to take a JSON form definition or a Form.io form URL and render the form in your React application.
 
 #### Props
 
-| Name         | Type   | Default | Description                                                                                                                                                                                                                                                                  |
-| ------------ | ------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src`        | url    |         | The url of the form definition. This is commonly from a form.io server. When using src, the form will automatically submit the data to that url as well.                                                                                                                     |
-| `url`        | url    |         | The url of the form definition. This is used for file upload, oauth and other components or actions that need to know where the server is. The form will not be loaded from this url and the submission will not be saved here either. Use this in connection with `form` .  |
-| `form`       | object |         | Instead of loading a form from the `src` url, you can preload the form definition and pass it in with the `form` prop. You should also set `url` if you are using any advanced components like file upload or oauth.                                                         |
-| `submission` | object |         | Submission data to fill the form. You can either load a previous submission or create a submission with some pre-filled data. If you do not provide a submissions the form will initialize an empty submission using default values from the form.                           |
-| `options`    | object |         | An options object that can pass options to the formio.js Form that is rendered. You can set options such as `readOnly`, `noAlerts` or `hide`. There are [many options to be found in the formio.js library](https://github.com/formio/formio.js/wiki/Form-Renderer#options). |
+| Name            | Type                                                                                  | Default | Description                                                                                                                                                                                                                                                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src`           | `Webform \| string`                                                                   |         | The JSON form definition or the source URL. If a URL, commonly from a form.io server.                                                                                                                                                                                                                                                   |
+| `url`           | `string`                                                                              |         | The url of the form definition. Used in conjunction with a JSON form definition passed to `src`, this is used for file upload, OAuth, and other components or actions that need to know the URL of the Form.io form for further processing. The form will not be loaded from this url and the submission will not be saved here either. |
+| `submission`    | `JSON`                                                                                |         | Submission data to fill the form. You can either load a previous submission or create a submission with some pre-filled data. If you do not provide a submissions the form will initialize an empty submission using default values from the form.                                                                                      |
+| `options`       | `JSON`                                                                                |         | The form options. See [here](https://help.form.io/developers/form-development/form-renderer#form-renderer-options) for more details.                                                                                                                                                                                                    |
+| `onFormReady`   | `(instance: Webform) => void`                                                         |         | A callback function that gets called when the form has rendered. It is useful for accessing the underlying @formio/js Webform instance.                                                                                                                                                                                                 |
+| `onSubmit`      | `(submission: JSON, saved?: boolean) => void`                                         |         | A callback function that gets called when the submission has started. If `src` is not a Form.io server URL, this will be the final submit event.                                                                                                                                                                                        |
+| `onSubmitDone`  | `(submission: JSON) => void`                                                          |         | A callback function that gets called when the submission has successfully been made to the server. This will only fire if `src` is set to a Form.io server URL.                                                                                                                                                                         |
+| `onChange`      | `(value: any, flags: any, modified: any) => void`                                     |         | A callback function that gets called when a value in the submission has changed.                                                                                                                                                                                                                                                        |
+| `onError`       | `(error: EventError \| false) => void`                                                |         | A callback function that gets called when an error occurs during submission (e.g. a validation error).                                                                                                                                                                                                                                  |
+| `onRender`      | `(param: any) => void`                                                                |         | A callback function that gets called when the form is finished rendering. `param` will depend on the form and display type.                                                                                                                                                                                                             |
+| `onCustomEvent` | `(event: { type: string; component: Component; data: JSON; event?: Event; }) => void` |         | A callback function that is triggered from a button component configured with "Event" type.                                                                                                                                                                                                                                             |
+| `onPrevPage`    | `(page: number, submission: JSON) => void`                                            |         | A callback function for Wizard forms that gets called when the "Previous" button is pressed.                                                                                                                                                                                                                                            |
+| `onNextPage`    | `(page: number, submission: JSON) => void`                                            |         | A callback function for Wizard forms that gets called when the "Next" button is pressed.                                                                                                                                                                                                                                                |
 
-#### Event Props
+#### Examples
 
-You can respond to various events in the form. Simply pass in a prop with a function for one of these events.
+Render a simple form from the Form.io SaaS:
 
-| Name            | Parameters                                                                                                                                    | Description                                                                                                                      |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `onSubmit`      | `submission`: object                                                                                                                          | When the submit button is pressed and the submission has started. If `src` is not provided, this will be the final submit event. |
-| `onSubmitDone`  | `submission`: object                                                                                                                          | When the submission has successfully been made to the server. This will only fire if `src` is set.                               |
-| `onChange`      | `submission`: object, `submission.changed`: object of what changed, `submission.isValid`: boolean - if the submission passes validations.     | A value in the submission has changed.                                                                                           |
-| `onError`       | `errors`: array or string or boolean                                                                                                          | Called when an error occurs during submission such as a validation issue.                                                        |
-| `onRender`      |                                                                                                                                               | Triggers when the form is finished rendering.                                                                                    |
-| `onCustomEvent` | { `type`: string - event type, `component`: object - triggering component, `data`: object - data for component, `event`: string - raw event } | Event that is triggered from a button configured with "Event" type.                                                              |
-| `onPrevPage`    | { `page`: integer - new page number, `submission`: object - submission data }                                                                 | Triggered for wizards when "Previous" button is pressed.                                                                         |
-| `onNextPage`    | { `page`: integer - new page number, `submission`: object - submission data }                                                                 | Triggered for wizards when "Next" button is pressed.                                                                             |
-| `formReady`     | `formInstance`: Webform/Wizard - form class instance                                                                                          | Called when the form gets ready state.                                                                                           |
-
-#### Example
-
-Give `Form` a `src` property and render:
-
-```javascript
-import React from 'react';
-import ReactDOM from 'react-dom';
+```JSX
+import { createRoot } from 'react-dom/client';
 import { Form } from '@formio/react';
+
+const domNode = document.getElementById('root');
+const root = createRoot(domNode);
+
+root.render(
+	<Form src="https://example.form.io/example" onSubmit={console.log} />,
+);
 ```
 
-```javascript
-ReactDOM.render(
-	<Form src="https://example.form.io/example" onSubmit={console.log} />,
-	document.getElementById('example'),
-);
+Render a simple form from a JSON form definition:
+
+```JSX
+import { createRoot } from 'react-dom/client';
+import { Form } from '@formio/react';
+
+const domNode = document.getElementById('root');
+const root = createRoot(domNode);
+
+const formDefinition = {
+	type: "form",
+	display: "form",
+	components: [
+		{
+			type: "textfield"
+			key: "firstName",
+			label: "First Name",
+			input: true,
+		},
+		{
+			type: "textfield"
+			key: "firstName",
+			label: "First Name",
+			input: true,
+		},
+		{
+			type: "button",
+			key: "submit",
+			label: "Submit",
+			input: true
+		}
+	]
+}
+
+root.render(<Form src={formDefinition} />);
+```
+
+Access the underlying form instance (see [here](https://help.form.io/developers/form-development/form-renderer#form-properties) for details):
+
+```JSX
+import { useRef } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Form } from '@formio/react';
+
+const domNode = document.getElementById('root');
+const root = createRoot(domNode);
+
+const formDefinition = {
+	type: "form",
+	display: "form",
+	components: [
+		{
+			type: "textfield"
+			key: "firstName",
+			label: "First Name",
+			input: true,
+		},
+		{
+			type: "textfield"
+			key: "firstName",
+			label: "First Name",
+			input: true,
+		},
+		{
+			type: "button",
+			key: "submit",
+			label: "Submit",
+			input: true
+		}
+	]
+}
+
+const App = () => {
+	const formInstance = useRef(null);
+
+	const handleFormReady = (instance) => {
+		formInstance.current = instance;
+	}
+
+	const handleClick = () => {
+		if (!formInstance.current) {
+			console.log("Our form isn't quite ready yet.");
+			return;
+		}
+		formInstance.current.getComponent('firstName')?.setValue('John');
+		formInstance.current.getComponent('lastName')?.setValue('Smith');
+	}
+
+	return (
+		<div>
+			<Form src={formDefinition} onFormReady={handleFormReady} />
+			<button type="button" onClick={handleClick}>Set Names</button>
+		</div>
+	);
+}
+
+root.render(<App />);
+```
+
+#### Usage in Next.js
+
+A number of dependencies in the `@formio/js` rely on web APIs and browser-specific globals like `window`. Because Next.js includes a server-side rendering stage, this makes it difficult to import the Form component directly, even when used in [client components](https://nextjs.org/docs/app/building-your-application/rendering/client-components). For this reason, we recommend dynamically importing the Form component using Next.js' `dynamic` API:
+
+```TSX
+'use client';
+import dynamic from "next/dynamic";
+import { Webform } from "@formio/js";
+
+export default function Home() {
+    const formInstance = useRef<Webform | null>(null);
+
+	const handleClick = () => {
+		if (!formInstance.current) {
+			console.log("Our form isn't quite ready yet.");
+			return;
+		}
+		formInstance.current.getComponent('firstName')?.setValue('John');
+		formInstance.current.getComponent('lastName')?.setValue('Smith');
+	}
+
+    return (
+        <main className={styles.main}>
+            <Form
+                form="https://examples.form.io/example"
+                onFormReady={(instance) => {
+                    formInstance.current = instance;
+                }}
+            />
+            <button onClick={handleClick}>Set Names</button>
+        </main>
+    );
+}
 ```
 
 ### FormBuilder
