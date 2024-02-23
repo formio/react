@@ -21,7 +21,11 @@
 		"react/prop-types": "warn",
 		"@typescript-eslint/no-explicit-any": "warn",
 		"react/react-in-jsx-scope": "off",
-		"react/jsx-uses-react": "off"
+		"react/jsx-uses-react": "off",
+		"@typescript-eslint/no-unused-vars": [
+			"error",
+			{ "ignoreRestSiblings": true }
+		]
 	},
 	"settings": {
 		"react": {
