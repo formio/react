@@ -58,6 +58,10 @@ const Form = (props) => {
 		}
 	};
 
+	const unInitializeFormio = () => {
+		instance.offAny(onAnyEvent);
+	};
+
 	useEffect(() => {
 		const { src } = props;
 		if (src) {
@@ -68,6 +72,13 @@ const Form = (props) => {
 			});
 			initializeFormio();
 		}
+
+		return () => {
+			//Removes the listener on component unmount
+			if (src) {
+				unInitializeFormio();
+			}
+		};
 	}, [props.src]);
 
 	useEffect(() => {
@@ -85,6 +96,12 @@ const Form = (props) => {
 			});
 			initializeFormio();
 		}
+
+		return () => {
+			if (src) {
+				unInitializeFormio();
+			}
+		};
 	}, [props.form]);
 
 	useEffect(() => {
