@@ -60,6 +60,17 @@ type FormProps = {
 	formioform?: FormConstructor;
 	Formio?: FormConstructor;
 };
+type EventHandlerProps = Omit<
+	FormProps,
+	| 'src'
+	| 'url'
+	| 'form'
+	| 'submission'
+	| 'options'
+	| 'formReady'
+	| 'formioform'
+	| 'Formio'
+>;
 
 const getDefaultEmitter = () => {
 	return new EventEmitter({
@@ -69,16 +80,7 @@ const getDefaultEmitter = () => {
 };
 
 const onAnyEvent = (
-	handlers: Omit<
-		FormProps,
-		| 'src'
-		| 'url'
-		| 'form'
-		| 'submission'
-		| 'options'
-		| 'formioform'
-		| 'Formio'
-	>,
+	handlers: EventHandlerProps,
 	...args: [string, ...any[]]
 ) => {
 	const event = args[0];
@@ -152,20 +154,8 @@ const createWebformInstance = async (
 	FormConstructor: FormConstructor | undefined,
 	formSource: FormSource,
 	element: MutableRefObject<HTMLDivElement>['current'],
-	props: FormProps,
+	options: FormProps['options'] = {},
 ) => {
-	const {
-		formioform,
-		Formio,
-		src,
-		url,
-		form,
-		formReady,
-		onFormReady,
-		options = {},
-		submission,
-		...handlers
-	} = props;
 	if (!options?.events) {
 		options.events = getDefaultEmitter();
 	}
@@ -173,11 +163,6 @@ const createWebformInstance = async (
 		? new FormConstructor(element, formSource, options)
 		: new FormClass(element, formSource, options);
 	const instance = await promise.ready;
-	if (Object.keys(handlers).length > 0) {
-		instance.onAny((...args: [string, ...any[]]) =>
-			onAnyEvent(handlers, ...args),
-		);
-	}
 	return instance;
 };
 
@@ -208,9 +193,27 @@ const Form = (props: FormProps) => {
 
 	const { formConstructor, formSource, formReadyCallback } =
 		getEffectiveProps(props);
-	const { submission, url } = props;
+	const {
+		src,
+		form,
+		submission,
+		url,
+		options,
+		formioform,
+		formReady,
+		Formio,
+		...handlers
+	} = props;
 
-	useEffect(() => () => formInstance?.destroy(), [formInstance]);
+	useEffect(
+		() => () => {
+			formInstance?.destroy();
+			formInstance?.offAny((...args: [string, ...any[]]) => {
+				onAnyEvent(handlers, ...args);
+			});
+		},
+		[formInstance, handlers],
+	);
 
 	useEffect(() => {
 		if (renderElement.current === null) {
@@ -222,7 +225,7 @@ const Form = (props: FormProps) => {
 				formConstructor,
 				formSource,
 				renderElement.current,
-				props,
+				options,
 			).then((instance) => {
 				if (instance) {
 					instance.src = formSource;
@@ -239,7 +242,7 @@ const Form = (props: FormProps) => {
 				formConstructor,
 				formSource,
 				renderElement.current,
-				props,
+				options,
 			).then((instance) => {
 				if (instance && formSource) {
 					instance.form = formSource;
@@ -251,13 +254,21 @@ const Form = (props: FormProps) => {
 				}
 			});
 		}
-	}, [formConstructor, formSource, props, url, formReadyCallback]);
+	}, [formConstructor, formSource, url, formReadyCallback, options]);
+
+	useEffect(() => {
+		if (formInstance && Object.keys(handlers).length > 0) {
+			formInstance.onAny((...args: [string, ...any[]]) =>
+				onAnyEvent(handlers, ...args),
+			);
+		}
+	}, [formInstance, handlers]);
 
 	useEffect(() => {
 		if (formInstance && submission) {
 			formInstance.submission = cloneDeep(submission);
 		}
-	}, [submission, formInstance]);
+	}, [formInstance, submission]);
 
 	return <div ref={renderElement} />;
 };
