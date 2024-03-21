@@ -205,15 +205,7 @@ const Form = (props: FormProps) => {
 		...handlers
 	} = props;
 
-	useEffect(
-		() => () => {
-			formInstance?.destroy();
-			formInstance?.offAny((...args: [string, ...any[]]) => {
-				onAnyEvent(handlers, ...args);
-			});
-		},
-		[formInstance, handlers],
-	);
+	useEffect(() => () => formInstance?.destroy(), [formInstance]);
 
 	useEffect(() => {
 		if (renderElement.current === null) {
@@ -262,6 +254,10 @@ const Form = (props: FormProps) => {
 				onAnyEvent(handlers, ...args),
 			);
 		}
+		return () =>
+			formInstance?.offAny((...args: [string, ...any[]]) => {
+				onAnyEvent(handlers, ...args);
+			});
 	}, [formInstance, handlers]);
 
 	useEffect(() => {
