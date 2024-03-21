@@ -1,4 +1,4 @@
-import EventEmitter from 'eventemitter2';
+import { EventEmitter } from '@formio/js';
 import React from 'react';
 import sinon from 'sinon';
 import { expect } from 'chai';
