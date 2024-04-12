@@ -32,5 +32,13 @@
 			"version": "detect"
 		}
 	},
-	"ignorePatterns": ["node_modules/", "dist/", "lib/"]
+	"ignorePatterns": ["node_modules/", "dist/", "lib/"],
+	"overrides": [
+		{
+			"files": ["**/*.test.ts", "**/*.test.tsx"],
+			"env": {
+				"jest": true
+			}
+		}
+	]
 }

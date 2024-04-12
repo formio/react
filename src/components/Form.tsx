@@ -18,7 +18,14 @@ type EventError =
 	| Error[]
 	| { message: string }
 	| { message: string }[];
-type JSON = string | number | boolean | null | JSON[] | { [key: string]: JSON };
+type JSON =
+	| string
+	| number
+	| boolean
+	| null
+	| undefined
+	| JSON[]
+	| { [key: string]: JSON };
 type FormSource = string | JSON;
 type FormProps = {
 	src?: FormSource;
@@ -254,10 +261,11 @@ const Form = (props: FormProps) => {
 				onAnyEvent(handlers, ...args),
 			);
 		}
-		return () =>
+		return () => {
 			formInstance?.offAny((...args: [string, ...any[]]) => {
 				onAnyEvent(handlers, ...args);
 			});
+		};
 	}, [formInstance, handlers]);
 
 	useEffect(() => {

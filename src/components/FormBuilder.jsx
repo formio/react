@@ -12,7 +12,7 @@ const FormBuilder = (props) => {
 		(...args) => {
 			// eslint-disable-next-line no-prototype-builtins
 			if (
-				props.hasOwnProperty(funcName) &&
+				Object.prototype.hasOwnProperty.call(props, funcName) &&
 				typeof props[funcName] === 'function'
 			) {
 				props[funcName](...args);
