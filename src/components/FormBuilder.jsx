@@ -37,9 +37,19 @@ const FormBuilder = (props) => {
 	};
 
 	const builderEvents = [
-		{ name: 'saveComponent', action: (component, original, parent, path, index, isNew) => {
-			emit('onSaveComponent')({component, original, parent, path, index, isNew})
-		}},
+		{
+			name: 'saveComponent',
+			action: (component, original, parent, path, index, isNew) => {
+				emit('onSaveComponent')({
+					component,
+					original,
+					parent,
+					path,
+					index,
+					isNew,
+				});
+			},
+		},
 		{ name: 'updateComponent', action: emit('onUpdateComponent') },
 		{ name: 'removeComponent', action: emit('onDeleteComponent') },
 		{ name: 'cancelComponent', action: emit('onUpdateComponent') },
@@ -47,9 +57,12 @@ const FormBuilder = (props) => {
 		{ name: 'addComponent', action: onChange },
 		{ name: 'saveComponent', action: onChange },
 		{ name: 'updateComponent', action: onChange },
-		{ name: 'removeComponent', action: (component, parent, path, index) => {
-			emit('onDeleteComponent')({component, parent, path, index})
-		}},
+		{
+			name: 'removeComponent',
+			action: (component, parent, path, index) => {
+				emit('onDeleteComponent')({ component, parent, path, index });
+			},
+		},
 		{ name: 'deleteComponent', action: onChange },
 		{ name: 'pdfUploaded', action: onChange },
 	];
