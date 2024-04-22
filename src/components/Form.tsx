@@ -26,11 +26,11 @@ type JSON =
 	| undefined
 	| JSON[]
 	| { [key: string]: JSON };
-type FormSource = string | JSON;
+type FormSource = string | { [key: string]: JSON };
 type FormProps = {
 	src?: FormSource;
 	url?: string;
-	form?: JSON;
+	form?: { [key: string]: JSON };
 	submission?: { data: JSON };
 	// TODO: once events is typed correctly in @formio/js options, we can remove this override
 	options?: FormOptions & { events?: EventEmitter };
@@ -215,45 +215,54 @@ const Form = (props: FormProps) => {
 	useEffect(() => () => formInstance?.destroy(), [formInstance]);
 
 	useEffect(() => {
-		if (renderElement.current === null) {
-			console.warn('Form element not found');
-			return;
-		}
-		if (typeof formSource === 'string') {
-			createWebformInstance(
-				formConstructor,
-				formSource,
-				renderElement.current,
-				options,
-			).then((instance) => {
-				if (instance) {
-					instance.src = formSource;
-					if (formReadyCallback) formReadyCallback(instance);
-					setFormInstance(instance);
+		const createInstance = async () => {
+			if (renderElement.current === null) {
+				console.warn('Form element not found');
+				return;
+			}
+
+			if (typeof formSource === 'undefined') {
+				console.warn('Form source not found');
+				return;
+			}
+
+			if (typeof formSource === 'object') {
+				// If formSource is an object and hasn't changed, return early
+				if (isEqual(formSource, prevFormDefinition.current)) {
+					return;
 				}
-			});
-		} else if (
-			typeof formSource === 'object' &&
-			!isEqual(formSource, prevFormDefinition.current)
-		) {
-			prevFormDefinition.current = cloneDeep(formSource);
-			createWebformInstance(
+
+				prevFormDefinition.current = cloneDeep(formSource);
+			}
+
+			const instance = await createWebformInstance(
 				formConstructor,
 				formSource,
 				renderElement.current,
 				options,
-			).then((instance) => {
-				if (instance && formSource) {
+			);
+
+			if (instance) {
+				if (typeof formSource === 'string') {
+					instance.src = formSource;
+				} else if (typeof formSource === 'object') {
 					instance.form = formSource;
+
 					if (url) {
 						instance.url = url;
 					}
-					if (formReadyCallback) formReadyCallback(instance);
-					setFormInstance(instance);
 				}
-			});
-		}
-	}, [formConstructor, formSource, url, formReadyCallback, options]);
+
+				if (formReadyCallback) {
+					formReadyCallback(instance);
+				}
+
+				setFormInstance(instance);
+			}
+		};
+
+		createInstance();
+	}, [formConstructor, formReadyCallback, formSource, options, url]);
 
 	useEffect(() => {
 		if (formInstance && Object.keys(handlers).length > 0) {
