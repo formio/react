@@ -43,6 +43,8 @@ const FormEdit = (props) => {
 		options,
 		builder,
 		ref,
+		onSaveComponent,
+    	onDeleteComponent
 	} = props;
 
 	const [form, dispatchFormAction] = useReducer(
@@ -214,6 +216,8 @@ const FormEdit = (props) => {
 				options={options}
 				builder={builder}
 				onChange={formChange}
+				onSaveComponent={onSaveComponent}
+        		onDeleteComponent={onDeleteComponent}
 			/>
 		</div>
 	);
@@ -225,6 +229,8 @@ FormEdit.propTypes = {
 	builder: PropTypes.any,
 	saveForm: PropTypes.func,
 	saveText: PropTypes.string,
+	onSaveComponent: PropTypes.func,
+  	onDeleteComponent: PropTypes.func,
 };
 
 export default FormEdit;

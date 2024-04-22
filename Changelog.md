@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased: 5.4.0-rc.1]
+
+### Changed
+
+-   FIO-7733: type form component
+-   FIO-7563 added events to FormEdit Component
+-   Bump follow-redirects from 1.15.2 to 1.15.5
+-   Bump @babel/traverse from 7.21.5 to 7.23.2
+-   FIO-7489 formio js 5/bootstrap 5 updates to react library
+-   pass down a ref callback to custom component instead of relying on the return value of ReactDOM.render
+
 ## 5.3.0
 
 ### Changed
