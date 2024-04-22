@@ -12,8 +12,6 @@ module.exports = {
 	transform: {
 		'^.+\\.css$': 'jest-transform-css',
 	},
-	setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
 	transformIgnorePatterns: [],
-	setupFiles: ['<rootDir>/src/setupTests.ts'],
 	verbose: true,
 };

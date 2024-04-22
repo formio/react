@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import { debug } from 'jest-preview';
 import '@testing-library/jest-dom';
 
 import Form from '../Form';
@@ -22,13 +21,21 @@ const simpleForm = {
 				required: true,
 			},
 		},
+		{
+			label: 'Submit',
+			type: 'button',
+			key: 'submit',
+			disableOnInvalid: true,
+		},
 	],
 };
 
 test('loads and displays a simple form', async () => {
-	render(<Form src={simpleForm} />);
-	debug();
-	expect(screen.getByText('First Name')).toBeInTheDocument();
-	expect(screen.getByText('Last Name')).toBeInTheDocument();
-	expect(await screen.findByRole('button')).toBeDisabled();
+	const executeTests = async () => {
+		expect(screen.getByText('First Name')).toBeInTheDocument();
+		expect(screen.getByText('Last Name')).toBeInTheDocument();
+		expect(screen.getByText('Submit')).toBeInTheDocument();
+		expect(await screen.findByRole('button')).toBeDisabled();
+	};
+	render(<Form src={simpleForm} onFormReady={executeTests} />);
 });
