@@ -18,7 +18,14 @@ type EventError =
 	| Error[]
 	| { message: string }
 	| { message: string }[];
-type JSON = string | number | boolean | null | JSON[] | { [key: string]: JSON };
+type JSON =
+	| string
+	| number
+	| boolean
+	| null
+	| undefined
+	| JSON[]
+	| { [key: string]: JSON };
 type FormSource = string | { [key: string]: JSON };
 type FormProps = {
 	src?: FormSource;
