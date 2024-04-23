@@ -2,7 +2,7 @@ import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { EventEmitter, Form as FormClass, Webform } from '@formio/js';
-import { Component } from '@formio/core/types';
+import { Component } from '@formio/core';
 
 type FormOptions = Webform['options'];
 interface FormConstructor {
