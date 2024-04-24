@@ -173,6 +173,11 @@ A number of dependencies in the `@formio/js` rely on web APIs and browser-specif
 import dynamic from "next/dynamic";
 import { Webform } from "@formio/js";
 
+const Form = dynamic(
+  () => import('@formio/react').then((module) => module.Form),
+  { ssr: false },
+);
+
 export default function Home() {
     const formInstance = useRef<Webform | null>(null);
 
