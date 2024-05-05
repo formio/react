@@ -1,24 +1,10 @@
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
-import { MutableRefObject, useEffect, useRef, useState } from 'react';
-import { EventEmitter, Form as FormClass, Webform } from '@formio/js';
+import { useEffect, useRef, useState } from 'react';
+import { EventEmitter, Form as FormClass, Webform, Formio } from '@formio/js';
 import { Component } from '@formio/core';
 
-type FormOptions = Webform['options'];
-interface FormConstructor {
-	new (
-		element: HTMLElement,
-		formSource: FormSource,
-		options: FormOptions,
-	): Webform;
-}
-type EventError =
-	| string
-	| Error
-	| Error[]
-	| { message: string }
-	| { message: string }[];
-type JSON =
+export type JSON =
 	| string
 	| number
 	| boolean
@@ -26,21 +12,39 @@ type JSON =
 	| undefined
 	| JSON[]
 	| { [key: string]: JSON };
+type FormOptions = FormClass['options'];
+interface FormConstructor {
+	new (
+		element: HTMLElement,
+		formSource: FormSource,
+		options: FormOptions,
+	): FormClass;
+}
+type EventError =
+	| string
+	| Error
+	| Error[]
+	| { message: string }
+	| { message: string }[];
 type FormSource = string | { [key: string]: JSON };
 type FormProps = {
 	src?: FormSource;
 	url?: string;
 	form?: { [key: string]: JSON };
-	submission?: { data: JSON };
+	submission?: { data: JSON; metadata?: JSON; state?: string } & {
+		[key: string]: JSON;
+	};
 	// TODO: once events is typed correctly in @formio/js options, we can remove this override
 	options?: FormOptions & { events?: EventEmitter };
+	formioform?: FormConstructor;
+	FormClass?: FormConstructor;
 	formReady?: (instance: Webform) => void;
 	onFormReady?: (instance: Webform) => void;
 	onPrevPage?: (page: number, submission: JSON) => void;
 	onNextPage?: (page: number, submission: JSON) => void;
 	onCancelSubmit?: () => void;
 	onCancelComponent?: (component: Component) => void;
-	onChange?: (value: any, flags: any, modified: any) => void;
+	onChange?: (value: any, flags: any, modified: boolean) => void;
 	onCustomEvent?: (event: {
 		type: string;
 		component: Component;
@@ -64,30 +68,31 @@ type FormProps = {
 	onFocus?: (instance: Webform) => void;
 	onBlur?: (instance: Webform) => void;
 	onInitialized?: () => void;
-	formioform?: FormConstructor;
-	Formio?: FormConstructor;
+	otherEvents?: {
+		[event: string]: (...args: any[]) => void;
+	};
 };
-type EventHandlerProps = Omit<
-	FormProps,
-	| 'src'
-	| 'url'
-	| 'form'
-	| 'submission'
-	| 'options'
-	| 'formReady'
-	| 'formioform'
-	| 'Formio'
->;
 
 const getDefaultEmitter = () => {
-	return new EventEmitter({
+	Formio.events = new EventEmitter({
 		wildcard: false,
 		maxListeners: 0,
 	});
+	return Formio.events;
 };
 
 const onAnyEvent = (
-	handlers: EventHandlerProps,
+	handlers: Omit<
+		FormProps,
+		| 'src'
+		| 'url'
+		| 'form'
+		| 'submission'
+		| 'options'
+		| 'formReady'
+		| 'formioform'
+		| 'Formio'
+	>,
 	...args: [string, ...any[]]
 ) => {
 	const event = args[0];
@@ -155,12 +160,15 @@ const onAnyEvent = (
 				break;
 		}
 	}
+	if (handlers.otherEvents && handlers.otherEvents[event]) {
+		handlers.otherEvents[event](...args.slice(1));
+	}
 };
 
 const createWebformInstance = async (
 	FormConstructor: FormConstructor | undefined,
 	formSource: FormSource,
-	element: MutableRefObject<HTMLDivElement>['current'],
+	element: HTMLDivElement,
 	options: FormProps['options'] = {},
 ) => {
 	if (!options?.events) {
@@ -175,15 +183,8 @@ const createWebformInstance = async (
 
 // Define effective props (aka I want to rename these props but also maintain backwards compatibility)
 const getEffectiveProps = (props: FormProps) => {
-	const {
-		Formio: FormioProp,
-		formioform,
-		form,
-		src,
-		formReady,
-		onFormReady,
-	} = props;
-	const formConstructor = FormioProp !== undefined ? FormioProp : formioform;
+	const { FormClass, formioform, form, src, formReady, onFormReady } = props;
+	const formConstructor = FormClass !== undefined ? FormClass : formioform;
 
 	const formSource = form !== undefined ? form : src;
 
@@ -208,7 +209,7 @@ const Form = (props: FormProps) => {
 		options,
 		formioform,
 		formReady,
-		Formio,
+		FormClass,
 		...handlers
 	} = props;
 
