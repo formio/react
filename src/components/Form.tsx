@@ -2,8 +2,7 @@ import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import { useEffect, useRef, useState } from 'react';
 import { EventEmitter, Form as FormClass, Webform, Formio } from '@formio/js';
-import { Component } from '@formio/core';
-
+import { Component, Form as FormType } from '@formio/core';
 export type JSON =
 	| string
 	| number
@@ -12,6 +11,7 @@ export type JSON =
 	| undefined
 	| JSON[]
 	| { [key: string]: JSON };
+type FormSource = string | FormType;
 type FormOptions = FormClass['options'];
 interface FormConstructor {
 	new (
@@ -26,11 +26,10 @@ type EventError =
 	| Error[]
 	| { message: string }
 	| { message: string }[];
-type FormSource = string | { [key: string]: JSON };
 type FormProps = {
 	src?: FormSource;
 	url?: string;
-	form?: { [key: string]: JSON };
+	form?: FormType;
 	submission?: { data: JSON; metadata?: JSON; state?: string } & {
 		[key: string]: JSON;
 	};
@@ -74,11 +73,13 @@ type FormProps = {
 };
 
 const getDefaultEmitter = () => {
-	Formio.events = new EventEmitter({
-		wildcard: false,
-		maxListeners: 0,
-	});
-	return Formio.events;
+	return (
+		Formio.events ||
+		new EventEmitter({
+			wildcard: false,
+			maxListeners: 0,
+		})
+	);
 };
 
 const onAnyEvent = (
@@ -194,10 +195,11 @@ const getEffectiveProps = (props: FormProps) => {
 	return { formConstructor, formSource, formReadyCallback };
 };
 
-const Form = (props: FormProps) => {
+export const Form = (props: FormProps) => {
+	console.log('form component render');
 	const [formInstance, setFormInstance] = useState<Webform | null>(null);
 	const renderElement = useRef<HTMLDivElement | null>(null);
-	const prevFormDefinition = useRef<JSON | null>(null);
+	const prevFormDefinition = useRef<FormType | null>(null);
 
 	const { formConstructor, formSource, formReadyCallback } =
 		getEffectiveProps(props);
@@ -286,5 +288,3 @@ const Form = (props: FormProps) => {
 
 	return <div ref={renderElement} />;
 };
-
-export default Form;
