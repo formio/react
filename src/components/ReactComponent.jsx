@@ -107,6 +107,7 @@ export default class ReactComponent extends Field {
 	 * @param ref - callback ref
 	 */
 	attachReact(element, ref) {
+		console.log(element, ref);
 		return;
 	}
 
@@ -114,6 +115,7 @@ export default class ReactComponent extends Field {
 	 * Override this function.
 	 */
 	detachReact(element) {
+		console.log(element);
 		return;
 	}
 
@@ -190,6 +192,7 @@ export default class ReactComponent extends Field {
 	 * @returns {boolean}
 	 */
 	validate(data, dirty, rowData) {
+		console.log(data, dirty, rowData);
 		return true;
 	}
 }

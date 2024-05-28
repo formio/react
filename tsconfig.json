@@ -1,23 +1,18 @@
 {
-	// Change this to match your project
-	"include": ["src/**/*"],
 	"compilerOptions": {
-		// Tells TypeScript to read JS files, as
-		// normally they are ignored as source files
-		"allowJs": true,
-		"jsx": "react",
-		// Generate d.ts files
-		"declaration": true,
-		// This compiler run should
-		// only output d.ts files
-		"emitDeclarationOnly": true,
-		// Types should go into this directory.
-		// Removing this would place the .d.ts files
-		// next to the .js files
+		"module": "NodeNext",
 		"outDir": "lib",
-		// go to js file when using IDE functions like
-		// "Go to Definition" in VSCode
+		"allowJs": true,
+		"jsx": "react-jsx",
+		"declaration": true,
 		"declarationMap": true,
-		"noEmit": false,
+		"target": "es2015",
+		"baseUrl": "src",
+		"strict": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
 	},
+	"include": ["src/**/*"],
+	"types": ["node", "jest", "@testing-library/jest-dom"],
+	"exclude": ["node_modules", "lib", "test"],
 }
