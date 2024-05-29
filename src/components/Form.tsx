@@ -77,6 +77,13 @@ export type FormProps = {
 	onFocus?: (instance: Webform) => void;
 	onBlur?: (instance: Webform) => void;
 	onInitialized?: () => void;
+	onLanguageChanged?: () => void;
+	onBeforeSetSubmission?: (submission: Submission) => void;
+	onSaveDraftBegin?: () => void;
+	onSaveDraft?: (submission: Submission) => void;
+	onRestoreDraft?: (submission: Submission | null) => void;
+	onSubmissionDeleted?: (submission: Submission) => void;
+	onRequestDone?: () => void;
 	otherEvents?: {
 		[event: string]: (...args: any[]) => void;
 	};
@@ -166,6 +173,29 @@ const onAnyEvent = (
 				break;
 			case 'onInitialized':
 				if (handlers.onInitialized) handlers.onInitialized();
+				break;
+			case 'onLanguageChanged':
+				if (handlers.onLanguageChanged) handlers.onLanguageChanged();
+				break;
+			case 'onBeforeSetSubmission':
+				if (handlers.onBeforeSetSubmission)
+					handlers.onBeforeSetSubmission(args[1]);
+				break;
+			case 'onSaveDraftBegin':
+				if (handlers.onSaveDraftBegin) handlers.onSaveDraftBegin();
+				break;
+			case 'onSaveDraft':
+				if (handlers.onSaveDraft) handlers.onSaveDraft(args[1]);
+				break;
+			case 'onRestoreDraft':
+				if (handlers.onRestoreDraft) handlers.onRestoreDraft(args[1]);
+				break;
+			case 'onSubmissionDeleted':
+				if (handlers.onSubmissionDeleted)
+					handlers.onSubmissionDeleted(args[1]);
+				break;
+			case 'onRequestDone':
+				if (handlers.onRequestDone) handlers.onRequestDone();
 				break;
 			default:
 				break;
