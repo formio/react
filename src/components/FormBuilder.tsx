@@ -138,7 +138,6 @@ export const FormBuilder = ({
 	onSaveComponent,
 	onUpdateComponent,
 }: FormBuilderProps) => {
-	console.log("FormBuilder render...");
 	const builder = useRef<FormioFormBuilder | null>(null);
 	const renderElement = useRef<HTMLDivElement | null>(null);
 
