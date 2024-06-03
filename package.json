@@ -28,7 +28,6 @@
 	},
 	"homepage": "https://github.com/formio/react-formio#readme",
 	"dependencies": {
-		"@tanstack/react-table": "^8.17.3",
 		"core-js": "^3.35.1",
 		"lodash": "^4.17.21",
 		"prop-types": "^15.8.1"
@@ -67,7 +66,8 @@
 		"lib"
 	],
 	"peerDependencies": {
-		"@formio/js": "5.0.0-bb.dev.3",
+		"@formio/js": "5.0.0-dev.5604.02ffada",
+		"@formio/core": "2.0.0-dev.95.b81e754",
 		"react": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0",
 		"react-dom": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0"
 	}
