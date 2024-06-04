@@ -2,8 +2,8 @@ import { createContext, useState } from 'react';
 import { Formio, EventEmitter } from '@formio/js';
 
 type BaseConfigurationArgs = {
-	baseUrl: string;
-	projectUrl: string;
+	baseUrl?: string;
+	projectUrl?: string;
 };
 const useBaseConfiguration = ({
 	baseUrl,
