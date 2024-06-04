@@ -1,5 +1,5 @@
 import { CSSProperties, useEffect, useRef } from 'react';
-import { EventEmitter, Form as FormClass, Webform, Formio } from '@formio/js';
+import { EventEmitter, Form as FormClass, Webform } from '@formio/js';
 import { Component, Form as CoreFormType } from '@formio/core';
 
 export type PartialExcept<T, K extends keyof T> = Partial<Omit<T, K>> &
@@ -90,13 +90,10 @@ export type FormProps = {
 };
 
 const getDefaultEmitter = () => {
-	return (
-		Formio.events ||
-		new EventEmitter({
-			wildcard: false,
-			maxListeners: 0,
-		})
-	);
+	return new EventEmitter({
+		wildcard: false,
+		maxListeners: 0,
+	});
 };
 
 const onAnyEvent = (
