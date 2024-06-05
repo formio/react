@@ -117,10 +117,12 @@ const onAnyEvent = (
 		const funcName = `on${event.charAt(7).toUpperCase()}${event.slice(8)}`;
 		switch (funcName) {
 			case 'onPrevPage':
-				if (handlers.onPrevPage) handlers.onPrevPage(outputArgs[0], outputArgs[1]);
+				if (handlers.onPrevPage)
+					handlers.onPrevPage(outputArgs[0], outputArgs[1]);
 				break;
 			case 'onNextPage':
-				if (handlers.onNextPage) handlers.onNextPage(outputArgs[0], outputArgs[1]);
+				if (handlers.onNextPage)
+					handlers.onNextPage(outputArgs[0], outputArgs[1]);
 				break;
 			case 'onCancelSubmit':
 				if (handlers.onCancelSubmit) handlers.onCancelSubmit();
@@ -131,23 +133,30 @@ const onAnyEvent = (
 				break;
 			case 'onChange':
 				if (handlers.onChange)
-					handlers.onChange(outputArgs[0], outputArgs[1], outputArgs[2]);
+					handlers.onChange(
+						outputArgs[0],
+						outputArgs[1],
+						outputArgs[2],
+					);
 				break;
 			case 'onCustomEvent':
-				if (handlers.onCustomEvent) handlers.onCustomEvent(outputArgs[0]);
+				if (handlers.onCustomEvent)
+					handlers.onCustomEvent(outputArgs[0]);
 				break;
 			case 'onComponentChange':
 				if (handlers.onComponentChange)
 					handlers.onComponentChange(outputArgs[0]);
 				break;
 			case 'onSubmit':
-				if (handlers.onSubmit) handlers.onSubmit(outputArgs[0], outputArgs[1]);
+				if (handlers.onSubmit)
+					handlers.onSubmit(outputArgs[0], outputArgs[1]);
 				break;
 			case 'onSubmitDone':
 				if (handlers.onSubmitDone) handlers.onSubmitDone(outputArgs[0]);
 				break;
 			case 'onSubmitError':
-				if (handlers.onSubmitError) handlers.onSubmitError(outputArgs[0]);
+				if (handlers.onSubmitError)
+					handlers.onSubmitError(outputArgs[0]);
 				break;
 			case 'onFormLoad':
 				if (handlers.onFormLoad) handlers.onFormLoad(outputArgs[0]);
@@ -187,7 +196,8 @@ const onAnyEvent = (
 				if (handlers.onSaveDraft) handlers.onSaveDraft(outputArgs[0]);
 				break;
 			case 'onRestoreDraft':
-				if (handlers.onRestoreDraft) handlers.onRestoreDraft(outputArgs[0]);
+				if (handlers.onRestoreDraft)
+					handlers.onRestoreDraft(outputArgs[0]);
 				break;
 			case 'onSubmissionDeleted':
 				if (handlers.onSubmissionDeleted)
