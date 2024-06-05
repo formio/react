@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useRef } from 'react';
+import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { EventEmitter, Form as FormClass, Webform } from '@formio/js';
 import { Component, Form as CoreFormType } from '@formio/core';
 
@@ -253,6 +253,7 @@ export const Form = (props: FormProps) => {
 		className,
 		...handlers
 	} = props;
+	const [instanceIsReady, setInstanceIsReady] = useState(false);
 
 	useEffect(() => {
 		let ignore = false;
@@ -289,19 +290,11 @@ export const Form = (props: FormProps) => {
 					}
 				}
 
-				if (submission) {
-					instance.submission = submission;
-				}
-				if (Object.keys(handlers).length > 0) {
-					instance.onAny((...args: [string, ...any[]]) =>
-						onAnyEvent(handlers, ...args),
-					);
-				}
-
 				if (formReadyCallback) {
 					formReadyCallback(instance);
 				}
 				formInstance.current = instance;
+				setInstanceIsReady(true);
 			} else {
 				console.warn('Failed to create form instance');
 			}
@@ -311,9 +304,6 @@ export const Form = (props: FormProps) => {
 		return () => {
 			ignore = true;
 			if (formInstance.current) {
-				formInstance.current.offAny((...args: [string, ...any[]]) =>
-					onAnyEvent(handlers, ...args),
-				);
 				formInstance.current.destroy(true);
 			}
 		};
@@ -324,8 +314,37 @@ export const Form = (props: FormProps) => {
 		options,
 		url,
 		submission,
-		handlers,
 	]);
+
+	useEffect(() => {
+		if (
+			instanceIsReady &&
+			formInstance.current &&
+			Object.keys(handlers).length > 0
+		) {
+			formInstance.current.onAny((...args: [string, ...any[]]) =>
+				onAnyEvent(handlers, ...args),
+			);
+		}
+
+		return () => {
+			if (
+				instanceIsReady &&
+				formInstance.current &&
+				Object.keys(handlers).length > 0
+			) {
+				formInstance.current.offAny((...args: [string, ...any[]]) =>
+					onAnyEvent(handlers, ...args),
+				);
+			}
+		};
+	}, [instanceIsReady, handlers]);
+
+	useEffect(() => {
+		if (instanceIsReady && formInstance.current && submission) {
+			formInstance.current.submission = submission;
+		}
+	}, [instanceIsReady, submission]);
 
 	return <div className={className} style={style} ref={renderElement} />;
 };

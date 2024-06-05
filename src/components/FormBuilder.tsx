@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormBuilder as FormioFormBuilder } from '@formio/js';
 import { Component } from '@formio/core';
 
@@ -140,6 +140,7 @@ export const FormBuilder = ({
 }: FormBuilderProps) => {
 	const builder = useRef<FormioFormBuilder | null>(null);
 	const renderElement = useRef<HTMLDivElement | null>(null);
+	const [instanceIsReady, setInstanceIsReady] = useState(false);
 
 	useEffect(() => {
 		let ignore = false;
@@ -161,18 +162,12 @@ export const FormBuilder = ({
 					instance.instance.destroy(true);
 					return;
 				}
-				toggleEventHandlers(instance, {
-					onSaveComponent,
-					onEditComponent,
-					onUpdateComponent,
-					onDeleteComponent,
-					onChange,
-				});
 
 				if (onBuilderReady) {
 					onBuilderReady(instance);
 				}
 				builder.current = instance;
+				setInstanceIsReady(true);
 			} else {
 				console.warn('Failed to create FormBuilder instance');
 			}
@@ -182,31 +177,42 @@ export const FormBuilder = ({
 
 		return () => {
 			ignore = true;
+			setInstanceIsReady(false);
 			if (builder.current) {
-				toggleEventHandlers(
-					builder.current,
-					{
-						onSaveComponent,
-						onEditComponent,
-						onUpdateComponent,
-						onDeleteComponent,
-						onChange,
-					},
-					false,
-				);
 				builder.current.instance.destroy(true);
 			}
 		};
+	}, [Builder, form, options, onBuilderReady]);
+
+	useEffect(() => {
+		if (instanceIsReady && builder.current) {
+			toggleEventHandlers(builder.current, {
+				onChange,
+				onDeleteComponent,
+				onEditComponent,
+				onSaveComponent,
+				onUpdateComponent,
+			});
+		}
+
+		return () => {
+			if (instanceIsReady && builder.current) {
+				toggleEventHandlers(builder.current, {
+					onChange,
+					onDeleteComponent,
+					onEditComponent,
+					onSaveComponent,
+					onUpdateComponent,
+				}, false);
+			}
+		};
 	}, [
-		Builder,
-		form,
-		options,
-		onBuilderReady,
-		onSaveComponent,
-		onEditComponent,
-		onUpdateComponent,
-		onDeleteComponent,
+		instanceIsReady,
 		onChange,
+		onDeleteComponent,
+		onEditComponent,
+		onSaveComponent,
+		onUpdateComponent,
 	]);
 
 	return <div ref={renderElement}></div>;
