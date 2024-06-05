@@ -1,5 +1,5 @@
-import { createContext, useState } from 'react';
-import { Formio, EventEmitter } from '@formio/js';
+import { createContext, useState, useEffect } from 'react';
+import { Formio } from '@formio/js';
 
 type BaseConfigurationArgs = {
 	baseUrl?: string;
@@ -17,12 +17,6 @@ const useBaseConfiguration = ({
 		Formio.setProjectUrl(projectUrl);
 	}
 
-	// TODO: this is due to a desync in event emitters between @formio/js and @formio/core; once fixed, we shouldn't need it
-	Formio.events = new EventEmitter({
-		wildcard: false,
-		maxListeners: 0,
-	});
-
 	return {
 		Formio,
 		baseUrl: Formio.baseUrl,
@@ -33,27 +27,36 @@ const useBaseConfiguration = ({
 const useAuthentication = () => {
 	const [token, setToken] = useState(Formio.getToken() || null);
 	const [isAuthenticated, setIsAuthenticated] = useState(!!token);
-	// listen for user events for authentication
-	Formio.events.on('formio.user', async (user: unknown) => {
-		if (user) {
-			setToken(Formio.getToken());
-			setIsAuthenticated(true);
-		} else if (isAuthenticated) {
-			await Formio.logout();
-			setToken(null);
-			setIsAuthenticated(false);
-		}
-	});
 
-	// handle a stale token
-	if (isAuthenticated) {
-		Formio.currentUser().then((user: any) => {
-			if (!user) {
+	useEffect(() => {
+		const handleUserEvent = async (user: unknown) => {
+			if (user) {
+				setToken(Formio.getToken());
+				setIsAuthenticated(true);
+			} else if (isAuthenticated) {
+				await Formio.logout();
 				setToken(null);
 				setIsAuthenticated(false);
 			}
-		});
-	}
+		};
+
+		const handleStaleToken = async () => {
+			if (isAuthenticated) {
+				const user = await Formio.currentUser();
+				if (!user) {
+					setToken(null);
+					setIsAuthenticated(false);
+				}
+			}
+		};
+
+		Formio.events.on('formio.user', handleUserEvent);
+		handleStaleToken();
+
+		return () => {
+			Formio.events.off('formio.user', handleUserEvent);
+		};
+	}, [isAuthenticated]);
 
 	const logout = async () => {
 		await Formio.logout();
