@@ -14,7 +14,7 @@ interface BuilderConstructor {
 export type FormBuilderProps = {
 	options?: FormioFormBuilder['options'];
 	Builder?: BuilderConstructor;
-	form?: FormType;
+	initialForm?: FormType;
 	onBuilderReady?: (builder: FormioFormBuilder) => void;
 	onChange?: (form: FormType) => void;
 	onSaveComponent?: (
@@ -69,12 +69,12 @@ const toggleEventHandlers = (
 				isNew,
 				originalComponentSchema,
 			);
-			onChange?.(builder.instance.form);
+			onChange?.(structuredClone(builder.instance.form));
 		},
 	);
 	builder.instance[fn]('updateComponent', (component: Component) => {
 		onUpdateComponent?.(component);
-		onChange?.(builder.instance.form);
+		onChange?.(structuredClone(builder.instance.form));
 	});
 	builder.instance[fn](
 		'removeComponent',
@@ -85,26 +85,26 @@ const toggleEventHandlers = (
 			index: number,
 		) => {
 			onDeleteComponent?.(component, parent, path, index);
-			onChange?.(builder.instance.form);
+			onChange?.(structuredClone(builder.instance.form));
 		},
 	);
 
 	builder.instance[fn]('cancelComponent', (component: Component) => {
 		onUpdateComponent?.(component);
-		onChange?.(builder.instance.form);
+		onChange?.(structuredClone(builder.instance.form));
 	});
 
 	builder.instance[fn]('editComponent', (component: Component) => {
 		onEditComponent?.(component);
-		onChange?.(builder.instance.form);
+		onChange?.(structuredClone(builder.instance.form));
 	});
 
 	builder.instance[fn]('addComponent', () => {
-		onChange?.(builder.instance.form);
+		onChange?.(structuredClone(builder.instance.form));
 	});
 
 	builder.instance[fn]('pdfUploaded', () => {
-		onChange?.(builder.instance.form);
+		onChange?.(structuredClone(builder.instance.form));
 	});
 };
 
@@ -130,7 +130,7 @@ const DEFAULT_FORM: FormType = { display: 'form' as const, components: [] };
 export const FormBuilder = ({
 	options,
 	Builder,
-	form = DEFAULT_FORM,
+	initialForm = DEFAULT_FORM,
 	onBuilderReady,
 	onChange,
 	onDeleteComponent,
@@ -154,7 +154,7 @@ export const FormBuilder = ({
 			const instance = await createBuilderInstance(
 				renderElement.current,
 				Builder,
-				structuredClone(form),
+				structuredClone(initialForm),
 				options,
 			);
 			if (instance) {
@@ -182,7 +182,7 @@ export const FormBuilder = ({
 				builder.current.instance.destroy(true);
 			}
 		};
-	}, [Builder, form, options, onBuilderReady]);
+	}, [Builder, initialForm, options, onBuilderReady]);
 
 	useEffect(() => {
 		if (instanceIsReady && builder.current) {
@@ -197,13 +197,17 @@ export const FormBuilder = ({
 
 		return () => {
 			if (instanceIsReady && builder.current) {
-				toggleEventHandlers(builder.current, {
-					onChange,
-					onDeleteComponent,
-					onEditComponent,
-					onSaveComponent,
-					onUpdateComponent,
-				}, false);
+				toggleEventHandlers(
+					builder.current,
+					{
+						onChange,
+						onDeleteComponent,
+						onEditComponent,
+						onSaveComponent,
+						onUpdateComponent,
+					},
+					false,
+				);
 			}
 		};
 	}, [

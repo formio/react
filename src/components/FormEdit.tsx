@@ -269,7 +269,7 @@ export const FormEdit = ({
 			</SettingsFormContainer>
 			<BuilderContainer>
 				<FormBuilder
-					form={initialForm}
+					initialForm={initialForm}
 					options={builderOptions}
 					Builder={Builder}
 					onBuilderReady={handleBuilderReady}

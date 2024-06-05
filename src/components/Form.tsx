@@ -110,63 +110,65 @@ const onAnyEvent = (
 	>,
 	...args: [string, ...any[]]
 ) => {
-	const event = args[0];
+	const [event, ...rest] = args;
+	// Clone the rest of the arguments to avoid mutation, and to ensure that the arguments are not stable references that will be ignored by React when other components re-render
+	const outputArgs = structuredClone(rest);
 	if (event.startsWith('formio.')) {
 		const funcName = `on${event.charAt(7).toUpperCase()}${event.slice(8)}`;
 		switch (funcName) {
 			case 'onPrevPage':
-				if (handlers.onPrevPage) handlers.onPrevPage(args[1], args[2]);
+				if (handlers.onPrevPage) handlers.onPrevPage(outputArgs[0], outputArgs[1]);
 				break;
 			case 'onNextPage':
-				if (handlers.onNextPage) handlers.onNextPage(args[1], args[2]);
+				if (handlers.onNextPage) handlers.onNextPage(outputArgs[0], outputArgs[1]);
 				break;
 			case 'onCancelSubmit':
 				if (handlers.onCancelSubmit) handlers.onCancelSubmit();
 				break;
 			case 'onCancelComponent':
 				if (handlers.onCancelComponent)
-					handlers.onCancelComponent(args[1]);
+					handlers.onCancelComponent(outputArgs[0]);
 				break;
 			case 'onChange':
 				if (handlers.onChange)
-					handlers.onChange(args[1], args[2], args[3]);
+					handlers.onChange(outputArgs[0], outputArgs[1], outputArgs[2]);
 				break;
 			case 'onCustomEvent':
-				if (handlers.onCustomEvent) handlers.onCustomEvent(args[1]);
+				if (handlers.onCustomEvent) handlers.onCustomEvent(outputArgs[0]);
 				break;
 			case 'onComponentChange':
 				if (handlers.onComponentChange)
-					handlers.onComponentChange(args[1]);
+					handlers.onComponentChange(outputArgs[0]);
 				break;
 			case 'onSubmit':
-				if (handlers.onSubmit) handlers.onSubmit(args[1], args[2]);
+				if (handlers.onSubmit) handlers.onSubmit(outputArgs[0], outputArgs[1]);
 				break;
 			case 'onSubmitDone':
-				if (handlers.onSubmitDone) handlers.onSubmitDone(args[1]);
+				if (handlers.onSubmitDone) handlers.onSubmitDone(outputArgs[0]);
 				break;
 			case 'onSubmitError':
-				if (handlers.onSubmitError) handlers.onSubmitError(args[1]);
+				if (handlers.onSubmitError) handlers.onSubmitError(outputArgs[0]);
 				break;
 			case 'onFormLoad':
-				if (handlers.onFormLoad) handlers.onFormLoad(args[1]);
+				if (handlers.onFormLoad) handlers.onFormLoad(outputArgs[0]);
 				break;
 			case 'onError':
-				if (handlers.onError) handlers.onError(args[1]);
+				if (handlers.onError) handlers.onError(outputArgs[0]);
 				break;
 			case 'onRender':
-				if (handlers.onRender) handlers.onRender(args[1]);
+				if (handlers.onRender) handlers.onRender(outputArgs[0]);
 				break;
 			case 'onAttach':
-				if (handlers.onAttach) handlers.onAttach(args[1]);
+				if (handlers.onAttach) handlers.onAttach(outputArgs[0]);
 				break;
 			case 'onBuild':
-				if (handlers.onBuild) handlers.onBuild(args[1]);
+				if (handlers.onBuild) handlers.onBuild(outputArgs[0]);
 				break;
 			case 'onFocus':
-				if (handlers.onFocus) handlers.onFocus(args[1]);
+				if (handlers.onFocus) handlers.onFocus(outputArgs[0]);
 				break;
 			case 'onBlur':
-				if (handlers.onBlur) handlers.onBlur(args[1]);
+				if (handlers.onBlur) handlers.onBlur(outputArgs[0]);
 				break;
 			case 'onInitialized':
 				if (handlers.onInitialized) handlers.onInitialized();
@@ -176,20 +178,20 @@ const onAnyEvent = (
 				break;
 			case 'onBeforeSetSubmission':
 				if (handlers.onBeforeSetSubmission)
-					handlers.onBeforeSetSubmission(args[1]);
+					handlers.onBeforeSetSubmission(outputArgs[0]);
 				break;
 			case 'onSaveDraftBegin':
 				if (handlers.onSaveDraftBegin) handlers.onSaveDraftBegin();
 				break;
 			case 'onSaveDraft':
-				if (handlers.onSaveDraft) handlers.onSaveDraft(args[1]);
+				if (handlers.onSaveDraft) handlers.onSaveDraft(outputArgs[0]);
 				break;
 			case 'onRestoreDraft':
-				if (handlers.onRestoreDraft) handlers.onRestoreDraft(args[1]);
+				if (handlers.onRestoreDraft) handlers.onRestoreDraft(outputArgs[0]);
 				break;
 			case 'onSubmissionDeleted':
 				if (handlers.onSubmissionDeleted)
-					handlers.onSubmissionDeleted(args[1]);
+					handlers.onSubmissionDeleted(outputArgs[0]);
 				break;
 			case 'onRequestDone':
 				if (handlers.onRequestDone) handlers.onRequestDone();
@@ -199,7 +201,7 @@ const onAnyEvent = (
 		}
 	}
 	if (handlers.otherEvents && handlers.otherEvents[event]) {
-		handlers.otherEvents[event](...args.slice(1));
+		handlers.otherEvents[event](...outputArgs);
 	}
 };
 
