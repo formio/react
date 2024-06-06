@@ -28,6 +28,7 @@
 	},
 	"homepage": "https://github.com/formio/react-formio#readme",
 	"dependencies": {
+		"@ungap/structured-clone": "^1.2.0",
 		"core-js": "^3.35.1",
 		"lodash": "^4.17.21",
 		"prop-types": "^15.8.1"
@@ -40,6 +41,7 @@
 		"@types/jest": "^29.5.12",
 		"@types/lodash": "^4.14.202",
 		"@types/react": "^18.2.55",
+		"@types/ungap__structured-clone": "^1.2.0",
 		"@typescript-eslint/eslint-plugin": "^7.0.1",
 		"@typescript-eslint/parser": "^7.0.1",
 		"bootstrap": "^5.3.3",

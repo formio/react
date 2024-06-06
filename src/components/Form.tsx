@@ -1,6 +1,7 @@
 import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { EventEmitter, Form as FormClass, Webform } from '@formio/js';
 import { Component, Form as CoreFormType } from '@formio/core';
+import structuredClone from '@ungap/structured-clone';
 
 export type PartialExcept<T, K extends keyof T> = Partial<Omit<T, K>> &
 	Required<Pick<T, K>>;
