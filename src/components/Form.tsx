@@ -111,9 +111,7 @@ const onAnyEvent = (
 	>,
 	...args: [string, ...any[]]
 ) => {
-	const [event, ...rest] = args;
-	// Clone the rest of the arguments to avoid mutation, and to ensure that the arguments are not stable references that will be ignored by React when other components re-render
-	const outputArgs = structuredClone(rest);
+	const [event, ...outputArgs] = args;
 	if (event.startsWith('formio.')) {
 		const funcName = `on${event.charAt(7).toUpperCase()}${event.slice(8)}`;
 		switch (funcName) {
