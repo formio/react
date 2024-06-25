@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Bump @babel/traverse from 7.21.5 to 7.23.2
 -   FIO-7489 formio js 5/bootstrap 5 updates to react library
 -   pass down a ref callback to custom component instead of relying on the return value of ReactDOM.render
+-   FIO-7733: React Updates
 
 ## 5.3.0
 
