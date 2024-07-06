@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"module": "NodeNext",
+		"outDir": "lib",
+		"allowJs": true,
+		"jsx": "react-jsx",
+		"declaration": true,
+		"declarationMap": true,
+		"target": "es2015",
+		"baseUrl": "src",
+		"strict": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+	},
+	"include": ["src/**/*"],
+	"types": ["node", "jest", "@testing-library/jest-dom"],
+	"exclude": ["node_modules", "lib", "test"],
+}
