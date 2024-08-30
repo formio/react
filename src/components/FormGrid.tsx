@@ -9,10 +9,13 @@ export type Action = {
 	fn: (id: string) => void;
 };
 
+type SomeRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
+type FormFromServer = SomeRequired<FormType, '_id'>;
+
 export type ComponentProp<T = object> = (props: T) => JSX.Element;
 export type FormGridProps = {
 	actions?: Action[];
-	forms?: FormType[];
+	forms?: FormFromServer[];
 	components?: {
 		Container?: ComponentProp<{ children: ReactNode }>;
 		FormContainer?: ComponentProp<{ children: ReactNode }>;
@@ -80,7 +83,7 @@ export const FormGrid = ({
 	);
 	const dataOrFnArg = forms ? forms : fetchFunction;
 	const { data, total, page, nextPage, prevPage, setPage, hasMore } =
-		usePagination<FormType>(1, limit, dataOrFnArg);
+		usePagination<FormFromServer>(1, limit, dataOrFnArg);
 	const defaultActions = [
 		{ name: 'Edit', fn: (id: string) => onFormClick?.(id) },
 		{

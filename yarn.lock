@@ -349,10 +349,10 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.0.tgz#a5417ae8427873f1dd08b70b3574b453e67b5f7f"
   integrity sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==
 
-"@formio/bootstrap@^3.0.0-rc.22":
-  version "3.0.0-rc.21-dev.90.e1f0b93"
-  resolved "https://registry.yarnpkg.com/@formio/bootstrap/-/bootstrap-3.0.0-rc.21-dev.90.e1f0b93.tgz#fd669cecbf4ab2f58ad91d1a67e55dfbcad1d2b7"
-  integrity sha512-hNw2XvCU1hzdke42Gos2MnvWbUQjjhLPLPoRAqxEwxzg0lMeR5Xc9wlw1jRhHEwbpvF8c5bBVnnxfX/ilfah4A==
+"@formio/bootstrap@3.0.0-rc.37":
+  version "3.0.0-rc.37"
+  resolved "https://registry.yarnpkg.com/@formio/bootstrap/-/bootstrap-3.0.0-rc.37.tgz#111c8e3ede3a88bddad4452f27677d717d804628"
+  integrity sha512-ipIjxwc+VRu7sV2M/wYhG0wGetObHaT58LcvetVCVOIDzvUBFZdfMY50tnaZTtTxjAbSHpuPAf7Vr1W+b8Id8g==
 
 "@formio/choices.js@^10.2.1":
   version "10.2.1"
@@ -363,50 +363,32 @@
     fuse.js "^6.6.2"
     redux "^4.2.0"
 
-"@formio/core@2.0.0-dev.95.b81e754":
-  version "2.0.0-dev.95.b81e754"
-  resolved "https://registry.yarnpkg.com/@formio/core/-/core-2.0.0-dev.95.b81e754.tgz#82a928c2d13bc127d6bd1dd83776ec9f03ab0e56"
-  integrity sha512-6UX8bwV1/T75smx2Z6+VXiv2M/zqEgxAHezQcCKHhMwgwfuqa2vmlCAG80bCRaf45XB5iNzWXe9WOOwXbsRiHg==
+"@formio/core@2.2.2-rc.5":
+  version "2.2.2-rc.5"
+  resolved "https://registry.yarnpkg.com/@formio/core/-/core-2.2.2-rc.5.tgz#19a8d3f25780db115a2f95a1cb57d1dc096fdba0"
+  integrity sha512-fM0BDirJLV0iK5kk0Jc4n82ynCSUBRJ48qB5rvXDq1iGXpJqao0F9/NyNpTldqvjQtMaqcYfnulggx85SkEbLQ==
   dependencies:
-    "@types/json-logic-js" "^2.0.5"
+    "@types/json-logic-js" "^2.0.7"
     browser-cookies "^1.2.0"
-    core-js "^3.33.2"
-    dayjs "^1.11.10"
-    dompurify "^3.0.6"
+    core-js "^3.37.1"
+    dayjs "^1.11.11"
+    dompurify "^3.1.4"
     eventemitter3 "^5.0.0"
     fast-json-patch "^3.1.1"
     fetch-ponyfill "^7.1.0"
-    inputmask "^5.0.9-beta.45"
+    inputmask "5.0.8"
     json-logic-js "^2.0.2"
     lodash "^4.17.21"
     moment "^2.29.4"
 
-"@formio/core@^2.1.0-dev.tt.2":
-  version "2.1.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@formio/core/-/core-2.1.0-rc.1.tgz#0f67b3ccffdc138de2e8de00437d9a913fef74ee"
-  integrity sha512-Pzs799flwGubtgdjjSUDwvkvBASUMY/NQCU4lvbg/d8aHMPrFww6oTZdUZM1QvXhbwENh5KcZPggpJFa3EKTtg==
+"@formio/js@5.0.0-rc.76":
+  version "5.0.0-rc.76"
+  resolved "https://registry.yarnpkg.com/@formio/js/-/js-5.0.0-rc.76.tgz#a47c292b5162a00e7d21657f53836e9f1add73bc"
+  integrity sha512-LUvFX4Dj/d6vN2o1jBrNE4IDKVpbymb4bg6Ja4l5j3CHfUa90PSeJGXLCWhsVcNSwcprhMT1aKpnfPHR8fPljQ==
   dependencies:
-    "@types/json-logic-js" "^2.0.5"
-    browser-cookies "^1.2.0"
-    core-js "^3.33.2"
-    dayjs "^1.11.10"
-    dompurify "^3.0.6"
-    eventemitter3 "^5.0.0"
-    fast-json-patch "^3.1.1"
-    fetch-ponyfill "^7.1.0"
-    inputmask "^5.0.9-beta.45"
-    json-logic-js "^2.0.2"
-    lodash "^4.17.21"
-    moment "^2.29.4"
-
-"@formio/js@5.0.0-dev.5604.02ffada":
-  version "5.0.0-dev.5604.02ffada"
-  resolved "https://registry.yarnpkg.com/@formio/js/-/js-5.0.0-dev.5604.02ffada.tgz#19afaa627d2a5d16d569006e03950ee907138ff3"
-  integrity sha512-x+3gvJs8y0TNhM3ynPDtdXESaHq2xl6TIWUARNETKHBaJ4Fw6TsWRLpAtdR6wWP/Xr8oWvDRqm1JRq3WIbunOA==
-  dependencies:
-    "@formio/bootstrap" "^3.0.0-rc.22"
+    "@formio/bootstrap" "3.0.0-rc.37"
     "@formio/choices.js" "^10.2.1"
-    "@formio/core" "^2.1.0-dev.tt.2"
+    "@formio/core" "2.2.2-rc.5"
     "@formio/text-mask-addons" "^3.8.0-formio.2"
     "@formio/vanilla-text-mask" "^5.1.1-formio.1"
     abortcontroller-polyfill "^1.7.5"
@@ -415,16 +397,15 @@
     browser-cookies "^1.2.0"
     browser-md5-file "^1.1.1"
     compare-versions "^6.0.0-rc.2"
-    core-js "^3.37.0"
+    core-js "^3.37.1"
     dialog-polyfill "^0.5.6"
     dom-autoscroller "^2.3.4"
-    dompurify "^3.1.0"
+    dompurify "^3.1.3"
     downloadjs "^1.4.7"
     dragula "^3.7.3"
     eventemitter3 "^5.0.1"
     fast-deep-equal "^3.1.3"
     fast-json-patch "^3.1.1"
-    fetch-ponyfill "^7.1.0"
     idb "^7.1.1"
     inputmask "^5.0.8"
     ismobilejs "^1.1.1"
@@ -434,7 +415,7 @@
     lodash "^4.17.21"
     moment "^2.29.4"
     moment-timezone "^0.5.44"
-    quill "^2.0.0-rc.4"
+    quill "^2.0.2"
     signature_pad "^4.2.0"
     string-hash "^1.1.3"
     tippy.js "^6.3.7"
@@ -940,7 +921,7 @@
     "@types/tough-cookie" "*"
     parse5 "^7.0.0"
 
-"@types/json-logic-js@^2.0.5":
+"@types/json-logic-js@^2.0.7":
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/@types/json-logic-js/-/json-logic-js-2.0.7.tgz#09a70a932d0be937618a9fc791291b069e637fb0"
   integrity sha512-fucvZmbjqa1+gpw/nIwcP+ZIYHTvmwxuQQFKw/yU7+ZSD63z/xgY5pWN7sYUDRzg2Wf9STapL+7c66FNzhU6+Q==
@@ -1782,15 +1763,15 @@ convert-source-map@^2.0.0:
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-2.0.0.tgz#4b560f649fc4e918dd0ab75cf4961e8bc882d82a"
   integrity sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==
 
-core-js@^3.33.2, core-js@^3.35.1:
+core-js@^3.35.1:
   version "3.37.0"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.37.0.tgz#d8dde58e91d156b2547c19d8a4efd5c7f6c426bb"
   integrity sha512-fu5vHevQ8ZG4og+LXug8ulUtVxjOcEYvifJr7L5Bfq9GOztVqsKd9/59hUk2ZSbCrS3BqUr3EpaYGIYzq7g3Ug==
 
-core-js@^3.37.0:
-  version "3.37.1"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.37.1.tgz#d21751ddb756518ac5a00e4d66499df981a62db9"
-  integrity sha512-Xn6qmxrQZyB0FFY8E3bgRXei3lWDJHhvI+u0q9TKIYM49G8pAr0FgnnrFRAmsbptZL1yxRADVXn+x5AGsbBfyw==
+core-js@^3.37.1:
+  version "3.38.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.38.1.tgz#aa375b79a286a670388a1a363363d53677c0383e"
+  integrity sha512-OP35aUorbU3Zvlx7pjsFdu1rGNnD4pgw/CWoYzRY3t2EzoVT7shKHY1dlAy3f41cGIO7ZDPQimhGFTlEYkG/Hw==
 
 create-jest@^29.7.0:
   version "29.7.0"
@@ -1922,10 +1903,10 @@ data-view-byte-offset@^1.0.0:
     es-errors "^1.3.0"
     is-data-view "^1.0.1"
 
-dayjs@^1.11.10:
-  version "1.11.11"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.11.tgz#dfe0e9d54c5f8b68ccf8ca5f72ac603e7e5ed59e"
-  integrity sha512-okzr3f11N6WuqYtZSvm+F776mB41wRZMhKP+hc34YdW+KmtYYK9iqvHSwo2k9FEH3fhGXvOPV6yz2IcSrfRUDg==
+dayjs@^1.11.11:
+  version "1.11.13"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.13.tgz#92430b0139055c3ebb60150aa13e860a4b5a366c"
+  integrity sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==
 
 debug@4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4:
   version "4.3.4"
@@ -2097,15 +2078,10 @@ domexception@^4.0.0:
   dependencies:
     webidl-conversions "^7.0.0"
 
-dompurify@^3.0.6:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.1.2.tgz#d1e158457e00666ab40c9c3d8aab57586a072bd1"
-  integrity sha512-hLGGBI1tw5N8qTELr3blKjAML/LY4ANxksbS612UiJyDfyf/2D092Pvm+S7pmeTGJRqvlJkFzBoHBQKgQlOQVg==
-
-dompurify@^3.1.0:
-  version "3.1.4"
-  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.1.4.tgz#42121304b2b3a6bae22f80131ff8a8f3f3c56be2"
-  integrity sha512-2gnshi6OshmuKil8rMZuQCGiUF3cUxHY3NGDzUAdUx/NPEe5DVnO8BDoAQouvgwnx0R/+a6jUn36Z0FSdq8vww==
+dompurify@^3.1.3, dompurify@^3.1.4:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.1.6.tgz#43c714a94c6a7b8801850f82e756685300a027e2"
+  integrity sha512-cTOAhc36AalkjtBpfG6O8JimdTMWNXjiePT2xQH/ppBGi/4uIpmj8eKyIkMJErXWARyINV/sB38yf8JCLF5pbQ==
 
 downloadjs@^1.4.7:
   version "1.4.7"
@@ -2963,15 +2939,10 @@ inherits@2:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
-inputmask@^5.0.8:
+inputmask@5.0.8, inputmask@^5.0.8:
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/inputmask/-/inputmask-5.0.8.tgz#cd0f70b058c3291a0d4f27de25dbfc179c998bb4"
   integrity sha512-1WcbyudPTXP1B28ozWWyFa6QRIUG4KiLoyR6LFHlpT4OfTzRqFfWgHFadNvRuMN1S9XNVz9CdNvCGjJi+uAMqQ==
-
-inputmask@^5.0.9-beta.45:
-  version "5.0.9-beta.62"
-  resolved "https://registry.yarnpkg.com/inputmask/-/inputmask-5.0.9-beta.62.tgz#e882904404e6038155492f939170820da89f3157"
-  integrity sha512-8r2R5YEk6xEWgV6Sd8PwmMkFBF/9uGJipPYE01BAvZLFnK7oUKI9yaB74fHEc4525Y3lM69qk48oMq6jTN8cZQ==
 
 internal-slot@^1.0.4, internal-slot@^1.0.7:
   version "1.0.7"
@@ -4408,7 +4379,7 @@ quill-delta@^5.1.0:
     lodash.clonedeep "^4.5.0"
     lodash.isequal "^4.5.0"
 
-quill@^2.0.0-rc.4:
+quill@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/quill/-/quill-2.0.2.tgz#5b26bc10a74e9f7fdcfdb5156b3133a3ebf0a814"
   integrity sha512-QfazNrhMakEdRG57IoYFwffUIr04LWJxbS/ZkidRFXYCQt63c1gK6Z7IHUXMx/Vh25WgPBU42oBaNzQ0K1R/xw==
