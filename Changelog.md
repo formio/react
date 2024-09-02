@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   FIO-7489 formio js 5/bootstrap 5 updates to react library
 -   pass down a ref callback to custom component instead of relying on the return value of ReactDOM.render
 -   FIO-7733: React Updates
+-   FIO-8943: upgrade dev dependencies to latest rcs; fix type error
 
 ## 5.3.0
 
