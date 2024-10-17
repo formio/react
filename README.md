@@ -2,6 +2,8 @@
 
 A [React](http://facebook.github.io/react/) library for rendering out forms based on the [Form.io](https://www.form.io) platform.
 
+> **_NOTE:_**  The following documentation corresponds to version 6.x of @formio/react, which has not been released yet. For version-specific documentation, please see the relevant tag.
+
 ## Example Application
 
 To see an example application of how to implement all the components and modules in this library, see [https://github.com/formio/react-app-starterkit](https://github.com/formio/react-app-starterkit)
