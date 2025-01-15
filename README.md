@@ -319,7 +319,7 @@ const root = createRoot(domNode);
 root.render(
 	<Form src="https://example.form.io/example" onSubmit={console.log} />,
 );
-````
+```
 
 Render a simple form from a JSON form definition:
 
