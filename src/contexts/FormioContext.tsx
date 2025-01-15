@@ -1,15 +1,31 @@
 import { createContext, useState, useEffect } from 'react';
-import { Formio } from '@formio/js';
+import { Formio as ImportedFormio } from '@formio/js';
 
 type BaseConfigurationArgs = {
 	baseUrl?: string;
 	projectUrl?: string;
+	Formio?: typeof ImportedFormio;
 };
+
 const useBaseConfiguration = ({
 	baseUrl,
 	projectUrl,
+	Formio,
 }: BaseConfigurationArgs) => {
-	// establish basic Formio configuration
+	if (!Formio) {
+		if (baseUrl) {
+			ImportedFormio.setBaseUrl(baseUrl);
+		}
+		if (projectUrl) {
+			ImportedFormio.setProjectUrl(projectUrl);
+		}
+		return {
+			Formio: ImportedFormio,
+			baseUrl: ImportedFormio.baseUrl,
+			projectUrl: ImportedFormio.projectUrl,
+		};
+	}
+
 	if (baseUrl) {
 		Formio.setBaseUrl(baseUrl);
 	}
@@ -24,7 +40,7 @@ const useBaseConfiguration = ({
 	};
 };
 
-const useAuthentication = () => {
+const useAuthentication = ({ Formio }: { Formio: typeof ImportedFormio }) => {
 	const [token, setToken] = useState(Formio.getToken() || null);
 	const [isAuthenticated, setIsAuthenticated] = useState(!!token);
 
@@ -56,7 +72,7 @@ const useAuthentication = () => {
 		return () => {
 			Formio.events.off('formio.user', handleUserEvent);
 		};
-	}, [isAuthenticated]);
+	}, [isAuthenticated, Formio]);
 
 	const logout = async () => {
 		await Formio.logout();
@@ -77,11 +93,11 @@ export function FormioProvider({
 	children,
 	baseUrl,
 	projectUrl,
+	Formio,
 }: { children: React.ReactNode } & BaseConfigurationArgs) {
-	const formio = {
-		...useBaseConfiguration({ baseUrl, projectUrl }),
-		...useAuthentication(),
-	};
+	const baseConfig = useBaseConfiguration({ baseUrl, projectUrl, Formio });
+	const auth = useAuthentication({ Formio: baseConfig.Formio });
+	const formio = { ...baseConfig, ...auth };
 	return (
 		<FormioContext.Provider value={formio}>
 			{children}
