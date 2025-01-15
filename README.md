@@ -239,7 +239,7 @@ A React context provider component that is required when using some hooks and co
 
 | Name       | Type   | Description                              |
 | ---------- | ------ | ---------------------------------------- |
-| Formio     | object | The Formio object to be used.
+| Formio     | object | The Formio object to be used.            |
 | baseUrl    | string | The base url of a Form.io server.        |
 | projectUrl | string | The url of a Form.io enterprise project. |
 
@@ -263,7 +263,7 @@ root.render(
 
 Extend the Formio object to use external modules:
 
-```JSX
+````JSX
 import { createRoot } from 'react-dom/client';
 import { Form, FormioProvider } from '@formio/react';
 import { Formio } from '@formio/js';
@@ -318,7 +318,7 @@ const root = createRoot(domNode);
 root.render(
 	<Form src="https://example.form.io/example" onSubmit={console.log} />,
 );
-```
+````
 
 Render a simple form from a JSON form definition:
 
