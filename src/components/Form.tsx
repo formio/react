@@ -17,7 +17,10 @@ export type JSON =
 
 // TODO: once events is typed correctly in @formio/js options, we can remove this override
 // TODO: `currentForm` is an option that will be deprecated once we update the Action settings form on the server
-export type FormOptions = FormClass['options'] & { events?: EventEmitter, currentForm?: CoreFormType };
+export type FormOptions = FormClass['options'] & {
+	events?: EventEmitter;
+	currentForm?: CoreFormType;
+};
 export type FormType = PartialExcept<CoreFormType, 'components'>;
 export type FormSource = string | FormType;
 interface FormConstructor {

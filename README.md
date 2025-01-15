@@ -263,7 +263,7 @@ root.render(
 
 Extend the Formio object to use external modules:
 
-````JSX
+```JSX
 import { createRoot } from 'react-dom/client';
 import { Form, FormioProvider } from '@formio/react';
 import { Formio } from '@formio/js';
@@ -278,6 +278,7 @@ root.render(
     <Form src="https://myproject.form.io/myformwithpremiumcomponents" />
   </FormioProvider>
 );
+```
 
 ### Form
 
