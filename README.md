@@ -2,7 +2,7 @@
 
 A [React](http://facebook.github.io/react/) library for rendering out forms based on the [Form.io](https://www.form.io) platform.
 
-> **_NOTE:_**  The following documentation corresponds to version 6.x of @formio/react, which has not been released yet. For version-specific documentation, please see the relevant tag.
+> **_NOTE:_** The following documentation corresponds to version 6.x of @formio/react, which has not been released yet. For version-specific documentation, please see the relevant tag.
 
 ## Example Application
 
@@ -239,8 +239,45 @@ A React context provider component that is required when using some hooks and co
 
 | Name       | Type   | Description                              |
 | ---------- | ------ | ---------------------------------------- |
+| Formio     | object | The Formio object to be used.
 | baseUrl    | string | The base url of a Form.io server.        |
 | projectUrl | string | The url of a Form.io enterprise project. |
+
+#### Examples
+
+Render a simple form from your self hosted Form.io deployment:
+
+```JSX
+import { createRoot } from 'react-dom/client';
+import { Form, FormioProvider } from '@formio/react';
+
+const domNode = document.getElementById('root');
+const root = createRoot(domNode);
+
+root.render(
+  <FormioProvider baseUrl="https://myformiodeployment.example.com/" projectUrl="https://myformiodeployment.example.com/myproject">
+    <Form src="https://myformiodeployment.example.com/myproject/myexampleform" />
+  </FormioProvider>
+);
+```
+
+Extend the Formio object to use external modules:
+
+```JSX
+import { createRoot } from 'react-dom/client';
+import { Form, FormioProvider } from '@formio/react';
+import { Formio } from '@formio/js';
+import premium from '@formio/premium';
+
+const domNode = document.getElementById('root');
+const root = createRoot(domNode);
+
+Formio.use(premium);
+root.render(
+  <FormioProvider Formio={Formio}>
+    <Form src="https://myproject.form.io/myformwithpremiumcomponents" />
+  </FormioProvider>
+);
 
 ### Form
 
