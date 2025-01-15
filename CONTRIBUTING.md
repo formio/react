@@ -2,10 +2,10 @@
 
 Thank you for helping this project become a better library :)
 
-- [Triage](#triage)
-- [Reporting Bugs](#reporting-bugs)
-- [Providing a feature request](#providing-a-feature-request)
-- [Pull requests](#pull-requests)
+-   [Triage](#triage)
+-   [Reporting Bugs](#reporting-bugs)
+-   [Providing a feature request](#providing-a-feature-request)
+-   [Pull requests](#pull-requests)
 
 ## Triage
 
@@ -23,21 +23,21 @@ Open an issue, making sure to follow the Feature request template.
 
 ### Getting started
 
-- If there isn't one already, open an issue describing the bug or feature request that you are going to solve in your pull request.
-- Create a fork of react-native-maps
-  - If you already have a fork, make sure it is up to date
-- Git clone your fork and run `yarn` in the base of the cloned repo to setup your local development environment.
-- Create a branch from the master branch to start working on your changes.
+-   If there isn't one already, open an issue describing the bug or feature request that you are going to solve in your pull request.
+-   Create a fork of react-native-maps
+    -   If you already have a fork, make sure it is up to date
+-   Git clone your fork and run `yarn` in the base of the cloned repo to setup your local development environment.
+-   Create a branch from the master branch to start working on your changes.
 
 ### Committing
 
-- When you made your changes, run `yarn lint` & `yarn test` to make sure the code you introduced doesn't cause any obvious issues.
-- When you are ready to commit your changes, use the [Github conventional commits](https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13) convention for you commit messages, as we use your commits when releasing new versions.
-- Use present tense: "add awesome component" not "added awesome component"
-- Limit the first line of the commit message to 100 characters
-- Reference issues and pull requests before committing
+-   When you made your changes, run `yarn lint` & `yarn test` to make sure the code you introduced doesn't cause any obvious issues.
+-   When you are ready to commit your changes, use the [Github conventional commits](https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13) convention for you commit messages, as we use your commits when releasing new versions.
+-   Use present tense: "add awesome component" not "added awesome component"
+-   Limit the first line of the commit message to 100 characters
+-   Reference issues and pull requests before committing
 
 ### Creating the pull request
 
-- The title of the PR needs to follow the same conventions as your commit messages, as it might be used in case of a squash merge.
-- Create the pull request against the beta branch.
+-   The title of the PR needs to follow the same conventions as your commit messages, as it might be used in case of a squash merge.
+-   Create the pull request against the beta branch.

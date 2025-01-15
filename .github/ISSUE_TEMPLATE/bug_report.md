@@ -24,7 +24,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Sandbox Example**
-A reproducible example from an online editor such as CodeSandbox or StackBlitz 
+A reproducible example from an online editor such as CodeSandbox or StackBlitz
 
 **Desktop (please complete the following information):**
 
@@ -41,6 +41,3 @@ A reproducible example from an online editor such as CodeSandbox or StackBlitz
 
 **Additional context**
 Add any other context about the problem here.
-
-
-
