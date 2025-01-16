@@ -1,10 +1,11 @@
-import { useRef, ReactNode } from 'react';
+import { useRef, ReactNode, useState } from 'react';
 import { FormBuilder as FormioFormBuilder } from '@formio/js';
 import { FormBuilder, FormBuilderProps } from './FormBuilder';
 import { Form, FormOptions, FormType, FormProps } from './Form';
 import { ComponentProp } from './FormGrid';
 import { useFormioContext } from '../hooks/useFormioContext';
 import { Form as CoreFormType } from '@formio/core';
+import Errors from './Errors';
 
 type FormEditProps = {
 	initialForm?: FormType;
@@ -25,6 +26,10 @@ type FormEditProps = {
 			onClick: () => void;
 		}>;
 	};
+};
+
+type ErrorObject = {
+	[key: string]: unknown;
 };
 
 const DEFAULT_INITAL_FORM = {
@@ -190,6 +195,7 @@ export const FormEdit = ({
 	onBuilderReady,
 }: FormEditProps) => {
 	const { Formio } = useFormioContext();
+	const [error, setError] = useState<ErrorObject | null>(null);
 	const {
 		Container = ({ children }) => <div>{children}</div>,
 		SettingsFormContainer = ({ children }) => <div>{children}</div>,
@@ -232,6 +238,7 @@ export const FormEdit = ({
 			onSaveForm?.(form);
 		} catch (error) {
 			console.error('Error saving form', error);
+			setError(error as ErrorObject) ;
 		}
 	};
 
@@ -251,10 +258,10 @@ export const FormEdit = ({
 					options={settingsFormOptions}
 					submission={{
 						data: {
-							title: initialForm.title,
-							name: initialForm.name,
-							path: initialForm.path,
-							display: initialForm.display,
+							title: settingsFormData.current.title,
+							name: settingsFormData.current.name,
+							path: settingsFormData.current.path,
+							display: settingsFormData.current.display,
 						},
 					}}
 					onChange={({ changed, data }, flags, modified) => {
@@ -266,6 +273,7 @@ export const FormEdit = ({
 						}
 					}}
 				/>
+				{error && <Errors type="error" errors={error} />}
 			</SettingsFormContainer>
 			<BuilderContainer>
 				<FormBuilder
