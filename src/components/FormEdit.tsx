@@ -238,7 +238,7 @@ export const FormEdit = ({
 		);
 		try {
 			const form = await formio.saveForm(formToSave);
-	     	onSaveForm?.(form);
+			onSaveForm?.(form);
 		} catch (error) {
 			console.error('Error saving form', error);
 		}
@@ -278,7 +278,7 @@ export const FormEdit = ({
 			</SettingsFormContainer>
 			<BuilderContainer>
 				<FormBuilder
-				    initialForm={initialForm}
+					initialForm={initialForm}
 					options={builderOptions}
 					Builder={Builder}
 					onBuilderReady={handleBuilderReady}
