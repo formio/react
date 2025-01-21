@@ -110,11 +110,7 @@ export const DEFAULT_SETTINGS_FORM = {
 													{
 														label: 'Wizard',
 														value: 'wizard',
-													},
-													{
-														label: 'PDF',
-														value: 'pdf',
-													},
+													}
 												],
 											},
 											validate: {
