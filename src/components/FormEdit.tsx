@@ -38,7 +38,16 @@ const DEFAULT_INITAL_FORM = {
 	path: '',
 	display: 'form' as const,
 	type: 'form' as const,
-	components: [],
+	components: [{
+		type: 'button',
+		label: 'Submit',
+		key: 'submit',
+		size: 'md',
+		block: false,
+		action: 'submit',
+		disableOnInvalid: true,
+		theme: 'primary'
+	}],
 };
 
 export const DEFAULT_SETTINGS_FORM = {

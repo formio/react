@@ -107,6 +107,9 @@ const toggleEventHandlers = (
 	builder.instance[fn]('pdfUploaded', () => {
 		onChange?.(structuredClone(builder.instance.form));
 	});
+	builder.instance[fn]('setDisplay', () => {
+		onChange?.(structuredClone(builder.instance.form));
+	});
 };
 
 const createBuilderInstance = async (
