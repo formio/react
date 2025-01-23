@@ -247,10 +247,8 @@ const getEffectiveProps = (props: FormProps) => {
 };
 
 export const Form = (props: FormProps) => {
-	const formInstance = useRef<Webform | null>(null);
 	const renderElement = useRef<HTMLDivElement | null>(null);
-	const { formConstructor, formSource, formReadyCallback } =
-		getEffectiveProps(props);
+	const { formConstructor, formSource, formReadyCallback } = getEffectiveProps(props);
 	const {
 		src,
 		form,
@@ -264,7 +262,7 @@ export const Form = (props: FormProps) => {
 		className,
 		...handlers
 	} = props;
-	const [instanceIsReady, setInstanceIsReady] = useState(false);
+	const [formInstance, setFormInstance] = useState<Webform | null>(null);
 
 	useEffect(() => {
 		let ignore = false;
@@ -304,8 +302,7 @@ export const Form = (props: FormProps) => {
 				if (formReadyCallback) {
 					formReadyCallback(instance);
 				}
-				formInstance.current = instance;
-				setInstanceIsReady(true);
+				setFormInstance(instance);
 			} else {
 				console.warn('Failed to create form instance');
 			}
@@ -314,10 +311,11 @@ export const Form = (props: FormProps) => {
 		createInstance();
 		return () => {
 			ignore = true;
-			if (formInstance.current) {
-				formInstance.current.destroy(true);
+			if (formInstance) {
+				formInstance.destroy(true);
 			}
 		};
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		formConstructor,
 		formReadyCallback,
@@ -328,34 +326,26 @@ export const Form = (props: FormProps) => {
 	]);
 
 	useEffect(() => {
-		if (
-			instanceIsReady &&
-			formInstance.current &&
-			Object.keys(handlers).length > 0
-		) {
-			formInstance.current.onAny((...args: [string, ...any[]]) =>
+		if (formInstance && Object.keys(handlers).length > 0) {
+			formInstance.onAny((...args: [string, ...any[]]) =>
 				onAnyEvent(handlers, ...args),
 			);
 		}
 
 		return () => {
-			if (
-				instanceIsReady &&
-				formInstance.current &&
-				Object.keys(handlers).length > 0
-			) {
-				formInstance.current.offAny((...args: [string, ...any[]]) =>
+			if (formInstance && Object.keys(handlers).length > 0) {
+				formInstance.offAny((...args: [string, ...any[]]) =>
 					onAnyEvent(handlers, ...args),
 				);
 			}
 		};
-	}, [instanceIsReady, handlers]);
+	}, [formInstance, handlers]);
 
 	useEffect(() => {
-		if (instanceIsReady && formInstance.current && submission) {
-			formInstance.current.submission = submission;
+		if (formInstance && submission) {
+			formInstance.submission = submission;
 		}
-	}, [instanceIsReady, submission]);
+	}, [formInstance, submission]);
 
 	return <div className={className} style={style} ref={renderElement} />;
 };
