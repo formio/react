@@ -33,16 +33,7 @@ const DEFAULT_INITAL_FORM = {
 	path: '',
 	display: 'form' as const,
 	type: 'form' as const,
-	components: [{
-		type: 'button',
-		label: 'Submit',
-		key: 'submit',
-		size: 'md',
-		block: false,
-		action: 'submit',
-		disableOnInvalid: true,
-		theme: 'primary'
-	}],
+	components: [],
 };
 
 export const DEFAULT_SETTINGS_FORM = {
@@ -223,6 +214,7 @@ export const FormEdit = ({
 		const formToSave: FormType = {
 			...currentForm.current,
 			...settingsFormData.current,
+			...builderRef?.current?.instance.form
 		};
 		if (saveFormFn) {
 			try {
