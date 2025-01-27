@@ -1,7 +1,7 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
 	preset: 'ts-jest',
-	testEnvironment: './FixJSDOMEnvironment.ts',
+	testEnvironment: './fixJSDOMEnvironment.ts',
 	testPathIgnorePatterns: [
 		'/node_modules/',
 		'/lib/',
