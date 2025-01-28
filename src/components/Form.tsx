@@ -270,7 +270,14 @@ export const Form = (props: FormProps) => {
 	const [formInstance, setFormInstance] = useState<Webform | null>(null);
 
 	useEffect(() => {
-		let ignore = false;
+		return () => {
+			if (formInstance) {
+				formInstance.destroy(true);
+			}
+		};
+	}, [formInstance]);
+
+	useEffect(() => {
 		const createInstance = async () => {
 			if (renderElement.current === null) {
 				console.warn('Form element not found');
@@ -290,10 +297,6 @@ export const Form = (props: FormProps) => {
 			);
 
 			if (instance) {
-				if (ignore) {
-					instance.destroy(true);
-					return;
-				}
 				if (typeof formSource === 'string') {
 					instance.src = formSource;
 				} else if (typeof formSource === 'object') {
@@ -314,13 +317,6 @@ export const Form = (props: FormProps) => {
 		};
 
 		createInstance();
-		return () => {
-			ignore = true;
-			if (formInstance) {
-				formInstance.destroy(true);
-			}
-		};
-	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		formConstructor,
 		formReadyCallback,
