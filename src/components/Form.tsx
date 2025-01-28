@@ -253,7 +253,8 @@ const getEffectiveProps = (props: FormProps) => {
 
 export const Form = (props: FormProps) => {
 	const renderElement = useRef<HTMLDivElement | null>(null);
-	const { formConstructor, formSource, formReadyCallback } = getEffectiveProps(props);
+	const { formConstructor, formSource, formReadyCallback } =
+		getEffectiveProps(props);
 	const {
 		src,
 		form,
