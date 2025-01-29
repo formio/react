@@ -1,5 +1,5 @@
 import { CSSProperties, useEffect, useRef, useState } from 'react';
-import { EventEmitter, Form as FormClass, Webform } from '@formio/js';
+import { EventEmitter, Form as FormClass, Webform, Utils } from '@formio/js';
 import { Component, Form as CoreFormType } from '@formio/core';
 import structuredClone from '@ungap/structured-clone';
 
@@ -228,9 +228,7 @@ const createWebformInstance = async (
 	if (!options?.events) {
 		options.events = getDefaultEmitter();
 	}
-	if (typeof formSource !== 'string') {
-		formSource = structuredClone(formSource);
-	}
+
 	const promise = FormConstructor
 		? new FormConstructor(element, formSource, options)
 		: new FormClass(element, formSource, options);
@@ -253,6 +251,7 @@ const getEffectiveProps = (props: FormProps) => {
 
 export const Form = (props: FormProps) => {
 	const renderElement = useRef<HTMLDivElement | null>(null);
+	const currentFormJson = useRef<FormType | null>(null);
 	const { formConstructor, formSource, formReadyCallback } = getEffectiveProps(props);
 	const {
 		src,
@@ -278,6 +277,14 @@ export const Form = (props: FormProps) => {
 	}, [formInstance]);
 
 	useEffect(() => {
+		if (
+			typeof formSource === 'object' &&
+			currentFormJson.current &&
+			Utils._.isEqual(currentFormJson.current, formSource)
+		) {
+			return;
+		}
+
 		const createInstance = async () => {
 			if (renderElement.current === null) {
 				console.warn('Form element not found');
@@ -288,10 +295,12 @@ export const Form = (props: FormProps) => {
 				console.warn('Form source not found');
 				return;
 			}
-
+			currentFormJson.current = formSource && typeof formSource !== 'string'
+				? structuredClone(formSource)
+				: null;
 			const instance = await createWebformInstance(
 				formConstructor,
-				formSource,
+				currentFormJson.current || formSource,
 				renderElement.current,
 				options,
 			);
@@ -327,17 +336,15 @@ export const Form = (props: FormProps) => {
 	]);
 
 	useEffect(() => {
+		let onAnyHandler = null;
 		if (formInstance && Object.keys(handlers).length > 0) {
-			formInstance.onAny((...args: [string, ...any[]]) =>
-				onAnyEvent(handlers, ...args),
-			);
+			onAnyHandler = (...args: [string, ...any[]]) => onAnyEvent(handlers, ...args);
+			formInstance.onAny(onAnyHandler);
 		}
 
 		return () => {
-			if (formInstance && Object.keys(handlers).length > 0) {
-				formInstance.offAny((...args: [string, ...any[]]) =>
-					onAnyEvent(handlers, ...args),
-				);
+			if (formInstance && onAnyHandler) {
+				formInstance.offAny(onAnyHandler);
 			}
 		};
 	}, [formInstance, handlers]);
