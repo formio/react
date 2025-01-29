@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unrelease: 6.0.0-rc.4]
+
+-   do not recreate form instance if the form json is not changed deeply
+
 ## 6.0.0-rc.3
 
 -   Initialize 6.0.x branch
