@@ -72,6 +72,11 @@ export const Report = (props) => {
 					formio.form = { components: [], report };
 					return formio;
 				}
+			}).catch((err) => {
+				console.error(err);
+				if (formio?.form?.report ) {
+					formio.form.report = {};
+				}
 			});
 			initializeFormio();
 		}
