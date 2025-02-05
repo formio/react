@@ -24,6 +24,7 @@ export function usePagination<T>(
 	const total: number | undefined = Array.isArray(dataOrFetchFunction)
 		? dataOrFetchFunction.length
 		: undefined;
+	let serverCount: number | undefined;
 
 	const fetchPage = useCallback(
 		async (page: number): Promise<void> => {
@@ -31,15 +32,17 @@ export function usePagination<T>(
 			let result;
 			if (Array.isArray(dataOrFetchFunction)) {
 				result = dataOrFetchFunction.slice(skip, skip + limit);
+				serverCount = dataOrFetchFunction.length;
 				setData(result);
 			} else {
 				result = await dataOrFetchFunction(limit, skip);
+				serverCount = (result as any).serverCount;
 				setData(result);
 			}
-			if (result.length < limit) {
-				setHasMore(false);
+			if (serverCount !== undefined) {
+				setHasMore(page * limit < serverCount);
 			} else {
-				setHasMore(true);
+				setHasMore(result.length >= limit);
 			}
 		},
 		[limit, dataOrFetchFunction],
