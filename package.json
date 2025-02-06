@@ -24,9 +24,9 @@
 	"author": "Randall Knutson <randall@form.io>",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/formio/react-formio/issues"
+		"url": "https://github.com/formio/react/issues"
 	},
-	"homepage": "https://github.com/formio/react-formio#readme",
+	"homepage": "https://github.com/formio/react#readme",
 	"dependencies": {
 		"@ungap/structured-clone": "^1.2.0",
 		"core-js": "^3.35.1",
