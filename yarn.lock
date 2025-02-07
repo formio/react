@@ -349,10 +349,10 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.0.tgz#a5417ae8427873f1dd08b70b3574b453e67b5f7f"
   integrity sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==
 
-"@formio/bootstrap@3.0.0-rc.37":
-  version "3.0.0-rc.37"
-  resolved "https://registry.yarnpkg.com/@formio/bootstrap/-/bootstrap-3.0.0-rc.37.tgz#111c8e3ede3a88bddad4452f27677d717d804628"
-  integrity sha512-ipIjxwc+VRu7sV2M/wYhG0wGetObHaT58LcvetVCVOIDzvUBFZdfMY50tnaZTtTxjAbSHpuPAf7Vr1W+b8Id8g==
+"@formio/bootstrap@3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@formio/bootstrap/-/bootstrap-3.0.1.tgz#57c0fe430441ab69fdcb08c4cbc71fe944c81732"
+  integrity sha512-TAP9Tf/p5l8w8T2NWIA509H9XkzF2OlX6+VRFFz9L2rbVJsYXKUe+DzlkfjIu+8FuqbzlIXpwdydUWiA1qM5vA==
 
 "@formio/choices.js@^10.2.1":
   version "10.2.1"
@@ -363,10 +363,10 @@
     fuse.js "^6.6.2"
     redux "^4.2.0"
 
-"@formio/core@2.2.2-rc.5":
-  version "2.2.2-rc.5"
-  resolved "https://registry.yarnpkg.com/@formio/core/-/core-2.2.2-rc.5.tgz#19a8d3f25780db115a2f95a1cb57d1dc096fdba0"
-  integrity sha512-fM0BDirJLV0iK5kk0Jc4n82ynCSUBRJ48qB5rvXDq1iGXpJqao0F9/NyNpTldqvjQtMaqcYfnulggx85SkEbLQ==
+"@formio/core@2.3.2":
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/@formio/core/-/core-2.3.2.tgz#16ceffbd6c7120e6ed922b08f50d5d659a4b156c"
+  integrity sha512-tkH9MtDR+nZuTuizy+qlnce03C3hnd4Dm/2eFjY7cEUZdpIIh1QQ9j9s4W47Si/QOMkS7trIVxKUjxuKrt8j6Q==
   dependencies:
     "@types/json-logic-js" "^2.0.7"
     browser-cookies "^1.2.0"
@@ -376,20 +376,20 @@
     eventemitter3 "^5.0.0"
     fast-json-patch "^3.1.1"
     fetch-ponyfill "^7.1.0"
-    inputmask "5.0.8"
+    inputmask "^5.0.9"
     json-logic-js "^2.0.2"
     lodash "^4.17.21"
     moment "^2.29.4"
 
-"@formio/js@5.0.0-rc.76":
-  version "5.0.0-rc.76"
-  resolved "https://registry.yarnpkg.com/@formio/js/-/js-5.0.0-rc.76.tgz#a47c292b5162a00e7d21657f53836e9f1add73bc"
-  integrity sha512-LUvFX4Dj/d6vN2o1jBrNE4IDKVpbymb4bg6Ja4l5j3CHfUa90PSeJGXLCWhsVcNSwcprhMT1aKpnfPHR8fPljQ==
+"@formio/js@5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@formio/js/-/js-5.0.1.tgz#887fab82a62aec2a3322cf5429266d1a6dd26abe"
+  integrity sha512-MVAT9lseEYmdiivVuQRvWxwXpp402YYpStrTkMqi8nvCA/AmFb9Ld5nsFUqQsfzf4jzY5NgefFmoFlSMfTk0Kg==
   dependencies:
-    "@formio/bootstrap" "3.0.0-rc.37"
+    "@formio/bootstrap" "3.0.1"
     "@formio/choices.js" "^10.2.1"
-    "@formio/core" "2.2.2-rc.5"
-    "@formio/text-mask-addons" "^3.8.0-formio.2"
+    "@formio/core" "2.3.2"
+    "@formio/text-mask-addons" "3.8.0-formio.4"
     "@formio/vanilla-text-mask" "^5.1.1-formio.1"
     abortcontroller-polyfill "^1.7.5"
     autocompleter "^8.0.4"
@@ -422,10 +422,10 @@
     uuid "^9.0.0"
     vanilla-picker "^2.12.3"
 
-"@formio/text-mask-addons@^3.8.0-formio.2":
-  version "3.8.0-formio.2"
-  resolved "https://registry.yarnpkg.com/@formio/text-mask-addons/-/text-mask-addons-3.8.0-formio.2.tgz#b9489e68911c70a31997b97dd846d8a7cca6abdb"
-  integrity sha512-H4Sm+1Sx59jbrlKxtKbzethhp5OIcP8Oi4JBpsvH/SB8P/KCRmtjKbN5ACqURnXmYtBHLJC6Yr9KZibOVRGxpA==
+"@formio/text-mask-addons@3.8.0-formio.4":
+  version "3.8.0-formio.4"
+  resolved "https://registry.yarnpkg.com/@formio/text-mask-addons/-/text-mask-addons-3.8.0-formio.4.tgz#f3ce4bf978c6c5e8f671641d96f6fd116f7c92a3"
+  integrity sha512-vhkeIyuL+1rtC9S4IW8O3JCwroPtvJrkrcMO4wyELNqMIgQRKbiyBAitZfUP4tY04xdB5lxAinbzdwb+NMdX6w==
 
 "@formio/vanilla-text-mask@^5.1.1-formio.1":
   version "5.1.1-formio.1"
@@ -2923,10 +2923,15 @@ inherits@2:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
-inputmask@5.0.8, inputmask@^5.0.8:
+inputmask@^5.0.8:
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/inputmask/-/inputmask-5.0.8.tgz#cd0f70b058c3291a0d4f27de25dbfc179c998bb4"
   integrity sha512-1WcbyudPTXP1B28ozWWyFa6QRIUG4KiLoyR6LFHlpT4OfTzRqFfWgHFadNvRuMN1S9XNVz9CdNvCGjJi+uAMqQ==
+
+inputmask@^5.0.9:
+  version "5.0.9"
+  resolved "https://registry.yarnpkg.com/inputmask/-/inputmask-5.0.9.tgz#7bf4e83f5e199c88c0edf28545dc23fa208ef4be"
+  integrity sha512-s0lUfqcEbel+EQXtehXqwCJGShutgieOaIImFKC/r4reYNvX3foyrChl6LOEvaEgxEbesePIrw1Zi2jhZaDZbQ==
 
 internal-slot@^1.0.4, internal-slot@^1.0.7:
   version "1.0.7"

@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 6.0.1
+
+### Changed
+
+-   Official Release
+-   Updated @formio/js@5.0.1
+-   Updated @formio/core@2.3.2
+
 ## 6.0.0
 
 ### Changed
