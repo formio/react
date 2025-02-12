@@ -55,8 +55,9 @@ const isFormioPaginationResponse = (
 const toString = (value: JSON) => {
 	switch (typeof value) {
 		case 'object':
+		case 'number':
 			return JSON.stringify(value);
-		case 'string':
+		default:
 			return value;
 	}
 };
