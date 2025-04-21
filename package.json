@@ -1,6 +1,6 @@
 {
 	"name": "@formio/react",
-	"version": "6.0.0-dev.591.cd72e93",
+	"version": "6.1.0-rc.1",
 	"description": "React renderer for form.io forms.",
 	"main": "lib/index.js",
 	"scripts": {
@@ -68,8 +68,8 @@
 		"lib"
 	],
 	"peerDependencies": {
-		"@formio/core": "2.2.2-rc.5",
-		"@formio/js": "5.0.0-rc.76",
+		"@formio/core": "2.5.0-rc.1",
+		"@formio/js": "5.2.0-rc.1",
 		"react": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0",
 		"react-dom": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0"
 	}
