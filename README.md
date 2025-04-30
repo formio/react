@@ -17,6 +17,27 @@ npm install @formio/js --save
 yarn add @formio/react @formio/js
 ```
 
+## Usage with Vite (Note: When using frameworks like Next.js or Create React App, no extra Vite configuration is necessary)
+
+When using @formio/react in a project built with Vite (especially for React 18 and 19), make sure you install the @vitejs/plugin-react package and configure it in your vite.config.js file.
+
+Install Vite React Plugin
+
+```bash
+yarn add --dev @vitejs/plugin-react
+```
+
+In your vite.config.js, add the React plugin:
+
+```bash
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+});
+```
+
 ## Hooks
 
 ### useFormioContext

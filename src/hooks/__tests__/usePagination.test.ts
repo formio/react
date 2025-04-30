@@ -1,4 +1,5 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
+import { waitFor } from '@testing-library/dom';
 import { usePagination } from '../usePagination';
 
 it('should return correct paginated data when passed a static array', () => {
