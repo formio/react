@@ -3,6 +3,7 @@ import { Form as FormType } from '@formio/core';
 import { usePagination } from '../hooks/usePagination';
 import { JSON } from './Form';
 import { ReactNode, useCallback } from 'react';
+import type { JSX } from 'react';
 
 export type Action = {
 	name: string;

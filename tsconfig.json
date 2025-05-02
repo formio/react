@@ -13,6 +13,12 @@
 		"esModuleInterop": true,
 	},
 	"include": ["src/**/*"],
-	"types": ["node", "jest", "@testing-library/jest-dom"],
+	"types": [
+		"node",
+		"jest",
+		"@testing-library/jest-dom",
+		"react",
+		"react-dom",
+	],
 	"exclude": ["node_modules", "lib", "test"],
 }

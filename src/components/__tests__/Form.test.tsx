@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import { screen } from '@testing-library/dom';
 import '@testing-library/jest-dom';
 
 import { Form } from '../Form';
@@ -25,6 +26,7 @@ const simpleForm = {
 			label: 'Submit',
 			type: 'button',
 			key: 'submit',
+			input: true,
 			disableOnInvalid: true,
 		},
 	],
