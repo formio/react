@@ -67,17 +67,19 @@ export const Report = (props) => {
 		// eslint-disable-next-line no-undef
 		if (report && !_isEqual(report, jsonReport.current)) {
 			jsonReport.current = cloneDeep(report);
-			createReportInstance(report).then(() => {
-				if (formio) {
-					formio.form = { components: [], report };
-					return formio;
-				}
-			}).catch((err) => {
-				console.error(err);
-				if (formio?.form?.report ) {
-					formio.form.report = {};
-				}
-			});
+			createReportInstance(report)
+				.then(() => {
+					if (formio) {
+						formio.form = { components: [], report };
+						return formio;
+					}
+				})
+				.catch((err) => {
+					console.error(err);
+					if (formio?.form?.report) {
+						formio.form.report = {};
+					}
+				});
 			initializeFormio();
 		}
 	}, [props.report]);
