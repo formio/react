@@ -252,7 +252,8 @@ const getEffectiveProps = (props: FormProps) => {
 export const Form = (props: FormProps) => {
 	const renderElement = useRef<HTMLDivElement | null>(null);
 	const currentFormJson = useRef<FormType | null>(null);
-	const { formConstructor, formSource, formReadyCallback } = getEffectiveProps(props);
+	const { formConstructor, formSource, formReadyCallback } =
+		getEffectiveProps(props);
 	const {
 		src,
 		form,
@@ -295,9 +296,10 @@ export const Form = (props: FormProps) => {
 				console.warn('Form source not found');
 				return;
 			}
-			currentFormJson.current = formSource && typeof formSource !== 'string'
-				? structuredClone(formSource)
-				: null;
+			currentFormJson.current =
+				formSource && typeof formSource !== 'string'
+					? structuredClone(formSource)
+					: null;
 			const instance = await createWebformInstance(
 				formConstructor,
 				currentFormJson.current || formSource,
@@ -319,7 +321,12 @@ export const Form = (props: FormProps) => {
 				if (formReadyCallback) {
 					formReadyCallback(instance);
 				}
-				setFormInstance(instance);
+				setFormInstance((prevInstance: any) => {
+					if (prevInstance) {
+						prevInstance.destroy(true);
+					}
+					return instance;
+				});
 			} else {
 				console.warn('Failed to create form instance');
 			}
@@ -338,7 +345,8 @@ export const Form = (props: FormProps) => {
 	useEffect(() => {
 		let onAnyHandler = null;
 		if (formInstance && Object.keys(handlers).length > 0) {
-			onAnyHandler = (...args: [string, ...any[]]) => onAnyEvent(handlers, ...args);
+			onAnyHandler = (...args: [string, ...any[]]) =>
+				onAnyEvent(handlers, ...args);
 			formInstance.onAny(onAnyHandler);
 		}
 
