@@ -57,6 +57,7 @@
 		"jest-transform-css": "^6.0.1",
 		"jsdom": "^22.1.0",
 		"prettier": "3.2.4",
+		"monorepo-sync": "git+https://github.com/johnformio/monorepo-sync.git",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"ts-jest": "^29.1.2",
