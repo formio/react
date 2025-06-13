@@ -321,7 +321,12 @@ export const Form = (props: FormProps) => {
 				if (formReadyCallback) {
 					formReadyCallback(instance);
 				}
-				setFormInstance(instance);
+				setFormInstance((prevInstance: any) => {
+					if (prevInstance) {
+						prevInstance.destroy(true);
+					}
+					return instance;
+				});
 			} else {
 				console.warn('Failed to create form instance');
 			}
