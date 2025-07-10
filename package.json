@@ -1,6 +1,6 @@
 {
 	"name": "@formio/react",
-	"version": "6.0.0-dev.591.cd72e93",
+	"version": "7.0.0-rc.1",
 	"description": "React renderer for form.io forms.",
 	"main": "lib/index.js",
 	"scripts": {
@@ -56,8 +56,8 @@
 		"jest-environment-jsdom": "^29.7.0",
 		"jest-transform-css": "^6.0.1",
 		"jsdom": "^22.1.0",
-		"prettier": "3.2.4",
 		"monorepo-sync": "git+https://github.com/johnformio/monorepo-sync.git",
+		"prettier": "3.2.4",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"ts-jest": "^29.1.2",
@@ -70,8 +70,8 @@
 		"lib"
 	],
 	"peerDependencies": {
-		"@formio/core": "2.4.0",
-		"@formio/js": "5.1.1",
+		"@formio/core": "^2.4.0",
+		"@formio/js": "^5.1.1",
 		"react": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0 || ^19.0.0",
 		"react-dom": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0 || ^19.0.0"
 	}
