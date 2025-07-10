@@ -25,6 +25,7 @@ const simpleForm = {
 			label: 'Submit',
 			type: 'button',
 			key: 'submit',
+			input: true,
 			disableOnInvalid: true,
 		},
 	],

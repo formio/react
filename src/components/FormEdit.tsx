@@ -48,6 +48,7 @@ const DEFAULT_INITAL_FORM = {
 			action: 'submit',
 			disableOnInvalid: true,
 			theme: 'primary',
+			input: true,
 		},
 	],
 };

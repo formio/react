@@ -363,7 +363,7 @@
     fuse.js "^6.6.2"
     redux "^4.2.0"
 
-"@formio/core@2.5.0", "@formio/core@^2.4.0":
+"@formio/core@2.5.0", "@formio/core@^2.3.2":
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/@formio/core/-/core-2.5.0.tgz#13eaec3aa8cf37255c17b3cd1681a1677d39bd5e"
   integrity sha512-UFX0ThWtW6uUaweWUd/CHCbmAW7jSnFKJ9i+9uhVny75SXF2V8vCi/B6eHQpSAash3ZKG9GV1jYMmq2uCJTuVQ==
@@ -380,7 +380,7 @@
     lodash "^4.17.21"
     moment "^2.29.4"
 
-"@formio/js@^5.1.1":
+"@formio/js@^5.0.1":
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/@formio/js/-/js-5.2.0.tgz#6dbae7ff598ed029fa9a32f1b11e8fd736d5e5e8"
   integrity sha512-tEZfzyKm2RCAZMyVsA4MagDGfi7f2LuSb1aDSgtjIkcLX2oIB4H1AtanxBVMUkdKFRqwWubJb7hzRTNqZUMdLw==
