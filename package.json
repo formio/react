@@ -34,8 +34,8 @@
 		"prop-types": "^15.8.1"
 	},
 	"devDependencies": {
-		"@formio/core": "2.3.2",
-		"@formio/js": "5.0.1",
+		"@formio/core": "^2.3.2",
+		"@formio/js": "^5.0.1",
 		"@testing-library/jest-dom": "^6.4.2",
 		"@testing-library/react": "^14.2.2",
 		"@types/jest": "^29.5.12",
@@ -68,8 +68,8 @@
 		"lib"
 	],
 	"peerDependencies": {
-		"@formio/core": "2.4.0-rc.9",
-		"@formio/js": "5.1.0-rc.15",
+		"@formio/core": "^2.3.2",
+		"@formio/js": "^5.0.1",
 		"react": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0",
 		"react-dom": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0"
 	}
