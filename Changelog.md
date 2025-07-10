@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 -   Unpin formio/js and core deps
+-   Add input to buttons to resolve type errors
 
 ## 6.0.2-rc.2
 
