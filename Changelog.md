@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased: 6.1.0-rc.5]
+
+### Changed
+
+-   No breaking changes requiring major version bump, moving to minor patch instead of major.
+-   FIO-9881: upgraded up to React 19
+-   FIO-9678: fixed an issue where number value is not displayed is submission grid
+-   FIO-9671: fix Next pagination button
+-   do not recreate form instance if the form json is not changed deeply
+-   refactored Form component code to prevent the exhaustive-deps error for useEffect
+-   FIO-9589: fixed an issue where form does not work correctly after the react form component rerendering
+-   FIO-9584: removed pdf display option from builder
+-   FIO-9592: Fix default submit button
+-   FIO-9590: Add showing error when trying to save duplicate form names
+-   FIO-9413: Fix library license check
+-   FIO-9944: Fixes an issue where some form instances will not be destroyed
+-   Unpin formiojs and core peer dependencies
+
 ## 7.0.0-rc.2
 
 ### Changed
