@@ -2,6 +2,21 @@
 
 A [React](http://facebook.github.io/react/) library for rendering out forms based on the [Form.io](https://www.form.io) platform.
 
+React Versions
+-------------------------
+This library supports many different React Versions. If you wish to use this library with your specific version of React, then you will need to install the following versions.
+
+
+*React Compatibility*
+| **@formio/react** | **React Version** | **formiojs*** |
+|---------------------|---------------------|--------------|
+| 5.2.x               | 17                  | 4.x          |
+| 5.3.x               | 18                  | 4.x          |
+| 6.0.x               | 18                  | 5.x          |
+| 6.1.x               | 19                  | 5.x          |
+
+_*Note: The formiojs namespace changes from formiojs (4.x) to @formio/js (5.x)_
+
 ## Install
 
 ### npm
