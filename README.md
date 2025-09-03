@@ -2,6 +2,9 @@
 
 A [React](http://facebook.github.io/react/) library for rendering out forms based on the [Form.io](https://www.form.io) platform.
 
+> [!IMPORTANT]
+> As of 2 September 2025, the master branch will be renamed master_old and the default branch will be called main. main will be based on the 5.2.x branch, which is the latest stable release. See [here](https://github.com/formio/core/issues/290) for more details about this change.
+
 React Versions
 -------------------------
 This library supports many different React Versions. If you wish to use this library with your specific version of React, then you will need to install the following versions.
