@@ -1,6 +1,9 @@
 import { Formio } from '@formio/js';
 const Field = Formio.Components.components.field;
 
+/**
+ * @deprecated ReactComponent will be deprecated in the next major version of \@formio/react. Please consider using a custom @formio/js component.
+ */
 export default class ReactComponent extends Field {
 	/**
 	 * This is the first phase of component building where the component is instantiated.
@@ -10,6 +13,9 @@ export default class ReactComponent extends Field {
 	 * @param data - The submission data where this component's data exists.
 	 */
 	constructor(component, options, data) {
+		console.warn(
+			'ReactComponent will be deprecated in the next major version of @formio/react. Please consider using a custom @formio/js component.',
+		);
 		super(component, options, data);
 		this.reactInstance = null;
 	}
@@ -19,6 +25,9 @@ export default class ReactComponent extends Field {
 	 * components using the this.on() function.
 	 */
 	init() {
+		console.warn(
+			'ReactComponent will be deprecated in the next major version of @formio/react. Please consider using a custom @formio/js component.',
+		);
 		return super.init();
 	}
 
