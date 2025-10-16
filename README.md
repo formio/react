@@ -41,7 +41,7 @@ When using @formio/react in a project built with Vite (especially for React 18 a
 Install Vite React Plugin
 
 ```bash
-yarn add --dev @vitejs/plugin-react
+npm install --save-dev @vitejs/plugin-react
 ```
 
 In your vite.config.js, add the React plugin:
