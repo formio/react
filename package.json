@@ -8,7 +8,8 @@
 		"build": "tsc --project tsconfig.json",
 		"lint": "eslint src",
 		"format": "prettier . --write",
-		"prepublish": "yarn format && yarn lint && yarn build"
+		"prepublish": "npm run format && npm run lint && npm run build",
+		"prepare": "npm run build"
 	},
 	"repository": {
 		"type": "git",
@@ -34,8 +35,8 @@
 		"prop-types": "^15.8.1"
 	},
 	"devDependencies": {
-		"@formio/core": "^2.4.0",
-		"@formio/js": "^5.1.1",
+		"@formio/core": "formio/core#main",
+		"@formio/js": "formio/formio.js#main",
 		"@testing-library/dom": "^10.4.0",
 		"@testing-library/jest-dom": "^6.6.2",
 		"@testing-library/react": "^16.1.1",
@@ -62,8 +63,7 @@
 		"react-dom": "^19.0.0",
 		"ts-jest": "^29.1.2",
 		"ts-node": "^10.9.2",
-		"tsc": "^2.0.4",
-		"typescript": "^5.3.3",
+		"typescript": "^5.9.3",
 		"webpack": "^5.88.2"
 	},
 	"files": [
@@ -71,7 +71,7 @@
 	],
 	"peerDependencies": {
 		"@formio/core": "^2.4.0",
-		"@formio/js": "^5.1.1",
+		"@formio/js": "^5.2.0",
 		"react": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0 || ^19.0.0",
 		"react-dom": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0 || ^19.0.0"
 	}

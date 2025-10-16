@@ -19,7 +19,10 @@ export type FormGridProps = {
 	forms?: FormFromServer[];
 	components?: {
 		Container?: ComponentProp<{ children: ReactNode }>;
-		FormContainer?: ComponentProp<{ children: ReactNode; form?: FormFromServer }>;
+		FormContainer?: ComponentProp<{
+			children: ReactNode;
+			form?: FormFromServer;
+		}>;
 		FormNameContainer?: ComponentProp<{
 			children: ReactNode;
 			onClick?: () => void;
@@ -108,7 +111,10 @@ export const FormGrid = ({
 		<Container>
 			{data.map((form) => (
 				<FormContainer key={form._id} form={form}>
-					<FormNameContainer onClick={() => onFormClick?.(form._id)} form={form}>
+					<FormNameContainer
+						onClick={() => onFormClick?.(form._id)}
+						form={form}
+					>
 						{form.title || form.name || form._id}
 					</FormNameContainer>
 					<FormActionsContainer>
@@ -120,7 +126,9 @@ export const FormGrid = ({
 							/>
 						))}
 					</FormActionsContainer>
-					{FormMetaContainer ? <FormMetaContainer form={form} /> : null}
+					{FormMetaContainer ? (
+						<FormMetaContainer form={form} />
+					) : null}
 				</FormContainer>
 			))}
 			<PaginationContainer>

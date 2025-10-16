@@ -5,20 +5,19 @@ A [React](http://facebook.github.io/react/) library for rendering out forms base
 > [!IMPORTANT]
 > As of 2 September 2025, the master branch will be renamed master_old and the default branch will be called main. main will be based on the 6.1.x branch, which is the latest stable release. See [here](https://github.com/formio/react/issues/624) for more details about this change.
 
-React Versions
--------------------------
+## React Versions
+
 This library supports many different React Versions. If you wish to use this library with your specific version of React, then you will need to install the following versions.
 
-
-*React Compatibility*
-| **@formio/react** | **React Version** | **formiojs*** |
+_React Compatibility_
+| **@formio/react** | **React Version** | **formiojs\*** |
 |---------------------|---------------------|--------------|
-| 5.2.x               | 17                  | 4.x          |
-| 5.3.x               | 18                  | 4.x          |
-| 6.0.x               | 18                  | 5.x          |
-| 6.1.x               | 19                  | 5.x          |
+| 5.2.x | 17 | 4.x |
+| 5.3.x | 18 | 4.x |
+| 6.0.x | 18 | 5.x |
+| 6.1.x | 19 | 5.x |
 
-_*Note: The formiojs namespace changes from formiojs (4.x) to @formio/js (5.x)_
+_\*Note: The formiojs namespace changes from formiojs (4.x) to @formio/js (5.x)_
 
 ## Install
 
