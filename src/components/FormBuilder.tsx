@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { FormBuilder as FormioFormBuilder } from '@formio/js';
 import { Component } from '@formio/core';
 import structuredClone from '@ungap/structured-clone';
