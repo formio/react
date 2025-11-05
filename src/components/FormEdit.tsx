@@ -51,6 +51,7 @@ const DEFAULT_INITAL_FORM = {
 			input: true,
 		},
 	],
+	tags: [],
 };
 
 export const DEFAULT_SETTINGS_FORM = {
@@ -220,6 +221,7 @@ export const FormEdit = ({
 		name: initialForm.name,
 		path: initialForm.path,
 		display: initialForm.display,
+		tags: initialForm.tags,
 	});
 	const currentForm = useRef(initialForm);
 	const builderRef = useRef<FormioFormBuilder | null>(null);
@@ -270,6 +272,7 @@ export const FormEdit = ({
 							name: settingsFormData.current.name,
 							path: settingsFormData.current.path,
 							display: settingsFormData.current.display,
+							tags: settingsFormData.current.tags,
 						},
 					}}
 					onChange={({ changed, data }, flags, modified) => {
