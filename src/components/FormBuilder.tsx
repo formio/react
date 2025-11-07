@@ -20,12 +20,14 @@ export type FormBuilderProps = {
 	onChange?: (form: FormType) => void;
 	onSaveComponent?: (
 		component: Component,
-		original: Component,
+		parent: Component,
+		index: number,
+	    originalComponentSchema: Component) => void,
+	onAddComponent?: (
+		component: Component,
 		parent: Component,
 		path: string,
 		index: number,
-		isNew: boolean,
-		originalComponentSchema: Component,
 	) => void;
 	onEditComponent?: (component: Component) => void;
 	onUpdateComponent?: (component: Component) => void;
@@ -66,6 +68,7 @@ export const FormBuilder = ({
 	onEditComponent,
 	onSaveComponent,
 	onUpdateComponent,
+	onAddComponent
 }: FormBuilderProps) => {
 	const builder = useRef<FormioFormBuilder | null>(null);
 	const renderElement = useRef<HTMLDivElement | null>(null);
@@ -77,6 +80,7 @@ export const FormBuilder = ({
 		onEditComponent,
 		onSaveComponent,
 		onUpdateComponent,
+		onAddComponent
 	});
 	useEffect(() => {
 		handlersRef.current = {
@@ -85,8 +89,9 @@ export const FormBuilder = ({
 			onEditComponent,
 			onSaveComponent,
 			onUpdateComponent,
+			onAddComponent
 		};
-	}, [onChange, onDeleteComponent, onEditComponent, onSaveComponent, onUpdateComponent]);
+	}, [onChange, onDeleteComponent, onEditComponent, onSaveComponent, onUpdateComponent, onAddComponent]);
 
 	useEffect(() => {
 		let ignore = false;
@@ -128,11 +133,8 @@ export const FormBuilder = ({
 			) => {
 				handlersRef.current.onSaveComponent?.(
 					component,
-					original,
-					parent,
-					path,
+				    parent,
 					index,
-					isNew,
 					originalComponentSchema,
 				);
 				handlersRef.current.onChange?.(structuredClone(inst.form));
@@ -157,7 +159,8 @@ export const FormBuilder = ({
 				handlersRef.current.onEditComponent?.(component);
 			};
 
-			const handleAddComponent = () => {
+			const handleAddComponent = (component: Component , parent: Component, path: string, index: number) => {
+			    handlersRef.current.onAddComponent?.(component, parent, path, index);
 				handlersRef.current.onChange?.(structuredClone(inst.form));
 			};
 
