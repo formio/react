@@ -35,8 +35,6 @@
 		"prop-types": "^15.8.1"
 	},
 	"devDependencies": {
-		"@formio/core": "formio/core#main",
-		"@formio/js": "formio/formio.js#main",
 		"@testing-library/dom": "^10.4.0",
 		"@testing-library/jest-dom": "^6.6.2",
 		"@testing-library/react": "^16.1.1",
