@@ -84,7 +84,22 @@ export const FormGrid = ({
 	const fetchFunction = useCallback(
 		(limit: number, skip: number) => {
 			const formio = new Formio('/form');
-			return formio.loadForms({ params: { ...formQuery, limit, skip } });
+			return formio.loadForms(
+				{
+					// add a cache-busting param to make sure we get an up-to-date form list
+					params: {
+						...formQuery,
+						limit,
+						skip,
+					},
+				},
+				{
+					headers: {
+						'Cache-Control': 'no-cache',
+						Pragma: 'no-cache',
+					},
+				},
+			);
 		},
 		[formQuery, Formio],
 	);

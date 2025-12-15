@@ -223,12 +223,16 @@ export const FormEdit = ({
 		display: initialForm.display,
 		tags: initialForm.tags,
 	});
-	const currentForm = useRef(initialForm);
 	const builderRef = useRef<FormioFormBuilder | null>(null);
 
 	const handleSaveForm = async () => {
+    const currentForm = builderRef.current?.form as FormType;
+    if (!currentForm) {
+      console.warn("Could not find current form when trying to save");
+      return;
+    }
 		const formToSave: FormType = {
-			...currentForm.current,
+			...currentForm,
 			...settingsFormData.current,
 		};
 		if (saveFormFn) {
@@ -292,9 +296,6 @@ export const FormEdit = ({
 					options={builderOptions}
 					Builder={Builder}
 					onBuilderReady={handleBuilderReady}
-					onChange={(form) => {
-						currentForm.current = form;
-					}}
 				/>
 			</BuilderContainer>
 			<SaveButtonContainer>
