@@ -282,7 +282,7 @@ export const Form = (props: FormProps) => {
 		isMounted.current = true;
 		return () => {
 			isMounted.current = false;
-		}
+		};
 	}, []);
 
 	useEffect(() => {
@@ -294,6 +294,7 @@ export const Form = (props: FormProps) => {
 			return;
 		}
 
+		let ignore = false;
 		const createInstance = async () => {
 			if (renderElement.current === null) {
 				console.warn('Form element not found');
@@ -315,11 +316,12 @@ export const Form = (props: FormProps) => {
 				options,
 			);
 
+			if (ignore) {
+				instance.destroy(true);
+				return;
+			}
+
 			if (instance) {
-				if (!isMounted.current) {
-					instance.destroy(true);
-					return;
-				}
 				if (typeof formSource === 'string') {
 					instance.src = formSource;
 				} else if (typeof formSource === 'object') {
@@ -345,6 +347,10 @@ export const Form = (props: FormProps) => {
 		};
 
 		createInstance();
+
+		return () => {
+			ignore = true;
+		};
 	}, [formConstructor, formReadyCallback, formSource, options, url]);
 
 	useEffect(() => {
