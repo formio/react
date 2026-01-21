@@ -24,7 +24,7 @@ export type FormOptions = FormClass['options'] & {
 export type FormType = PartialExcept<CoreFormType, 'components'>;
 export type FormSource = string | FormType;
 interface FormConstructor {
-	new (
+	new(
 		element: HTMLElement,
 		formSource: FormSource,
 		options: FormOptions,
@@ -136,12 +136,20 @@ const onAnyEvent = (
 					handlers.onCancelComponent(outputArgs[0]);
 				break;
 			case 'onChange':
-				if (handlers.onChange)
+				if (handlers.onChange) {
+					let modified = outputArgs[2];
+					const flags = outputArgs[1];
+					// Fixed: Check if the change is from a file component and ensure modified is true
+					// See https://github.com/formio/react/issues/632
+					if (!modified && flags?.changed?.instance?.type === 'file') {
+						modified = true;
+					}
 					handlers.onChange(
 						outputArgs[0],
 						outputArgs[1],
-						outputArgs[2],
+						modified,
 					);
+				}
 				break;
 			case 'onCustomEvent':
 				if (handlers.onCustomEvent)
