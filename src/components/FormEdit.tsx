@@ -6,6 +6,7 @@ import { ComponentProp } from './FormGrid';
 import { useFormioContext } from '../hooks/useFormioContext';
 import { Form as CoreFormType } from '@formio/core';
 import Errors from './Errors';
+import { fastCloneDeep } from '@formio/js/utils';
 
 type FormEditProps = {
 	initialForm?: FormType;
@@ -192,10 +193,10 @@ const DEFAULT_SETTINGS_FORM_OPTIONS = {};
 const DEFAULT_COMPONENTS = {};
 
 export const FormEdit = ({
-	initialForm = DEFAULT_INITAL_FORM,
-	settingsForm = DEFAULT_SETTINGS_FORM,
-	settingsFormOptions = DEFAULT_SETTINGS_FORM_OPTIONS,
-	components = DEFAULT_COMPONENTS,
+	initialForm = fastCloneDeep(DEFAULT_INITAL_FORM),
+	settingsForm = fastCloneDeep(DEFAULT_SETTINGS_FORM),
+	settingsFormOptions = fastCloneDeep(DEFAULT_SETTINGS_FORM_OPTIONS),
+	components = fastCloneDeep(DEFAULT_COMPONENTS),
 	builderOptions,
 	Builder,
 	onSaveForm,

@@ -23,6 +23,8 @@ export type FormBuilderProps = {
 		parent: Component,
 		index: number,
 		originalComponentSchema: Component,
+		path: string,
+		isNew: boolean
 	) => void;
 	onAddComponent?: (
 		component: Component,
@@ -69,6 +71,8 @@ const toggleEventHandlers = (
 				parent,
 				index,
 				originalComponentSchema,
+				path,
+				isNew
 			);
 			onChange?.(structuredClone(builder.instance?.form));
 		},
@@ -117,12 +121,14 @@ const createBuilderInstance = async (
 	formSource: FormSource | undefined,
 	element: HTMLDivElement,
 	options: FormBuilderProps['options'] = {},
+	setBuiderStatus: (builder: FormioFormBuilder, ready: boolean) => void = () => {}
 ): Promise<FormioFormBuilder> => {
 	const builder = BuilderConstructor
 		? new BuilderConstructor(element, formSource, options)
 		: new FormioFormBuilder(element, formSource, options);
-
+	setBuiderStatus(builder, false);
 	await builder.ready;
+	setBuiderStatus(builder, true);
 	return builder;
 };
 
@@ -137,7 +143,8 @@ export const FormBuilder = ({
 	const [builderInstance, setBuilderInstance] =
 		useState<FormioFormBuilder | null>(null);
 	const isMounted = useRef(false);
-	const currentFormSourceJsonProp = useRef<FormType | null>(null);
+	const currentFormSourceJsonProp = useRef<any>(null);
+	const pendingBuilder = useRef<FormioFormBuilder | null>(null);
 
 	useEffect(() => {
 		return () => {
@@ -176,11 +183,25 @@ export const FormBuilder = ({
 				initialForm && typeof initialForm !== 'string'
 					? structuredClone(initialForm)
 					: null;
+             // destroy prev builder that is not ready before to create the new one
+			 if (pendingBuilder.current) {
+				const prevBuilder = pendingBuilder.current;
+				// wait the prev builder to be ready before destroying it
+				await prevBuilder.ready;
+
+				prevBuilder.instance?.destroy(true);
+				prevBuilder.destroy(true);
+				pendingBuilder.current = null;
+		    }
+			
 			const builder = await createBuilderInstance(
 				Builder,
 				currentFormSourceJsonProp.current || initialForm,
 				renderElement.current,
 				options,
+				(builder, ready) => {
+					pendingBuilder.current = ready ? null : builder;
+				}
 			);
 
 			if (builder) {
