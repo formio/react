@@ -7,17 +7,7 @@ A [React](http://facebook.github.io/react/) library for rendering out forms base
 
 ## React Versions
 
-This library supports many different React Versions. If you wish to use this library with your specific version of React, then you will need to install the following versions.
-
-_React Compatibility_
-| **@formio/react** | **React Version** | **formiojs\*** |
-|---------------------|---------------------|--------------|
-| 5.2.x | 17 | 4.x |
-| 5.3.x | 18 | 4.x |
-| 6.0.x | 18 | 5.x |
-| 6.1.x | 19 | 5.x |
-
-_\*Note: The formiojs namespace changes from formiojs (4.x) to @formio/js (5.x)_
+This library supports all React Versions. To use this library with the correct version of React, please refer to the Compatibility matrix here: https://help.form.io/dev/javascript-frameworks#react-versions
 
 ## Install
 
