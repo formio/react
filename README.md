@@ -259,11 +259,12 @@ A React context provider component that is required when using some hooks and co
 
 #### Props
 
-| Name       | Type   | Description                              |
-| ---------- | ------ | ---------------------------------------- |
-| Formio     | object | The Formio object to be used.            |
-| baseUrl    | string | The base url of a Form.io server.        |
-| projectUrl | string | The url of a Form.io enterprise project. |
+| Name        | Type               | Description                                                                                                                                                                                                                              |
+| ----------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Formio      | object             | The Formio object to be used.                                                                                                                                                                                                            |
+| baseUrl     | string             | The base url of a Form.io server.                                                                                                                                                                                                        |
+| projectUrl  | string             | The url of a Form.io enterprise project.                                                                                                                                                                                                 |
+| customFetch | FormioCustomFetch  | A custom fetch function to override the default fetch used by Form.io for all HTTP requests. Applied to all child `<Form>` components. Individual `<Form>` components can override this with their own `customFetch` prop. See below.    |
 
 #### Examples
 
@@ -302,6 +303,36 @@ root.render(
 );
 ```
 
+Apply a custom fetch function to all child forms:
+
+```tsx
+import { createRoot } from 'react-dom/client';
+import { Form, FormioProvider } from '@formio/react';
+import type { FormioCustomFetch } from '@formio/react';
+
+const myCustomFetch: FormioCustomFetch = async (url, init) => {
+	console.log('Custom fetch intercepted:', url);
+	return fetch(url, {
+		...init,
+		headers: { ...init?.headers, 'X-Custom-Header': 'my-value' },
+	});
+};
+
+const domNode = document.getElementById('root');
+const root = createRoot(domNode);
+
+root.render(
+	<FormioProvider
+		projectUrl="https://examples.form.io"
+		customFetch={myCustomFetch}
+	>
+		{/* Both forms use myCustomFetch */}
+		<Form src="https://examples.form.io/example" />
+		<Form src="https://examples.form.io/other" />
+	</FormioProvider>,
+);
+```
+
 ### Form
 
 A React component wrapper around [a Form.io form](https://help.form.io/developers/form-development/form-renderer#introduction). Able to take a JSON form definition or a Form.io form URL and render the form in your React application.
@@ -314,6 +345,7 @@ A React component wrapper around [a Form.io form](https://help.form.io/developer
 | `url`               | `string`                                                                                |         | The url of the form definition. Used in conjunction with a JSON form definition passed to `src`, this is used for file upload, OAuth, and other components or actions that need to know the URL of the Form.io form for further processing. The form will not be loaded from this url and the submission will not be saved here either. |
 | `submission`        | `JSON`                                                                                  |         | Submission data to fill the form. You can either load a previous submission or create a submission with some pre-filled data. If you do not provide a submissions the form will initialize an empty submission using default values from the form.                                                                                      |
 | `options`           | `FormOptions`                                                                           |         | The form options. See [here](https://help.form.io/developers/form-development/form-renderer#form-renderer-options) for more details.                                                                                                                                                                                                    |
+| `customFetch`       | `FormioCustomFetch`                                                                     |         | A custom fetch function to override the default fetch behavior used by Form.io for all HTTP requests. Overrides `customFetch` from `<FormioProvider>` if both are provided. Restored to the original on unmount.                                                                                                                        |
 | `onFormReady`       | `(instance: Webform) => void`                                                           |         | A callback function that gets called when the form has rendered. It is useful for accessing the underlying @formio/js Webform instance.                                                                                                                                                                                                 |
 | `onSubmit`          | `(submission: JSON, saved?: boolean) => void`                                           |         | A callback function that gets called when the submission has started. If `src` is not a Form.io server URL, this will be the final submit event.                                                                                                                                                                                        |
 | `onCancelSubmit`    | `() => void`                                                                            |         | A callback function that gets called when the submission has been canceled.                                                                                                                                                                                                                                                             |
@@ -440,6 +472,60 @@ const App = () => {
 }
 
 root.render(<App />);
+```
+
+#### Using `customFetch`
+
+Pass a custom fetch function to a single form instance. This is useful for adding custom headers, caching, error handling, or integrating with libraries like React Query:
+
+```tsx
+import { Form } from '@formio/react';
+import type { FormioCustomFetch } from '@formio/react';
+
+const myCustomFetch: FormioCustomFetch = async (url, init) => {
+	const response = await fetch(url, {
+		...init,
+		headers: {
+			...init?.headers,
+			Authorization: `Bearer ${getToken()}`,
+		},
+	});
+	if (!response.ok) {
+		showErrorToast(response.statusText);
+	}
+	return response;
+};
+
+const MyFormComponent = ({ formDefinition, submission }) => (
+	<Form
+		form={formDefinition}
+		submission={submission}
+		customFetch={myCustomFetch}
+	/>
+);
+```
+
+Override a provider-level `customFetch` for a specific form:
+
+```tsx
+import { Form, FormioProvider } from '@formio/react';
+
+const defaultFetch = async (url, init) => {
+	// Default custom fetch for all forms
+	return fetch(url, { ...init, credentials: 'include' });
+};
+
+const specialFetch = async (url, init) => {
+	// Special fetch for one specific form
+	return fetch(url, { ...init, cache: 'no-store' });
+};
+
+const App = () => (
+	<FormioProvider projectUrl="https://examples.form.io" customFetch={defaultFetch}>
+		<Form src="https://examples.form.io/form1" />  {/* uses defaultFetch */}
+		<Form src="https://examples.form.io/form2" customFetch={specialFetch} />  {/* uses specialFetch */}
+	</FormioProvider>
+);
 ```
 
 #### Usage in Next.js

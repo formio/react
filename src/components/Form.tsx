@@ -1,7 +1,8 @@
-import { CSSProperties, useEffect, useRef, useState } from 'react';
-import { EventEmitter, Form as FormClass, Webform, Utils } from '@formio/js';
+import { CSSProperties, useContext, useEffect, useRef, useState } from 'react';
+import { EventEmitter, Form as FormClass, Formio, Webform, Utils } from '@formio/js';
 import { Component, Form as CoreFormType } from '@formio/core';
 import structuredClone from '@ungap/structured-clone';
+import { FormioContext, FormioCustomFetch } from '../contexts/FormioContext';
 
 export type PartialExcept<T, K extends keyof T> = Partial<Omit<T, K>> &
 	Required<Pick<T, K>>;
@@ -53,6 +54,33 @@ export type FormProps = {
 	options?: FormOptions;
 	formioform?: FormConstructor;
 	FormClass?: FormConstructor;
+	/**
+	 * A custom fetch function to override the default fetch behavior
+	 * used by Form.io for all HTTP requests (loading form definitions,
+	 * submitting data, fetching resources, etc.).
+	 *
+	 * When provided, this function is set on the Formio class's static
+	 * `fetch` property for this form's lifecycle. When the component
+	 * unmounts, the original fetch is restored.
+	 *
+	 * This prop takes precedence over `customFetch` provided via
+	 * `<FormioProvider>`.
+	 *
+	 * @example
+	 * ```tsx
+	 * <Form
+	 *   form={formDefinition}
+	 *   customFetch={async (url, init) => {
+	 *     const response = await fetch(url, {
+	 *       ...init,
+	 *       headers: { ...init?.headers, 'X-Custom-Header': 'value' },
+	 *     });
+	 *     return response;
+	 *   }}
+	 * />
+	 * ```
+	 */
+	customFetch?: FormioCustomFetch;
 	formReady?: (instance: Webform) => void;
 	onFormReady?: (instance: Webform) => void;
 	onPrevPage?: (page: number, submission: Submission) => void;
@@ -113,6 +141,7 @@ const onAnyEvent = (
 		| 'formReady'
 		| 'formioform'
 		| 'Formio'
+		| 'customFetch'
 	>,
 	...args: [string, ...any[]]
 ) => {
@@ -265,10 +294,17 @@ export const Form = (props: FormProps) => {
 		FormClass,
 		style,
 		className,
+		customFetch,
 		...handlers
 	} = props;
+
+	// Try to get customFetch from FormioProvider context as fallback
+	const formioContext = useContext(FormioContext);
+	const effectiveCustomFetch = customFetch ?? formioContext?.customFetch;
+
 	const [formInstance, setFormInstance] = useState<Webform | null>(null);
 	const isMounted = useRef(false);
+	const previousFetchRef = useRef<typeof Formio.fetch | undefined>(undefined);
 
 	useEffect(() => {
 		return () => {
@@ -304,6 +340,13 @@ export const Form = (props: FormProps) => {
 				console.warn('Form source not found');
 				return;
 			}
+
+			// Apply customFetch to Formio.fetch before creating the form instance
+			if (effectiveCustomFetch) {
+				previousFetchRef.current = Formio.fetch;
+				Formio.fetch = effectiveCustomFetch;
+			}
+
 			currentFormJson.current =
 				formSource && typeof formSource !== 'string'
 					? structuredClone(formSource)
@@ -345,7 +388,15 @@ export const Form = (props: FormProps) => {
 		};
 
 		createInstance();
-	}, [formConstructor, formReadyCallback, formSource, options, url]);
+
+		// Cleanup: restore original fetch when this effect re-runs or on unmount
+		return () => {
+			if (effectiveCustomFetch && previousFetchRef.current !== undefined) {
+				Formio.fetch = previousFetchRef.current;
+				previousFetchRef.current = undefined;
+			}
+		};
+	}, [formConstructor, formReadyCallback, formSource, options, url, effectiveCustomFetch]);
 
 	useEffect(() => {
 		let onAnyHandler = null;
