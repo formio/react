@@ -19,16 +19,11 @@ export type FormGridProps = {
 	forms?: FormFromServer[];
 	components?: {
 		Container?: ComponentProp<{ children: ReactNode }>;
-		FormContainer?: ComponentProp<{
-			children: ReactNode;
-			form?: FormFromServer;
-		}>;
+		FormContainer?: ComponentProp<{ children: ReactNode }>;
 		FormNameContainer?: ComponentProp<{
 			children: ReactNode;
 			onClick?: () => void;
-			form?: FormFromServer;
 		}>;
-		FormMetaContainer?: ComponentProp<{ form: FormFromServer }>;
 		FormActionsContainer?: ComponentProp<{ children: ReactNode }>;
 		FormActionButton?: ComponentProp<{
 			action: Action;
@@ -72,7 +67,6 @@ export const FormGrid = ({
 		FormNameContainer = ({ children, onClick }) => (
 			<div onClick={onClick}>{children}</div>
 		),
-		FormMetaContainer,
 		FormActionsContainer = ({ children }) => <div>{children}</div>,
 		FormActionButton = ({ action }) => (
 			<button type="button">{action?.name}</button>
@@ -84,22 +78,7 @@ export const FormGrid = ({
 	const fetchFunction = useCallback(
 		(limit: number, skip: number) => {
 			const formio = new Formio('/form');
-			return formio.loadForms(
-				{
-					// add a cache-busting param to make sure we get an up-to-date form list
-					params: {
-						...formQuery,
-						limit,
-						skip,
-					},
-				},
-				{
-					headers: {
-						'Cache-Control': 'no-cache',
-						Pragma: 'no-cache',
-					},
-				},
-			);
+			return formio.loadForms({ params: { ...formQuery, limit, skip } });
 		},
 		[formQuery, Formio],
 	);
@@ -125,11 +104,8 @@ export const FormGrid = ({
 	return (
 		<Container>
 			{data.map((form) => (
-				<FormContainer key={form._id} form={form}>
-					<FormNameContainer
-						onClick={() => onFormClick?.(form._id)}
-						form={form}
-					>
+				<FormContainer key={form._id}>
+					<FormNameContainer onClick={() => onFormClick?.(form._id)}>
 						{form.title || form.name || form._id}
 					</FormNameContainer>
 					<FormActionsContainer>
@@ -141,9 +117,6 @@ export const FormGrid = ({
 							/>
 						))}
 					</FormActionsContainer>
-					{FormMetaContainer ? (
-						<FormMetaContainer form={form} />
-					) : null}
 				</FormContainer>
 			))}
 			<PaginationContainer>
