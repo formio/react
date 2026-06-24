@@ -6,7 +6,7 @@
 		"jsx": "react-jsx",
 		"declaration": true,
 		"declarationMap": true,
-		"target": "es2015",
+		"target": "es2017",
 		"baseUrl": "src",
 		"strict": true,
 		"skipLibCheck": true,

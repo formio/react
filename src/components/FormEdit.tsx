@@ -6,7 +6,6 @@ import { ComponentProp } from './FormGrid';
 import { useFormioContext } from '../hooks/useFormioContext';
 import { Form as CoreFormType } from '@formio/core';
 import Errors from './Errors';
-import { fastCloneDeep } from '@formio/js/utils';
 
 type FormEditProps = {
 	initialForm?: FormType;
@@ -52,7 +51,6 @@ const DEFAULT_INITAL_FORM = {
 			input: true,
 		},
 	],
-	tags: [],
 };
 
 export const DEFAULT_SETTINGS_FORM = {
@@ -193,10 +191,10 @@ const DEFAULT_SETTINGS_FORM_OPTIONS = {};
 const DEFAULT_COMPONENTS = {};
 
 export const FormEdit = ({
-	initialForm = fastCloneDeep(DEFAULT_INITAL_FORM),
-	settingsForm = fastCloneDeep(DEFAULT_SETTINGS_FORM),
-	settingsFormOptions = fastCloneDeep(DEFAULT_SETTINGS_FORM_OPTIONS),
-	components = fastCloneDeep(DEFAULT_COMPONENTS),
+	initialForm = DEFAULT_INITAL_FORM,
+	settingsForm = DEFAULT_SETTINGS_FORM,
+	settingsFormOptions = DEFAULT_SETTINGS_FORM_OPTIONS,
+	components = DEFAULT_COMPONENTS,
 	builderOptions,
 	Builder,
 	onSaveForm,
@@ -222,18 +220,13 @@ export const FormEdit = ({
 		name: initialForm.name,
 		path: initialForm.path,
 		display: initialForm.display,
-		tags: initialForm.tags,
 	});
+	const currentForm = useRef(initialForm);
 	const builderRef = useRef<FormioFormBuilder | null>(null);
 
 	const handleSaveForm = async () => {
-    const currentForm = builderRef.current?.form as FormType;
-    if (!currentForm) {
-      console.warn("Could not find current form when trying to save");
-      return;
-    }
 		const formToSave: FormType = {
-			...currentForm,
+			...currentForm.current,
 			...settingsFormData.current,
 		};
 		if (saveFormFn) {
@@ -277,7 +270,6 @@ export const FormEdit = ({
 							name: settingsFormData.current.name,
 							path: settingsFormData.current.path,
 							display: settingsFormData.current.display,
-							tags: settingsFormData.current.tags,
 						},
 					}}
 					onChange={({ changed, data }, flags, modified) => {
@@ -297,6 +289,9 @@ export const FormEdit = ({
 					options={builderOptions}
 					Builder={Builder}
 					onBuilderReady={handleBuilderReady}
+					onChange={(form) => {
+						currentForm.current = form;
+					}}
 				/>
 			</BuilderContainer>
 			<SaveButtonContainer>

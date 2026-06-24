@@ -268,7 +268,6 @@ export const Form = (props: FormProps) => {
 		...handlers
 	} = props;
 	const [formInstance, setFormInstance] = useState<Webform | null>(null);
-	const isMounted = useRef(false);
 
 	useEffect(() => {
 		return () => {
@@ -277,13 +276,6 @@ export const Form = (props: FormProps) => {
 			}
 		};
 	}, [formInstance]);
-
-	useEffect(() => {
-		isMounted.current = true;
-		return () => {
-			isMounted.current = false;
-		}
-	}, []);
 
 	useEffect(() => {
 		if (
@@ -316,10 +308,6 @@ export const Form = (props: FormProps) => {
 			);
 
 			if (instance) {
-				if (!isMounted.current) {
-					instance.destroy(true);
-					return;
-				}
 				if (typeof formSource === 'string') {
 					instance.src = formSource;
 				} else if (typeof formSource === 'object') {
@@ -333,7 +321,7 @@ export const Form = (props: FormProps) => {
 				if (formReadyCallback) {
 					formReadyCallback(instance);
 				}
-				setFormInstance((prevInstance) => {
+				setFormInstance((prevInstance: any) => {
 					if (prevInstance) {
 						prevInstance.destroy(true);
 					}
@@ -345,7 +333,14 @@ export const Form = (props: FormProps) => {
 		};
 
 		createInstance();
-	}, [formConstructor, formReadyCallback, formSource, options, url]);
+	}, [
+		formConstructor,
+		formReadyCallback,
+		formSource,
+		options,
+		url,
+		submission,
+	]);
 
 	useEffect(() => {
 		let onAnyHandler = null;
@@ -364,9 +359,7 @@ export const Form = (props: FormProps) => {
 
 	useEffect(() => {
 		if (formInstance && submission) {
-			if (!Utils._.isEqual(formInstance.submission, submission)) {
-				formInstance.submission = submission;
-			}
+			formInstance.submission = submission;
 		}
 	}, [formInstance, submission]);
 

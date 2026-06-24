@@ -1,36 +1,31 @@
 import { useEffect, useRef, useState } from 'react';
-import { FormBuilder as FormioFormBuilder, Utils } from '@formio/js';
+import { FormBuilder as FormioFormBuilder } from '@formio/js';
 import { Component } from '@formio/core';
 import structuredClone from '@ungap/structured-clone';
 
-import { FormType, FormSource } from './Form';
+import { FormType } from './Form';
 
 interface BuilderConstructor {
 	new (
 		element: HTMLDivElement,
-		formSource: FormSource | undefined,
+		form: FormType,
 		options: FormioFormBuilder['options'],
 	): FormioFormBuilder;
 }
 export type FormBuilderProps = {
 	options?: FormioFormBuilder['options'];
 	Builder?: BuilderConstructor;
-	initialForm?: FormSource;
+	initialForm?: FormType;
 	onBuilderReady?: (builder: FormioFormBuilder) => void;
 	onChange?: (form: FormType) => void;
 	onSaveComponent?: (
 		component: Component,
+		original: Component,
 		parent: Component,
+		path: string,
 		index: number,
+		isNew: boolean,
 		originalComponentSchema: Component,
-		path: string,
-		isNew: boolean
-	) => void;
-	onAddComponent?: (
-		component: Component,
-		parent: Component,
-		path: string,
-		index: number,
 	) => void;
 	onEditComponent?: (component: Component) => void;
 	onUpdateComponent?: (component: Component) => void;
@@ -55,7 +50,7 @@ const toggleEventHandlers = (
 		onDeleteComponent,
 		onChange,
 	} = handlers;
-	builder.instance?.[fn](
+	builder.instance[fn](
 		'saveComponent',
 		(
 			component: Component,
@@ -68,20 +63,21 @@ const toggleEventHandlers = (
 		) => {
 			onSaveComponent?.(
 				component,
+				original,
 				parent,
-				index,
-				originalComponentSchema,
 				path,
-				isNew
+				index,
+				isNew,
+				originalComponentSchema,
 			);
-			onChange?.(structuredClone(builder.instance?.form));
+			onChange?.(structuredClone(builder.instance.form));
 		},
 	);
-	builder.instance?.[fn]('updateComponent', (component: Component) => {
+	builder.instance[fn]('updateComponent', (component: Component) => {
 		onUpdateComponent?.(component);
 		onChange?.(structuredClone(builder.instance.form));
 	});
-	builder.instance?.[fn](
+	builder.instance[fn](
 		'removeComponent',
 		(
 			component: Component,
@@ -90,87 +86,68 @@ const toggleEventHandlers = (
 			index: number,
 		) => {
 			onDeleteComponent?.(component, parent, path, index);
-			onChange?.(structuredClone(builder.instance?.form));
+			onChange?.(structuredClone(builder.instance.form));
 		},
 	);
 
-	builder.instance?.[fn]('cancelComponent', (component: Component) => {
+	builder.instance[fn]('cancelComponent', (component: Component) => {
 		onUpdateComponent?.(component);
-		onChange?.(structuredClone(builder.instance?.form));
+		onChange?.(structuredClone(builder.instance.form));
 	});
 
-	builder.instance?.[fn]('editComponent', (component: Component) => {
+	builder.instance[fn]('editComponent', (component: Component) => {
 		onEditComponent?.(component);
-		onChange?.(structuredClone(builder.instance?.form));
+		onChange?.(structuredClone(builder.instance.form));
 	});
 
-	builder.instance?.[fn]('addComponent', () => {
-		onChange?.(structuredClone(builder.instance?.form));
+	builder.instance[fn]('addComponent', () => {
+		onChange?.(structuredClone(builder.instance.form));
 	});
 
-	builder.instance?.[fn]('pdfUploaded', () => {
-		onChange?.(structuredClone(builder.instance?.form));
+	builder.instance[fn]('pdfUploaded', () => {
+		onChange?.(structuredClone(builder.instance.form));
 	});
-	builder.instance?.[fn]('setDisplay', () => {
-		onChange?.(structuredClone(builder.instance?.form));
+	builder.instance[fn]('setDisplay', () => {
+		onChange?.(structuredClone(builder.instance.form));
 	});
 };
 
 const createBuilderInstance = async (
-	BuilderConstructor: BuilderConstructor | undefined,
-	formSource: FormSource | undefined,
 	element: HTMLDivElement,
+	BuilderConstructor:
+		| BuilderConstructor
+		| typeof FormioFormBuilder = FormioFormBuilder,
+	form: FormType = { display: 'form', components: [] },
 	options: FormBuilderProps['options'] = {},
-	setBuiderStatus: (builder: FormioFormBuilder, ready: boolean) => void = () => {}
 ): Promise<FormioFormBuilder> => {
-	const builder = BuilderConstructor
-		? new BuilderConstructor(element, formSource, options)
-		: new FormioFormBuilder(element, formSource, options);
-	setBuiderStatus(builder, false);
-	await builder.ready;
-	setBuiderStatus(builder, true);
-	return builder;
+	options = Object.assign({}, options);
+	form = Object.assign({}, form);
+
+	const instance = new BuilderConstructor(element, form, options);
+
+	await instance.ready;
+	return instance;
 };
+
+const DEFAULT_FORM: FormType = { display: 'form' as const, components: [] };
 
 export const FormBuilder = ({
 	options,
 	Builder,
-	initialForm,
+	initialForm = DEFAULT_FORM,
 	onBuilderReady,
-	...handlers
+	onChange,
+	onDeleteComponent,
+	onEditComponent,
+	onSaveComponent,
+	onUpdateComponent,
 }: FormBuilderProps) => {
+	const builder = useRef<FormioFormBuilder | null>(null);
 	const renderElement = useRef<HTMLDivElement | null>(null);
-	const [builderInstance, setBuilderInstance] =
-		useState<FormioFormBuilder | null>(null);
-	const isMounted = useRef(false);
-	const currentFormSourceJsonProp = useRef<any>(null);
-	const pendingBuilder = useRef<FormioFormBuilder | null>(null);
+	const [instanceIsReady, setInstanceIsReady] = useState(false);
 
 	useEffect(() => {
-		return () => {
-			if (builderInstance) {
-				builderInstance.instance?.destroy(true);
-				builderInstance.destroy(true);
-			}
-		};
-	}, [builderInstance]);
-
-	useEffect(() => {
-		isMounted.current = true;
-		return () => {
-			isMounted.current = false;
-		};
-	}, []);
-
-	useEffect(() => {
-		if (
-			typeof initialForm === 'object' &&
-			currentFormSourceJsonProp.current &&
-			Utils._.isEqual(currentFormSourceJsonProp.current, initialForm)
-		) {
-			return;
-		}
-
+		let ignore = false;
 		const createInstance = async () => {
 			if (!renderElement.current) {
 				console.warn(
@@ -178,67 +155,73 @@ export const FormBuilder = ({
 				);
 				return;
 			}
-
-			currentFormSourceJsonProp.current =
-				initialForm && typeof initialForm !== 'string'
-					? structuredClone(initialForm)
-					: null;
-             // destroy prev builder that is not ready before to create the new one
-			 if (pendingBuilder.current) {
-				const prevBuilder = pendingBuilder.current;
-				// wait the prev builder to be ready before destroying it
-				await prevBuilder.ready;
-
-				prevBuilder.instance?.destroy(true);
-				prevBuilder.destroy(true);
-				pendingBuilder.current = null;
-		    }
-			
-			const builder = await createBuilderInstance(
-				Builder,
-				currentFormSourceJsonProp.current || initialForm,
+			const instance = await createBuilderInstance(
 				renderElement.current,
+				Builder,
+				structuredClone(initialForm),
 				options,
-				(builder, ready) => {
-					pendingBuilder.current = ready ? null : builder;
-				}
 			);
-
-			if (builder) {
-				if (!isMounted.current) {
-					builder.instance?.destroy(true);
-					builder.destroy(true);
+			if (instance) {
+				if (ignore) {
+					instance.instance.destroy(true);
+					return;
 				}
 
 				if (onBuilderReady) {
-					onBuilderReady(builder);
+					onBuilderReady(instance);
 				}
-				setBuilderInstance((prevInstance) => {
-					if (prevInstance) {
-					  prevInstance.instance?.destroy(true);
-						prevInstance.destroy(true);
-					}
-					return builder;
-				});
+				builder.current = instance;
+				setInstanceIsReady(true);
 			} else {
-				console.warn('Failed to create form builder instance');
+				console.warn('Failed to create FormBuilder instance');
 			}
 		};
 
 		createInstance();
-	}, [Builder, initialForm, onBuilderReady, options]);
+
+		return () => {
+			ignore = true;
+			setInstanceIsReady(false);
+			if (builder.current) {
+				builder.current.instance.destroy(true);
+			}
+		};
+	}, [Builder, initialForm, options, onBuilderReady]);
 
 	useEffect(() => {
-		if (builderInstance && Object.keys(handlers).length > 0) {
-			toggleEventHandlers(builderInstance, handlers);
+		if (instanceIsReady && builder.current) {
+			toggleEventHandlers(builder.current, {
+				onChange,
+				onDeleteComponent,
+				onEditComponent,
+				onSaveComponent,
+				onUpdateComponent,
+			});
 		}
 
 		return () => {
-			if (builderInstance) {
-				toggleEventHandlers(builderInstance, handlers, false);
+			if (instanceIsReady && builder.current) {
+				toggleEventHandlers(
+					builder.current,
+					{
+						onChange,
+						onDeleteComponent,
+						onEditComponent,
+						onSaveComponent,
+						onUpdateComponent,
+					},
+					false,
+				);
 			}
 		};
-	}, [builderInstance, handlers]);
+	}, [
+		instanceIsReady,
+		onChange,
+		onDeleteComponent,
+		onEditComponent,
+		onSaveComponent,
+		onUpdateComponent,
+	]);
 
 	return <div ref={renderElement}></div>;
 };
