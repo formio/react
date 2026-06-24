@@ -1,76 +1,70 @@
 {
-	"name": "@formio/react",
-	"version": "6.1.0",
-	"description": "React renderer for form.io forms.",
-	"main": "lib/index.js",
-	"scripts": {
-		"test": "jest",
-		"build": "tsc --project tsconfig.json",
-		"lint": "eslint src",
-		"format": "prettier . --write",
-		"prepublish": "npm run format && npm run lint && npm run build",
-		"prepare": "npm run build"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/formio/react.git"
-	},
-	"keywords": [
-		"React",
-		"component",
-		"Formio",
-		"Forms",
-		"react-component"
-	],
-	"author": "Randall Knutson <randall@form.io>",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/formio/react/issues"
-	},
-	"homepage": "https://github.com/formio/react#readme",
-	"dependencies": {
-		"@ungap/structured-clone": "^1.2.0",
-		"core-js": "^3.35.1",
-		"lodash": "^4.17.21",
-		"prop-types": "^15.8.1"
-	},
-	"devDependencies": {
-		"@testing-library/dom": "^10.4.0",
-		"@testing-library/jest-dom": "^6.6.2",
-		"@testing-library/react": "^16.1.1",
-		"@types/jest": "^29.5.12",
-		"@types/lodash": "^4.14.202",
-		"@types/react": "^19.0.0",
-		"@types/ungap__structured-clone": "^1.2.0",
-		"@typescript-eslint/eslint-plugin": "^7.0.1",
-		"@typescript-eslint/parser": "^7.0.1",
-		"bootstrap": "^5.3.3",
-		"eslint": "^8.56.0",
-		"eslint-config-prettier": "^9.1.0",
-		"eslint-plugin-mocha": "^10.2.0",
-		"eslint-plugin-react": "^7.33.2",
-		"eslint-plugin-react-hooks": "^4.6.0",
-		"identity-obj-proxy": "^3.0.0",
-		"jest": "^29.7.0",
-		"jest-environment-jsdom": "^29.7.0",
-		"jest-transform-css": "^6.0.1",
-		"jsdom": "^22.1.0",
-		"monorepo-sync": "git+https://github.com/johnformio/monorepo-sync.git",
-		"prettier": "3.2.4",
-		"react": "^19.0.0",
-		"react-dom": "^19.0.0",
-		"ts-jest": "^29.1.2",
-		"ts-node": "^10.9.2",
-		"typescript": "^5.9.3",
-		"webpack": "^5.88.2"
-	},
-	"files": [
-		"lib"
-	],
-	"peerDependencies": {
-		"@formio/core": "^2.4.0",
-		"@formio/js": "^5.2.0",
-		"react": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0 || ^19.0.0",
-		"react-dom": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.1.0 || ^19.0.0"
-	}
+  "name": "@formio/react",
+  "version": "6.2.1",
+  "description": "React renderer for form.io forms.",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc --project tsconfig.json",
+    "lint": "eslint src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formio/react.git"
+  },
+  "keywords": [
+    "React",
+    "component",
+    "Formio",
+    "Forms",
+    "react-component"
+  ],
+  "author": "Randall Knutson <randall@form.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/formio/react/issues"
+  },
+  "homepage": "https://github.com/formio/react#readme",
+  "dependencies": {
+    "@ungap/structured-clone": "^1.2.0",
+    "core-js": "^3.35.1",
+    "lodash": "^4.17.23",
+    "prop-types": "^15.8.1"
+  },
+  "devDependencies": {
+    "@formio/core": "^2.7.0",
+    "@formio/js": "^5.4.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.2",
+    "@testing-library/react": "^16.1.1",
+    "@types/jest": "^29.5.12",
+    "@types/lodash": "^4.14.202",
+    "@types/react": "^19.0.0",
+    "@types/ungap__structured-clone": "^1.2.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.1",
+    "@typescript-eslint/parser": "^7.0.1",
+    "bootstrap": "^5.3.3",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-mocha": "^10.2.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-transform-css": "^6.0.1",
+    "jsdom": "^22.1.0",
+    "prettier": "3.2.4",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3",
+    "webpack": "^5.88.2"
+  },
+  "files": [
+    "lib"
+  ],
+  "peerDependencies": {
+    "react": ">=17",
+    "react-dom": ">=17"
+  }
 }

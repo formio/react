@@ -2,13 +2,6 @@
 
 A [React](http://facebook.github.io/react/) library for rendering out forms based on the [Form.io](https://www.form.io) platform.
 
-> [!IMPORTANT]
-> As of 2 September 2025, the master branch will be renamed master_old and the default branch will be called main. main will be based on the 6.1.x branch, which is the latest stable release. See [here](https://github.com/formio/react/issues/624) for more details about this change.
-
-## React Versions
-
-This library supports all React Versions. To use this library with the correct version of React, please refer to the Compatibility matrix here: https://help.form.io/dev/javascript-frameworks#react-versions
-
 ## Install
 
 ### npm
@@ -31,7 +24,7 @@ When using @formio/react in a project built with Vite (especially for React 18 a
 Install Vite React Plugin
 
 ```bash
-npm install --save-dev @vitejs/plugin-react
+yarn add --dev @vitejs/plugin-react
 ```
 
 In your vite.config.js, add the React plugin:
