@@ -2,6 +2,12 @@
 
 A [React](http://facebook.github.io/react/) library for rendering out forms based on the [Form.io](https://www.form.io) platform.
 
+Official Documentation
+--------------------------
+For the latest documentation, release information, and guides, always refer to the official Form.io Help Documentation available here:
+
+**[https://help.form.io](https://help.form.io/dev/javascript-development/frameworks#react)**
+
 ## Install
 
 ### npm
