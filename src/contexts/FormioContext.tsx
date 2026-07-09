@@ -1,16 +1,28 @@
 import { createContext, useState, useEffect } from 'react';
 import { Formio as ImportedFormio } from '@formio/js';
 
+/**
+ * A custom fetch function type that matches the native fetch API signature.
+ * Can be passed to `<FormioProvider>` or `<Form>` to override the default
+ * fetch behavior used by Form.io for all HTTP requests.
+ */
+export type FormioCustomFetch = (
+	input: RequestInfo | URL,
+	init?: RequestInit,
+) => Promise<Response>;
+
 type BaseConfigurationArgs = {
 	baseUrl?: string;
 	projectUrl?: string;
 	Formio?: typeof ImportedFormio;
+	customFetch?: FormioCustomFetch;
 };
 
 const useBaseConfiguration = ({
 	baseUrl,
 	projectUrl,
 	Formio,
+	customFetch,
 }: BaseConfigurationArgs) => {
 	if (!Formio) {
 		if (baseUrl) {
@@ -23,6 +35,7 @@ const useBaseConfiguration = ({
 			Formio: ImportedFormio,
 			baseUrl: ImportedFormio.baseUrl,
 			projectUrl: ImportedFormio.projectUrl,
+			customFetch,
 		};
 	}
 
@@ -37,6 +50,7 @@ const useBaseConfiguration = ({
 		Formio,
 		baseUrl: Formio.baseUrl,
 		projectUrl: Formio.projectUrl,
+		customFetch,
 	};
 };
 
@@ -94,8 +108,9 @@ export function FormioProvider({
 	baseUrl,
 	projectUrl,
 	Formio,
+	customFetch,
 }: { children: React.ReactNode } & BaseConfigurationArgs) {
-	const baseConfig = useBaseConfiguration({ baseUrl, projectUrl, Formio });
+	const baseConfig = useBaseConfiguration({ baseUrl, projectUrl, Formio, customFetch });
 	const auth = useAuthentication({ Formio: baseConfig.Formio });
 	const formio = { ...baseConfig, ...auth };
 	return (
