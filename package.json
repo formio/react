@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jest",
     "build": "tsc --project tsconfig.json",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "check-types": "tsc --noEmit",
+    "lint:fix": "eslint src --fix"
   },
   "repository": {
     "type": "git",
@@ -32,8 +34,8 @@
     "prop-types": "^15.8.1"
   },
   "devDependencies": {
-    "@formio/core": "^2.7.0",
-    "@formio/js": "^5.4.0",
+    "@formio/core": "^2.7.1",
+    "@formio/js": "^5.4.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.2",
     "@testing-library/react": "^16.1.1",

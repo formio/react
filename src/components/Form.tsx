@@ -282,7 +282,7 @@ export const Form = (props: FormProps) => {
 		isMounted.current = true;
 		return () => {
 			isMounted.current = false;
-		}
+		};
 	}, []);
 
 	useEffect(() => {
@@ -316,6 +316,7 @@ export const Form = (props: FormProps) => {
 			);
 
 			if (instance) {
+				// GOTCHA(G-RC01)
 				if (!isMounted.current) {
 					instance.destroy(true);
 					return;
@@ -345,6 +346,7 @@ export const Form = (props: FormProps) => {
 		};
 
 		createInstance();
+		// GOTCHA(G-RC03)
 	}, [formConstructor, formReadyCallback, formSource, options, url]);
 
 	useEffect(() => {
