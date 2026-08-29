@@ -1,7 +1,39 @@
 import { CSSProperties, useEffect, useRef, useState } from 'react';
-import { EventEmitter, Form as FormClass, Webform, Utils } from '@formio/js';
+import { EventEmitter, Form as FormClass, Webform, Utils, Formio } from '@formio/js';
 import { Component, Form as CoreFormType } from '@formio/core';
 import structuredClone from '@ungap/structured-clone';
+
+// Patch SignatureComponent to propagate the modified flag correctly when drawing
+if (
+	Formio &&
+	Formio.Components &&
+	Formio.Components.components &&
+	Formio.Components.components.signature
+) {
+	const SignatureComponent = Formio.Components.components.signature;
+	const originalSetValue = SignatureComponent.prototype.setValue;
+	SignatureComponent.prototype.setValue = function (value: any, flags: any = {}) {
+		const originalTriggerChange = this.triggerChange;
+		if (originalTriggerChange) {
+			this.triggerChange = (...args: any[]) => {
+				const finalArgs = args.length > 0 ? args : [flags];
+				return originalTriggerChange.apply(this, finalArgs);
+			};
+		}
+		try {
+			return originalSetValue.call(this, value, flags);
+		} finally {
+			if (originalTriggerChange) {
+				this.triggerChange = originalTriggerChange;
+			}
+		}
+	};
+}
+
+
+
+
+
 
 export type PartialExcept<T, K extends keyof T> = Partial<Omit<T, K>> &
 	Required<Pick<T, K>>;
@@ -254,6 +286,11 @@ export const Form = (props: FormProps) => {
 	const currentFormJson = useRef<FormType | null>(null);
 	const { formConstructor, formSource, formReadyCallback } =
 		getEffectiveProps(props);
+	const formReadyCallbackRef = useRef(formReadyCallback);
+	useEffect(() => {
+		formReadyCallbackRef.current = formReadyCallback;
+	}, [formReadyCallback]);
+
 	const {
 		src,
 		form,
@@ -330,8 +367,8 @@ export const Form = (props: FormProps) => {
 					}
 				}
 
-				if (formReadyCallback) {
-					formReadyCallback(instance);
+				if (formReadyCallbackRef.current) {
+					formReadyCallbackRef.current(instance);
 				}
 				setFormInstance((prevInstance) => {
 					if (prevInstance) {
@@ -345,7 +382,7 @@ export const Form = (props: FormProps) => {
 		};
 
 		createInstance();
-	}, [formConstructor, formReadyCallback, formSource, options, url]);
+	}, [formConstructor, formSource, options, url]);
 
 	useEffect(() => {
 		let onAnyHandler = null;
