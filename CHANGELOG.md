@@ -1,5 +1,17 @@
 # @formio/react
 
+## 6.2.2
+
+### Patch Changes
+
+- 4c7e7ec: FIO-12286: subscribe the `<Form>` `onAny` handler once per form instance and detach it through the emitter rather than through the already-destroyed instance, fixing duplicate submission records written by leaked `any` listeners; note that `<Form>` now always attaches a listener, where before it attached one only if at least one handler prop was passed.
+
+## 6.2.2-api912.0
+
+### Patch Changes
+
+- 4c7e7ec: FIO-12286: subscribe the `<Form>` `onAny` handler once per form instance and detach it through the emitter rather than through the already-destroyed instance, fixing duplicate submission records written by leaked `any` listeners; note that `<Form>` now always attaches a listener, where before it attached one only if at least one handler prop was passed.
+
 ## 6.2.1
 
 ### Patch Changes

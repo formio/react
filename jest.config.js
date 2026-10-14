@@ -11,6 +11,7 @@ module.exports = {
 	],
 	transform: {
 		'^.+\\.css$': 'jest-transform-css',
+		'^.+\\.jsx$': 'ts-jest',
 	},
 	transformIgnorePatterns: [],
 	verbose: true,

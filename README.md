@@ -2,8 +2,8 @@
 
 A React library for rendering out forms based on the [Form.io](https://www.form.io) platform.
 
-Official Documentation
---------------------------
+## Official Documentation
+
 For the latest documentation, release information, and guides, always refer to the official Form.io Help Documentation available here:
 
 **[https://help.form.io](https://help.form.io/dev/javascript-development/frameworks#react)**
@@ -324,7 +324,7 @@ A React component wrapper around [a Form.io form](https://help.form.io/dev/form-
 | `onCustomEvent`     | `(event: { type: string; component: Component; data: JSON; event?: Event; }) => void`   |         | A callback function that is triggered from a button component configured with "Event" type.                                                                                                                                                                                                                                             |
 | `onPrevPage`        | `(page: number, submission: JSON) => void`                                              |         | A callback function for Wizard forms that gets called when the "Previous" button is pressed.                                                                                                                                                                                                                                            |
 | `onNextPage`        | `(page: number, submission: JSON) => void`                                              |         | A callback function for Wizard forms that gets called when the "Next" button is pressed.                                                                                                                                                                                                                                                |
-| `otherEvents`       | `[event: string]: (...args: any[]) => void;`                                            |         | A "catch-all" prop for subscribing to other events (for a complete list, see [our documentation](https://help.form.io/dev/form-development/form-renderer#form-events)).                                                                                                                                                          |
+| `otherEvents`       | `[event: string]: (...args: any[]) => void;`                                            |         | A "catch-all" prop for subscribing to other events (for a complete list, see [our documentation](https://help.form.io/dev/form-development/form-renderer#form-events)).                                                                                                                                                                 |
 
 #### Examples
 
@@ -490,7 +490,7 @@ A React component wrapper around [a Form.io form builder](https://help.form.io/d
 | Name                | Type                                                                                                                                                       | Default | Description                                                                                                                                                                                                                   |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `initialForm`       | `FormType`                                                                                                                                                 |         | The JSON form definition of the initial form to be rendered in the builder. Oftentimes, this must be a stable reference; otherwise it may destroy and recreate the underlying builder instance and cause unexpected behavior. |
-| `options`           | `FormBuilderOptions`                                                                                                                                       |         | The form builder options. See [here](https://help.form.io/dev/form-development/form-builder#form-builder-options) for more details.                                                                                    |
+| `options`           | `FormBuilderOptions`                                                                                                                                       |         | The form builder options. See [here](https://help.form.io/dev/form-development/form-builder#form-builder-options) for more details.                                                                                           |
 | `onBuilderReady`    | `(instance: FormBuilder) => void`                                                                                                                          |         | A callback function that gets called when the form builder has rendered. It is useful for accessing the underlying @formio/js FormBuilder instance.                                                                           |
 | `onChange`          | `(form: FormType) => void`                                                                                                                                 |         | A callback function that gets called when the form being built has changed.                                                                                                                                                   |
 | `onSaveComponent`   | `(component: Component, original: Component, parent: Component, path: string, index: number, isNew: boolean, originalComponentSchema: Component) => void;` |         | A callback function that gets called when a component is saved in the builder.                                                                                                                                                |
@@ -856,7 +856,8 @@ const FormActionButton: FormGridComponentProps['FormActionButton'] = ({
 	>
 		<i
 			className={`${action && action.name === 'Edit' ? 'ri-edit-box-line' : 'ri-delete-bin-line'}`}
-		></i> {action && action.name === 'Edit' ? 'Edit' : ''}
+		></i>{' '}
+		{action && action.name === 'Edit' ? 'Edit' : ''}
 	</a>
 );
 

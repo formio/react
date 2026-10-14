@@ -35,24 +35,47 @@ export const Report = (props) => {
 		return createPromise;
 	};
 
+	const propsRef = useRef(props);
+	useEffect(() => {
+		propsRef.current = props;
+	});
+
+	const subscriptionRef = useRef(null);
+
+	const unsubscribe = () => {
+		if (!subscriptionRef.current) {
+			return;
+		}
+		const { events, handler } = subscriptionRef.current;
+		events?.offAny(handler);
+		subscriptionRef.current = null;
+	};
+
 	const onAnyEvent = (event, ...args) => {
 		if (event.startsWith('formio.')) {
 			const funcName = `on${event.charAt(7).toUpperCase()}${event.slice(8)}`;
+			const handlers = propsRef.current;
 			// eslint-disable-next-line no-prototype-builtins
 			if (
-				props.hasOwnProperty(funcName) &&
-				typeof props[funcName] === 'function'
+				handlers.hasOwnProperty(funcName) &&
+				typeof handlers[funcName] === 'function'
 			) {
-				props[funcName](...args);
+				handlers[funcName](...args);
 			}
 		}
 	};
 
 	const initializeFormio = () => {
-		if (createPromise) {
-			instance.onAny(onAnyEvent);
+		if (!createPromise) {
+			return;
 		}
+		unsubscribe();
+		const events = instance.events;
+		instance.onAny(onAnyEvent);
+		subscriptionRef.current = { events, handler: onAnyEvent };
 	};
+
+	useEffect(() => unsubscribe, []);
 
 	useEffect(() => {
 		const { src } = props;

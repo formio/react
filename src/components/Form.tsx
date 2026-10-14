@@ -282,7 +282,7 @@ export const Form = (props: FormProps) => {
 		isMounted.current = true;
 		return () => {
 			isMounted.current = false;
-		}
+		};
 	}, []);
 
 	useEffect(() => {
@@ -316,6 +316,7 @@ export const Form = (props: FormProps) => {
 			);
 
 			if (instance) {
+				// GOTCHA(G-RC01)
 				if (!isMounted.current) {
 					instance.destroy(true);
 					return;
@@ -345,22 +346,29 @@ export const Form = (props: FormProps) => {
 		};
 
 		createInstance();
+		// GOTCHA(G-RC03)
 	}, [formConstructor, formReadyCallback, formSource, options, url]);
 
+	const handlersRef = useRef(handlers);
 	useEffect(() => {
-		let onAnyHandler = null;
-		if (formInstance && Object.keys(handlers).length > 0) {
-			onAnyHandler = (...args: [string, ...any[]]) =>
-				onAnyEvent(handlers, ...args);
-			formInstance.onAny(onAnyHandler);
+		handlersRef.current = handlers;
+	});
+
+	useEffect(() => {
+		if (!formInstance) {
+			return;
 		}
 
+		// GOTCHA(G-RC01)
+		const events = formInstance.events;
+		const onAnyHandler = (...args: [string, ...any[]]) =>
+			onAnyEvent(handlersRef.current, ...args);
+		formInstance.onAny(onAnyHandler);
+
 		return () => {
-			if (formInstance && onAnyHandler) {
-				formInstance.offAny(onAnyHandler);
-			}
+			events?.offAny(onAnyHandler);
 		};
-	}, [formInstance, handlers]);
+	}, [formInstance]);
 
 	useEffect(() => {
 		if (formInstance && submission) {

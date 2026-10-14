@@ -26,10 +26,10 @@ _Use this section to describe how you tested your changes; if you haven't includ
 
 ## Checklist:
 
--   [ ] I have completed the above PR template
--   [ ] I have commented my code, particularly in hard-to-understand areas
--   [ ] I have made corresponding changes to the documentation (if applicable)
--   [ ] My changes generate no new warnings
--   [ ] My changes include tests that prove my fix is effective (or that my feature works as intended)
--   [ ] New and existing unit/integration tests pass locally with my changes
--   [ ] Any dependent changes have corresponding PRs that are listed above
+- [ ] I have completed the above PR template
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have made corresponding changes to the documentation (if applicable)
+- [ ] My changes generate no new warnings
+- [ ] My changes include tests that prove my fix is effective (or that my feature works as intended)
+- [ ] New and existing unit/integration tests pass locally with my changes
+- [ ] Any dependent changes have corresponding PRs that are listed above

@@ -10,7 +10,7 @@
 		"baseUrl": "src",
 		"strict": true,
 		"skipLibCheck": true,
-		"esModuleInterop": true,
+		"esModuleInterop": true
 	},
 	"include": ["src/**/*"],
 	"types": [
@@ -18,7 +18,7 @@
 		"jest",
 		"@testing-library/jest-dom",
 		"react",
-		"react-dom",
+		"react-dom"
 	],
-	"exclude": ["node_modules", "lib", "test"],
+	"exclude": ["node_modules", "lib", "test"]
 }

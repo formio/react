@@ -24,7 +24,7 @@ export type FormBuilderProps = {
 		index: number,
 		originalComponentSchema: Component,
 		path: string,
-		isNew: boolean
+		isNew: boolean,
 	) => void;
 	onAddComponent?: (
 		component: Component,
@@ -72,7 +72,7 @@ const toggleEventHandlers = (
 				index,
 				originalComponentSchema,
 				path,
-				isNew
+				isNew,
 			);
 			onChange?.(structuredClone(builder.instance?.form));
 		},
@@ -121,7 +121,10 @@ const createBuilderInstance = async (
 	formSource: FormSource | undefined,
 	element: HTMLDivElement,
 	options: FormBuilderProps['options'] = {},
-	setBuiderStatus: (builder: FormioFormBuilder, ready: boolean) => void = () => {}
+	setBuiderStatus: (
+		builder: FormioFormBuilder,
+		ready: boolean,
+	) => void = () => {},
 ): Promise<FormioFormBuilder> => {
 	const builder = BuilderConstructor
 		? new BuilderConstructor(element, formSource, options)
@@ -183,8 +186,9 @@ export const FormBuilder = ({
 				initialForm && typeof initialForm !== 'string'
 					? structuredClone(initialForm)
 					: null;
-             // destroy prev builder that is not ready before to create the new one
-			 if (pendingBuilder.current) {
+			// GOTCHA(G-RC02)
+			// destroy prev builder that is not ready before to create the new one
+			if (pendingBuilder.current) {
 				const prevBuilder = pendingBuilder.current;
 				// wait the prev builder to be ready before destroying it
 				await prevBuilder.ready;
@@ -192,8 +196,8 @@ export const FormBuilder = ({
 				prevBuilder.instance?.destroy(true);
 				prevBuilder.destroy(true);
 				pendingBuilder.current = null;
-		    }
-			
+			}
+
 			const builder = await createBuilderInstance(
 				Builder,
 				currentFormSourceJsonProp.current || initialForm,
@@ -201,7 +205,7 @@ export const FormBuilder = ({
 				options,
 				(builder, ready) => {
 					pendingBuilder.current = ready ? null : builder;
-				}
+				},
 			);
 
 			if (builder) {
@@ -215,7 +219,7 @@ export const FormBuilder = ({
 				}
 				setBuilderInstance((prevInstance) => {
 					if (prevInstance) {
-					  prevInstance.instance?.destroy(true);
+						prevInstance.instance?.destroy(true);
 						prevInstance.destroy(true);
 					}
 					return builder;
@@ -226,6 +230,7 @@ export const FormBuilder = ({
 		};
 
 		createInstance();
+		// GOTCHA(G-RC04)
 	}, [Builder, initialForm, onBuilderReady, options]);
 
 	useEffect(() => {

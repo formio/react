@@ -193,6 +193,7 @@ const DEFAULT_SETTINGS_FORM_OPTIONS = {};
 const DEFAULT_COMPONENTS = {};
 
 export const FormEdit = ({
+	// GOTCHA(G-RC05)
 	initialForm = fastCloneDeep(DEFAULT_INITAL_FORM),
 	settingsForm = fastCloneDeep(DEFAULT_SETTINGS_FORM),
 	settingsFormOptions = fastCloneDeep(DEFAULT_SETTINGS_FORM_OPTIONS),
@@ -227,11 +228,11 @@ export const FormEdit = ({
 	const builderRef = useRef<FormioFormBuilder | null>(null);
 
 	const handleSaveForm = async () => {
-    const currentForm = builderRef.current?.form as FormType;
-    if (!currentForm) {
-      console.warn("Could not find current form when trying to save");
-      return;
-    }
+		const currentForm = builderRef.current?.form as FormType;
+		if (!currentForm) {
+			console.warn('Could not find current form when trying to save');
+			return;
+		}
 		const formToSave: FormType = {
 			...currentForm,
 			...settingsFormData.current,
